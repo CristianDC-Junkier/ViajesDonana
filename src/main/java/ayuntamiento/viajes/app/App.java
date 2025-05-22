@@ -24,6 +24,7 @@ public class App extends Application {
         try {
             /*Log*/
             LoggerUtil.iniLog();
+            System.out.println("");
 
             /*Base de datos*/
             SQLiteDataBase.create();
