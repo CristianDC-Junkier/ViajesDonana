@@ -1,0 +1,255 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.net.URL?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Line?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane fx:id="father" prefHeight="800.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ayuntamiento.viajes.controller.PdfController">
+
+    <!-- Top: Logo -->
+    <top>
+        <HBox alignment="CENTER">
+            <children>
+                <ImageView fitHeight="100.0" fitWidth="178.0" mouseTransparent="true" pickOnBounds="true" preserveRatio="true" HBox.hgrow="NEVER">
+                    <image>
+                        <Image url="@../icons/global_logo-ayunt.png" />
+                    </image>
+                </ImageView>
+                <Pane HBox.hgrow="ALWAYS" />
+                <ImageView fitHeight="30.0" fitWidth="160.0" onMouseClicked="#backpanel" pickOnBounds="true" preserveRatio="true" styleClass="glow" HBox.hgrow="NEVER">
+                    <image>
+                        <Image url="@../icons/global_return.png" />
+                    </image>
+                    <cursor>
+                        <Cursor fx:constant="HAND" />
+                    </cursor>
+                    <HBox.margin>
+                        <Insets right="30.0" />
+                    </HBox.margin>
+                </ImageView>
+            </children>
+            <padding>
+                <Insets left="50.0" top="10.0" />
+            </padding>
+        </HBox>
+    </top>
+
+    <!-- Bottom: Copyright y botones -->
+    <bottom>
+        <HBox alignment="BOTTOM_CENTER" spacing="10.0">
+            <children>
+                <Label text="© 2025 Ayuntamiento de Almonte" HBox.hgrow="ALWAYS">
+                    <font>
+                        <Font name="Trebuchet MS Bold" size="12.0" />
+                    </font>
+                    <HBox.margin>
+                        <Insets bottom="3.0" />
+                    </HBox.margin>
+                </Label>
+                <Pane HBox.hgrow="ALWAYS" />
+                <Label fx:id="users" onMouseClicked="#userspanel" style="-fx-cursor: hand;" styleClass="privacity" stylesheets="@../styles/global.css">
+                    <font>
+                        <Font name="Trebuchet MS Bold" size="12.0" />
+                    </font>
+                    <padding>
+                        <Insets right="20.0" />
+                    </padding>
+                    <HBox.margin>
+                        <Insets bottom="3.0" />
+                    </HBox.margin>
+                </Label>
+                <Label onMouseClicked="#serviceterms" style="-fx-cursor: hand;" styleClass="privacity" stylesheets="@../styles/global.css" text="Términos de Servicio">
+                    <HBox.margin>
+                        <Insets bottom="3.0" right="25.0" />
+                    </HBox.margin>
+                    <font>
+                        <Font name="Trebuchet MS Bold" size="12.0" />
+                    </font>
+                </Label>
+                <ImageView fitHeight="20.0" fitWidth="200.0" onMouseClicked="#exit" pickOnBounds="true" preserveRatio="true" styleClass="glow">
+                    <image>
+                        <Image url="@../icons/global_unlog.png" />
+                    </image>
+                    <cursor>
+                        <Cursor fx:constant="HAND" />
+                    </cursor>
+                </ImageView>
+            </children>
+            <padding>
+                <Insets bottom="30.0" left="50.0" right="50.0" top="10.0" />
+            </padding>
+            <stylesheets>
+                <URL value="@../styles/global.css" />
+                <URL value="@../styles/home.css" />
+            </stylesheets>
+        </HBox>
+    </bottom>
+    <center>
+        <HBox alignment="CENTER" BorderPane.alignment="CENTER">
+            <children>
+                <VBox alignment="CENTER" maxHeight="-Infinity" spacing="4.0" styleClass="pdf-block">
+                    <children>
+                        <HBox alignment="CENTER" prefWidth="354.0" VBox.vgrow="NEVER">
+                            <children>
+                                  <Label styleClass="labelTittle" text="Generador de PDFS" textAlignment="CENTER">
+                                      <font>
+                                          <Font name="Trebuchet MS" size="18.0" />
+                                      </font>
+                                  </Label>
+                                <ImageView fitHeight="95.0" fitWidth="95.0" pickOnBounds="true" preserveRatio="true" HBox.hgrow="ALWAYS">
+                                    <image>
+                                        <Image url="@../icons/pdf_icon.png" />
+                                    </image>
+                                    <HBox.margin>
+                                        <Insets left="25.0" />
+                                    </HBox.margin>
+                                </ImageView>
+                            </children>
+                     <padding>
+                        <Insets bottom="10.0" />
+                     </padding>
+                        </HBox>
+                  <Line startX="400.0" stroke="#ef0101" strokeWidth="2.0">
+                     <VBox.margin>
+                        <Insets bottom="10.0" />
+                     </VBox.margin>
+                  </Line>
+                  <VBox alignment="CENTER" spacing="5.0">
+                     <children>
+                        <Label contentDisplay="CENTER" nodeOrientation="LEFT_TO_RIGHT" prefHeight="22.0" prefWidth="242.0" text="Tipo" textFill="#ef0101">
+                           <font>
+                              <Font name="Trebuchet MS Bold" size="18.0" />
+                           </font>
+                        </Label>
+                              <HBox alignment="CENTER" VBox.vgrow="NEVER">
+                                  <children>
+                                      <ImageView fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
+                                          <image>
+                                              <Image url="@../icons/pdf_choose-box.png" />
+                                          </image>
+                                          <HBox.margin>
+                                              <Insets right="18.0" />
+                                          </HBox.margin>
+                                      </ImageView>
+                                      <ChoiceBox fx:id="boxPDF" prefHeight="28.0" prefWidth="200.0" styleClass="choiceBox">
+                                          <HBox.margin>
+                                              <Insets />
+                                          </HBox.margin>
+                                      </ChoiceBox>
+                                  </children>
+                                  <VBox.margin>
+                                      <Insets right="90.0" />
+                                  </VBox.margin>
+                              </HBox>
+                        <Label contentDisplay="CENTER" nodeOrientation="LEFT_TO_RIGHT" prefWidth="241.0" text="Nombre " textFill="#ef0101">
+                           <font>
+                              <Font name="Trebuchet MS Bold" size="18.0" />
+                           </font>
+                        </Label>
+                              <HBox alignment="CENTER" VBox.vgrow="NEVER">
+                                  <children>
+                                      <ImageView fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
+                                          <image>
+                                              <Image url="@../icons/pdf_choose-name.png" />
+                                          </image>
+                                          <HBox.margin>
+                                              <Insets right="18.0" />
+                                          </HBox.margin>
+                                      </ImageView>
+                                      <TextField fx:id="namePDF" onMouseClicked="#nameChangePDF" prefWidth="275.0" promptText="Nombre">
+                                          <HBox.margin>
+                                              <Insets />
+                                          </HBox.margin>
+                                      </TextField>
+                                  </children>
+                                  <VBox.margin>
+                                      <Insets right="18.0" />
+                                  </VBox.margin>
+                              </HBox>
+                        <Label contentDisplay="CENTER" nodeOrientation="LEFT_TO_RIGHT" prefWidth="243.0" text="Carpeta" textFill="#ef0101">
+                           <font>
+                              <Font name="Trebuchet MS Bold" size="18.0" />
+                           </font>
+                        </Label>
+                              <HBox alignment="CENTER">
+                                  <children>
+                                      <Button mnemonicParsing="false" onAction="#choosefolderPDF" style="-fx-background-color: transparent;">
+                                          <graphic>
+                                              <Label>
+                                                  <graphic>
+                                                      <ImageView fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true" styleClass="glow">
+                                                          <image>
+                                                              <Image url="@../icons/pdf_choose-folder.png" />
+                                                          </image>
+                                                      </ImageView>
+                                                  </graphic>
+                                              </Label>
+                                          </graphic>
+                                          <HBox.margin>
+                                              <Insets right="10.0" />
+                                          </HBox.margin>
+                                      </Button>
+                                      <TextField fx:id="dirPDF" onMouseClicked="#dirChangePDF" prefWidth="273.0" promptText="Carpeta" HBox.hgrow="NEVER" />
+                                  </children>
+                           <VBox.margin>
+                              <Insets right="27.0" />
+                           </VBox.margin>
+                              </HBox>
+                     </children>
+                     <VBox.margin>
+                        <Insets bottom="10.0" />
+                     </VBox.margin>
+                  </VBox>
+                          <Line startX="400.0" stroke="#ef0101" strokeWidth="2.0">
+                              <VBox.margin>
+                                  <Insets bottom="15.0" top="10.0" />
+                              </VBox.margin>
+                          </Line>
+                          <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#printPDF" prefHeight="30.0" prefWidth="160.0" textAlignment="CENTER">
+                              <graphic>
+                                  <Label>
+                                      <graphic>
+                                          <ImageView fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
+                                              <image>
+                                                  <Image url="@../icons/pdf_download.png" />
+                                              </image>
+                                          </ImageView>
+                                      </graphic>
+                                  </Label>
+                              </graphic>
+                              <padding>
+                                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                              </padding>
+                          </Button>
+                    </children>
+                    <padding>
+                        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+                    </padding>
+                </VBox>
+            </children>
+         <BorderPane.margin>
+            <Insets />
+         </BorderPane.margin>
+         <padding>
+            <Insets bottom="30.0" />
+         </padding>
+        </HBox>
+    </center>
+    <stylesheets>
+        <URL value="@../styles/pdf.css" />
+        <URL value="@../styles/global.css" />
+    </stylesheets>
+
+</BorderPane>

@@ -1,0 +1,16 @@
+.home-button {
+    -fx-background-color: linear-gradient(from 0.0% 0.0% to 100.0% 100.0%, #b31217 0.0%, #b31217 0.6729%, #ff0000 50.7402%, #b21419 100.0%); 
+    -fx-background-radius: 5;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.15), 4, 0.5, 0, 0);
+}
+.home-button:pressed {
+    -fx-translate-y: 1;
+    -fx-effect: innershadow(gaussian, rgba(0, 0, 0, 0.3), 4, 0.5, 0, 1);
+}
+.home-button:hover {
+    -fx-background-color: linear-gradient(from 0% 0% to 100% 100%, #b31217, #7b0b0e);
+    -fx-transition: all 0.3s ease-in-out;
+}
+
+

@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.net.URL?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.chart.BarChart?>
+<?import javafx.scene.chart.CategoryAxis?>
+<?import javafx.scene.chart.NumberAxis?>
+<?import javafx.scene.chart.PieChart?>
+<?import javafx.scene.chart.StackedBarChart?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane fx:id="father" prefHeight="800.0" prefWidth="1000.0" stylesheets="@../styles/global.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ayuntamiento.viajes.controller.StadisticsController">
+
+    <!-- Top: Logo -->
+    <top>
+        <HBox alignment="CENTER" BorderPane.alignment="CENTER">
+            <children>
+                <ImageView fitHeight="100.0" fitWidth="178.0" mouseTransparent="true" pickOnBounds="true" preserveRatio="true">
+                    <image>
+                        <Image url="@../icons/global_logo-ayunt.png" />
+                    </image>
+                </ImageView>
+            <Pane HBox.hgrow="ALWAYS" />
+            <ImageView fitHeight="30.0" fitWidth="160.0" onMouseClicked="#backpanel" pickOnBounds="true" preserveRatio="true" styleClass="glow">
+               <image>
+                  <Image url="@../icons/global_return.png" />
+               </image>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+               <HBox.margin>
+                  <Insets right="30.0" />
+               </HBox.margin>
+            </ImageView>
+            </children>
+            <padding>
+                <Insets left="50.0" top="10.0" />
+            </padding>
+        </HBox>
+    </top>
+
+    <!-- Center: Estadísticas -->
+    <center>
+        <BorderPane fx:id="graphics">
+            <bottom>
+                <HBox prefHeight="60.0" prefWidth="1000.0" BorderPane.alignment="CENTER" />
+            </bottom>
+         <top>
+                  <HBox alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="50.0" spacing="20.0" BorderPane.alignment="CENTER">
+                      <children>
+                  <VBox alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="200.0" prefWidth="200.0">
+                     <children>
+                        <Label fx:id="totalVehicles" text="Label">
+                           <font>
+                              <Font name="Trebuchet MS Bold" size="18.0" />
+                           </font></Label>
+                                <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="Total de Vehículos" textFill="#868686">
+                           <font>
+                              <Font name="Trebuchet MS Bold" size="12.0" />
+                           </font></Label>
+                     </children>
+                  </VBox>
+                  <VBox alignment="CENTER" prefHeight="200.0" prefWidth="200.0">
+                     <children>
+                        <Label fx:id="typeVehicles" text="Label">
+                           <font>
+                              <Font name="Trebuchet MS Bold" size="18.0" />
+                           </font></Label>
+                                <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="\% Vehiculos por Tipo" textFill="#868686">
+                           <font>
+                              <Font name="Trebuchet MS Bold" size="12.0" />
+                           </font></Label>
+                     </children>
+                  </VBox>
+                  <VBox alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="200.0" prefWidth="200.0">
+                     <children>
+                        <Label fx:id="itvVehicles" text="Label">
+                           <font>
+                              <Font name="Trebuchet MS Bold" size="18.0" />
+                           </font></Label>
+                                <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="\% ITV / Alquiler &lt; 1 Año" textFill="#868686">
+                           <font>
+                              <Font name="Trebuchet MS Bold" size="12.0" />
+                           </font></Label>
+                     </children>
+                  </VBox>
+                  <VBox alignment="CENTER" prefHeight="200.0" prefWidth="200.0">
+                     <children>
+                        <Label fx:id="insuranceVehicle" text="Label">
+                           <font>
+                              <Font name="Trebuchet MS Bold" size="18.0" />
+                           </font></Label>
+                        <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="\% Seguro &lt; 1 año" textFill="#868686">
+                           <font>
+                              <Font name="Trebuchet MS Bold" size="12.0" />
+                           </font></Label>
+                     </children>
+                  </VBox>
+                      </children>
+                      <padding>
+                          <Insets bottom="20.0" top="20.0" />
+                      </padding>
+                  </HBox>
+         </top>
+         <center>
+                  <HBox alignment="CENTER" minHeight="300.0" minWidth="300.0" BorderPane.alignment="CENTER">
+                      <children>
+                  <StackedBarChart fx:id="stackedBarChart" title="ITV / Alquiler de Vehículos">
+                    <xAxis>
+                      <CategoryAxis side="BOTTOM" />
+                    </xAxis>
+                    <yAxis>
+                      <NumberAxis side="LEFT" />
+                    </yAxis>
+                  </StackedBarChart>
+                          <BarChart fx:id="barChart" title="Seguro de Vehículos">
+                              <xAxis>
+                                  <CategoryAxis side="BOTTOM" />
+                              </xAxis>
+                              <yAxis>
+                                  <NumberAxis side="LEFT" />
+                              </yAxis>
+                          </BarChart>
+                          <PieChart fx:id="pieChart" title="Distribución por Tipo " />
+                      </children>
+                      <padding>
+                          <Insets bottom="25.0" left="50.0" right="50.0" top="25.0" />
+                      </padding>
+                  </HBox>
+         </center>
+        </BorderPane>
+    </center>
+
+    <!-- Bottom: Footer -->
+    <bottom>
+        <HBox alignment="BOTTOM_CENTER" spacing="10.0">
+            <children>
+                <Label text="© 2025 Ayuntamiento de Almonte" HBox.hgrow="ALWAYS">
+                    <font>
+                        <Font name="Trebuchet MS Bold" size="12.0" />
+                    </font>
+                    <HBox.margin>
+                        <Insets bottom="3.0" />
+                    </HBox.margin>
+                </Label>
+                <Pane HBox.hgrow="ALWAYS" />
+                <Label fx:id="users" onMouseClicked="#userspanel" style="-fx-cursor: hand;" styleClass="privacity" stylesheets="@../styles/global.css">
+                    <font>
+                        <Font name="Trebuchet MS Bold" size="12.0" />
+                    </font>
+                    <padding>
+                        <Insets right="20.0" />
+                    </padding>
+                    <HBox.margin>
+                        <Insets bottom="3.0" />
+                    </HBox.margin>
+                </Label>
+                <Label onMouseClicked="#serviceterms" style="-fx-cursor: hand;" styleClass="privacity" stylesheets="@../styles/global.css" text="Términos de Servicio">
+                    <HBox.margin>
+                        <Insets bottom="3.0" right="25.0" />
+                    </HBox.margin>
+                    <font>
+                        <Font name="Trebuchet MS Bold" size="12.0" />
+                    </font>
+                </Label>
+                <ImageView fitHeight="20.0" fitWidth="200.0" onMouseClicked="#exit" pickOnBounds="true" preserveRatio="true" styleClass="glow">
+                    <image>
+                        <Image url="@../icons/global_unlog.png" />
+                    </image>
+                    <cursor>
+                        <Cursor fx:constant="HAND" />
+                    </cursor>
+                </ImageView>
+            </children>
+            <padding>
+                <Insets bottom="30.0" left="50.0" right="50.0" top="10.0" />
+            </padding>
+            <stylesheets>
+                <URL value="@../styles/global.css" />
+                <URL value="@../styles/home.css" />
+            </stylesheets>
+        </HBox>
+    </bottom>
+
+</BorderPane>

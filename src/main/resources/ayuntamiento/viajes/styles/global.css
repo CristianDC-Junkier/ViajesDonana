@@ -1,0 +1,100 @@
+.privacity{
+    -fx-underline: false;
+    -fx-transition: all 0.3s ease-in-out;
+}
+.privacity:hover{
+    -fx-underline: true;
+}
+
+.glow {
+    -fx-effect: dropshadow(gaussian, transparent, 0, 0, 0, 0);
+    -fx-transition: all 0.3s ease-in-out;
+}
+.glow:hover {
+    -fx-effect: dropshadow(gaussian, rgba(255, 0, 0, 0.6), 20, 0.3, 0, 0);
+}
+
+.button {
+    -fx-background-color: linear-gradient(from 0.0% 0.0% to 100.0% 100.0%, #b31217 0.0%, #b31217 0.6729%, #ff0000 50.7402%, #b21419 100.0%);
+    -fx-background-radius: 5;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.15), 4, 0.5, 0, 0);
+}
+.button:pressed {
+    -fx-translate-y: 1;
+    -fx-effect: innershadow(gaussian, rgba(0, 0, 0, 0.3), 4, 0.5, 0, 1);
+    -fx-transition: all 0.3s ease-in-out;
+}
+.button:hover {
+    -fx-background-color: linear-gradient(from 0% 0% to 100% 100%, #b31217, #7b0b0e);
+    -fx-transition: all 0.3s ease-in-out;
+}
+
+
+
+.table-view {
+    -fx-background-color: #f0f0f0;
+    -fx-border-color: #dddddd;
+    -fx-border-radius: 8;
+    -fx-background-radius: 8;
+    -fx-padding: 10;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.05), 10, 0, 0, 2);
+    -fx-table-cell-border-color: transparent;
+    -fx-control-inner-background: #f0f0f0;
+    -fx-alignment: center;
+}
+.table-view .column-header-background {
+    -fx-background-color: #b21419;
+    -fx-background-radius: 5 5 0 0;
+}
+.table-view .column-header {
+    -fx-background-color: linear-gradient(from 0% 0% to 100% 100%, #b31217, #ff0000, #b21419);
+    -fx-background-radius: 5 5 0 0;
+}
+.table-view .column-header .label {
+    -fx-font-family: "Trebuchet MS";
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-text-fill: white;
+    -fx-alignment: center;
+}
+.table-cell {
+    -fx-padding: 12;
+    -fx-font-family: "Trebuchet MS";
+    -fx-font-size: 13px;
+    -fx-text-fill: #000000;
+    -fx-alignment: center;
+}
+.table-row-cell {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent transparent #e0e0e0 transparent;
+    -fx-border-width: 0 0 1 0;
+}
+.table-row-cell:hover {
+    -fx-background-color: #f8f8f8;
+}
+.table-row-cell:filled:selected {
+    -fx-background-color: #d0eaff;
+}
+
+
+.searcher{
+    -fx-background-color: linear-gradient(from 0% 0% to 100% 100%, #b31217, #ff0000, #b21419);
+    -fx-background-radius: 4 4 4 4;
+}
+
+.choice-box {
+    -fx-background-color: #f2f2f2;
+    -fx-border-color: #aaaaaa;
+    -fx-font-size: 12px;
+    -fx-font-family: "Trebuchet MS";
+    -fx-font-weight: bold;
+}
+.choice-box .list-cell {
+    -fx-text-fill: #333;
+    -fx-font-family: "Trebuchet MS";
+    -fx-font-weight: bold;
+}
+.choice-box .arrow {
+    -fx-background-color: #333;
+}

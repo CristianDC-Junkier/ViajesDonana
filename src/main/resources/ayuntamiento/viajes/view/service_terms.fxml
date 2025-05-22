@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane prefHeight="800.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ayuntamiento.viajes.controller.Service_termsController">
+   <top>
+      <HBox BorderPane.alignment="CENTER">
+         <children>
+            <ImageView fitHeight="100.0" fitWidth="178.0" mouseTransparent="true" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../icons/global_logo-ayunt.png" />
+               </image>
+            </ImageView>
+            <Pane HBox.hgrow="ALWAYS" />
+            <ImageView fitHeight="30.0" fitWidth="160.0" onMouseClicked="#backpanel" pickOnBounds="true" preserveRatio="true" styleClass="glow">
+               <image>
+                  <Image url="@../icons/global_return.png" />
+               </image>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+               <HBox.margin>
+                  <Insets right="30.0" top="30.0" />
+               </HBox.margin>
+            </ImageView>
+         </children>
+         <padding>
+            <Insets left="50.0" top="10.0" />
+         </padding>
+      </HBox>
+   </top>
+   <bottom>
+      <HBox spacing="10.0">
+         <children>
+            <Label text="© 2025 Ayuntamiento de Almonte" HBox.hgrow="ALWAYS">
+               <font>
+                  <Font name="Trebuchet MS Bold" size="12.0" />
+               </font>
+               <HBox.margin>
+                  <Insets bottom="3.0" />
+               </HBox.margin>
+            </Label>
+            <Pane HBox.hgrow="ALWAYS" />
+            <Label fx:id="users" focusTraversable="false" style="-fx-cursor: hand;" styleClass="privacity" stylesheets="@../styles/global.css" visible="false">
+               <font>
+                  <Font name="Trebuchet MS Bold" size="12.0" />
+               </font>
+               <padding>
+                  <Insets right="20.0" />
+               </padding>
+               <HBox.margin>
+                  <Insets bottom="3.0" />
+               </HBox.margin>
+            </Label>
+            <Label disable="true" style="-fx-cursor: hand;" styleClass="privacity" stylesheets="@../styles/global.css" text="Términos de Servicio">
+               <font>
+                  <Font name="Trebuchet MS Bold" size="12.0" />
+               </font>
+               <HBox.margin>
+                  <Insets bottom="3.0" right="25.0" />
+               </HBox.margin>
+            </Label>
+            <ImageView fitHeight="20.0" fitWidth="200.0" onMouseClicked="#exit" pickOnBounds="true" preserveRatio="true" styleClass="glow">
+               <image>
+                  <Image url="@../icons/global_unlog.png" />
+               </image>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </ImageView>
+         </children>
+         <padding>
+            <Insets bottom="30.0" left="50.0" right="50.0" top="10.0" />
+         </padding>
+      </HBox>
+   </bottom>
+   <left>
+      <Region prefHeight="200.0" prefWidth="150.0" BorderPane.alignment="CENTER" />
+   </left>
+   <right>
+      <Region prefHeight="200.0" prefWidth="150.0" BorderPane.alignment="CENTER" />
+   </right>
+   <center>
+      <VBox prefHeight="200.0" prefWidth="100.0" spacing="10.0" BorderPane.alignment="CENTER">
+         <children>
+            <Label alignment="CENTER" text="Términos de Servicio" textAlignment="CENTER" translateX="175.0" wrapText="true">
+               <font>
+                  <Font name="Trebuchet MS Bold" size="25.0" />
+               </font>
+               <VBox.margin>
+                  <Insets bottom="10.0" />
+               </VBox.margin>
+            </Label>
+            <Label layoutX="10.0" layoutY="10.0" text="Política de privacidad" wrapText="true">
+               <font>
+                  <Font name="Trebuchet MS" size="20.0" />
+               </font>
+            </Label>
+            <Label layoutX="10.0" layoutY="25.0" text="Esta aplicación no recoge información de sus usuarios, solo genera un registro de entrada indicando el día, la hora, el nombre del usuario que ha realizado la entrada y el tipo de usuario (administrador o trabajador). Dicho registro solo tiene la función de indicar quien y cuando hace uso de la aplicación y la creación de usuarios y vehiculos por parte del usuario que este registrado en ese momento, además de los errores que puedan ocurrir durante el uso de la aplicación. Esta información se almacena de forma local en el dispositivo que tenga instalado este programa y solo se mantienen los registros de los últimos diez días. Para la creación de usuarios solo se pide un nombre de usuario y una contraseña, no se requiere ningún tipo de información personal. Dichos nombre de usuario y contraseña son almacenados en la base de datos interna del programa. La creación, modificación y eliminado de usuarios solo podrá llevarse acabo por un usario de tipo administrador." wrapText="true">
+               <font>
+                  <Font name="Trebuchet MS" size="14.0" />
+               </font>
+               <VBox.margin>
+                  <Insets bottom="10.0" />
+               </VBox.margin>
+            </Label>
+            <Label layoutX="10.0" layoutY="40.0" text="Política de uso" wrapText="true">
+               <font>
+                  <Font name="Trebuchet MS" size="20.0" />
+               </font>
+            </Label>
+            <Label layoutX="10.0" layoutY="190.0" text="Esta aplicación ha sido diseñada para uso exclusivo del Ayuntamiento de Almonte, con la intención de mantener un registro de la flota de vehiculos del mismo. Cualquier uso fuera de este contexto está prohibido. La instalación de la aplicación no está permitida en dispositivos ajenos al Ayuntamiento de Almonte." wrapText="true">
+               <font>
+                  <Font name="Trebuchet MS" size="14.0" />
+               </font>
+               <VBox.margin>
+                  <Insets bottom="10.0" />
+               </VBox.margin>
+            </Label>
+            <Label layoutX="10.0" layoutY="205.0" text="Política de Cookies" wrapText="true">
+               <font>
+                  <Font name="Trebuchet MS" size="20.0" />
+               </font>
+            </Label>
+            <Label layoutX="10.0" layoutY="235.0" text="Esta aplicación hace uso de cookies para recoger las preferencias del usuario, como por ejemplo si el usuario elige que su nombre de usuario sea recordado al iniciar la aplicación. Estas cookies no tienen ningún uso fuera de ese contexto y son almacenadas de forma local en el dispositivo que tiene instalado la aplicación." wrapText="true">
+               <font>
+                  <Font name="Trebuchet MS" size="14.0" />
+               </font>
+            </Label>
+         </children>
+      </VBox>
+   </center>
+</BorderPane>

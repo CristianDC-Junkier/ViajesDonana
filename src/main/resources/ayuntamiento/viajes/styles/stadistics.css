@@ -1,0 +1,51 @@
+/* Root pane background */
+.root-pane {
+    -fx-background-color: #f0f2f5;
+}
+
+/* Top bar */
+.top-bar {
+    -fx-background-color: white;
+    -fx-padding: 10;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 5, 0, 0, 1);
+}
+
+.title-label {
+    -fx-font-size: 24px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #333333;
+}
+
+/* Card styling for KPIs */
+.card {
+    -fx-background-color: white;
+    -fx-padding: 15;
+    -fx-border-radius: 8;
+    -fx-background-radius: 8;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 10, 0, 0, 2);
+}
+
+.kpi-title {
+    -fx-font-size: 14px;
+    -fx-text-fill: #666666;
+}
+
+.kpi-value {
+    -fx-font-size: 32px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #b31217;
+}
+
+/* Table styling */
+.table-view {
+    -fx-background-color: white;
+    -fx-table-cell-border-color: transparent;
+    -fx-padding: 10;
+    -fx-border-radius: 8;
+    -fx-background-radius: 8;
+}
+
+/* Chart styling (opcional) */
+.chart-plot-background {
+    -fx-background-color: white;
+}

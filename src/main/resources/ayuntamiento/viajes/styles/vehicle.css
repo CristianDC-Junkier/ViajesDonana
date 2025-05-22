@@ -1,0 +1,52 @@
+.date-picker {
+    -fx-font-family: "Trebuchet MS";
+    -fx-font-size: 14px;
+}
+
+.date-picker .text-field {
+    -fx-font-family: "Trebuchet MS";
+    -fx-font-size: 12px;
+    -fx-background-color: #ffffff;
+    -fx-border-color: #cccccc;
+    -fx-border-radius: 4;
+    -fx-background-radius: 4;
+    -fx-padding: 2;
+    -fx-alignment: center;
+}
+
+.date-picker .arrow-button {
+    -fx-background-color: #b31217;
+}
+
+.date-picker .arrow {
+    -fx-background-color: white;
+}
+
+.date-picker-popup {
+    -fx-background-color: #ffffff;
+}
+
+.date-picker-popup .calendar-grid {
+    -fx-font-family: "Trebuchet MS";
+}
+
+.date-picker-popup .month-year-pane {
+    -fx-background-color: #b31217;
+}
+
+.date-picker-popup .left-button,
+.date-picker-popup .right-button {
+    -fx-background-color: transparent;
+    -fx-padding: 4;
+}
+
+.date-picker-popup .left-button .arrow,
+.date-picker-popup .right-button .arrow {
+    -fx-background-color: white;
+}
+
+.date-picker-popup .label {
+    -fx-text-fill: white;
+    -fx-font-family: "Trebuchet MS";
+    -fx-font-weight: bold;
+}

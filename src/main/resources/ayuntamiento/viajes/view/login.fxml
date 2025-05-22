@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.paint.Color?>
+<?import javafx.scene.paint.LinearGradient?>
+<?import javafx.scene.paint.Stop?>
+<?import javafx.scene.shape.Ellipse?>
+<?import javafx.scene.shape.Line?>
+<?import javafx.scene.text.Font?>
+
+<StackPane fx:id="father" prefHeight="800.0" prefWidth="1000.0" styleClass="mainFxmlClass" stylesheets="@../styles/login.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ayuntamiento.viajes.controller.LoginController">
+    <children>
+        <VBox alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1000.0" spacing="10" StackPane.alignment="CENTER">
+            <children>
+                <VBox fx:id="loginCard" alignment="CENTER" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="375.0" spacing="20" styleClass="login">
+                    <children>
+                  <StackPane prefHeight="150.0" prefWidth="200.0">
+                     <children>
+                        <Ellipse radiusX="160.0" radiusY="100.0" stroke="TRANSPARENT" strokeType="INSIDE">
+                           <fill>
+                              <LinearGradient endX="1.0" endY="0.9810605970295992">
+                                 <stops>
+                                    <Stop>
+                                       <color>
+                                          <Color red="0.7019608020782471" green="0.07058823853731155" blue="0.09019608050584793" />
+                                       </color>
+                                    </Stop>
+                                    <Stop offset="0.2570659488559892">
+                                       <color>
+                                          <Color red="0.7019608020782471" green="0.07058823853731155" blue="0.09019608050584793" />
+                                       </color>
+                                    </Stop>
+                                    <Stop offset="0.5074057052818172">
+                                       <color>
+                                          <Color red="1.0" />
+                                       </color>
+                                    </Stop>
+                                    <Stop offset="0.7846567967698521">
+                                       <color>
+                                          <Color red="0.7019608020782471" green="0.07058823853731155" blue="0.09019608050584793" />
+                                       </color>
+                                    </Stop>
+                                    <Stop offset="1.0">
+                                       <color>
+                                          <Color red="0.7019608020782471" green="0.07058823853731155" blue="0.09019608050584793" />
+                                       </color>
+                                    </Stop>
+                                 </stops>
+                              </LinearGradient>
+                           </fill>
+                        </Ellipse>
+                              <ImageView fitHeight="200.0" fitWidth="275.0" preserveRatio="true">
+                                  <image>
+                                      <Image url="@../icons/global_logo-ayunt.png" />
+                                  </image>
+                              </ImageView>
+                     </children>
+                  </StackPane>
+                  <HBox prefHeight="100.0" prefWidth="200.0">
+                     <children>
+                        <ImageView fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../icons/login_user.png" />
+                           </image>
+                        </ImageView>
+                              <TextField fx:id="userField" onKeyPressed="#userPressed" prefHeight="10.0" prefWidth="270.0" promptText="Usuario" styleClass="login-field">
+                           <HBox.margin>
+                              <Insets left="5.0" />
+                           </HBox.margin>
+                        </TextField>
+                     </children>
+                  </HBox>
+                  <HBox prefHeight="100.0" prefWidth="200.0">
+                     <children>
+                        <ImageView fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../icons/login_lock.png" />
+                           </image>
+                        </ImageView>
+                              <PasswordField fx:id="passField" onKeyPressed="#passPressed" prefHeight="10.0" prefWidth="270.0" promptText="Contraseña" styleClass="login-field">
+                           <HBox.margin>
+                              <Insets left="5.0" />
+                           </HBox.margin>
+                        </PasswordField>
+                     </children>
+                  </HBox>
+                        <Button onAction="#login" prefHeight="30.0" prefWidth="250.0" styleClass="login-button" text="Iniciar Sesión" />
+                        <CheckBox fx:id="rememberCheck" mnemonicParsing="false" prefHeight="18.0" prefWidth="230.0" styleClass="login-checkbox" text="Recuérdame" />
+                        <Line endX="184.0" startX="-100.0" stroke="#ef0101" />
+                        <Label alignment="CENTER" onMouseClicked="#serviceterms" prefHeight="10.0" prefWidth="250.0" style="-fx-cursor: hand;" text="Términos de Servicio" textAlignment="CENTER">
+                            <font>
+                                <Font name="System Bold" size="12.0" />
+                            </font>
+                            <cursor>
+                                <Cursor fx:constant="HAND" />
+                            </cursor>
+                        </Label>
+                    </children>
+                    <padding>
+                        <Insets bottom="30.0" left="30.0" right="30.0" top="30.0" />
+                    </padding>
+                </VBox>
+                <Label fx:id="errorlabel" alignment="CENTER" prefHeight="30.0" prefWidth="800.0" style="-fx-font-size: 14;" text="" textAlignment="CENTER" textFill="RED">
+                    <cursor>
+                        <Cursor fx:constant="DISAPPEAR" />
+                    </cursor>
+                    <VBox.margin>
+                        <Insets top="25.0" />
+                    </VBox.margin>
+                </Label>
+            </children>
+        </VBox>
+    </children>
+</StackPane>

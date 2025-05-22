@@ -1,0 +1,5 @@
+Conexión 1 - NAME:admin ID:1 TYPE:ADMINISTRADOR
+--------------------------
+
+Conexión 2 - NAME:admin ID:1 TYPE:ADMINISTRADOR
+--------------------------
