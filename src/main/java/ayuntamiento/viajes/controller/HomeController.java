@@ -2,7 +2,6 @@ package ayuntamiento.viajes.controller;
 
 import ayuntamiento.viajes.common.ManagerUtil;
 import ayuntamiento.viajes.exception.ControledException;
-import ayuntamiento.viajes.service.NotificationService;
 import ayuntamiento.viajes.service.UserService;
 import java.awt.Desktop;
 import java.io.File;
@@ -51,7 +50,6 @@ public class HomeController extends BaseController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         showUserOption();
-        setNotifications();
         welcomeLabel.setText("¡ Bienvenido a la aplicación, " + UserService.getUsuarioLog().getUsername() + " !");
     }
 
@@ -62,7 +60,6 @@ public class HomeController extends BaseController implements Initializable {
 
     @FXML
     private void notificationspanel() throws IOException {
-        ManagerUtil.moveTo("notification");
     }
 
     @FXML
@@ -101,23 +98,6 @@ public class HomeController extends BaseController implements Initializable {
             error(ex);
         }
     }
-
-    /**
-     * Genera las notificaciones y coloca el número de notifiaciones en el botón
-     * de notificaciones.
-     */
-    private void setNotifications() {
-        NotificationService notificationS = new NotificationService();
-        notificationS.rechargeNotifications();
-        int n = notificationS.getNumberOfNotifications();
-
-        if (n > 0) {
-            notificationsCount.setText(String.valueOf(n));
-            notificationsAlert.setVisible(true);
-            setupGlowAnimation();
-        }
-    }
-
 
     /**
      * Metodo que coloca una animación "Glow" circular en el número de

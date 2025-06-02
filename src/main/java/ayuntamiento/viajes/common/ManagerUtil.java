@@ -30,7 +30,6 @@ public class ManagerUtil {
             put("stadistics", Map.of("title", "Estadísticas", "width", 1000, "height", 800));
             put("vehicle", Map.of("title", "Gestión de Vehículos", "width", 1250, "height", 800));
             put("pdf", Map.of("title", "Generador de PDFs", "width", 1000, "height", 800));
-            put("notification", Map.of("title", "Gestión de Notificaciones", "width", 1200, "height", 800));
             put("user", Map.of("title", "Gestión de Usuarios", "width", 1000, "height", 800));
             put("profile", Map.of("title", "Mi Perfil", "width", 1000, "height", 800));
             put("service_terms", Map.of("title", "Terminos de Servicio", "width", 1000, "height", 800));
