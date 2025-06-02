@@ -22,7 +22,7 @@ import java.util.List;
  * registrar los movimientos de cada usuario y sus fallos.
  *
  * @author Cristian Delgado Cruz
- * @since 2025-05-09
+ * @since 2025-06-02
  * @version 1.2
  */
 public class LoggerUtil {
@@ -130,8 +130,7 @@ public class LoggerUtil {
         } else {
             try (BufferedWriter writer = new BufferedWriter(new FileWriter(FULLPATH, true))) {
                 String timestamp = new SimpleDateFormat(TIME_FORMAT).format(new Date());
-                writer.write("User: " + user.getUsername() + " with Type: " 
-                        + user.getType().name() + " - " + timestamp 
+                writer.write("User: " + user.getUsername() + " - " + timestamp 
                         + " - " + mensaje + "\n");
             } catch (IOException ioE) {
                 System.err.println("Error al escribir en el "

@@ -4,26 +4,19 @@ package ayuntamiento.viajes.model;
  * Clase entidad que se encarga de los usuarios
  * 
  * @author Cristian Delgado Cruz
- * @since 2025-05-08
+ * @since 2025-06-02
  * @version 1.0
  */
 public class Admin {
 
     private long id;
-    private UserType type;
     private String username;
     private String password;
-
-    public enum UserType {
-        TRABAJADOR,
-        ADMINISTRADOR
-    }
 
     public Admin() {
     }
 
-    public Admin(int tipo, String usuario, String contrasena) {
-        this.type = UserType.values()[tipo];
+    public Admin(String usuario, String contrasena) {
         this.username = usuario;
         this.password = contrasena;
     }
@@ -34,14 +27,6 @@ public class Admin {
 
     public void setId(long id) {
         this.id = id;
-    }
-
-    public UserType getType() {
-        return type;
-    }
-
-    public void setTipo(int tipo) {
-        this.type = UserType.values()[tipo];
     }
 
     public String getUsername() {

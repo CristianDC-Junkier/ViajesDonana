@@ -147,7 +147,7 @@ public class AdminService {
                 throw new LoginException("La contraseña no es correcta", 2000);
             } else {
                 adminLog = credential;
-                if (adminLog.getType().ordinal() == 0) {
+                if (adminLog.getId() != 1) {
                     adminList = null;
                 }
                 LoggerUtil.log("Usuario conectado");
