@@ -119,19 +119,6 @@
                   </Line>
                   <VBox alignment="CENTER" prefHeight="170.0" prefWidth="402.0" spacing="10.0">
                      <children>
-                        <HBox alignment="CENTER" layoutX="10.0" layoutY="37.0">
-                           <VBox.margin>
-                              <Insets />
-                           </VBox.margin>
-                        </HBox>
-                              <HBox alignment="CENTER_LEFT" VBox.vgrow="NEVER">
-                                  <VBox.margin>
-                                      <Insets />
-                                  </VBox.margin>
-                           <padding>
-                              <Insets left="30.0" />
-                           </padding>
-                              </HBox>
                         <Label contentDisplay="CENTER" nodeOrientation="LEFT_TO_RIGHT" prefWidth="241.0" text="Nombre " textFill="#007bff">
                            <font>
                               <Font name="Trebuchet MS Bold" size="18.0" />
