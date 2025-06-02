@@ -2,7 +2,7 @@ package ayuntamiento.viajes.controller;
 
 import ayuntamiento.viajes.common.ManagerUtil;
 import ayuntamiento.viajes.exception.ControledException;
-import ayuntamiento.viajes.service.UserService;
+import ayuntamiento.viajes.service.AdminService;
 import java.awt.Desktop;
 import java.io.File;
 
@@ -50,7 +50,7 @@ public class HomeController extends BaseController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         showUserOption();
-        welcomeLabel.setText("¡ Bienvenido a la aplicación, " + UserService.getUsuarioLog().getUsername() + " !");
+        welcomeLabel.setText("¡ Bienvenido a la aplicación, " + AdminService.getAdminLog().getUsername() + " !");
     }
 
     @FXML

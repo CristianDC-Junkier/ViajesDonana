@@ -3,7 +3,7 @@ package ayuntamiento.viajes.controller;
 import ayuntamiento.viajes.model.Traveller;
 import ayuntamiento.viajes.model.Traveller.VehicleStatus;
 import ayuntamiento.viajes.model.Traveller.VehicleType;
-import ayuntamiento.viajes.service.VehicleService;
+import ayuntamiento.viajes.service.TravellerService;
 import java.net.URL;
 
 import java.time.LocalDate;
@@ -64,7 +64,7 @@ public class StadisticsController extends BaseController implements Initializabl
     @FXML
     private Label useVehicles;
 
-    private VehicleService vehicleS;
+    private TravellerService vehicleS;
     private List<Traveller> listVehicles;
 
     private Object selectedValue;
@@ -91,7 +91,7 @@ public class StadisticsController extends BaseController implements Initializabl
         showUserOption();
 
         selectedValue = null;
-        vehicleS = new VehicleService();
+        vehicleS = new TravellerService();
         listVehicles = vehicleS.findAll();
 
         filter = VehicleFilter.STATUS;

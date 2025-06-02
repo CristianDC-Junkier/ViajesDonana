@@ -5,7 +5,7 @@ import ayuntamiento.viajes.exception.ControledException;
 import ayuntamiento.viajes.model.Traveller;
 import ayuntamiento.viajes.model.Traveller.VehicleType;
 import ayuntamiento.viajes.service.PDFService;
-import ayuntamiento.viajes.service.VehicleService;
+import ayuntamiento.viajes.service.TravellerService;
 
 import java.io.File;
 import java.net.URL;
@@ -108,7 +108,7 @@ public class PdfController extends BaseController implements Initializable {
     @FXML
     private void printPDF() {
 
-        VehicleService vehicleS = new VehicleService();
+        TravellerService vehicleS = new TravellerService();
 
         if (isNotValidFileName()) {
             namePDF.setStyle(errorStyle);
@@ -121,7 +121,7 @@ public class PdfController extends BaseController implements Initializable {
         } else {
             try {
                 if (onlyNotiCB.isSelected()) {
-                    if (vehicleS.findByWarning().isEmpty()) {
+                    if (vehicleS.findAll().isEmpty()) {
                         info("No existen vehículos con alguna notificación", false);
                     } else {
                         pdf.printNotification(namePDF.getText(), dirPDF.getText(), documentTypePDF.getValue().toString());
@@ -137,7 +137,7 @@ public class PdfController extends BaseController implements Initializable {
                             }
                         }
                         default -> {
-                            if (vehicleS.findByType(VehicleType.valueOf(typeSelected).ordinal()).isEmpty()) {
+                            if (vehicleS.findByTrip(VehicleType.valueOf(typeSelected).ordinal()).isEmpty()) {
                                 info("No existen vehículos registrados de tipo " + typeSelected , false);
                             } else {
                                 pdf.printType(namePDF.getText(), dirPDF.getText(), typeSelected, documentTypePDF.getValue().toString());

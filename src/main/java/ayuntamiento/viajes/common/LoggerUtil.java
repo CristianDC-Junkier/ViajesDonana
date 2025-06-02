@@ -1,7 +1,7 @@
 package ayuntamiento.viajes.common;
 
 import ayuntamiento.viajes.model.Admin;
-import ayuntamiento.viajes.service.UserService;
+import ayuntamiento.viajes.service.AdminService;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -118,8 +118,8 @@ public class LoggerUtil {
      */
     public static void log(String mensaje) {
         /*Comprobar si el usuario ya inició sesión*/
-        Admin user = UserService.getUsuarioLog();
-        if (UserService.getUsuarioLog() == null) {
+        Admin user = AdminService.getAdminLog();
+        if (AdminService.getAdminLog() == null) {
             try (BufferedWriter writer = new BufferedWriter(new FileWriter(FULLPATH, true))) {
                 String timestamp = new SimpleDateFormat(TIME_FORMAT).format(new Date());
                 writer.write("Not Login - " + timestamp + " - " + mensaje + "\n");

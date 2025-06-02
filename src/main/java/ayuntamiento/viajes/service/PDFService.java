@@ -46,7 +46,7 @@ public class PDFService {
     private int rent;
     private Map<Traveller.VehicleStatus, Integer> statusVehicle;
 
-    private final static VehicleService vehicleS;
+    private final static TravellerService vehicleS;
     private List<Traveller> vehiclesList;
     private List<Traveller> firstPageVehicles;
     private List<Traveller> remainingVehicles;
@@ -62,7 +62,7 @@ public class PDFService {
     private final int numVehNextPage = 27;
 
     static {
-        vehicleS = new VehicleService();
+        vehicleS = new TravellerService();
     }
 
     /**
@@ -117,11 +117,11 @@ public class PDFService {
 
         switch (type) {
             case "Propiedad" ->
-                vehiclesList = vehicleS.findByType(0);
+                vehiclesList = vehicleS.findByTrip(0);
             case "Alquiler" ->
-                vehiclesList = vehicleS.findByType(1);
+                vehiclesList = vehicleS.findByTrip(1);
             case "Otro" ->
-                vehiclesList = vehicleS.findByType(2);
+                vehiclesList = vehicleS.findByTrip(2);
             default -> {
             }
         }
@@ -158,7 +158,7 @@ public class PDFService {
         own = 0;
         rent = 0;
 
-        vehiclesList = vehicleS.findByWarning();
+        vehiclesList = vehicleS.findAll();
         firstPageVehicles = vehiclesList.stream().limit(numVehInitialPage).toList();
         remainingVehicles = vehiclesList.stream().skip(numVehInitialPage).toList();
 

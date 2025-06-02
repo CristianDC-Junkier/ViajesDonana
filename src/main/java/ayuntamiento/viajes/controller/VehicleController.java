@@ -15,7 +15,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.Label;
 import javafx.stage.Stage;
 
-import ayuntamiento.viajes.service.VehicleService;
+import ayuntamiento.viajes.service.TravellerService;
 import ayuntamiento.viajes.model.Traveller;
 import ayuntamiento.viajes.model.Traveller.VehicleStatus;
 import ayuntamiento.viajes.model.Traveller.VehicleType;
@@ -40,14 +40,14 @@ import javafx.util.converter.LocalDateStringConverter;
  */
 public class VehicleController extends BaseController implements Initializable {
 
-    private final VehicleService vehicleS;
+    private final TravellerService vehicleS;
 
     private static final String SHOW_DATE_FORMAT = PropertiesUtil.getProperty("SHOW_DATE_FORMAT");
     private static final DateTimeFormatter formatter_Show_Date = DateTimeFormatter.ofPattern(SHOW_DATE_FORMAT);
 
 
     public VehicleController() {
-        vehicleS = new VehicleService();
+        vehicleS = new TravellerService();
     }
 
     @FXML

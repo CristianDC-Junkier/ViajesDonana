@@ -9,7 +9,7 @@ import javafx.fxml.Initializable;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
 
-import ayuntamiento.viajes.service.UserService;
+import ayuntamiento.viajes.service.AdminService;
 import ayuntamiento.viajes.model.Admin;
 import javafx.scene.control.PasswordField;
 
@@ -23,7 +23,7 @@ import javafx.scene.control.PasswordField;
  */
 public class ProfileController extends BaseController implements Initializable {
 
-    UserService userS;
+    AdminService userS;
 
     @FXML
     private TextField nameProfileTF;
@@ -33,7 +33,7 @@ public class ProfileController extends BaseController implements Initializable {
     private final int numMaxChars = 16;
 
     public ProfileController() {
-        userS = new UserService();
+        userS = new AdminService();
     }
 
     /**
@@ -70,7 +70,7 @@ public class ProfileController extends BaseController implements Initializable {
                 } else {
                     Admin u = new Admin(0, nameProfileTF.getText(),
                             passwordProfileTF.getText());
-                    u.setId(UserService.getUsuarioLog().getId());
+                    u.setId(AdminService.getAdminLog().getId());
 
                     if (userS.modifyProfile(u) == null) {
                         throw new ControledException("El nombre de usuario ya existe", "ProfileController - modify");
@@ -101,7 +101,7 @@ public class ProfileController extends BaseController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         showUserOption();
-        nameProfileTF.setText(UserService.getUsuarioLog().getUsername());
+        nameProfileTF.setText(AdminService.getAdminLog().getUsername());
     }
 
     private void reset() {

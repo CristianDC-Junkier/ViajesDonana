@@ -7,8 +7,8 @@ import ayuntamiento.viajes.common.SecurityUtil;
 import ayuntamiento.viajes.exception.LoginException;
 import ayuntamiento.viajes.model.Preferences;
 import ayuntamiento.viajes.model.Admin;
-import ayuntamiento.viajes.service.UserService;
-import ayuntamiento.viajes.service.VehicleService;
+import ayuntamiento.viajes.service.AdminService;
+import ayuntamiento.viajes.service.TravellerService;
 import java.net.URL;
 import java.sql.SQLException;
 import java.util.ResourceBundle;
@@ -29,7 +29,7 @@ import javafx.scene.control.CheckBox;
  */
 public class LoginController extends BaseController implements Initializable {
 
-    UserService usuarioS;
+    AdminService usuarioS;
 
     @FXML
     private TextField userField;
@@ -85,7 +85,7 @@ public class LoginController extends BaseController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        usuarioS = new UserService();
+        usuarioS = new AdminService();
         String username = PreferencesUtil.getPreferences().getRemember();
 
         if (username != null) {
@@ -98,7 +98,7 @@ public class LoginController extends BaseController implements Initializable {
      * Recarga por primera vez los vehiculos
      */
     private void setVehicles() throws SQLException {
-        VehicleService vS = new VehicleService();
+        TravellerService vS = new TravellerService();
         if (vS.findAll() == null) {
             vS.rechargeList();
         }

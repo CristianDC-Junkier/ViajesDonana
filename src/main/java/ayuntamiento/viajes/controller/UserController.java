@@ -17,7 +17,7 @@ import javafx.scene.control.CheckBox;
 import javafx.scene.control.Button;
 import javafx.collections.FXCollections;
 
-import ayuntamiento.viajes.service.UserService;
+import ayuntamiento.viajes.service.AdminService;
 import ayuntamiento.viajes.model.Admin;
 
 /**
@@ -30,7 +30,7 @@ import ayuntamiento.viajes.model.Admin;
  */
 public class UserController extends BaseController implements Initializable {
 
-    private final UserService userS;
+    private final AdminService userS;
 
     @FXML
     private TableView<Admin> userTable;
@@ -65,7 +65,7 @@ public class UserController extends BaseController implements Initializable {
     private final int numMaxChars = 16;
 
     public UserController() {
-        userS = new UserService();
+        userS = new AdminService();
     }
 
     /**
@@ -158,7 +158,7 @@ public class UserController extends BaseController implements Initializable {
                     modUserNameTF.setStyle(errorStyle);
                     throw new ControledException("El nombre de usuario ya existe: " + u.getUsername(), "UserController - modify");
                 } else {
-                    if (UserService.getUsuarioLog().getId() == userMod.getId()
+                    if (AdminService.getAdminLog().getId() == userMod.getId()
                             && userMod.getType().ordinal() == 0) {
                         ManagerUtil.reload();
                     } else {
@@ -191,7 +191,7 @@ public class UserController extends BaseController implements Initializable {
                 if (userS.delete(userTable.getSelectionModel().getSelectedItem())) {
                     info("El Usuario fue eliminado con éxito", false);
                     refreshTable(userTable, userS.findAll());
-                    if (UserService.getUsuarioLog() == null) {
+                    if (AdminService.getAdminLog() == null) {
                         ManagerUtil.reload();
                     }
                 } else {
