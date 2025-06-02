@@ -15,31 +15,25 @@ import java.util.List;
  * Clase que se encarga de hacer la conexión con la base de datos para el manejo
  * de los datos de los vehiculos
  *
- * @author Ramón Iglesias Granados
- * @since 2025-05-09
- * @version 1.2
+ * @author Cristian Delgado Cruz
+ * @since 2025-06-02
+ * @version 1.0
  */
-public class VehicleDAO implements IDao<Traveller> {
+public class TravellerDAO implements IDao<Traveller> {
 
     @Override
     public Traveller save(Traveller vehiculo) throws SQLException {
-        String sql = "INSERT INTO vehiculos (numplate, vehicle, destination, type, "
-                + "status, allocation, kms_last_check, last_check, itv_rent, insurance) "
-                + "VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO travellers (name, dni, singup, office, trip)"
+                + "VALUES(?, ?, ?, ?, ?)";
 
         try (Connection conn = SQLiteDataBase.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 
             stmt.setString(1, vehiculo.getNumplate());
             stmt.setString(2, vehiculo.getVehicle());
-            stmt.setString(3, vehiculo.getDestination());
-            stmt.setInt(4, vehiculo.getType().ordinal());
-            stmt.setInt(5, vehiculo.getStatus().ordinal());
-            stmt.setString(6, vehiculo.getAllocation());
             /*Object porque si no, no se come el nulo*/
-            stmt.setObject(7, vehiculo.getKms_last_check());
-            stmt.setString(8, vehiculo.getLast_check());
-            stmt.setString(9, vehiculo.getItv_rent());
-            stmt.setString(10, vehiculo.getInsurance());
+            stmt.setObject(3, vehiculo.getKms_last_check());
+            stmt.setString(4, vehiculo.getDestination());
+            stmt.setInt(5, vehiculo.getType().ordinal());
             int affectedRows = stmt.executeUpdate();
 
             if (affectedRows == 0) {
@@ -61,9 +55,8 @@ public class VehicleDAO implements IDao<Traveller> {
 
     @Override
     public Traveller modify(Traveller vehiculo) throws SQLException {
-        String sql = "UPDATE vehiculos SET numplate = ?, vehicle = ?, destination = ?, "
-                + "type = ?, status = ?, allocation = ?, kms_last_check = ?, last_check = ?, "
-                + "itv_rent = ?, insurance = ? WHERE id = ?";
+        String sql = "UPDATE travellers SET name = ?, dni = ?, singup = ?, "
+                + "office = ?, trip = ? WHERE id = ?";
         try (Connection conn = SQLiteDataBase.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
 
             stmt.setString(1, vehiculo.getNumplate());
@@ -71,16 +64,10 @@ public class VehicleDAO implements IDao<Traveller> {
             stmt.setString(3, vehiculo.getDestination());
             stmt.setInt(4, vehiculo.getType().ordinal());
             stmt.setInt(5, vehiculo.getStatus().ordinal());
-            stmt.setString(6, vehiculo.getAllocation());
-            stmt.setObject(7, vehiculo.getKms_last_check());
-            stmt.setString(8, vehiculo.getLast_check());
-            stmt.setString(9, vehiculo.getItv_rent());
-            stmt.setString(10, vehiculo.getInsurance());
-            stmt.setLong(11, vehiculo.getId());
 
             int affectedRows = stmt.executeUpdate();
             if (affectedRows == 0) {
-                throw new SQLException("No se pudo actualizar el vehículo,"
+                throw new SQLException("No se pudo actualizar el viajero,"
                         + " ninguna fila afectada.");
             }
         } catch (Exception ex) {
@@ -91,7 +78,7 @@ public class VehicleDAO implements IDao<Traveller> {
 
     @Override
     public boolean delete(Traveller entity) throws SQLException {
-        String sql = "DELETE FROM vehiculos WHERE id = ?";
+        String sql = "DELETE FROM travellers WHERE id = ?";
         try (Connection conn = SQLiteDataBase.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
 
             stmt.setLong(1, entity.getId());
@@ -100,41 +87,58 @@ public class VehicleDAO implements IDao<Traveller> {
             return affectedRows > 0;
 
         } catch (Exception ex) {
-            throw new SQLException("No se pudo eliminar el vehiculo " + entity.getNumplate());
+            throw new SQLException("No se pudo eliminar el viajero " + entity.getNumplate());
         }
     }
 
     @Override
     public List<Traveller> findAll() throws SQLException {
         List<Traveller> listV = new ArrayList<>();
-        String sql = "SELECT * FROM vehiculos";
+        String sql = "SELECT * FROM travellers";
 
         try (Connection conn = SQLiteDataBase.getConnection(); Statement stmt = conn.createStatement(); ResultSet rs = stmt.executeQuery(sql)) {
 
             while (rs.next()) {
                 Traveller v = new Traveller();
                 v.setId(rs.getInt("id"));
-                v.setNumplate(rs.getString("numplate"));
-                v.setVehicle(rs.getString("vehicle"));
-                v.setDestination(rs.getString("destination"));
-                v.setType(rs.getInt("type"));
-                v.setStatus(rs.getInt("status"));
-                v.setAllocation(rs.getString("allocation"));
-                int kms = rs.getInt("kms_last_check");
-                if (rs.wasNull()) {
-                    v.setKms_last_check(null);
-                } else {
-                    v.setKms_last_check(kms);
-                }
-                v.setLast_check(rs.getString("last_check"));
-                v.setItv_rent(rs.getString("itv_rent"));
-                v.setInsurance(rs.getString("insurance"));
+                v.setNumplate(rs.getString("name"));
+                v.setVehicle(rs.getString("dni"));
+                v.setDestination(rs.getString("singup"));
+                v.setType(rs.getInt("office"));
+                v.setStatus(rs.getInt("trip"));
                 listV.add(v);
             }
         } catch (Exception ex) {
-            throw new SQLException("No se pudo recoger la lista de vehiculos.");
+            throw new SQLException("No se pudo recoger la lista de viajeros.");
         }
 
         return listV;
     }
+
+    @Override
+    public Traveller findById(int id) throws SQLException {
+        Traveller t = null;
+        String sql = "SELECT * FROM travellers WHERE id = ?";
+
+        try (Connection conn = SQLiteDataBase.getConnection(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setInt(1, id);
+            try (ResultSet rs = pstmt.executeQuery()) {
+                if (rs.next()) {
+                    t = new Traveller();
+                    t.setId(rs.getInt("id"));
+                    t.setNumplate(rs.getString("name"));
+                    t.setVehicle(rs.getString("dni"));
+                    t.setDestination(rs.getString("singup"));
+                    t.setType(rs.getInt("office"));
+                    t.setStatus(rs.getInt("trip"));
+                }
+            }
+        } catch (Exception ex) {
+            throw new SQLException("No se pudo encontrar el viajero con ID: " + id);
+        }
+
+        return t;
+    }
+
 }

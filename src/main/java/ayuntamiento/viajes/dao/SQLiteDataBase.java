@@ -18,9 +18,9 @@ import java.sql.Statement;
 /**
  * Controlador que controla el acceso a la base de datos SQLite y su creación
  *
- * @author Cristian
- * @since 2025-05-08
- * @version 1.2
+ * @author Cristian Delgado Cruz
+ * @since 2025-06-02
+ * @version 1.0
  */
 public class SQLiteDataBase {
 
@@ -49,28 +49,22 @@ public class SQLiteDataBase {
     public static void initialize() {
         try (Connection conn = getConnection(); Statement stmt = conn.createStatement()) {
             String sql = """
-                CREATE TABLE IF NOT EXISTS vehiculos (
+                CREATE TABLE IF NOT EXISTS travellers (
                     id INTEGER PRIMARY KEY AUTOINCREMENT,
-                    numplate TEXT NOT NULL UNIQUE,
-                    vehicle TEXT NOT NULL,
-                    destination TEXT,
-                    type TEXT NOT NULL,
-                    status TEXT NOT NULL,
-                    allocation TEXT,
-                    kms_last_check INTEGER,
-                    last_check TEXT,
-                    itv_rent TEXT,
-                    insurance TEXT
+                    name TEXT NOT NULL,
+                    dni TEXT NOT UNIQUE,
+                    singup TEXT NOT NULL,
+                    office INTEGER NOT NULL,
+                    trip INTEGER NOT NULL
                 );
             """;
             stmt.execute(sql);
 
             sql = """
-                CREATE TABLE IF NOT EXISTS usuarios (
+                CREATE TABLE IF NOT EXISTS admins (
                     id INTEGER PRIMARY KEY AUTOINCREMENT,
-                    tipo INTEGER NOT NULL,
-                    usuario TEXT NOT NULL UNIQUE,
-                    contrasena TEXT NOT NULL
+                    nickname TEXT NOT NULL UNIQUE,
+                    password TEXT NOT NULL
                 );
             """;
             stmt.execute(sql);
@@ -81,13 +75,13 @@ public class SQLiteDataBase {
         }
 
         /* Usuario Administrador */
-        String sql = "INSERT OR IGNORE INTO usuarios (tipo, usuario, contrasena) VALUES (?, ?, ?)";
+        String sql = "INSERT OR IGNORE INTO admins (nickname, password) VALUES (?, ?)";
 
         try (Connection conn = SQLiteDataBase.getConnection(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
             pstmt.setInt(1, 1);
             pstmt.setString(2, "admin");
-            pstmt.setString(3, SecurityUtil.hashPassword("Almonte@admin"));
+            pstmt.setString(3, SecurityUtil.hashPassword("admin"));
 
             pstmt.executeUpdate();
 

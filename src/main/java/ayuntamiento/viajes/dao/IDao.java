@@ -18,4 +18,5 @@ public interface IDao <T> {
     boolean delete(T entity) throws SQLException;
         
     List<T> findAll() throws SQLException;
+    T findById(int id) throws SQLException;
 }
