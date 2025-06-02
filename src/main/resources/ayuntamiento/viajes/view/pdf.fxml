@@ -4,8 +4,6 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.control.CheckBox?>
-<?import javafx.scene.control.ChoiceBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
@@ -100,97 +98,33 @@
     <center>
         <HBox alignment="CENTER" BorderPane.alignment="CENTER">
             <children>
-                <VBox alignment="CENTER" maxHeight="-Infinity" spacing="4.0" styleClass="pdf-block">
+                <VBox alignment="CENTER" maxHeight="-Infinity" prefHeight="389.0" prefWidth="442.0" spacing="4.0" styleClass="pdf-block">
                     <children>
                         <HBox alignment="CENTER" prefWidth="354.0" VBox.vgrow="NEVER">
                             <children>
-                                  <Label styleClass="labelTittle" text="Generador de PDFS" textAlignment="CENTER">
+                                  <Label styleClass="labelTittle" text="Generador de PDFS" textAlignment="CENTER" textFill="#ff6f00">
                                       <font>
                                           <Font name="Trebuchet MS" size="18.0" />
                                       </font>
                                   </Label>
-                                <ImageView fitHeight="95.0" fitWidth="95.0" pickOnBounds="true" preserveRatio="true" HBox.hgrow="ALWAYS">
-                                    <image>
-                                        <Image url="@../icons/pdf_icon.png" />
-                                    </image>
-                                    <HBox.margin>
-                                        <Insets left="25.0" />
-                                    </HBox.margin>
-                                </ImageView>
                             </children>
                      <padding>
                         <Insets bottom="10.0" />
                      </padding>
                         </HBox>
-                  <Line startX="400.0" stroke="#ef0101" strokeWidth="2.0">
+                  <Line startX="400.0" stroke="#ff6f00" strokeWidth="2.0">
                      <VBox.margin>
                         <Insets bottom="10.0" />
                      </VBox.margin>
                   </Line>
-                  <VBox alignment="CENTER" prefHeight="303.0" prefWidth="339.0" spacing="5.0">
+                  <VBox alignment="CENTER" prefHeight="170.0" prefWidth="402.0" spacing="10.0">
                      <children>
-                        <Label contentDisplay="CENTER" layoutX="90.0" layoutY="10.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="22.0" prefWidth="242.0" text="Documento" textFill="#ef0101">
-                           <font>
-                              <Font name="Trebuchet MS Bold" size="18.0" />
-                           </font>
-                        </Label>
                         <HBox alignment="CENTER" layoutX="10.0" layoutY="37.0">
-                           <children>
-                              <ImageView fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@../icons/pdf_document-type.png" />
-                                 </image>
-                                 <HBox.margin>
-                                    <Insets left="30.0" right="18.0" />
-                                 </HBox.margin>
-                              </ImageView>
-                              <ChoiceBox fx:id="documentTypePDF" prefHeight="28.0" prefWidth="230.0" styleClass="choiceBox">
-                                 <HBox.margin>
-                                    <Insets />
-                                 </HBox.margin>
-                              </ChoiceBox>
-                              <Label alignment="CENTER" contentDisplay="CENTER" nodeOrientation="LEFT_TO_RIGHT" prefHeight="50.0" prefWidth="150.0" text="Solo Notificados" textAlignment="CENTER" textFill="#ef0101" translateY="15.0" wrapText="true">
-                                 <font>
-                                    <Font name="Trebuchet MS Bold" size="18.0" />
-                                 </font>
-                                 <padding>
-                                    <Insets left="10.0" />
-                                 </padding>
-                              </Label>
-                           </children>
                            <VBox.margin>
                               <Insets />
                            </VBox.margin>
                         </HBox>
-                        <Label contentDisplay="CENTER" nodeOrientation="LEFT_TO_RIGHT" prefHeight="22.0" prefWidth="242.0" text="Titularidad" textFill="#ef0101">
-                           <font>
-                              <Font name="Trebuchet MS Bold" size="18.0" />
-                           </font>
-                        </Label>
                               <HBox alignment="CENTER_LEFT" VBox.vgrow="NEVER">
-                                  <children>
-                                      <ImageView fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
-                                          <image>
-                                              <Image url="@../icons/pdf_choose-box.png" />
-                                          </image>
-                                          <HBox.margin>
-                                              <Insets right="18.0" />
-                                          </HBox.margin>
-                                      </ImageView>
-                                      <ChoiceBox fx:id="vehicleTypePDF" prefHeight="28.0" prefWidth="203.0" styleClass="choiceBox">
-                                          <HBox.margin>
-                                              <Insets right="20.0" />
-                                          </HBox.margin>
-                                      </ChoiceBox>
-                              <CheckBox fx:id="onlyNotiCB" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#selectNotiCB" prefHeight="22.0" prefWidth="22.0" styleClass="pdf-checkbox" translateY="-15.0">
-                                 <HBox.margin>
-                                    <Insets left="32.0" />
-                                 </HBox.margin>
-                                 <font>
-                                    <Font name="Trebuchet MS" size="15.0" />
-                                 </font>
-                              </CheckBox>
-                                  </children>
                                   <VBox.margin>
                                       <Insets />
                                   </VBox.margin>
@@ -198,7 +132,7 @@
                               <Insets left="30.0" />
                            </padding>
                               </HBox>
-                        <Label contentDisplay="CENTER" nodeOrientation="LEFT_TO_RIGHT" prefWidth="241.0" text="Nombre " textFill="#ef0101">
+                        <Label contentDisplay="CENTER" nodeOrientation="LEFT_TO_RIGHT" prefWidth="241.0" text="Nombre " textFill="#007bff">
                            <font>
                               <Font name="Trebuchet MS Bold" size="18.0" />
                            </font>
@@ -213,7 +147,7 @@
                                               <Insets right="18.0" />
                                           </HBox.margin>
                                       </ImageView>
-                                      <TextField fx:id="namePDF" onMouseClicked="#nameChangePDF" prefWidth="275.0" promptText="Nombre">
+                                      <TextField fx:id="namePDF" onMouseClicked="#nameChangePDF" prefWidth="275.0" promptText="Nombre" styleClass="pdf-field">
                                           <HBox.margin>
                                               <Insets />
                                           </HBox.margin>
@@ -222,8 +156,11 @@
                                   <VBox.margin>
                                       <Insets right="18.0" />
                                   </VBox.margin>
+                           <padding>
+                              <Insets bottom="10.0" />
+                           </padding>
                               </HBox>
-                        <Label contentDisplay="CENTER" nodeOrientation="LEFT_TO_RIGHT" prefWidth="243.0" text="Carpeta" textFill="#ef0101">
+                        <Label contentDisplay="CENTER" nodeOrientation="LEFT_TO_RIGHT" prefWidth="243.0" text="Carpeta" textFill="#007bff">
                            <font>
                               <Font name="Trebuchet MS Bold" size="18.0" />
                            </font>
@@ -246,23 +183,18 @@
                                               <Insets right="10.0" />
                                           </HBox.margin>
                                       </Button>
-                                      <TextField fx:id="dirPDF" onMouseClicked="#dirChangePDF" prefWidth="273.0" promptText="Carpeta" HBox.hgrow="NEVER" />
+                                      <TextField fx:id="dirPDF" onMouseClicked="#dirChangePDF" prefWidth="273.0" promptText="Carpeta" styleClass="pdf-field" HBox.hgrow="NEVER" />
                                   </children>
                            <VBox.margin>
                               <Insets right="27.0" />
                            </VBox.margin>
                               </HBox>
-                        <Label contentDisplay="CENTER" nodeOrientation="LEFT_TO_RIGHT" prefHeight="22.0" prefWidth="242.0" text="Documento" textFill="#ef0101">
-                           <font>
-                              <Font name="Trebuchet MS Bold" size="18.0" />
-                           </font>
-                        </Label>
                      </children>
                      <VBox.margin>
                         <Insets bottom="10.0" />
                      </VBox.margin>
                   </VBox>
-                          <Line startX="400.0" stroke="#ef0101" strokeWidth="2.0">
+                          <Line startX="400.0" stroke="#ff6f00" strokeWidth="2.0">
                               <VBox.margin>
                                   <Insets bottom="15.0" top="10.0" />
                               </VBox.margin>

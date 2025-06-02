@@ -2,6 +2,8 @@
 
 <?import java.net.URL?>
 <?import javafx.geometry.Insets?>
+<?import javafx.geometry.Point3D?>
+<?import javafx.geometry.Rectangle2D?>
 <?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
@@ -14,7 +16,6 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.paint.Color?>
 <?import javafx.scene.paint.LinearGradient?>
-<?import javafx.scene.paint.RadialGradient?>
 <?import javafx.scene.paint.Stop?>
 <?import javafx.scene.shape.Circle?>
 <?import javafx.scene.text.Font?>
@@ -76,140 +77,67 @@
                   <Font name="Trebuchet MS" size="16.0" />
                </font>
                <VBox.margin>
-                  <Insets left="285.0" right="285.0" />
+                  <Insets left="200.0" right="200.0" />
                </VBox.margin>
             </Label>
                 <HBox alignment="CENTER" spacing="50.0">
                     <children>
-                        <VBox alignment="CENTER" spacing="10.0" styleClass="glow" stylesheets="@../styles/global.css">
-                            <children>
-                        <StackPane onMouseClicked="#vehiclespanel" prefHeight="120.0" prefWidth="100.0" stylesheets="@../styles/home.css">
-                           <children>
-                              <Circle radius="50.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" styleClass="home-circle">
-                                 <fill>
-                                    <LinearGradient endX="1.0" endY="1.0">
-                                       <stops>
-                                          <Stop>
-                                             <color>
-                                                <Color red="0.7019608020782471" green="0.07058823853731155" blue="0.09019608050584793" />
-                                             </color>
-                                          </Stop>
-                                          <Stop offset="0.5100942126514132">
-                                             <color>
-                                                <Color red="1.0" />
-                                             </color>
-                                          </Stop>
-                                          <Stop offset="1.0">
-                                             <color>
-                                                <Color red="0.699999988079071" green="0.07699999958276749" blue="0.09776666760444641" />
-                                             </color>
-                                          </Stop>
-                                       </stops>
-                                    </LinearGradient>
-                                 </fill>
-                              </Circle>
-                              <ImageView fitHeight="60.0" fitWidth="60.0" mouseTransparent="true" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@../icons/home_car.png" />
-                                 </image>
-                              </ImageView>
-                           </children>
-                        </StackPane>
-                        <Label alignment="CENTER" prefWidth="200.0" text="Panel de gestión de vehículos" textAlignment="CENTER" wrapText="true">
-                           <font>
-                              <Font name="Trebuchet MS" size="14.0" />
-                           </font>
-                        </Label>
-                            </children>
-                     <cursor>
-                        <Cursor fx:constant="HAND" />
-                     </cursor>
-                        </VBox>
                         <VBox alignment="CENTER" onMouseClicked="#notificationspanel" spacing="10.0" styleClass="glow" stylesheets="@../styles/global.css">
                             <children>
                         <StackPane prefHeight="120.0" prefWidth="100.0" stylesheets="@../styles/home.css">
                            <children>
-                              <Circle radius="50.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0">
+                              <Circle radius="50.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" StackPane.alignment="CENTER">
                                  <fill>
-                                    <LinearGradient endX="1.0" endY="1.0">
+                                    <LinearGradient endX="1.0" endY="1.0" startX="1.0" startY="0.1893939393939394">
                                        <stops>
                                           <Stop>
                                              <color>
-                                                <Color red="0.7019608020782471" green="0.07058823853731155" blue="0.09019608050584793" />
+                                                <Color red="1.0" green="0.4333333373069763" />
                                              </color>
                                           </Stop>
                                           <Stop offset="0.006729475100942127">
                                              <color>
-                                                <Color red="0.7019608020782471" green="0.07058823853731155" blue="0.09019608050584793" />
+                                                <Color red="1.0" green="0.4333333373069763" />
                                              </color>
                                           </Stop>
-                                          <Stop offset="0.531628532974428">
+                                          <Stop offset="0.33912287036733085">
                                              <color>
-                                                <Color red="1.0" />
+                                                <Color red="1.0" green="0.4333333373069763" opacity="0.8899999856948853" />
+                                             </color>
+                                          </Stop>
+                                          <Stop offset="0.5097560975609755">
+                                             <color>
+                                                <Color red="0.5" green="0.41999998688697815" blue="0.5" opacity="0.7300000190734863" />
+                                             </color>
+                                          </Stop>
+                                          <Stop offset="0.6850605652759083">
+                                             <color>
+                                                <Color green="0.4833333194255829" blue="1.0" opacity="0.8799999952316284" />
                                              </color>
                                           </Stop>
                                           <Stop offset="1.0">
                                              <color>
-                                                <Color red="0.7019608020782471" green="0.07058823853731155" blue="0.09019608050584793" />
+                                                <Color />
                                              </color>
                                           </Stop>
                                        </stops>
                                     </LinearGradient>
                                  </fill>
                               </Circle>
-                              <ImageView fitHeight="60.0" fitWidth="60.0" mouseTransparent="true" pickOnBounds="true" preserveRatio="true">
+                              <ImageView fitHeight="70.0" fitWidth="70.0" mouseTransparent="true" nodeOrientation="INHERIT" pickOnBounds="true" preserveRatio="true" scaleZ="0.0" StackPane.alignment="CENTER">
                                  <image>
-                                    <Image url="@../icons/home_notification.png" />
+                                    <Image url="@../icons/home_sun.gif" />
                                  </image>
+                                 <StackPane.margin>
+                                    <Insets />
+                                 </StackPane.margin>
+                                 <rotationAxis>
+                                    <Point3D />
+                                 </rotationAxis>
+                                 <viewport>
+                                    <Rectangle2D />
+                                 </viewport>
                               </ImageView>
-                              <StackPane fx:id="notificationsAlert" prefHeight="150.0" prefWidth="200.0" visible="false">
-                                 <children>
-                                    <Circle fx:id="notificationsCircle" radius="20.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0">
-                                       <StackPane.margin>
-                                          <Insets bottom="75.0" left="75.0" />
-                                       </StackPane.margin>
-                                       <fill>
-                                          <RadialGradient centerX="0.5" centerY="0.4848484992980957" focusAngle="90.0" radius="0.5">
-                                             <stops>
-                                                <Stop>
-                                                   <color>
-                                                      <Color red="1.0" green="1.0" blue="1.0" />
-                                                   </color>
-                                                </Stop>
-                                                <Stop offset="0.006729475100942127">
-                                                   <color>
-                                                      <Color red="1.0" green="1.0" blue="1.0" />
-                                                   </color>
-                                                </Stop>
-                                                <Stop offset="0.1410333847618421">
-                                                   <color>
-                                                      <Color red="1.0" green="1.0" blue="1.0" />
-                                                   </color>
-                                                </Stop>
-                                                <Stop offset="0.7065948855989231">
-                                                   <color>
-                                                      <Color red="1.0" blue="0.0833333358168602" />
-                                                   </color>
-                                                </Stop>
-                                                <Stop offset="1.0">
-                                                   <color>
-                                                      <Color red="0.3684210479259491" green="0.0054580895230174065" blue="0.023606237024068832" />
-                                                   </color>
-                                                </Stop>
-                                             </stops>
-                                          </RadialGradient>
-                                       </fill>
-                                    </Circle>
-                                    <Label fx:id="notificationsCount" text="0">
-                                       <StackPane.margin>
-                                          <Insets bottom="75.0" left="75.0" />
-                                       </StackPane.margin>
-                                       <font>
-                                          <Font name="Trebuchet MS Bold" size="18.0" />
-                                       </font>
-                                    </Label>
-                                 </children>
-                              </StackPane>
                            </children>
                         </StackPane>
                         <Label alignment="CENTER" prefWidth="200.0" text="Panel de notificaciones y avisos" textAlignment="CENTER" wrapText="true">
@@ -226,37 +154,47 @@
                             <children>
                         <StackPane prefHeight="120.0" prefWidth="100.0" stylesheets="@../styles/home.css">
                            <children>
-                              <Circle radius="50.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" styleClass="home-circle">
+                              <Circle radius="50.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0">
                                  <fill>
-                                    <LinearGradient endX="1.0" endY="1.0">
+                                    <LinearGradient endX="1.0" endY="1.0" startX="1.0" startY="0.1893939393939394">
                                        <stops>
                                           <Stop>
                                              <color>
-                                                <Color red="0.7019608020782471" green="0.07058823853731155" blue="0.09019608050584793" />
+                                                <Color red="1.0" green="0.4333333373069763" />
                                              </color>
                                           </Stop>
                                           <Stop offset="0.006729475100942127">
                                              <color>
-                                                <Color red="0.7019608020782471" green="0.07058823853731155" blue="0.09019608050584793" />
+                                                <Color red="1.0" green="0.4333333373069763" />
                                              </color>
                                           </Stop>
-                                          <Stop offset="0.5074024226110363">
+                                          <Stop offset="0.33912287036733085">
                                              <color>
-                                                <Color red="1.0" />
+                                                <Color red="1.0" green="0.4333333373069763" opacity="0.8899999856948853" />
+                                             </color>
+                                          </Stop>
+                                          <Stop offset="0.5097560975609755">
+                                             <color>
+                                                <Color red="0.5" green="0.41999998688697815" blue="0.5" opacity="0.7300000190734863" />
+                                             </color>
+                                          </Stop>
+                                          <Stop offset="0.6850605652759083">
+                                             <color>
+                                                <Color green="0.4833333194255829" blue="1.0" opacity="0.8799999952316284" />
                                              </color>
                                           </Stop>
                                           <Stop offset="1.0">
                                              <color>
-                                                <Color red="0.699999988079071" green="0.07699999958276749" blue="0.09776666760444641" />
+                                                <Color />
                                              </color>
                                           </Stop>
                                        </stops>
                                     </LinearGradient>
                                  </fill>
                               </Circle>
-                              <ImageView fitHeight="60.0" fitWidth="60.0" mouseTransparent="true" pickOnBounds="true" preserveRatio="true">
+                              <ImageView fitHeight="52.0" fitWidth="50.0" mouseTransparent="true" pickOnBounds="true" preserveRatio="true">
                                  <image>
-                                    <Image url="@../icons/home_stadistics.png" />
+                                    <Image url="@../icons/home_stadistics.gif" />
                                  </image>
                               </ImageView>
                            </children>

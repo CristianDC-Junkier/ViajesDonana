@@ -3,24 +3,30 @@
 }
 
 .login {
-    -fx-background-color: #ffffff;                 
-    -fx-border-radius: 10;                         
-    -fx-background-radius: 10;                    
+    -fx-background-color: #ffffff;
+    -fx-border-radius: 10;
+    -fx-background-radius: 10;
     -fx-padding: 30;
     -fx-spacing: 20;
     -fx-border-style: solid;
     -fx-border-width: 2px;
-    -fx-border-color: #e52d27;
+    -fx-border-color: white;
     -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.4), 20, 0.3, 0, 0);
 }
-.login-field{
-    -fx-focus-color: #d35244;
-    -fx-faint-focus-color: #d3524422;
-    -fx-border-radius:3px;
-    -fx-border-color:#b31217
+
+.login-field {
+    -fx-focus-color: #3399ff;
+    -fx-faint-focus-color: #3399ff22;
+    -fx-border-radius: 3px;
+    -fx-border-color: #0056b3;
 }
+
 .login-button {
-    -fx-background-color: linear-gradient(from 0% 0% to 100% 100%, #e52d27, #b31217); 
+    -fx-background-color: linear-gradient(
+        from 0% 0% to 100% 100%,
+        #007bff,
+        #0056b3
+    );
     -fx-text-fill: white;
     -fx-font-weight: bold;
     -fx-background-radius: 5;
@@ -28,31 +34,44 @@
     -fx-padding: 10;
     -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.15), 4, 0.5, 0, 0);
 }
+
 .login-button:hover {
-    -fx-background-color: linear-gradient(from 0% 0% to 100% 100%, #b31217, #7b0b0e); 
+    -fx-background-color: linear-gradient(
+        from 0% 0% to 100% 100%,
+        #0056b3,
+        #003c80
+    );
 }
+
 .login-button:pressed {
-    -fx-background-color: linear-gradient(from 0% 0% to 100% 100%, #7b0b0e, #5a0a0a);
+    -fx-background-color: linear-gradient(
+        from 0% 0% to 100% 100%,
+        #003c80,
+        #002752
+    );
     -fx-translate-y: 1;
     -fx-effect: innershadow(gaussian, rgba(0, 0, 0, 0.3), 4, 0.5, 0, 1);
 }
+
 .login-checkbox {
-    -fx-text-fill: #e52d27;  
+    -fx-text-fill: black;
 }
+
 .login-checkbox .box {
-    -fx-background-color: linear-gradient(from 0% 0% to 100% 100%, #e52d27, #b31217);
-    -fx-border-color:grey;
-    -fx-border-radius:3px;
+    -fx-background-color: #ff6f00;
+    -fx-border-color: grey;
+    -fx-border-radius: 3px;
     -fx-cursor: hand;
 }
-.login-checkbox:hover  .box{
-    -fx-background-color: linear-gradient(from 0% 0% to 100% 100%, #b31217, #7b0b0e);
+
+.login-checkbox:hover .box {
+    -fx-background-color: #cc5900;
 }
+
 .login-checkbox:selected .mark {
     -fx-background-color: white;
 }
+
 .login-checkbox:selected .box {
-    -fx-background-color: #b31217;
+    -fx-background-color: #cc5900;
 }
-
-

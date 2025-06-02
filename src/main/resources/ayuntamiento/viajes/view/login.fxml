@@ -6,10 +6,12 @@
 <?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.ProgressIndicator?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.paint.Color?>
@@ -23,7 +25,7 @@
     <children>
         <VBox alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1000.0" spacing="10" StackPane.alignment="CENTER">
             <children>
-                <VBox fx:id="loginCard" alignment="CENTER" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="375.0" spacing="20" styleClass="login">
+                <VBox fx:id="loginCard" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="375.0" spacing="20" styleClass="login">
                     <children>
                   <StackPane prefHeight="150.0" prefWidth="200.0">
                      <children>
@@ -33,34 +35,39 @@
                                  <stops>
                                     <Stop>
                                        <color>
-                                          <Color red="0.7019608020782471" green="0.07058823853731155" blue="0.09019608050584793" />
+                                          <Color red="0.0828000009059906" green="0.14351999759674072" blue="0.6899999976158142" opacity="0.0" />
                                        </color>
                                     </Stop>
-                                    <Stop offset="0.2570659488559892">
+                                    <Stop offset="0.019512195121951216">
                                        <color>
-                                          <Color red="0.7019608020782471" green="0.07058823853731155" blue="0.09019608050584793" />
+                                          <Color opacity="0.7507598996162415" />
                                        </color>
                                     </Stop>
-                                    <Stop offset="0.5074057052818172">
+                                    <Stop offset="0.35987591504447997">
                                        <color>
-                                          <Color red="1.0" />
+                                          <Color green="0.48235294222831726" blue="1.0" opacity="0.8799999952316284" />
                                        </color>
                                     </Stop>
-                                    <Stop offset="0.7846567967698521">
+                                    <Stop offset="0.5094278304828809">
                                        <color>
-                                          <Color red="0.7019608020782471" green="0.07058823853731155" blue="0.09019608050584793" />
+                                          <Color red="0.501960813999176" green="0.41960784792900085" blue="0.501960813999176" opacity="0.7300000190734863" />
+                                       </color>
+                                    </Stop>
+                                    <Stop offset="0.6805009355611724">
+                                       <color>
+                                          <Color red="1.0" green="0.43529412150382996" opacity="0.8899999856948853" />
                                        </color>
                                     </Stop>
                                     <Stop offset="1.0">
                                        <color>
-                                          <Color red="0.7019608020782471" green="0.07058823853731155" blue="0.09019608050584793" />
+                                          <Color red="1.0" green="0.43529412150382996" />
                                        </color>
                                     </Stop>
                                  </stops>
                               </LinearGradient>
                            </fill>
                         </Ellipse>
-                              <ImageView fitHeight="200.0" fitWidth="275.0" preserveRatio="true">
+                              <ImageView fitHeight="177.0" fitWidth="250.0" preserveRatio="true">
                                   <image>
                                       <Image url="@../icons/global_logo-ayunt.png" />
                                   </image>
@@ -96,8 +103,21 @@
                      </children>
                   </HBox>
                         <Button onAction="#login" prefHeight="30.0" prefWidth="250.0" styleClass="login-button" text="Iniciar Sesión" />
-                        <CheckBox fx:id="rememberCheck" mnemonicParsing="false" prefHeight="18.0" prefWidth="230.0" styleClass="login-checkbox" text="Recuérdame" />
-                        <Line endX="184.0" startX="-100.0" stroke="#ef0101" />
+                  <HBox alignment="CENTER_LEFT" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="150.0">
+                     <children>
+                              <CheckBox fx:id="rememberCheck" mnemonicParsing="false" prefHeight="18.0" prefWidth="100.0" styleClass="login-checkbox" text="Recuérdame">
+                           <HBox.margin>
+                              <Insets left="6.0" />
+                           </HBox.margin>
+                        </CheckBox>
+                        <Region prefHeight="200.0" prefWidth="200.0" />
+                        <ProgressIndicator prefHeight="21.0" prefWidth="30.0" />
+                     </children>
+                     <padding>
+                        <Insets bottom="5.0" top="5.0" />
+                     </padding>
+                  </HBox>
+                        <Line endX="184.0" startX="-100.0" stroke="#ff6f00" strokeWidth="2.0" />
                         <Label alignment="CENTER" onMouseClicked="#serviceterms" prefHeight="10.0" prefWidth="250.0" style="-fx-cursor: hand;" text="Términos de Servicio" textAlignment="CENTER">
                             <font>
                                 <Font name="System Bold" size="12.0" />
@@ -116,7 +136,7 @@
                         <Cursor fx:constant="DISAPPEAR" />
                     </cursor>
                     <VBox.margin>
-                        <Insets top="25.0" />
+                        <Insets top="5.0" />
                     </VBox.margin>
                 </Label>
             </children>
