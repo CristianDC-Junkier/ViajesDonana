@@ -27,7 +27,7 @@ public class TravellerService {
     public Traveller save(Traveller entity) throws SQLException {
         Traveller result;
         boolean vehicleExists = travellerList.stream()
-                .anyMatch(vehicle -> vehicle.getNumplate().equalsIgnoreCase(entity.getNumplate()));
+                .anyMatch(vehicle -> vehicle.getDni().equalsIgnoreCase(entity.getDni()));
         if (vehicleExists) {
             result = null;
         } else {
@@ -40,7 +40,7 @@ public class TravellerService {
     public Traveller modify(Traveller entity) throws SQLException {
         Traveller result;
         boolean vehicleExists = travellerList.stream()
-                .anyMatch(vehicle -> vehicle.getNumplate().equalsIgnoreCase(entity.getNumplate())
+                .anyMatch(vehicle -> vehicle.getDni().equalsIgnoreCase(entity.getDni())
                 && vehicle.getId() != entity.getId());
         if (vehicleExists) {
             result = null;
@@ -66,13 +66,13 @@ public class TravellerService {
 
     public List<Traveller> findByTrip(int trip) {
         return travellerList.stream()
-                .filter(v -> v.getType().ordinal() == trip)
+                .filter(v -> v.getTrip().ordinal() == trip)
                 .collect(Collectors.toList());
     }
 
     public List<Traveller> findByOffice(int office) {
         return travellerList.stream()
-                .filter(v -> v.getType().ordinal() == office)
+                .filter(v -> v.getOffice().ordinal() == office)
                 .collect(Collectors.toList());
     }
 

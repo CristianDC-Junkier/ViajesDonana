@@ -3,8 +3,8 @@ package ayuntamiento.viajes.controller;
 import ayuntamiento.viajes.common.PropertiesUtil;
 import ayuntamiento.viajes.common.SecurityUtil;
 import ayuntamiento.viajes.model.Traveller;
-import ayuntamiento.viajes.model.Traveller.VehicleStatus;
-import ayuntamiento.viajes.model.Traveller.VehicleType;
+import ayuntamiento.viajes.model.Traveller.TravellerTrip;
+import ayuntamiento.viajes.model.Traveller.TravellerOffice;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -46,9 +46,9 @@ public class ActionVehicleController implements Initializable {
     @FXML
     private TextField allocationTF;
     @FXML
-    private ChoiceBox<VehicleType> typeCB;
+    private ChoiceBox<TravellerOffice> typeCB;
     @FXML
-    private ChoiceBox<VehicleStatus> statusCB;
+    private ChoiceBox<TravellerTrip> statusCB;
     @FXML
     private DatePicker itvrentDP;
     @FXML
@@ -111,14 +111,14 @@ public class ActionVehicleController implements Initializable {
 
         vResult = new Traveller();
         vResult.setDestination(destinationTF.getText().isBlank() ? null : destinationTF.getText());
-        vResult.setNumplate(numplateTF.getText());
-        vResult.setVehicle(vehicleTF.getText());
+        vResult.setDni(numplateTF.getText());
+        vResult.setName(vehicleTF.getText());
         vResult.setAllocation(allocationTF.getText().isBlank() ? null : allocationTF.getText());
         vResult.setType(typeCB.getValue().ordinal());
         vResult.setStatus(statusCB.getValue().ordinal());
 
         vResult.setItv_RentDate(itvrentDP.getValue());
-        vResult.setInsuranceDate(insuranceDP.getValue());
+        vResult.setSignUpDate(insuranceDP.getValue());
         vResult.setLast_CheckDate(lastCheckDP.getValue());
 
         vResult.setKms_last_check(km_lastCheckTF.getText().isBlank() ? null : Integer.valueOf(km_lastCheckTF.getText()));
@@ -144,10 +144,10 @@ public class ActionVehicleController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        statusCB.getItems().setAll(VehicleStatus.values());
-        statusCB.setValue(VehicleStatus.Buen_Estado);
-        typeCB.getItems().setAll(VehicleType.values());
-        typeCB.setValue(VehicleType.Propiedad);
+        statusCB.getItems().setAll(TravellerTrip.values());
+        statusCB.setValue(TravellerTrip.Buen_Estado);
+        typeCB.getItems().setAll(TravellerOffice.values());
+        typeCB.setValue(TravellerOffice.Propiedad);
 
         typeCB.valueProperty().addListener((obs, oldType, newType) -> changeType());
 
@@ -219,7 +219,7 @@ public class ActionVehicleController implements Initializable {
 
     /*Si Cambia a alquiler cambiar la imagen del ITV/Alquiler*/
     private void changeType() {
-        if (typeCB.getValue() != VehicleType.Alquiler) {
+        if (typeCB.getValue() != TravellerOffice.Alquiler) {
             imageITVRent.setImage(new Image(getClass().getResource("/ayuntamiento/viajes/icons/car-itv.png").toExternalForm()));
         } else {
             imageITVRent.setImage(new Image(getClass().getResource("/ayuntamiento/viajes/icons/car-rent.png").toExternalForm()));
@@ -228,13 +228,13 @@ public class ActionVehicleController implements Initializable {
 
     private void populateFields() {
         destinationTF.setText(vSelected.getDestination());
-        numplateTF.setText(vSelected.getNumplate());
-        vehicleTF.setText(vSelected.getVehicle());
+        numplateTF.setText(vSelected.getDni());
+        vehicleTF.setText(vSelected.getName());
         allocationTF.setText(vSelected.getAllocation());
         typeCB.setValue(vSelected.getType());
         statusCB.setValue(vSelected.getStatus());
         itvrentDP.setValue(vSelected.getItv_RentDate());
-        insuranceDP.setValue(vSelected.getInsuranceDate());
+        insuranceDP.setValue(vSelected.getSignUpDate());
         km_lastCheckTF.setText(vSelected.getKms_last_check() != null ? String.valueOf(vSelected.getKms_last_check()) : "");
         lastCheckDP.setValue(vSelected.getLast_CheckDate());
 

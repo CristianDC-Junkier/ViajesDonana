@@ -1,8 +1,8 @@
 package ayuntamiento.viajes.controller;
 
 import ayuntamiento.viajes.model.Traveller;
-import ayuntamiento.viajes.model.Traveller.VehicleStatus;
-import ayuntamiento.viajes.model.Traveller.VehicleType;
+import ayuntamiento.viajes.model.Traveller.TravellerTrip;
+import ayuntamiento.viajes.model.Traveller.TravellerOffice;
 import ayuntamiento.viajes.service.TravellerService;
 import java.net.URL;
 
@@ -129,7 +129,7 @@ public class StadisticsController extends BaseController implements Initializabl
             String key = keyObj.toString();
 
             /* Aquí calculamos la categoría según fecha o cualquier criterio */
-            String cat = CATEGORIES.get(getCategoryByDate(v.getInsuranceDate()));
+            String cat = CATEGORIES.get(getCategoryByDate(v.getSignUpDate()));
 
             dataMap
                     .computeIfAbsent(key, k -> new HashMap<>())
@@ -450,11 +450,11 @@ public class StadisticsController extends BaseController implements Initializabl
             /* Cambiar el selectedValue según el filtro activo*/
             switch (filter) {
                 case TYPE -> {
-                    selectedValue = VehicleType.valueOf(valueStr);
+                    selectedValue = TravellerOffice.valueOf(valueStr);
                     chooseVehicles.setText("Vehículos - " + valueStr);
                 }
                 case STATUS -> {
-                    selectedValue = VehicleStatus.valueOf(valueStr.replace(' ', '_'));
+                    selectedValue = TravellerTrip.valueOf(valueStr.replace(' ', '_'));
                     chooseVehicles.setText("Vehículos - " + valueStr);
                 }
                 default -> {

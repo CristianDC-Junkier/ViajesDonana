@@ -22,48 +22,48 @@ import java.util.List;
 public class TravellerDAO implements IDao<Traveller> {
 
     @Override
-    public Traveller save(Traveller vehiculo) throws SQLException {
-        String sql = "INSERT INTO travellers (name, dni, singup, office, trip)"
+    public Traveller save(Traveller traveller) throws SQLException {
+        String sql = "INSERT INTO travellers (dni, name, singup, office, trip)"
                 + "VALUES(?, ?, ?, ?, ?)";
 
         try (Connection conn = SQLiteDataBase.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 
-            stmt.setString(1, vehiculo.getNumplate());
-            stmt.setString(2, vehiculo.getVehicle());
+            stmt.setString(1, traveller.getDni());
+            stmt.setString(2, traveller.getName());
             /*Object porque si no, no se come el nulo*/
-            stmt.setObject(3, vehiculo.getKms_last_check());
-            stmt.setString(4, vehiculo.getDestination());
-            stmt.setInt(5, vehiculo.getType().ordinal());
+            stmt.setObject(3, traveller.getSignUp());
+            stmt.setInt(4, traveller.getOffice().ordinal());
+            stmt.setInt(5, traveller.getTrip().ordinal());
             int affectedRows = stmt.executeUpdate();
 
             if (affectedRows == 0) {
-                throw new SQLException("No se pudo insertar el vehículo, ninguna fila afectada.");
+                throw new SQLException("No se pudo insertar el viajero, ninguna fila afectada.");
             }
 
             try (ResultSet generatedKeys = stmt.getGeneratedKeys()) {
                 if (generatedKeys.next()) {
-                    vehiculo.setId(generatedKeys.getLong(1));
+                    traveller.setId(generatedKeys.getLong(1));
                 } else {
-                    throw new SQLException("No se pudo obtener el ID del vehículo insertado.");
+                    throw new SQLException("No se pudo obtener el ID del viajero insertado.");
                 }
             }
         } catch (Exception ex) {
             throw new SQLException(ex.getMessage());
         }
-        return vehiculo;
+        return traveller;
     }
 
     @Override
-    public Traveller modify(Traveller vehiculo) throws SQLException {
-        String sql = "UPDATE travellers SET name = ?, dni = ?, singup = ?, "
+    public Traveller modify(Traveller traveller) throws SQLException {
+        String sql = "UPDATE travellers SET dni = ?, name = ?, singup = ?, "
                 + "office = ?, trip = ? WHERE id = ?";
         try (Connection conn = SQLiteDataBase.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
 
-            stmt.setString(1, vehiculo.getNumplate());
-            stmt.setString(2, vehiculo.getVehicle());
-            stmt.setString(3, vehiculo.getDestination());
-            stmt.setInt(4, vehiculo.getType().ordinal());
-            stmt.setInt(5, vehiculo.getStatus().ordinal());
+            stmt.setString(1, traveller.getDni());
+            stmt.setString(2, traveller.getName());
+            stmt.setString(3, traveller.getSignUp());
+            stmt.setInt(4, traveller.getOffice().ordinal());
+            stmt.setInt(5, traveller.getTrip().ordinal());
 
             int affectedRows = stmt.executeUpdate();
             if (affectedRows == 0) {
@@ -73,7 +73,7 @@ public class TravellerDAO implements IDao<Traveller> {
         } catch (Exception ex) {
             throw new SQLException(ex.getMessage());
         }
-        return vehiculo;
+        return traveller;
     }
 
     @Override
@@ -87,7 +87,7 @@ public class TravellerDAO implements IDao<Traveller> {
             return affectedRows > 0;
 
         } catch (Exception ex) {
-            throw new SQLException("No se pudo eliminar el viajero " + entity.getNumplate());
+            throw new SQLException("No se pudo eliminar el viajero " + entity.getDni());
         }
     }
 
@@ -101,11 +101,11 @@ public class TravellerDAO implements IDao<Traveller> {
             while (rs.next()) {
                 Traveller v = new Traveller();
                 v.setId(rs.getInt("id"));
-                v.setNumplate(rs.getString("name"));
-                v.setVehicle(rs.getString("dni"));
-                v.setDestination(rs.getString("singup"));
-                v.setType(rs.getInt("office"));
-                v.setStatus(rs.getInt("trip"));
+                v.setDni(rs.getString("dni"));
+                v.setName(rs.getString("name"));
+                v.setSignUp(rs.getString("singup"));
+                v.setOffice(rs.getInt("office"));
+                v.setTrip(rs.getInt("trip"));
                 listV.add(v);
             }
         } catch (Exception ex) {
@@ -127,11 +127,11 @@ public class TravellerDAO implements IDao<Traveller> {
                 if (rs.next()) {
                     t = new Traveller();
                     t.setId(rs.getInt("id"));
-                    t.setNumplate(rs.getString("name"));
-                    t.setVehicle(rs.getString("dni"));
-                    t.setDestination(rs.getString("singup"));
-                    t.setType(rs.getInt("office"));
-                    t.setStatus(rs.getInt("trip"));
+                    t.setDni(rs.getString("dni"));
+                    t.setName(rs.getString("name"));
+                    t.setSignUp(rs.getString("singup"));
+                    t.setOffice(rs.getInt("office"));
+                    t.setTrip(rs.getInt("trip"));
                 }
             }
         } catch (Exception ex) {

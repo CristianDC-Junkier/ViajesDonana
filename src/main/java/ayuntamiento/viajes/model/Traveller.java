@@ -15,24 +15,19 @@ import java.time.format.DateTimeFormatter;
 public class Traveller {
 
     private long id;
-    private String numplate;
-    private String vehicle;
-    private String destination;
-    private VehicleType type;
-    private VehicleStatus status;
-    private String allocation;
-    private Integer kms_last_check;
-    private LocalDate last_check;
-    private LocalDate itv_rent;
-    private LocalDate insurance;
+    private String dni;
+    private String name;
+    private TravellerOffice office;
+    private TravellerTrip trip;
+    private LocalDate sign_up;
 
-    public enum VehicleType {
+    public enum TravellerOffice {
         Propiedad,
         Alquiler,
         Otro
     }
 
-    public enum VehicleStatus {
+    public enum TravellerTrip {
         Buen_Estado,
         Mal_Estado,
         Averiado,
@@ -53,27 +48,21 @@ public class Traveller {
     public Traveller() {
     }
 
-    public Traveller(String numplate, String vehicle, String destination, Integer type, Integer status,
-            String allocation, Integer kms_last_check, String last_check, String itv_rentString, String insuranceString) {
-        this.numplate = numplate;
-        this.vehicle = vehicle;
-        this.destination = (destination == null ? "" : destination);
-        this.type = VehicleType.values()[type];
-        this.status = VehicleStatus.values()[status];
-        this.allocation = (allocation == null ? "" : allocation);
-        this.kms_last_check = kms_last_check;
-        this.last_check = (last_check != null && !last_check.isBlank()) ? parseITV_Rent_LastCheck(last_check) : null;
-        this.itv_rent = (itv_rentString != null && !itv_rentString.isBlank()) ? parseITV_Rent_LastCheck(itv_rentString) : null;
-        this.insurance = (insuranceString != null && !insuranceString.isBlank()) ? parseInsurance(insuranceString) : null;
+    public Traveller(String dni, String name, Integer office, Integer trip, String sign_upString) {
+        this.dni = dni;
+        this.name = name;
+        this.office = TravellerOffice.values()[office];
+        this.trip = TravellerTrip.values()[trip];
+        this.sign_up = (sign_upString != null && !sign_upString.isBlank()) ? parseSignUp(sign_upString) : null;
 
     }
 
-    public VehicleType getType() {
-        return type;
+    public TravellerOffice getOffice() {
+        return office;
     }
 
-    public void setType(Integer type) {
-        this.type = VehicleType.values()[type];
+    public void setOffice(Integer office) {
+        this.office = TravellerOffice.values()[office];
     }
 
     public long getId() {
@@ -84,111 +73,47 @@ public class Traveller {
         this.id = id;
     }
 
-    public String getNumplate() {
-        return numplate;
+    public String getDni() {
+        return dni;
     }
 
-    public void setNumplate(String numplate) {
-        this.numplate = numplate;
+    public void setDni(String dni) {
+        this.dni = dni;
     }
 
-    public String getVehicle() {
-        return vehicle;
+    public String getName() {
+        return name;
     }
 
-    public void setVehicle(String vehicle) {
-        this.vehicle = vehicle;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public String getDestination() {
-        return destination;
+    public TravellerTrip getTrip() {
+        return trip;
     }
 
-    public void setDestination(String destination) {
-        this.destination = (destination == null ? "" : destination);
+    public void setTrip(Integer status) {
+        this.trip = TravellerTrip.values()[status];
     }
 
-    public VehicleStatus getStatus() {
-        return status;
+    public LocalDate getSignUpDate() {
+        return this.sign_up;
     }
 
-    public void setStatus(Integer status) {
-        this.status = VehicleStatus.values()[status];
+    public void setSignUpDate(LocalDate insurance) {
+        this.sign_up = insurance;
     }
 
-    public String getAllocation() {
-        return allocation;
+    public String getSignUp() {
+        return sign_up != null ? sign_up.format(formatter_Show_Date) : null;
     }
 
-    public void setAllocation(String allocation) {
-        this.allocation = (allocation == null ? "" : allocation);
+    public void setSignUp(String dateString) {
+        this.sign_up = parseSignUp(dateString);
     }
 
-    public Integer getKms_last_check() {
-        return kms_last_check;
-    }
-
-    public void setKms_last_check(Integer kms_last_check) {
-        this.kms_last_check = kms_last_check;
-    }
-
-    public String getLast_check() {
-        return last_check != null ? last_check.format(formatter_Show_Date) : null;
-    }
-
-    public void setLast_check(String last_checkString) {
-        this.last_check = parseITV_Rent_LastCheck(last_checkString);
-    }
-
-    public LocalDate getLast_CheckDate() {
-        return last_check;
-    }
-
-    public void setLast_CheckDate(LocalDate last_check) {
-        this.last_check = last_check;
-    }
-
-    public LocalDate getItv_RentDate() {
-        return itv_rent;
-    }
-
-    public void setItv_RentDate(LocalDate itv) {
-        this.itv_rent = itv;
-    }
-
-    public String getItv_rent() {
-        return itv_rent != null ? itv_rent.format(formatter_Show_Date) : null;
-    }
-
-    public void setItv_rent(String itvString) {
-        this.itv_rent = parseITV_Rent_LastCheck(itvString);
-    }
-
-    public LocalDate getInsuranceDate() {
-        return this.insurance;
-    }
-
-    public void setInsuranceDate(LocalDate insurance) {
-        this.insurance = insurance;
-    }
-
-    public String getInsurance() {
-        return insurance != null ? insurance.format(formatter_Show_Date) : null;
-    }
-
-    public void setInsurance(String dateString) {
-        this.insurance = parseInsurance(dateString);
-    }
-
-    private LocalDate parseITV_Rent_LastCheck(String dateString) {
-        if (dateString == null || dateString.isBlank()) {
-            return null;
-        }
-        YearMonth ym = YearMonth.parse(dateString, formatter_Show_Date);
-        return ym.atEndOfMonth();
-    }
-
-    private LocalDate parseInsurance(String dateString) {
+    private LocalDate parseSignUp(String dateString) {
         if (dateString == null || dateString.isBlank()) {
             return null;
         }

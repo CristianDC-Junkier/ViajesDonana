@@ -3,7 +3,7 @@ package ayuntamiento.viajes.controller;
 import ayuntamiento.viajes.common.PropertiesUtil;
 import ayuntamiento.viajes.exception.ControledException;
 import ayuntamiento.viajes.model.Traveller;
-import ayuntamiento.viajes.model.Traveller.VehicleType;
+import ayuntamiento.viajes.model.Traveller.TravellerOffice;
 import ayuntamiento.viajes.service.PDFService;
 import ayuntamiento.viajes.service.TravellerService;
 
@@ -61,7 +61,7 @@ public class PdfController extends BaseController implements Initializable {
         showUserOption();
 
         vehicleTypePDF.getItems().add("Todos");
-        vehicleTypePDF.getItems().addAll(Arrays.asList(Traveller.VehicleType.values()));
+        vehicleTypePDF.getItems().addAll(Arrays.asList(Traveller.TravellerOffice.values()));
         vehicleTypePDF.getSelectionModel().selectFirst();
 
         documentTypePDF.getItems().addAll("Notificaciones", "Listado", "Todo");
@@ -137,12 +137,13 @@ public class PdfController extends BaseController implements Initializable {
                             }
                         }
                         default -> {
-                            if (vehicleS.findByTrip(VehicleType.valueOf(typeSelected).ordinal()).isEmpty()) {
+                            if (vehicleS.findByTrip(TravellerOffice.valueOf(typeSelected).ordinal()).isEmpty()) {
                                 info("No existen vehículos registrados de tipo " + typeSelected , false);
                             } else {
                                 pdf.printType(namePDF.getText(), dirPDF.getText(), typeSelected, documentTypePDF.getValue().toString());
                             }
                         }
+
                     }
                 }
             } catch (ControledException cE) {

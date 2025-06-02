@@ -51,8 +51,8 @@ public class SQLiteDataBase {
             String sql = """
                 CREATE TABLE IF NOT EXISTS travellers (
                     id INTEGER PRIMARY KEY AUTOINCREMENT,
-                    name TEXT NOT NULL,
-                    dni TEXT NOT UNIQUE,
+                    dni TEXT NOT NULL,
+                    name TEXT NOT UNIQUE,
                     singup TEXT NOT NULL,
                     office INTEGER NOT NULL,
                     trip INTEGER NOT NULL

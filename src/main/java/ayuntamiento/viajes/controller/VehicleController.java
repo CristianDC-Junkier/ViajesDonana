@@ -17,8 +17,8 @@ import javafx.stage.Stage;
 
 import ayuntamiento.viajes.service.TravellerService;
 import ayuntamiento.viajes.model.Traveller;
-import ayuntamiento.viajes.model.Traveller.VehicleStatus;
-import ayuntamiento.viajes.model.Traveller.VehicleType;
+import ayuntamiento.viajes.model.Traveller.TravellerTrip;
+import ayuntamiento.viajes.model.Traveller.TravellerOffice;
 
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -179,8 +179,8 @@ public class VehicleController extends BaseController implements Initializable {
         numplateColumn.setCellValueFactory(new PropertyValueFactory<Traveller, String>("numplate"));
         vehicleColumn.setCellValueFactory(new PropertyValueFactory<Traveller, String>("vehicle"));
         destinationColumn.setCellValueFactory(new PropertyValueFactory<Traveller, String>("destination"));
-        typeColumn.setCellValueFactory(new PropertyValueFactory<Traveller, VehicleType>("type"));
-        statusColumn.setCellValueFactory(new PropertyValueFactory<Traveller, VehicleStatus>("status"));
+        typeColumn.setCellValueFactory(new PropertyValueFactory<Traveller, TravellerOffice>("type"));
+        statusColumn.setCellValueFactory(new PropertyValueFactory<Traveller, TravellerTrip>("status"));
         allocationColumn.setCellValueFactory(new PropertyValueFactory<Traveller, String>("allocation"));
         kms_last_checkColumn.setCellValueFactory(new PropertyValueFactory<Traveller, Integer>("kms_last_check"));
         last_checkColumn.setCellValueFactory(new PropertyValueFactory<Traveller, LocalDate>("last_check"));
@@ -191,7 +191,7 @@ public class VehicleController extends BaseController implements Initializable {
 
         // Filtro de titularidad
         typeCB.getItems().add("Todos");
-        for (VehicleType type : VehicleType.values()) {
+        for (TravellerOffice type : TravellerOffice.values()) {
             typeCB.getItems().add(type.toString());
         }
         typeCB.getSelectionModel().selectFirst();
@@ -199,7 +199,7 @@ public class VehicleController extends BaseController implements Initializable {
 
         // Filtro de estado
         statusCB.getItems().add("Todos");
-        for (VehicleStatus status : VehicleStatus.values()) {
+        for (TravellerTrip status : TravellerTrip.values()) {
             statusCB.getItems().add(status.toString());
         }
         statusCB.getSelectionModel().selectFirst();
@@ -265,7 +265,7 @@ public class VehicleController extends BaseController implements Initializable {
 
     public void anadir(Traveller vehicle) throws Exception {
         if (vehicleS.save(vehicle) == null) {
-            throw new ControledException("La matricula introducida ya existe: " + vehicle.getNumplate(),
+            throw new ControledException("La matricula introducida ya existe: " + vehicle.getDni(),
                     "VehicleController - anadir");
         }
         refreshTable(vehicleTable, vehicleS.findAll());
@@ -273,7 +273,7 @@ public class VehicleController extends BaseController implements Initializable {
 
     public void modificar(Traveller vehicle) throws Exception {
         if (vehicleS.modify(vehicle) == null) {
-            throw new ControledException("La matricula introducida ya existe: " + vehicle.getNumplate(),
+            throw new ControledException("La matricula introducida ya existe: " + vehicle.getDni(),
                     "VehicleController - anadir");
         }
         refreshTable(vehicleTable, vehicleS.findAll());
@@ -296,15 +296,15 @@ public class VehicleController extends BaseController implements Initializable {
 
         List<Traveller> filtered = vehicleS.findAll().stream()
                 .filter(v
-                        -> (vehicleText.isEmpty() || (v.getVehicle() != null && v.getVehicle().toLowerCase().contains(vehicleText)))
-                && (plateText.isEmpty() || (v.getNumplate() != null && v.getNumplate().toLowerCase().contains(plateText)))
+                        -> (vehicleText.isEmpty() || (v.getName() != null && v.getName().toLowerCase().contains(vehicleText)))
+                && (plateText.isEmpty() || (v.getDni() != null && v.getDni().toLowerCase().contains(plateText)))
                 && (destinationText.isEmpty() || (v.getDestination() != null && v.getDestination().toLowerCase().contains(destinationText)))
                 && (selectedType.equals("Todos") || (v.getType() != null && v.getType().toString().equalsIgnoreCase(selectedType)))
                 && (selectedStatus.equals("Todos") || (v.getStatus() != null && v.getStatus().toString().equalsIgnoreCase(selectedStatus)))
                 && (kms == null || (v.getKms_last_check() != null && v.getKms_last_check() <= kms))
                 && (selectedLastCheckDate == null || (v.getLast_CheckDate() != null && v.getLast_CheckDate().isBefore(selectedLastCheckDate)))
                 && (selectedItvDate == null || (v.getItv_RentDate() != null && v.getItv_RentDate().isBefore(selectedItvDate)))
-                && (selectedInsuranceDate == null || (v.getInsuranceDate() != null && v.getInsuranceDate().isBefore(selectedInsuranceDate)))
+                && (selectedInsuranceDate == null || (v.getSignUpDate() != null && v.getSignUpDate().isBefore(selectedInsuranceDate)))
                 )
                 .collect(Collectors.toList());
 
