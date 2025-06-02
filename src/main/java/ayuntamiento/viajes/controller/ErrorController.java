@@ -1,6 +1,6 @@
 package ayuntamiento.viajes.controller;
 
-import ayuntamiento.viajes.common.LoggerUtil;
+import static ayuntamiento.viajes.common.LoggerUtil.log;
 import java.io.IOException;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -53,7 +53,7 @@ public class ErrorController {
     public static void showErrorDialog(Stage parentStage, String errorMessage) {
         try {
             // Cargar el FXML del cuadro de diálogo de error
-            FXMLLoader loader = new FXMLLoader(ErrorController.class.getResource("/ayuntamiento/vehiculos/view/error.fxml"));
+            FXMLLoader loader = new FXMLLoader(ErrorController.class.getResource("/ayuntamiento/viajes/view/error.fxml"));
             AnchorPane page = loader.load();
 
             ErrorController errorController = loader.getController();
@@ -63,7 +63,7 @@ public class ErrorController {
             errorController.getDialogStage().setTitle("Error");
             errorController.getDialogStage().initModality(javafx.stage.Modality.APPLICATION_MODAL);
             errorController.getDialogStage().initOwner(parentStage);
-            errorController.getDialogStage().getIcons().add(new Image(ErrorController.class.getResourceAsStream("/ayuntamiento/vehiculos/icons/icon-error.png")));
+            errorController.getDialogStage().getIcons().add(new Image(ErrorController.class.getResourceAsStream("/ayuntamiento/viajes/icons/icon-error.png")));
 
             // Establecer la escena y mostrar el diálogo
             Scene scene = new Scene(page, 350, 250);
@@ -71,7 +71,7 @@ public class ErrorController {
             errorController.getDialogStage().showAndWait(); 
 
         } catch (IOException e) {
-            LoggerUtil.log("Error al cargar el diálogo de error con padre: " + parentStage);
+           log("Error al cargar el diálogo de error con padre: " + parentStage);
         }
     }
 

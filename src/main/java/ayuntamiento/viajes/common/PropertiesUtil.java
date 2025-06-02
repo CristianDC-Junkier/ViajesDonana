@@ -1,5 +1,6 @@
 package ayuntamiento.viajes.common;
 
+import static ayuntamiento.viajes.common.LoggerUtil.log;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
@@ -22,12 +23,16 @@ public class PropertiesUtil {
             InputStream input = 
                     PropertiesUtil.class.getClassLoader().getResourceAsStream("ayuntamiento/viajes/config/app.properties");
             if (input == null) {
-                System.err.println("Archivo de propiedades no encontrado.");
+                throw new IOException("Archivo de propiedades "
+                        + "\"ayuntamiento/viajes/config/app.properties\" "
+                        + "no encontrado");
             } else {
                 properties.load(input);
             }
-        } catch (IOException e) {
-            e.printStackTrace();
+        } catch (IOException ioE) {
+           log("Error al inciar las propiedades: \n"
+                    + ioE.getMessage() + "\n"
+                    + ioE.getCause());
         }
 
     }

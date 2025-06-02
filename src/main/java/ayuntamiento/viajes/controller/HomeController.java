@@ -1,20 +1,23 @@
 package ayuntamiento.viajes.controller;
 
 import ayuntamiento.viajes.common.ManagerUtil;
+import ayuntamiento.viajes.exception.ControledException;
 import ayuntamiento.viajes.service.NotificationService;
 import ayuntamiento.viajes.service.UserService;
+import java.awt.Desktop;
+import java.io.File;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.StandardCopyOption;
 import java.util.ResourceBundle;
-import javafx.animation.Animation;
-import javafx.animation.KeyFrame;
-import javafx.animation.KeyValue;
-import javafx.animation.Timeline;
 
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-
 import javafx.scene.control.Label;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
@@ -22,13 +25,15 @@ import javafx.scene.paint.CycleMethod;
 import javafx.scene.paint.RadialGradient;
 import javafx.scene.paint.Stop;
 import javafx.scene.shape.Circle;
-
 import javafx.util.Duration;
 
 /**
- * FXML Controller class
+ * Controlador de la vista principal, se encarga de cargar por primera vez la
+ * lista de vehículos de la base de datos y de generar las notificaciones
  *
  * @author Cristian
+ * @since 2025-05-09
+ * @version 1.1
  */
 public class HomeController extends BaseController implements Initializable {
 
@@ -70,6 +75,37 @@ public class HomeController extends BaseController implements Initializable {
         ManagerUtil.moveTo("pdf");
     }
 
+    @FXML
+    private void openManual() {
+        try (InputStream input = getClass().getResourceAsStream("/ayuntamiento/viajes/manuals/Manual_de_Usuario.pdf")) {
+
+            if (input == null) {
+                throw new Exception("El PDF no fue encontrado en los recursos internos");
+            }
+
+            File tempFile = File.createTempFile("Manual_de_Usuario", ".pdf");
+            tempFile.deleteOnExit();
+
+            Files.copy(input, tempFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
+
+            if (Desktop.isDesktopSupported()) {
+                Desktop.getDesktop().open(tempFile);
+            } else {
+                throw new ControledException("El PDF no pudo ser abierto automáticamente. "
+                        + "Revise la carpeta de instalación", "HomeController - openManual");
+            }
+
+        } catch (ControledException cE) {
+            error(cE);
+        } catch (Exception ex) {
+            error(ex);
+        }
+    }
+
+    /**
+     * Genera las notificaciones y coloca el número de notifiaciones en el botón
+     * de notificaciones.
+     */
     private void setNotifications() {
         NotificationService notificationS = new NotificationService();
         notificationS.rechargeNotifications();
@@ -82,13 +118,18 @@ public class HomeController extends BaseController implements Initializable {
         }
     }
 
+
+    /**
+     * Metodo que coloca una animación "Glow" circular en el número de
+     * notificaciones, para captar la atención.
+     */
     private void setupGlowAnimation() {
         glowTimeline = new Timeline(new KeyFrame(Duration.millis(100), event -> {
-            double time = System.currentTimeMillis() % 6000; // ciclo de 6 segundos
-            double progress = Math.abs(Math.sin(time / 6000.0 * Math.PI));
+            double time = System.currentTimeMillis() % 4000;
+            double progress = Math.abs(Math.sin(time / 4000.0 * Math.PI));
 
-            // Radio animado más amplio para que se note
-            double animatedRadius = 0.4 + 0.1 * progress; // 0.4 a 0.55
+            /*Radio animado más amplio para que se note*/
+            double animatedRadius = 0.4 + 0.1 * progress;
 
             RadialGradient gradient = new RadialGradient(
                     90,
@@ -106,7 +147,7 @@ public class HomeController extends BaseController implements Initializable {
 
             notificationsCircle.setFill(gradient);
 
-            // Animación de escala del círculo, entre 0.9 y 1.1
+            /* Animación de escala del círculo, entre 0.9 y 1.1*/
             double scale = 0.9 + 0.1 * progress;
             notificationsCircle.setScaleX(scale);
             notificationsCircle.setScaleY(scale);

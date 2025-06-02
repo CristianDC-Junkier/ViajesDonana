@@ -90,7 +90,7 @@ public class InfoController {
         return dialogStage;
     }
 
-    public DialogResult getResult() {
+    private DialogResult getResult() {
         return result;
     }
 
@@ -107,7 +107,7 @@ public class InfoController {
     public static DialogResult showInfoDialog(Stage parentStage, String infoMessage, boolean needConfirmation){
         try {
             // Cargar el FXML del cuadro de diálogo de error
-            FXMLLoader loader = new FXMLLoader(InfoController.class.getResource("/ayuntamiento/vehiculos/view/info.fxml"));
+            FXMLLoader loader = new FXMLLoader(InfoController.class.getResource("/ayuntamiento/viajes/view/info.fxml"));
             AnchorPane page = loader.load();
 
             InfoController infoController = loader.getController();
@@ -118,7 +118,7 @@ public class InfoController {
             infoController.getDialogStage().setTitle("Información");
             infoController.getDialogStage().initModality(javafx.stage.Modality.APPLICATION_MODAL);
             infoController.getDialogStage().initOwner(parentStage);
-            infoController.getDialogStage().getIcons().add(new Image(InfoController.class.getResourceAsStream("/ayuntamiento/vehiculos/icons/icon-ayunt.png")));
+            infoController.getDialogStage().getIcons().add(new Image(InfoController.class.getResourceAsStream("/ayuntamiento/viajes/icons/icon-ayunt.png")));
 
             // Establecer la escena y mostrar el diálogo 
             Scene scene = new Scene(page, 350, 250);

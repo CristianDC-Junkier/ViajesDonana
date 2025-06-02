@@ -1,19 +1,21 @@
 
 package ayuntamiento.viajes.dao;
 
+import java.sql.SQLException;
 import java.util.List;
-import java.util.Optional;
 
 /**
- *
+ * Interfaz que se encarga de proveer metodos a los diferentes DAO
+ * de control
+ * 
  * @author Cristian
+ * @since 2025-05-06
+ * @version 1.2
  */
 public interface IDao <T> {
-    T save(T entity);
-    T modify(T entity);
-    boolean delete(T entity);
+    T save(T entity) throws SQLException;
+    T modify(T entity) throws SQLException;
+    boolean delete(T entity) throws SQLException;
         
-    Optional<T> findById(Long id);
-
-    List<T> findAll();
+    List<T> findAll() throws SQLException;
 }

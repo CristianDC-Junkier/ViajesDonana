@@ -2,7 +2,7 @@
 setlocal EnableDelayedExpansion
 
 :: Configurar variables
-set JAR_NAME=launcher/VehiculosAyuntamiento-0.1.jar
+set JAR_NAME=launcher/VehiculosAyuntamiento-1.0.jar
 set MAIN_CLASS=ayuntamiento.vehiculos.app.App
 set LIB_DIR=libs
 set JAVAFX_DIR=launcher/javafx

@@ -6,13 +6,16 @@ import ayuntamiento.viajes.common.SecurityUtil;
 import ayuntamiento.viajes.dao.UserDAO;
 import ayuntamiento.viajes.exception.LoginException;
 import ayuntamiento.viajes.model.User;
+
+import java.sql.SQLException;
 import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * Lo unico realizado de esta clase es save y findbycredentials
+ * Clase que se encarga de dar a los controladores acceso a los usuarios siendo
+ * el servicio especifico de ello.
  *
- * @author Cristian
+ * @author Cristian Delgado Cruz
  * @since 2025-05-09
  * @version 1.5
  */
@@ -26,29 +29,50 @@ public class UserService {
         userDAO = new UserDAO();
     }
 
+    /**
+     * Funcion para recojer el usuario 
+     * 
+     * @return El usuario logeado
+     */
     public static User getUsuarioLog() {
         return userLog;
     }
 
+    
     public static void setUsuarioLog(User usuarioLog) {
         UserService.userLog = usuarioLog;
     }
 
-    public User save(User entity) {
+    /**
+     * Metodo que guarda un usuario en la base de datos, 
+     * se controla con SecurityUtil la contraseña, creando un hash y guardandola
+     * 
+     * @param entity el usuario que pasa a ser guardado
+     * @return el usuario creado con el id
+     * @throws SQLException si hubo algun fallo en guardando el usuario
+     */
+    public User save(User entity) throws SQLException {
         User result;
         boolean userExists = usersList.stream()
                 .anyMatch(user -> user.getUsername().equals(entity.getUsername()));
         if (userExists) {
             return null;
         }
-        //Hash de contraseña
         entity.setContraseña(SecurityUtil.hashPassword(entity.getPassword()));
         result = userDAO.save(entity);
         usersList.add(result);
         return result;
     }
-
-    public User modify(User entity) {
+    
+    /**
+     * Metodo que modifica y guarda en la base de datos el usuario 
+     * se controla con SecurityUtil la contraseña, creando un hash y guardandola
+     * 
+     * @param entity el usuario que pasa a ser modificado
+     * @return el usuario modificado
+     * @throws SQLException si hubo algun fallo en la modificación
+     */
+    public User modify(User entity) throws SQLException {
         User result;
         boolean userExists = usersList.stream()
                 .anyMatch(user -> user.getUsername().equals(entity.getUsername())
@@ -56,7 +80,6 @@ public class UserService {
         if (userExists) {
             return null;
         }
-        //Hash de contraseña
         entity.setContraseña(SecurityUtil.hashPassword(entity.getPassword()));
         result = userDAO.modify(entity);
         for (int i = 0; i < usersList.size(); i++) {
@@ -64,53 +87,71 @@ public class UserService {
                 usersList.set(i, entity);
             }
         }
-        if(result.getId() == userLog.getId()){
+        if (result.getId() == userLog.getId()) {
             userLog = result;
         }
         return result;
     }
 
-    public User modifyProfile(User entity) {
+    /**
+     * Metodo que modifica y guarda en la base de datos el usuario desde su perfil
+     * se controla con SecurityUtil la contraseña, creando un hash y guardandola
+     * 
+     * @param entity el usuario logeado con los datos modificados
+     * @return el usuario modificado
+     * @throws SQLException si hubo algun fallo en la modificación
+     */
+    public User modifyProfile(User entity) throws SQLException {
         User result;
-        boolean userExists = userDAO.findAll().stream()
+        boolean userExists;
+        userExists = userDAO.findAll().stream()
                 .anyMatch(user -> user.getUsername().equals(entity.getUsername())
                 && user.getId() != entity.getId());
         if (userExists) {
             return null;
         }
-        //Hash de contraseña
         entity.setContraseña(SecurityUtil.hashPassword(entity.getPassword()));
         result = userDAO.modify(entity);
         userLog = result;
         return result;
     }
 
-    public boolean delete(User entity) {
-        boolean deleted = userDAO.delete(entity);
+    public boolean delete(User entity) throws SQLException {
+        boolean deleted;
+        deleted = userDAO.delete(entity);
         if (deleted) {
+            if(userLog.getId() == entity.getId()){
+                userLog = null;
+            }
             usersList.remove(entity);
         }
         return deleted;
     }
 
+    /**
+     * Funcion para recojer el usuario  al logearse
+     * 
+     * @param user el nombre de usuario
+     * @param password la contraseña plana
+     * @exception LoginException Falla si hubiera un problema cuando se crea el usuario
+     * @return El usuario logeado
+     */
     public User findByCredentials(String user, String password) throws LoginException {
         User credential = usersList.stream()
                 .filter(userF -> userF.getUsername().equals(user))
                 .findFirst()
                 .orElse(null);
         if (credential == null) {
-            LoggerUtil.log("Error en el login, el usuario no fue encontrado");
             throw new LoginException("El nombre de usuario no ha sido encontrado", 1000);
         } else {
             if (!SecurityUtil.verifyPassword(password, credential.getPassword())) {
-                LoggerUtil.log("Error en el login, la contraseña no es valida");
-                throw new LoginException("La Contraseña no es valida", 2000);
+                throw new LoginException("La contraseña no es correcta", 2000);
             } else {
                 userLog = credential;
                 if (userLog.getType().ordinal() == 0) {
                     usersList = null;
                 }
-                LoggerUtil.log("Usuario conectado Conectado");
+                LoggerUtil.log("Usuario conectado");
                 BackupUtil.createBackup();
             }
         }
@@ -127,8 +168,9 @@ public class UserService {
         return usersList;
     }
 
-    public void rechargeList() {
+    public void rechargeList() throws SQLException {
         usersList = userDAO.findAll();
+
     }
 
 }

@@ -1,31 +1,32 @@
 package ayuntamiento.viajes.model;
 
 import ayuntamiento.viajes.model.Vehicle.VehicleStatus;
+import ayuntamiento.viajes.model.Vehicle.VehicleType;
 
 /**
  * Clase entidad que se utiliza para guardar 
- * las notificaciones sobre los coches sin ITV
- * Alquiler o Seguro
+ * las notificaciones sobre los coches con problemas con 
+ * la ITV/Alquiler, el Seguro y las revisiones 
  * 
- * @author Ramón Iglesias
+ * @author Ramón Iglesias Granados
  * @since 2025-05-12
- * @version 1.1
+ * @version 1.2
  */
 public class Notification {
     
     private String numberplate;
-    private String brand;
-    private String model;
-    private Vehicle.VehicleStatus type;
+    private String vehicle;
+    private Vehicle.VehicleType type;
+    private Vehicle.VehicleStatus status;
     private String warning;
 
     public Notification() {}
 
-    public Notification(String numberplate, String brand, String model, int type, String warning) {
+    public Notification(String numberplate, String vehicle, VehicleType type, String warning, VehicleStatus status) {
         this.numberplate = numberplate;
-        this.brand = brand;
-        this.model = model;
-        this.type = VehicleStatus.values()[type];
+        this.vehicle = vehicle;
+        this.type = type;
+        this.status = status;
         this.warning = warning;
     }
 
@@ -33,18 +34,24 @@ public class Notification {
     public String getNumberplate() { return numberplate; }
     public void setNumberplate(String matricula) { this.numberplate = matricula; }
 
-    public String getBrand() { return brand; }
-    public void setBrand(String marca) { this.brand = marca; }
+    public String getVehicle() { return vehicle; }
+    public void setVehicle(String vehicle) { this.vehicle = vehicle; }
 
-    public String getModel() { return model; }
-    public void setModel(String modelo) { this.model = modelo; }
-
-    public VehicleStatus getType() { return type; }
-    public void setType(int type) { this.type = VehicleStatus.values()[type]; }
+    public VehicleType getType() { return type; }
+    public void setType(int type) { this.type = VehicleType.values()[type]; }
 
     public String getWarning() { return warning; }
     public void setWarning(String warning) { this.warning = warning; }
 
+    public VehicleStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(VehicleStatus status) {
+        this.status = status;
+    }
+
+    
 
 }
 

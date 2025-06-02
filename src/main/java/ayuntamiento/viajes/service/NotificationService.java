@@ -9,13 +9,17 @@ import ayuntamiento.viajes.model.Vehicle;
 import java.time.temporal.ChronoUnit;
 
 /**
- *
- * @author Ramón Iglesias
+ * Servicio de las notificaciones que se encarga
+ * de mostrar al usuario las notificaciones en la tabla de la vista
+ * 
+ * @author Ramón Iglesias Granados
+ * @since 2025-05-12
+ * @version 1.2
  */
 public class NotificationService {
 
     private final static VehicleService vehicleS;
-    private static List<Notification> notificationsList;
+    private static final List<Notification> notificationsList;
     private static List<Vehicle> vehiclesList;
 
     static {
@@ -25,16 +29,15 @@ public class NotificationService {
 
     public NotificationService() {
     }
-
+    
     public void rechargeNotifications() {
-        notificationsList = new ArrayList<>();
+        notificationsList.clear();
         vehiclesList = vehicleS.findByWarning();
         for (Vehicle vehicle : vehiclesList) {
-            String warning = getWarning(vehicle.getItv_RentDate(), vehicle.getInsuranceDate());
-            notificationsList.add(new Notification(vehicle.getNumplate(), 
-                    vehicle.getBrand(),
-                    vehicle.getModel(),
-                    vehicle.getType().ordinal(), warning));
+            String warning = getWarning(vehicle.getItv_RentDate(), vehicle.getInsuranceDate(), vehicle.getLast_CheckDate());
+            notificationsList.add(new Notification(vehicle.getNumplate(),
+                    vehicle.getVehicle(),
+                    vehicle.getType(), warning, vehicle.getStatus()));
 
         }
     }
@@ -47,17 +50,33 @@ public class NotificationService {
         return notificationsList.size();
     }
 
-    private String getWarning(LocalDate itvDate, LocalDate insuranceDate) {
-        String itvMsg = itvWarning(itvDate);
+    private String getWarning(LocalDate itvDate, LocalDate insuranceDate, LocalDate lastCheckDate) {
+        String itv_rentMsg = itvWarning(itvDate);
         String insuranceMsg = insuranceWarning(insuranceDate);
+        String lastCheckMsg = lastCheckWarning(lastCheckDate);
 
-        if (itvMsg != null && insuranceMsg != null) {
-            return itvMsg + " y " + insuranceMsg;
-        } else if (itvMsg != null) {
-            return itvMsg;
-        } else {
-            return insuranceMsg; // puede ser null también
+        List<String> messages = new ArrayList<>();
+        if (itv_rentMsg != null) {
+            messages.add(itv_rentMsg);
         }
+        if (insuranceMsg != null) {
+            messages.add(insuranceMsg);
+        }
+        if (lastCheckMsg != null) {
+            messages.add(lastCheckMsg);
+        }
+
+        if (messages.isEmpty()) {
+            return null;
+        } else if (messages.size() == 1) {
+            return messages.get(0);
+        } else if (messages.size() == 2) {
+            return messages.get(0) + " y " + messages.get(1);
+        } else {
+            // Para 3 mensajes: separa con coma y " y " antes del último
+            return messages.get(0) + ", " + messages.get(1) + " y " + messages.get(2);
+        }
+
     }
 
     private String itvWarning(LocalDate itvDate) {
@@ -95,6 +114,25 @@ public class NotificationService {
             return "El Seguro vence en 3 meses o menos";
         } else if (daysUntilExpiration <= 186) { // 6 * 31
             return "El Seguro vence en 6 meses o menos";
+        } else {
+            return null; // Más de 6 meses
+        }
+    }
+
+    private String lastCheckWarning(LocalDate lastCheckDate) {
+        LocalDate today = LocalDate.now();
+
+        if (lastCheckDate.isAfter(today)) {
+            return "Revisión Programada";
+        }
+
+        long daysUntilExpiration = ChronoUnit.DAYS.between(lastCheckDate, today);
+                
+        if (daysUntilExpiration >= 730) {
+            return "La última Revisión fue hace dos años o más";
+
+        } else if (daysUntilExpiration >= 365) {
+            return "La última Revisión fue hace un año";
         } else {
             return null; // Más de 6 meses
         }

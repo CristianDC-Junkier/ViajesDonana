@@ -55,7 +55,7 @@
                </HBox.margin>
             </Label>
             <Pane HBox.hgrow="ALWAYS" />
-            <Label fx:id="users" style="-fx-cursor: hand;" styleClass="privacity" stylesheets="@../styles/global.css" textAlignment="CENTER">
+            <Label fx:id="users" onMouseClicked="#userspanel" style="-fx-cursor: hand;" styleClass="privacity" stylesheets="@../styles/global.css" textAlignment="CENTER">
                <font>
                   <Font name="Trebuchet MS Bold" size="12.0" />
                </font>
@@ -102,16 +102,20 @@
                      </HBox.margin>
                   </Label>
                   <Region prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
-                  <TextField fx:id="numplate" minWidth="-Infinity" onKeyTyped="#nameplateChange" prefWidth="100.0" promptText="Matricula" styleClass="field">
+                  <TextField fx:id="numplateTF" minWidth="-Infinity" onKeyTyped="#applyAllFilters" prefWidth="100.0" promptText="Matricula" styleClass="field">
                      <font>
                         <Font name="Trebuchet MS Bold" size="14.0" />
                      </font>
                   </TextField>
-                  <ChoiceBox fx:id="type" minWidth="-Infinity" prefWidth="100.0" />
-                  <ImageView fitHeight="24.0" fitWidth="24.0" nodeOrientation="INHERIT" pickOnBounds="true" preserveRatio="true">
+                  <ChoiceBox fx:id="typeCB" minWidth="-Infinity" prefWidth="100.0" />
+                  <ChoiceBox fx:id="statusCB" minWidth="-Infinity" prefHeight="25.0" prefWidth="115.0" />
+                  <ImageView fitHeight="24.0" fitWidth="24.0" nodeOrientation="INHERIT" onMouseClicked="#resetAllFilters" pickOnBounds="true" preserveRatio="true" scaleX="1.5" scaleY="1.5" styleClass="glow">
                      <image>
-                        <Image url="@../icons/notification_search.png" />
+                        <Image url="@../icons/car_clean-filters.png" />
                      </image>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
                   </ImageView>
                </children>
                <VBox.margin>
@@ -123,11 +127,11 @@
             </HBox>
             <TableView fx:id="notificationTable" prefHeight="564.0" prefWidth="980.0" VBox.vgrow="ALWAYS">
                <columns>
-                  <TableColumn fx:id="numplateColumn" editable="false" maxWidth="1.7976931348623157E308" resizable="false" text="Matricula" />
-                  <TableColumn fx:id="brandColumn" editable="false" maxWidth="1.7976931348623157E308" resizable="false" text="Marca" />
-                  <TableColumn fx:id="modelColumn" editable="false" maxWidth="1.7976931348623157E308" prefWidth="100.0" resizable="false" text="Modelo" />
-                  <TableColumn fx:id="typeColumn" editable="false" prefWidth="100.0" resizable="false" text="Tipo" />
-                  <TableColumn fx:id="warningColumn" editable="false" maxWidth="1.7976931348623157E308" minWidth="50.0" prefWidth="600.0" sortable="false" text="Aviso" />
+                  <TableColumn fx:id="numplateColumn" editable="false" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefWidth="91.99999809265137" resizable="false" text="Matricula" />
+                  <TableColumn fx:id="vehicleColumn" editable="false" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefWidth="172.79996490478516" resizable="false" text="Vehiculo" />
+                  <TableColumn fx:id="typeColumn" editable="false" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefWidth="103.199951171875" resizable="false" text="Titularidad" />
+                  <TableColumn fx:id="statusColumn" editable="false" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefWidth="151.99996948242188" resizable="false" text="Estado" />
+                  <TableColumn fx:id="warningColumn" editable="false" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefWidth="396.800048828125" sortable="false" text="Aviso" />
                </columns>
                <padding>
                   <Insets bottom="20.0" />

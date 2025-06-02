@@ -1,5 +1,7 @@
 package ayuntamiento.viajes.controller;
 
+import ayuntamiento.viajes.common.SecurityUtil;
+import ayuntamiento.viajes.exception.ControledException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -12,57 +14,99 @@ import ayuntamiento.viajes.model.User;
 import javafx.scene.control.PasswordField;
 
 /**
- * 
- * @author Cristian
+ * Clase controladora que se encarga del funcionamiento de la pestaña del perfil
+ * del usuario, no administrador, logeado.
+ *
+ * @author Cristian Delgado Cruz
  * @since 2025-05-19
- * @version 1.0
+ * @version 1.1
  */
 public class ProfileController extends BaseController implements Initializable {
 
     UserService userS;
 
     @FXML
-    private TextField nameProfile;
+    private TextField nameProfileTF;
     @FXML
-    private PasswordField passwordProfile;
+    private PasswordField passwordProfileTF;
+
+    private final int numMaxChars = 16;
 
     public ProfileController() {
         userS = new UserService();
     }
 
+    /**
+     * Metodo FXML que modifica el usuario que lo llama. Controla que no se
+     * envíe un nombre o clave de un tamaño superior a 16 carácteres, ni tampoco
+     * vacio, colocando el field en rojo si algo falla además también comprueba
+     * que el usuario esta de acuerdo antes de eliminarlo.
+     */
     @FXML
     private void modify() {
-        if (nameProfile.getText().isBlank()) {
-            nameProfile.setStyle("-fx-background-color: linear-gradient(from 0% 0% to 100% 100%, #e52d27, #b31217);");
-        } else if (passwordProfile.getText().isBlank()) {
-            passwordProfile.setStyle("-fx-background-color: linear-gradient(from 0% 0% to 100% 100%, #e52d27, #b31217);");
-        } else if (nameProfile.getText().length() > 16) {
-            nameProfile.setStyle("-fx-background-color: linear-gradient(from 0% 0% to 100% 100%, #e52d27, #b31217);");
-            error("El nombre no debe contener más de 16 carácteres");
-        } else if (passwordProfile.getText().length() > 16) {
-            passwordProfile.setStyle("-fx-background-color: linear-gradient(from 0% 0% to 100% 100%, #e52d27, #b31217);");
-            error("La contraseña no debe contener más de 16 carácteres");
-        } else {
-            User u = new User(0, nameProfile.getText(), passwordProfile.getText());
-            u.setId(UserService.getUsuarioLog().getId());
-            if (userS.modifyProfile(u) == null) {
-                error("El nombre de usuario ya existe");
+        try {
+            if (SecurityUtil.checkBadOrEmptyString(nameProfileTF.getText())) {
+                nameProfileTF.setStyle(errorStyle);
+                throw new ControledException("El nombre no debe estar vacía ni contener los siguientes carácteres: <--> , <;>, <'>, <\">, </*>, <*/>",
+                        "ProfileController - modify");
+            } else if (SecurityUtil.checkBadOrEmptyString(passwordProfileTF.getText())) {
+                passwordProfileTF.setStyle(errorStyle);
+                throw new ControledException("La contraseña no debe estar vacía ni contener los siguientes carácteres: <--> , <;>, <'>, <\">, </*>, <*/>",
+                        "ProfileController - modify");
+
+            } else if (nameProfileTF.getText().length() > numMaxChars) {
+                nameProfileTF.setStyle(errorStyle);
+                throw new ControledException("El nombre no debe contener más de 16 carácteres ",
+                        "ProfileController - modify");
+
+            } else if (passwordProfileTF.getText().length() > numMaxChars) {
+                passwordProfileTF.setStyle(errorStyle);
+                throw new ControledException("La contraseña no debe contener más de 16 carácteres ",
+                        "ProfileController - modify");
             } else {
-                reset();
-                //quiza explicarlo al usuario con una pantalla
+                if (info("¿Está seguro de que quiere modificar su usuario?", true)
+                        == InfoController.DialogResult.REJECT) {
+                    reset();
+                } else {
+                    User u = new User(0, nameProfileTF.getText(),
+                            passwordProfileTF.getText());
+                    u.setId(UserService.getUsuarioLog().getId());
+
+                    if (userS.modifyProfile(u) == null) {
+                        throw new ControledException("El nombre de usuario ya existe", "ProfileController - modify");
+                    } else {
+                        reset();
+                        info("Su usuario ha sido modificado", false);
+                    }
+                }
             }
+        } catch (ControledException cE) {
+            error(cE);
+        } catch (Exception ex) {
+            error(ex);
+            reset();
         }
+    }
+
+    @FXML
+    private void nameProfileChange() {
+        nameProfileTF.setStyle("");
+    }
+
+    @FXML
+    private void passwordProfileChange() {
+        passwordProfileTF.setStyle("");
     }
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         showUserOption();
-        nameProfile.setText(UserService.getUsuarioLog().getUsername());
+        nameProfileTF.setText(UserService.getUsuarioLog().getUsername());
     }
 
     private void reset() {
-        nameProfile.setText("");;
-        passwordProfile.setText("");
+        nameProfileTF.setText("");
+        passwordProfileTF.setText("");
     }
 
 }

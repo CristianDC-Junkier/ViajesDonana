@@ -6,7 +6,7 @@ package ayuntamiento.viajes.model;
  * 
  * @author Cristian Delgado Cruz
  * @since 2025-05-14
- * @version 1.0
+ * @version 1.1
  */
 public class Preferences {
 
@@ -16,7 +16,7 @@ public class Preferences {
     private String remember;
 
     public Preferences(){
-        this.remember = "";
+        this.remember = null;
     }
     
     public Preferences(String remember) { this.remember = remember; }

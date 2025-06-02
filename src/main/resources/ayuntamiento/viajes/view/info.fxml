@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.net.URL?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Button?>
@@ -13,7 +12,7 @@
 <?import javafx.scene.text.Font?>
 
 <AnchorPane prefHeight="250.0" prefWidth="350.0" stylesheets="@../styles/global.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ayuntamiento.viajes.controller.InfoController">
-    <VBox alignment="CENTER" prefHeight="200.0" prefWidth="300.0" spacing="25.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="0.0">
+    <VBox alignment="CENTER" prefHeight="200.0" prefWidth="300.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="0.0">
         <Label fx:id="infoMessageLabel" alignment="CENTER" contentDisplay="CENTER" maxHeight="1.7976931348623157E308" prefWidth="330.0" text="Info" textAlignment="CENTER" wrapText="true" VBox.vgrow="ALWAYS">
          <font>
             <Font name="Trebuchet MS" size="16.0" />
@@ -37,7 +36,7 @@
                      </cursor>
                   </Button>
                   <Region prefWidth="100.0" />
-                  <Button fx:id="infoRejectButton" onAction="#rejectInfoDialog" styleClass="error-button" text="Rechazar" textFill="WHITE">
+                  <Button fx:id="infoRejectButton" onAction="#rejectInfoDialog" stylesheets="@../styles/global.css" text="Rechazar" textFill="WHITE">
                      <padding>
                         <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                      </padding>
@@ -47,10 +46,6 @@
                      <cursor>
                         <Cursor fx:constant="HAND" />
                      </cursor>
-                     <stylesheets>
-                        <URL value="@../styles/error.css" />
-                        <URL value="@../styles/global.css" />
-                     </stylesheets>
                   </Button>
                </children>
             </HBox>
@@ -67,7 +62,7 @@
             </Button>
          </children>
          <VBox.margin>
-            <Insets bottom="15.0" top="15.0" />
+            <Insets bottom="20.0" />
          </VBox.margin>
       </StackPane>
     </VBox>

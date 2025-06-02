@@ -47,19 +47,36 @@
     <center>
         <VBox alignment="CENTER" spacing="20.0">
             <children>
-                <Label fx:id="welcomeLabel" text="¡ Bienvenido a la Applicación ! " wrapText="true">
+                <Label fx:id="welcomeLabel" text="¡Bienvenido a la Aplicación! " wrapText="true">
                <VBox.margin>
                   <Insets bottom="10.0" />
                </VBox.margin>
                <font>
                   <Font name="Trebuchet MS Bold Italic" size="30.0" />
                </font></Label>
-            <Label prefWidth="550.0" text="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua." textAlignment="CENTER" wrapText="true">
+            <HBox alignment="CENTER">
+               <children>
+                  <Label alignment="CENTER" text="Ante cualquier duda consulte el " textAlignment="CENTER" wrapText="true">
+                     <font>
+                        <Font name="Trebuchet MS" size="16.0" />
+                     </font>
+                  </Label>
+                  <Label onMouseClicked="#openManual" style="-fx-cursor: hand;" styleClass="privacity" stylesheets="@../styles/global.css" text="Manual del Usuario">
+                     <font>
+                        <Font name="Trebuchet MS Bold" size="16.0" />
+                     </font>
+                  </Label>
+               </children>
+               <VBox.margin>
+                  <Insets />
+               </VBox.margin>
+            </HBox>
+            <Label alignment="CENTER" text="En caso de dudas no cubiertas por el manual o en caso de error, pongase en contacto con el departamento de informática del ayuntamiento." textAlignment="CENTER" wrapText="true">
                <font>
                   <Font name="Trebuchet MS" size="16.0" />
                </font>
                <VBox.margin>
-                  <Insets bottom="10.0" />
+                  <Insets left="285.0" right="285.0" />
                </VBox.margin>
             </Label>
                 <HBox alignment="CENTER" spacing="50.0">
@@ -98,7 +115,7 @@
                               </ImageView>
                            </children>
                         </StackPane>
-                        <Label prefWidth="200.0" text="Panel de información sobre los diferentes vehículos del ayuntamiento" textAlignment="CENTER" wrapText="true">
+                        <Label alignment="CENTER" prefWidth="200.0" text="Panel de gestión de vehículos" textAlignment="CENTER" wrapText="true">
                            <font>
                               <Font name="Trebuchet MS" size="14.0" />
                            </font>
@@ -195,7 +212,7 @@
                               </StackPane>
                            </children>
                         </StackPane>
-                        <Label prefWidth="200.0" text="Panel de información sobre los diferentes vehículos del ayuntamiento" textAlignment="CENTER" wrapText="true">
+                        <Label alignment="CENTER" prefWidth="200.0" text="Panel de notificaciones y avisos" textAlignment="CENTER" wrapText="true">
                            <font>
                               <Font name="Trebuchet MS" size="14.0" />
                            </font>
@@ -244,7 +261,7 @@
                               </ImageView>
                            </children>
                         </StackPane>
-                        <Label prefWidth="200.0" text="Panel de información sobre los diferentes vehículos del ayuntamiento" textAlignment="CENTER" wrapText="true">
+                        <Label alignment="CENTER" prefWidth="200.0" text="Panel de estadísticas" textAlignment="CENTER" wrapText="true">
                            <font>
                               <Font name="Trebuchet MS" size="14.0" />
                            </font>

@@ -10,6 +10,7 @@
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.ToggleButton?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.BorderPane?>
@@ -19,7 +20,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane fx:id="father" prefHeight="800.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ayuntamiento.viajes.controller.VehicleController">
+<BorderPane fx:id="father" prefHeight="800.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ayuntamiento.viajes.controller.VehicleController">
    <top>
       <HBox>
          <children>
@@ -58,7 +59,7 @@
                </HBox.margin>
             </Label>
             <Pane HBox.hgrow="ALWAYS" />
-            <Label fx:id="users" layoutX="772.0" layoutY="22.0" style="-fx-cursor: hand;" styleClass="privacity" stylesheets="@../styles/global.css">
+            <Label fx:id="users" layoutX="772.0" layoutY="22.0" onMouseClicked="#userspanel" style="-fx-cursor: hand;" styleClass="privacity" stylesheets="@../styles/global.css">
                <font>
                   <Font name="Trebuchet MS Bold" size="12.0" />
                </font>
@@ -104,26 +105,32 @@
                         <Insets left="20.0" right="20.0" />
                      </padding>
                      <children>
-                        <Label fx:id="amount" contentDisplay="CENTER" minWidth="210.0" prefHeight="20.0" prefWidth="300.0" text="Total de Vehículos" textFill="WHITE">
+                        <Label fx:id="amount" contentDisplay="CENTER" minWidth="-Infinity" prefHeight="20.0" prefWidth="304.0" text="Total de Vehículos" textFill="WHITE">
                            <font>
                               <Font name="Trebuchet MS Bold" size="16.0" />
                            </font>
                         </Label>
                         <Region prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
-                        <TextField fx:id="brand" minWidth="-Infinity" onKeyTyped="#brandChange" prefWidth="100.0" promptText="Marca" styleClass="field">
+                        <TextField fx:id="numplateTF" minWidth="-Infinity" onKeyTyped="#applyAllFilters" prefWidth="100.0" promptText="Matricula" styleClass="field">
                            <font>
                               <Font name="Trebuchet MS Bold" size="14.0" />
                            </font>
                         </TextField>
-                        <TextField fx:id="numplate" minWidth="-Infinity" onKeyTyped="#nameplateChange" prefWidth="100.0" promptText="Matricula" styleClass="field">
+                        <TextField fx:id="vehicleTF" minWidth="-Infinity" onKeyTyped="#applyAllFilters" prefHeight="26.0" prefWidth="150.0" promptText="Vehiculo" styleClass="field">
                            <font>
                               <Font name="Trebuchet MS Bold" size="14.0" />
                            </font>
                         </TextField>
-                        <ChoiceBox fx:id="type" minWidth="-Infinity" prefWidth="100.0" />
-                        <ImageView fitHeight="24.0" fitWidth="24.0" nodeOrientation="INHERIT" pickOnBounds="true" preserveRatio="true">
+                        <TextField fx:id="destinationTF" minWidth="-Infinity" onKeyTyped="#applyAllFilters" prefHeight="26.0" prefWidth="150.0" promptText="Destino" styleClass="field">
+                           <font>
+                              <Font name="Trebuchet MS Bold" size="14.0" />
+                           </font>
+                        </TextField>
+                        <ChoiceBox fx:id="typeCB" minWidth="-Infinity" prefWidth="100.0" />
+                        <ChoiceBox fx:id="statusCB" minWidth="-Infinity" prefHeight="26.0" prefWidth="140.0" />
+                        <ImageView fitHeight="24.0" fitWidth="24.0" nodeOrientation="INHERIT" onMouseClicked="#resetAllFilters" pickOnBounds="true" preserveRatio="true" scaleX="1.5" scaleY="1.5" styleClass="glow">
                            <image>
-                              <Image url="@../icons/notification_search.png" />
+                              <Image url="@../icons/car_clean-filters.png" />
                            </image>
                            <HBox.margin>
                               <Insets />
@@ -134,37 +141,73 @@
                         </ImageView>
                      </children>
                   </HBox>
-                  <HBox alignment="CENTER_LEFT" minHeight="-Infinity" prefHeight="50.0" spacing="20.0">
+                  <HBox alignment="CENTER_LEFT" minHeight="-Infinity" prefHeight="50.0">
                      <padding>
                         <Insets left="20.0" right="20.0" />
                      </padding>
                      <children>
-                        <Label contentDisplay="CENTER" minWidth="183.0" prefHeight="20.0" prefWidth="280.0" text="Fecha de ITV/Alquiler anterior a " textFill="WHITE">
+                        <Label contentDisplay="CENTER" minWidth="142.0" prefHeight="20.0" prefWidth="142.0" text="Última Revisión" textFill="WHITE">
                            <font>
                               <Font name="Trebuchet MS Bold" size="16.0" />
                            </font>
                         </Label>
-                        <DatePicker fx:id="itv_rent" onAction="#itv_rentChange" prefHeight="26.0" prefWidth="140.0" promptText="ITV/Alquiler" showWeekNumbers="true" />
-                        <Region prefHeight="50.0" prefWidth="70.0" HBox.hgrow="ALWAYS" />
-                        <Label contentDisplay="CENTER" minWidth="183.0" prefHeight="20.0" prefWidth="240.0" text="Fecha de Seguro anterior a" textFill="WHITE">
+                        <TextField fx:id="km_lastCheckTF" minWidth="-Infinity" onKeyTyped="#applyAllFilters" prefHeight="26.0" prefWidth="80.0" promptText="&lt;= Km " styleClass="field">
                            <font>
-                              <Font name="Trebuchet MS Bold" size="16.0" />
+                              <Font name="Trebuchet MS Bold" size="14.0" />
                            </font>
-                        </Label>
-                        <DatePicker fx:id="insurance" onAction="#insuranceChange" prefHeight="26.0" prefWidth="140.0" promptText="Seguro" />
+                           <HBox.margin>
+                              <Insets right="15.0" />
+                           </HBox.margin>
+                        </TextField>
+                        <DatePicker fx:id="lastCheckDP" minWidth="-Infinity" onAction="#applyAllFilters" prefHeight="26.0" prefWidth="140.0" promptText="Ult Revisión">
+                           <HBox.margin>
+                              <Insets />
+                           </HBox.margin>
+                        </DatePicker>
+                        <Region minWidth="-Infinity" prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
+                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+                           <children>
+                              <Label contentDisplay="CENTER" minWidth="-Infinity" prefHeight="20.0" prefWidth="166.0" text="Fecha anterior a" textFill="WHITE">
+                                 <font>
+                                    <Font name="Trebuchet MS Bold" size="16.0" />
+                                 </font>
+                                 <HBox.margin>
+                                    <Insets left="10.0" />
+                                 </HBox.margin>
+                              </Label>
+                              <DatePicker fx:id="itv_rentDP" minWidth="-Infinity" onAction="#applyAllFilters" prefHeight="26.0" prefWidth="140.0" promptText="ITV/Alquiler" showWeekNumbers="true">
+                                 <HBox.margin>
+                                    <Insets right="10.0" />
+                                 </HBox.margin>
+                              </DatePicker>
+                              <Label contentDisplay="CENTER" minWidth="15.0" prefHeight="20.0" prefWidth="15.0" text="/" textFill="WHITE">
+                                 <font>
+                                    <Font name="Trebuchet MS Bold" size="16.0" />
+                                 </font>
+                              </Label>
+                              <DatePicker fx:id="insuranceDP" minWidth="-Infinity" onAction="#applyAllFilters" prefHeight="26.0" prefWidth="140.0" promptText="Seguro">
+                                 <HBox.margin>
+                                    <Insets right="10.0" />
+                                 </HBox.margin>
+                              </DatePicker>
+                           </children>
+                        </HBox>
                      </children>
                   </HBox>
                </children>
             </VBox>
-            <TableView fx:id="vehicleTable" prefHeight="482.0" prefWidth="979.0">
+            <TableView fx:id="vehicleTable" prefHeight="482.0" prefWidth="979.0" VBox.vgrow="ALWAYS">
                <columns>
-                  <TableColumn fx:id="idColumn" maxWidth="500.0" prefWidth="50.0" text="ID" />
-                  <TableColumn fx:id="numplateColumn" maxWidth="500.0" prefWidth="100.0" text="Matricula" />
-                  <TableColumn fx:id="brandColumn" maxWidth="500.0" prefWidth="150.0" text="Marca" />
-                  <TableColumn fx:id="modelColumn" maxWidth="500.0" minWidth="0.0" prefWidth="150.0" text="Modelo" />
-                  <TableColumn fx:id="typeColumn" prefWidth="200.0" text="Propiedad" />
-                  <TableColumn fx:id="itv_rentColumn" maxWidth="500.0" prefWidth="150.0" text="ITV/Alquiler" />
-                  <TableColumn fx:id="insuranceColumn" maxWidth="500.0" prefWidth="150.0" text="Seguro" />
+                  <TableColumn fx:id="numplateColumn" editable="false" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefWidth="83.20001411437988" text="Matricula" />
+                  <TableColumn fx:id="vehicleColumn" editable="false" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefWidth="165.59996795654297" text="Vehiculo" />
+                  <TableColumn fx:id="typeColumn" editable="false" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefWidth="123.2000732421875" text="Titularidad" />
+                  <TableColumn fx:id="statusColumn" editable="false" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefWidth="140.0" text="Estado" />
+                  <TableColumn fx:id="destinationColumn" editable="false" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefWidth="144.0" text="Destino" />
+                  <TableColumn fx:id="allocationColumn" editable="false" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefWidth="110.0" sortable="false" text="Asignación" />
+                  <TableColumn fx:id="kms_last_checkColumn" editable="false" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefWidth="71.20001220703125" text="Kms Rev." />
+                  <TableColumn fx:id="last_checkColumn" editable="false" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefWidth="97.60003662109375" text="Ult. Revisión" />
+                  <TableColumn fx:id="itv_rentColumn" editable="false" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefWidth="100.7998046875" text="ITV/Alquiler" />
+                  <TableColumn fx:id="insuranceColumn" editable="false" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefWidth="91.2000732421875" text="Seguro" />
                </columns>
                <columnResizePolicy>
                   <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
@@ -186,6 +229,17 @@
                      <padding>
                         <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                      </padding></Button>
+                  <Region maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" HBox.hgrow="ALWAYS" />
+                  <ToggleButton mnemonicParsing="false" onAction="#destinationTBChange" selected="true" styleClass="switch" text="Destino">
+                     <font>
+                        <Font name="Trebuchet MS Bold" size="12.0" />
+                     </font>
+                  </ToggleButton>
+                  <ToggleButton mnemonicParsing="false" onAction="#lastCheckTBChange" selected="true" styleClass="switch" text="Revisión">
+                     <font>
+                        <Font name="Trebuchet MS Bold" size="12.0" />
+                     </font>
+                  </ToggleButton>
                   <Region maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" HBox.hgrow="ALWAYS" />
                   <Button ellipsisString="-" mnemonicParsing="false" onAction="#delete" prefHeight="30.0" prefWidth="100.0" text="Eliminar" textFill="WHITE">
                      <font>

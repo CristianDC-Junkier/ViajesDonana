@@ -1,14 +1,16 @@
 package ayuntamiento.viajes.controller;
 
-import ayuntamiento.viajes.common.LoggerUtil;
+import static ayuntamiento.viajes.common.LoggerUtil.log;
 import ayuntamiento.viajes.common.ManagerUtil;
 import ayuntamiento.viajes.common.PreferencesUtil;
 import ayuntamiento.viajes.common.SecurityUtil;
 import ayuntamiento.viajes.exception.LoginException;
+import ayuntamiento.viajes.model.Preferences;
 import ayuntamiento.viajes.model.User;
 import ayuntamiento.viajes.service.UserService;
-import java.io.IOException;
+import ayuntamiento.viajes.service.VehicleService;
 import java.net.URL;
+import java.sql.SQLException;
 import java.util.ResourceBundle;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -18,8 +20,8 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.CheckBox;
 
 /**
- * Clase que controla la creación el log de los usuarios y actua como vista
- * principal
+ * Clase que controla la creación el login de los usuarios y actua como vista
+ * inicial
  *
  * @author Cristian Delgado Cruz
  * @since 2025-05-14
@@ -38,26 +40,35 @@ public class LoginController extends BaseController implements Initializable {
     @FXML
     private CheckBox rememberCheck;
 
+    /**
+     * Intenta crear al usuario, en caso de error se coloca un mensaje en la
+     * parte inferior del login
+     */
     @FXML
     public void login() {
         try {
             usuarioS.rechargeList();
-            if (SecurityUtil.checkBadString(userField.getText())) {
-                LoggerUtil.log("Error en el login, el usuario no fue encontrado");
+            if (SecurityUtil.checkBadOrEmptyString(userField.getText())) {
+                log("Error en el login, el usuario no es válido");
                 wrongUser(1000, "El nombre no debe estar vacía ni contener los siguientes carácteres: <--> , <;>, <'>, <\">, </*>, <*/>");
-            } else if (SecurityUtil.checkBadString(passField.getText())) {
-                LoggerUtil.log("Error en el login, la contraseña no es valida");
+            } else if (SecurityUtil.checkBadOrEmptyString(passField.getText())) {
+                log("Error en el login, la contraseña no es válida");
                 wrongUser(2000, "La contaseña no debe estar vacía ni contener los siguientes carácteres: <--> , <;>, <'>, <\">, </*>, <*/>");
             } else {
-                User userlog = usuarioS.findByCredentials(userField.getText(), passField.getText());
-                rememberUser(userlog);
-                ManagerUtil.moveTo("home");
+                try {
+                    User userlog = usuarioS.findByCredentials(userField.getText(), passField.getText());
+                    rememberUser(userlog);
+                    setVehicles();
+                    ManagerUtil.moveTo("home");
+                } catch (SQLException sqlE) {
+                    error(new Exception(sqlE));
+                }
+
             }
-        } catch (LoginException ex) {
-            wrongUser(ex.getErrorCode(), ex.getMessage());
-        } catch (IOException ex) {
-            LoggerUtil.log("Error del login, no se pudo entrar en la vista home");
-            System.out.println("Fallo al entrar en el Home");
+        } catch (LoginException lE) {
+            wrongUser(lE.getErrorCode(), lE.getMessage());
+        } catch (Exception ex) {
+            error(ex);
         }
 
     }
@@ -75,18 +86,32 @@ public class LoginController extends BaseController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         usuarioS = new UserService();
+        String username = PreferencesUtil.getPreferences().getRemember();
 
-        if (!PreferencesUtil.getRemember().equalsIgnoreCase("")) {
+        if (username != null) {
             rememberCheck.setSelected(true);
+            userField.setText(username);
         }
-        userField.setText(PreferencesUtil.getRemember());
+    }
+
+    /**
+     * Recarga por primera vez los vehiculos
+     */
+    private void setVehicles() throws SQLException {
+        VehicleService vS = new VehicleService();
+        if (vS.findAll() == null) {
+            vS.rechargeList();
+        }
+
     }
 
     public void wrongUser(int error, String msg) {
         if (error == 1000) {
-            userField.setStyle("-fx-background-color: linear-gradient(from 0% 0% to 100% 100%, #e52d27, #b31217);");
+            log("Error en el login, " + msg);
+            userField.setStyle(errorStyle);
         } else if (error == 2000) {
-            passField.setStyle("-fx-background-color: linear-gradient(from 0% 0% to 100% 100%, #e52d27, #b31217);");
+            log("Error en el login, " + msg);
+            passField.setStyle(errorStyle);
         }
         userField.setText("");
         passField.setText("");
@@ -94,11 +119,12 @@ public class LoginController extends BaseController implements Initializable {
     }
 
     public void rememberUser(User userlog) {
-        if (rememberCheck.isSelected()) {
-            PreferencesUtil.setRemember(userlog.getUsername());
-        } else {
-            PreferencesUtil.setRemember("");
-        }
-    }
+        Preferences pref = new Preferences();
 
+        if (rememberCheck.isSelected()) {
+            pref.setRemember(userlog.getUsername());
+        }
+
+        PreferencesUtil.setPreferences(pref);
+    }
 }

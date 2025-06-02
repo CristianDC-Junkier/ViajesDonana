@@ -10,7 +10,7 @@
 <?import javafx.scene.text.Font?>
 
 <AnchorPane prefHeight="250.0" prefWidth="350.0" stylesheets="@../styles/global.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ayuntamiento.viajes.controller.ErrorController">
-    <VBox alignment="CENTER" prefHeight="200.0" prefWidth="300.0" spacing="25.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="0.0">
+    <VBox alignment="CENTER" prefHeight="200.0" prefWidth="300.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="0.0">
         <Label fx:id="errorMessageLabel" alignment="CENTER" contentDisplay="CENTER" maxHeight="1.7976931348623157E308" prefHeight="200.0" prefWidth="310.0" text="Error" textAlignment="CENTER" wrapText="true">
          <font>
             <Font name="Trebuchet MS" size="16.0" />
@@ -33,7 +33,7 @@
             </Button>
          </children>
          <VBox.margin>
-            <Insets bottom="15.0" top="15.0" />
+            <Insets bottom="20.0" />
          </VBox.margin>
       </StackPane>
     </VBox>

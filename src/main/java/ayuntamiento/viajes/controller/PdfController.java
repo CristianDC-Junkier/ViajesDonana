@@ -1,7 +1,11 @@
 package ayuntamiento.viajes.controller;
 
 import ayuntamiento.viajes.common.PropertiesUtil;
+import ayuntamiento.viajes.exception.ControledException;
+import ayuntamiento.viajes.model.Vehicle;
+import ayuntamiento.viajes.model.Vehicle.VehicleType;
 import ayuntamiento.viajes.service.PDFService;
+import ayuntamiento.viajes.service.VehicleService;
 
 import java.io.File;
 import java.net.URL;
@@ -10,22 +14,32 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.Arrays;
 import java.util.ResourceBundle;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TextField;
 import javafx.stage.DirectoryChooser;
 
 /**
- * FXML Controller class
+ * Clase que se encarga del control de la vista de creación de pdfs así como de
+ * comprobar que la carpeta donde se va a crear, y el nombre del fichero, son
+ * correctos.
  *
- * @author Cristian
+ * @author Cristian Delgado Cruz
+ * @since 2025-05-19
+ * @version 1.1
  */
 public class PdfController extends BaseController implements Initializable {
 
     @FXML
-    private ChoiceBox boxPDF;
+    private ChoiceBox vehicleTypePDF;
+    @FXML
+    private ChoiceBox documentTypePDF;
+    @FXML
+    private CheckBox onlyNotiCB;
     @FXML
     private TextField namePDF;
     @FXML
@@ -41,21 +55,33 @@ public class PdfController extends BaseController implements Initializable {
         pdf = new PDFService();
     }
 
+ 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         showUserOption();
 
-        boxPDF.getItems().addAll("Todos","Notificados" , "Propio", "Alquilado");
-        boxPDF.getSelectionModel().selectFirst();
+        vehicleTypePDF.getItems().add("Todos");
+        vehicleTypePDF.getItems().addAll(Arrays.asList(Vehicle.VehicleType.values()));
+        vehicleTypePDF.getSelectionModel().selectFirst();
+
+        documentTypePDF.getItems().addAll("Notificaciones", "Listado", "Todo");
+        documentTypePDF.getSelectionModel().selectFirst();
+        documentTypePDF.setOnAction((event) -> {
+            changePDFName();
+        });
 
         String userHome = System.getProperty("user.home");
         File defaultDir = new File(userHome, "Downloads");
         dirPDF.setText(defaultDir.getAbsolutePath());
 
-        namePDF.setText("Informe-Vehiculos-"
+        namePDF.setText("Notificaciones-Vehiculos-"
                 + LocalDate.now().format(dateformatter));
     }
 
+    /**
+     * Metodo que permite al usuario elegir una carpeta para colocar los pdf
+     * creados
+     */
     @FXML
     private void choosefolderPDF() {
         DirectoryChooser chooser = new DirectoryChooser();
@@ -75,21 +101,54 @@ public class PdfController extends BaseController implements Initializable {
         }
     }
 
+    /**
+     * Metodo que imprime el pdf, o muestra el error según donde el usuario se
+     * equivocó
+     */
     @FXML
     private void printPDF() {
 
+        VehicleService vehicleS = new VehicleService();
+
         if (isNotValidFileName()) {
-            error("El nombre del archivo PDF no puede contener carácteres especiales");
-            namePDF.setStyle("-fx-background-color: linear-gradient(from 0% 0% to 100% 100%, #e52d27, #b31217);");
+            namePDF.setStyle(errorStyle);
+            error(new ControledException("El nombre del archivo PDF no puede contener carácteres especiales",
+                    "PDFController - printPDF"));
         } else if (isNotValidFolderName()) {
-            error("La Carpeta elegida no existe");
-            dirPDF.setStyle("-fx-background-color: linear-gradient(from 0% 0% to 100% 100%, #e52d27, #b31217);");
+            dirPDF.setStyle(errorStyle);
+            error(new ControledException("La carpeta elegida no existe",
+                    "PDFController - printPDF"));
         } else {
-            String typeSelected = (String) boxPDF.getValue();
-            switch (typeSelected) {
-                case "Todos" -> pdf.printAll(namePDF.getText(), dirPDF.getText());
-                case "Notificados" -> pdf.printNotification(namePDF.getText(), dirPDF.getText());
-                default -> pdf.printType(namePDF.getText(), dirPDF.getText(), typeSelected);
+            try {
+                if (onlyNotiCB.isSelected()) {
+                    if (vehicleS.findByWarning().isEmpty()) {
+                        info("No existen vehículos con alguna notificación", false);
+                    } else {
+                        pdf.printNotification(namePDF.getText(), dirPDF.getText(), documentTypePDF.getValue().toString());
+                    }
+                } else {
+                    String typeSelected = vehicleTypePDF.getValue().toString();
+                    switch (typeSelected) {
+                        case "Todos" -> {
+                            if (vehicleS.findAll().isEmpty()) {
+                                info("No existen vehículos registrados", false);
+                            } else {
+                                pdf.printAll(namePDF.getText(), dirPDF.getText(), documentTypePDF.getValue().toString());
+                            }
+                        }
+                        default -> {
+                            if (vehicleS.findByType(VehicleType.valueOf(typeSelected).ordinal()).isEmpty()) {
+                                info("No existen vehículos registrados de tipo " + typeSelected , false);
+                            } else {
+                                pdf.printType(namePDF.getText(), dirPDF.getText(), typeSelected, documentTypePDF.getValue().toString());
+                            }
+                        }
+                    }
+                }
+            } catch (ControledException cE) {
+                error(cE);
+            } catch (Exception ex) {
+                error(ex);
             }
         }
     }
@@ -102,6 +161,29 @@ public class PdfController extends BaseController implements Initializable {
     @FXML
     private void dirChangePDF() {
         dirPDF.setStyle("");
+    }
+
+    @FXML
+    private void selectNotiCB() {
+        vehicleTypePDF.setDisable(!vehicleTypePDF.isDisable());
+    }
+
+    /**
+     * Cambia el nombre del PDF automáticamente
+     */
+    @FXML
+    private void changePDFName() {
+        if ("Todo".equals((String) documentTypePDF.getValue())) {
+            namePDF.setText("Informe-Completo-Vehiculos-"
+                    + LocalDate.now().format(dateformatter));
+        } else if ("Notificaciones".equals((String) documentTypePDF.getValue())) {
+            namePDF.setText("Notificaciones-Vehiculos-"
+                    + LocalDate.now().format(dateformatter));
+        } else {
+            namePDF.setText("Listado-Vehiculos-"
+                    + LocalDate.now().format(dateformatter));
+        }
+
     }
 
     private boolean isNotValidFileName() {

@@ -2,9 +2,9 @@
 setlocal
 
 :: Configurar variables
-set APP_NAME=AyuntamientoVehiculos
+set APP_NAME=Gestor de Flota - Almonte
 set INPUT_DIR=launcher
-set MAIN_JAR=VehiculosAyuntamiento-0.1.jar
+set MAIN_JAR=VehiculosAyuntamiento-1.0.jar
 set MAIN_CLASS=ayuntamiento.vehiculos.app.App
 set MODULE_PATH=launcher/javafx
 set MODULES=javafx.controls,javafx.fxml,java.sql
@@ -22,7 +22,7 @@ jpackage ^
     --module-path "%MODULE_PATH%" ^
     --add-modules "%MODULES%" ^
     --dest "%OUTPUT_DIR%" ^
-    --app-version "0.1" ^
+    --app-version "1.0" ^
     --vendor "Ayuntamiento de Almonte" ^
     --icon "%ICON_WIN%" ^
     --copyright "© 2025 Ayuntamiento de Almonte - Informatica Alcaldia. Todos los derechos reservados." ^
@@ -31,7 +31,7 @@ jpackage ^
     --win-menu ^
     --win-menu-group "Ayuntamiento" ^
     --win-dir-chooser ^
-    --win-upgrade-uuid "bb1dd4c7-4186-41ad-9398-694496c3efb1"
+    --win-upgrade-uuid "4e7f9d60-d535-41ea-a77f-b9bdc566045c"
 
 
 :: Generar instalador para macOS (.dmg)

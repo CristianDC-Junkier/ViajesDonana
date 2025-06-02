@@ -12,22 +12,56 @@ import org.mindrot.jbcrypt.BCrypt;
  */
 public class SecurityUtil {
 
+    /**
+    * Crea el hash de la contraseña pasada por parametro
+    * 
+    * @param passwordFlat contraseña plana
+    * @return hash de la contraseña
+    */
     public static String hashPassword(String passwordFlat) {
         return BCrypt.hashpw(passwordFlat, BCrypt.gensalt());
     }
 
+    /**
+    * Cromprueba si un hash corresponde a una contraseña
+    * 
+    * @param passwordFlat contraseña plana
+    * @param hash el hash original guardado en la BD
+    * @return la verificación de que es correcto o no
+    */
     public static boolean verifyPassword(String passwordFlat, String hash) {
         return BCrypt.checkpw(passwordFlat, hash);
     }
 
-    public static boolean checkBadString(String string) {
+    /**
+    * Cromprueba si una cadena es maliciosa o esta vacía
+    * 
+    * @param s cadena introducida
+    * @return la verificación de que no es segura o si
+    */
+    public static boolean checkBadOrEmptyString(String s) {
         boolean check = false;
-        if (string == null || string.isBlank()) {
+        if (checkBadString(s) || s.isBlank()) {
+           check = true;
+        }
+
+        return check;
+    }
+    
+    /**
+    * Cromprueba si una contraseña es maliciosa
+    * 
+    * @param s cadena introducida
+    * @return la verificación de que no es segura o si
+    */
+    public static boolean checkBadString(String s) {
+        boolean check = false;
+        if (s == null ) {
            check = true;
         }else{
-             String lowered = string.toLowerCase();
+             String lowered = s.toLowerCase();
 
-            // Lista de caracteres sospechosos
+            /* Lista de caracteres sospechosos */
             String[] dangerousPatterns = {
                 "select ", "insert ", "update ", "delete ",
                 "drop ", "alter ", "create ", "--", ";", "'",

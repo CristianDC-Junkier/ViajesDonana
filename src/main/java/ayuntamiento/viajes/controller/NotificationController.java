@@ -1,6 +1,7 @@
 package ayuntamiento.viajes.controller;
 
 import ayuntamiento.viajes.model.Notification;
+import ayuntamiento.viajes.model.Vehicle;
 import ayuntamiento.viajes.service.NotificationService;
 import java.net.URL;
 import java.util.List;
@@ -17,9 +18,12 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 
 /**
- * FXML Controller class
- *
- * @author Ramón Iglesias
+ * Controlador de las notificaciones que se encarga
+ * de mostrar al usuario las notificaciones en la tabla de la vista
+ * 
+ * @author Ramón Iglesias Granados
+ * @since 2025-05-12
+ * @version 1.2
  */
 public class NotificationController extends BaseController implements Initializable {
 
@@ -31,20 +35,22 @@ public class NotificationController extends BaseController implements Initializa
     @FXML
     private TableColumn numplateColumn;
     @FXML
-    private TableColumn brandColumn;
-    @FXML
-    private TableColumn modelColumn;
+    private TableColumn vehicleColumn;
     @FXML
     private TableColumn typeColumn;
+    @FXML
+    private TableColumn statusColumn;
     @FXML
     private TableColumn warningColumn;
 
     @FXML
     private Label amount;
     @FXML
-    private TextField numplate;
+    private TextField numplateTF;
     @FXML
-    private ChoiceBox type;
+    private ChoiceBox typeCB;
+    @FXML
+    private ChoiceBox statusCB;
 
     public NotificationController() {
         notificationS = new NotificationService();
@@ -55,10 +61,10 @@ public class NotificationController extends BaseController implements Initializa
     public void initialize(URL url, ResourceBundle rb) {
         showUserOption();
 
-        // Configurar columnas
+        /* Configuración de las columnas */
         numplateColumn.setCellValueFactory(new PropertyValueFactory<>("numberplate"));
-        brandColumn.setCellValueFactory(new PropertyValueFactory<>("brand"));
-        modelColumn.setCellValueFactory(new PropertyValueFactory<>("model"));
+        vehicleColumn.setCellValueFactory(new PropertyValueFactory<>("vehicle"));
+        statusColumn.setCellValueFactory(new PropertyValueFactory<>("status"));
         typeColumn.setCellValueFactory(new PropertyValueFactory<>("type"));
         warningColumn.setCellValueFactory(new PropertyValueFactory<>("warning"));
 
@@ -67,35 +73,51 @@ public class NotificationController extends BaseController implements Initializa
         notificationTable.setPlaceholder(new Label("No existen notificaciones"));
         amount.setText("Total de Notificaciones: " + notificationS.getNumberOfNotifications());
 
-        // Filtro de tipo
-        type.getItems().addAll("Todos", "Propio", "Alquilado", "Prestado");
-        type.getSelectionModel().selectFirst();
-
-        type.valueProperty().addListener((obs, oldType, newType) -> typeFilter());
-    }
-
-    private void typeFilter() {
-        String selectedType = (String) type.getValue();
-
-        if (selectedType.equals("Todos")) {
-            refreshTable(notificationTable, notifications);
-        } else {
-            List<Notification> filtered = notifications.stream()
-                    .filter(n -> n.getType().toString().toLowerCase().equals(selectedType.toLowerCase()))
-                    .collect(Collectors.toList());
-
-            refreshTable(notificationTable, filtered);
+        /* Filtro de tipo */
+        typeCB.getItems().add("Todos");
+        for (Vehicle.VehicleType t : Vehicle.VehicleType.values()) {
+            typeCB.getItems().add(t.toString());
         }
+        typeCB.getSelectionModel().selectFirst();
+        
+        typeCB.valueProperty().addListener((obs, oldType, newType) -> applyAllFilters());
+
+        /* Filtro de estado */
+        statusCB.getItems().add("Todos");
+        for (Vehicle.VehicleStatus t : Vehicle.VehicleStatus.values()) {
+            statusCB.getItems().add(t.toString());
+        }
+        statusCB.getSelectionModel().selectFirst();
+
+        statusCB.valueProperty().addListener((obs, oldType, newType) -> applyAllFilters());
     }
 
     @FXML
-    private void nameplateChange() {
-        String plateText = numplate.getText().trim().toLowerCase();
+    private void applyAllFilters() {
+        String plateText = numplateTF.getText() != null ? numplateTF.getText().toLowerCase().trim() : "";
+        String selectedType = typeCB.getValue() != null ? typeCB.getValue().toString() : "Todos";
+        String selectedStatus = statusCB.getValue() != null ? statusCB.getValue().toString() : "Todos";
+
         List<Notification> filtered = notifications.stream()
-                .filter(n -> n.getNumberplate().toLowerCase().contains(plateText))
+                .filter(n -> plateText.isEmpty()
+                || (n.getNumberplate() != null && n.getNumberplate().toLowerCase().contains(plateText)))
+                .filter(n -> selectedType.equalsIgnoreCase("Todos")
+                || (n.getType() != null && n.getType().toString().equalsIgnoreCase(selectedType)))
+                .filter(n -> selectedStatus.equalsIgnoreCase("Todos")
+                || (n.getStatus()!= null && n.getStatus().toString().equalsIgnoreCase(selectedStatus)))
                 .collect(Collectors.toList());
 
         refreshTable(notificationTable, filtered);
+    }
+    
+    @FXML
+    private void resetAllFilters() {
+        numplateTF.setText("");
+        
+        typeCB.setValue(typeCB.getItems().get(0));
+        statusCB.setValue(typeCB.getItems().get(0));
+        
+        applyAllFilters();
     }
 
 }

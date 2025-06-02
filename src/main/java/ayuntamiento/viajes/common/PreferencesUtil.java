@@ -1,5 +1,6 @@
 package ayuntamiento.viajes.common;
 
+import static ayuntamiento.viajes.common.LoggerUtil.log;
 import ayuntamiento.viajes.model.Preferences;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -9,9 +10,8 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 
 /**
- * Clase que se encarga de controlar las preferencias
- * de todos los datos sobre algunas
- * opciones elegida por el usuario
+ * Clase que se encarga de controlar las preferencias de todos los datos sobre
+ * algunas opciones elegida por el usuario
  *
  * @author Cristian Delgado Cruz
  * @since 2025-05-14
@@ -19,48 +19,56 @@ import java.nio.file.Paths;
  */
 public class PreferencesUtil {
 
-    private static final String PREF_PATH = System.getenv("APPDATA") + File.separator + PropertiesUtil.getProperty("PREF_PATH");
+    private static final String PREF_PATH = System.getenv("APPDATA")
+            + File.separator + PropertiesUtil.getProperty("PREF_PATH");
     private static final String PREFERENCES_FILE = "preferences.json";
 
     private static String FULLPATH;
-    
+
     private static Preferences preferences;
 
     static {
         try {
             Files.createDirectories(Paths.get(PREF_PATH));
             FULLPATH = PREF_PATH + File.separator + PREFERENCES_FILE;
-            
+
             loadPreferences();
-        } catch (IOException e) {
-            System.err.println("Error al inicializar las preferencias: " + e.getMessage());
+        } catch (IOException ioE) {
+            log("Error al inciar las preferencias: \n"
+                    + ioE.getMessage() + "\n"
+                    + ioE.getCause());
         }
     }
 
-    public static String getRemember() {
-        return preferences.getRemember();
+    /**
+     * Metodo que devuelve las preferencias
+     *
+     * @return las preferencias
+     */
+    public static Preferences getPreferences() {
+        return preferences;
     }
 
-    public static void setRemember(String user) {
-        preferences.setRemember(user);
+    /**
+     * Metodo que guarda las preferencias
+     *
+     * @param pref las preferencias
+     */
+    public static void setPreferences(Preferences pref) {
+        preferences = pref;
         savePreferences();
     }
 
-    private static void loadPreferences() {
+    private static void loadPreferences() throws IOException {
 
         ObjectMapper mapper = new ObjectMapper();
-        try {
-            File file = new File(FULLPATH);
+        File file = new File(FULLPATH);
 
-            if (file.exists()) {
-                preferences = mapper.readValue(file, Preferences.class);
-            } else {
-                // Ponemos todo en vacio por si no esta creado
-                preferences = new Preferences();
-                savePreferences();
-            }
-        } catch (IOException e) {
-            System.err.println("No se pudo cargar las preferencias: " + e.getMessage());
+        if (file.exists()) {
+            preferences = mapper.readValue(file, Preferences.class);
+        } else {
+            preferences = new Preferences();
+            savePreferences();
         }
     }
 
@@ -68,8 +76,10 @@ public class PreferencesUtil {
         ObjectMapper mapper = new ObjectMapper();
         try {
             mapper.writerWithDefaultPrettyPrinter().writeValue(new File(FULLPATH), preferences);
-        } catch (IOException e) {
-            System.err.println("No se pudo guardar las preferencias: " + e.getMessage());
+        } catch (IOException ioE) {
+            log("Error al guardar las preferencias: \n" 
+                    + ioE.getMessage() + "\n"
+                    + ioE.getCause());
         }
     }
 
