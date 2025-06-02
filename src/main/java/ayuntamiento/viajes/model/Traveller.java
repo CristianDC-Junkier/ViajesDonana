@@ -9,7 +9,7 @@ import java.time.format.DateTimeFormatter;
  * Clase entidad que se utiliza para guardar los datos de los vehiculos
  *
  * @author Ramón Iglesias
- * @since 2025-05-09
+ * @since 2025-06-02
  * @version 1.2
  */
 public class Traveller {
