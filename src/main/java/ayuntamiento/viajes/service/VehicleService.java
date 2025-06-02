@@ -1,7 +1,7 @@
 package ayuntamiento.viajes.service;
 
 import ayuntamiento.viajes.dao.VehicleDAO;
-import ayuntamiento.viajes.model.Vehicle;
+import ayuntamiento.viajes.model.Traveller;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
@@ -20,14 +20,14 @@ import java.util.stream.Collectors;
 public class VehicleService {
 
     private static final VehicleDAO vehicleDAO;
-    private static List<Vehicle> vehicleList;
+    private static List<Traveller> vehicleList;
 
     static {
         vehicleDAO = new VehicleDAO();
     }
 
-    public Vehicle save(Vehicle entity) throws SQLException {
-        Vehicle result;
+    public Traveller save(Traveller entity) throws SQLException {
+        Traveller result;
         boolean vehicleExists = vehicleList.stream()
                 .anyMatch(vehicle -> vehicle.getNumplate().equalsIgnoreCase(entity.getNumplate()));
         if (vehicleExists) {
@@ -38,7 +38,7 @@ public class VehicleService {
         return entity;
     }
 
-    public Vehicle modify(Vehicle entity) throws SQLException {
+    public Traveller modify(Traveller entity) throws SQLException {
         boolean vehicleExists = vehicleList.stream()
                 .anyMatch(vehicle -> vehicle.getNumplate().equalsIgnoreCase(entity.getNumplate())
                 && vehicle.getId() != entity.getId());
@@ -54,7 +54,7 @@ public class VehicleService {
         return entity;
     }
 
-    public boolean delete(Vehicle entity) throws SQLException {
+    public boolean delete(Traveller entity) throws SQLException {
         boolean deleted;
         deleted = vehicleDAO.delete(entity);
         if (deleted) {
@@ -63,11 +63,11 @@ public class VehicleService {
         return deleted;
     }
 
-    public List<Vehicle> findAll() {
+    public List<Traveller> findAll() {
         return vehicleList;
     }
 
-    public List<Vehicle> findByType(int type) {
+    public List<Traveller> findByType(int type) {
         return vehicleList.stream()
                 .filter(v -> v.getType().ordinal() == type)
                 .collect(Collectors.toList());
@@ -79,7 +79,7 @@ public class VehicleService {
      * 
      * @return la lista de vehiculos con algun aviso
      */
-    public List<Vehicle> findByWarning() {
+    public List<Traveller> findByWarning() {
         LocalDate today = LocalDate.now();
 
         return vehicleList.stream()

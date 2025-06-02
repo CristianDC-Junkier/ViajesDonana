@@ -2,9 +2,9 @@ package ayuntamiento.viajes.controller;
 
 import ayuntamiento.viajes.common.PropertiesUtil;
 import ayuntamiento.viajes.common.SecurityUtil;
-import ayuntamiento.viajes.model.Vehicle;
-import ayuntamiento.viajes.model.Vehicle.VehicleStatus;
-import ayuntamiento.viajes.model.Vehicle.VehicleType;
+import ayuntamiento.viajes.model.Traveller;
+import ayuntamiento.viajes.model.Traveller.VehicleStatus;
+import ayuntamiento.viajes.model.Traveller.VehicleType;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -30,8 +30,8 @@ import javafx.scene.layout.StackPane;
  */
 public class ActionVehicleController implements Initializable {
 
-    private static Vehicle vSelected;
-    private static Vehicle vResult;
+    private static Traveller vSelected;
+    private static Traveller vResult;
 
     private Stage dialogStage;
 
@@ -109,7 +109,7 @@ public class ActionVehicleController implements Initializable {
             return;
         }
 
-        vResult = new Vehicle();
+        vResult = new Traveller();
         vResult.setDestination(destinationTF.getText().isBlank() ? null : destinationTF.getText());
         vResult.setNumplate(numplateTF.getText());
         vResult.setVehicle(vehicleTF.getText());
@@ -130,7 +130,7 @@ public class ActionVehicleController implements Initializable {
         dialogStage.close();
     }
 
-    private Vehicle getvResult() {
+    private Traveller getvResult() {
         return vResult;
     }
 
@@ -184,7 +184,7 @@ public class ActionVehicleController implements Initializable {
      * @return vehículo que se añadirá, o que se modificará
      * @throws Exception errores en la carga del dialogo
      */
-    public static Vehicle showActionVehicle(Stage parent, Vehicle selected, int type) throws Exception {
+    public static Traveller showActionVehicle(Stage parent, Traveller selected, int type) throws Exception {
         try {
             typeAction = type;
             vResult = null;

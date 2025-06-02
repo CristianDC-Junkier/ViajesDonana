@@ -1,6 +1,6 @@
 package ayuntamiento.viajes.dao;
 
-import ayuntamiento.viajes.model.User;
+import ayuntamiento.viajes.model.Admin;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -17,10 +17,10 @@ import java.util.List;
  * @since 2025-05-09
  * @version 1.2
  */
-public class UserDAO implements IDao<User> {
+public class UserDAO implements IDao<Admin> {
 
     @Override
-    public User save(User entity) throws SQLException{
+    public Admin save(Admin entity) throws SQLException{
         String sql = "INSERT INTO usuarios (tipo, usuario, contrasena) VALUES (?, ?, ?)";
 
         try (Connection conn = SQLiteDataBase.getConnection(); 
@@ -52,7 +52,7 @@ public class UserDAO implements IDao<User> {
     }
 
     @Override
-    public User modify(User entity) throws SQLException{
+    public Admin modify(Admin entity) throws SQLException{
         String sql = "UPDATE usuarios SET tipo = ?, usuario = ?, contrasena = ? WHERE id = ?";
 
         try (Connection conn = SQLiteDataBase.getConnection(); 
@@ -77,7 +77,7 @@ public class UserDAO implements IDao<User> {
     }
 
     @Override
-    public boolean delete(User entity) throws SQLException{
+    public boolean delete(Admin entity) throws SQLException{
         String sql = "DELETE FROM usuarios WHERE id = ?";
 
         try (Connection conn = SQLiteDataBase.getConnection(); 
@@ -94,15 +94,15 @@ public class UserDAO implements IDao<User> {
     }
 
     @Override
-    public List<User> findAll() throws SQLException{
-        List<User> listU = new ArrayList<>();
+    public List<Admin> findAll() throws SQLException{
+        List<Admin> listU = new ArrayList<>();
         String sql = "SELECT * FROM usuarios";
 
         try (Connection conn = SQLiteDataBase.getConnection(); 
                 Statement stmt = conn.createStatement(); ResultSet rs = stmt.executeQuery(sql)) {
 
             while (rs.next()) {
-                User u = new User(rs.getInt("tipo"),
+                Admin u = new Admin(rs.getInt("tipo"),
                         rs.getString("usuario"),
                         rs.getString("contrasena"));
                 u.setId(rs.getInt("id"));

@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.time.LocalDate;
 
 import ayuntamiento.viajes.model.Notification;
-import ayuntamiento.viajes.model.Vehicle;
+import ayuntamiento.viajes.model.Traveller;
 import java.time.temporal.ChronoUnit;
 
 /**
@@ -20,7 +20,7 @@ public class NotificationService {
 
     private final static VehicleService vehicleS;
     private static final List<Notification> notificationsList;
-    private static List<Vehicle> vehiclesList;
+    private static List<Traveller> vehiclesList;
 
     static {
         vehicleS = new VehicleService();
@@ -33,7 +33,7 @@ public class NotificationService {
     public void rechargeNotifications() {
         notificationsList.clear();
         vehiclesList = vehicleS.findByWarning();
-        for (Vehicle vehicle : vehiclesList) {
+        for (Traveller vehicle : vehiclesList) {
             String warning = getWarning(vehicle.getItv_RentDate(), vehicle.getInsuranceDate(), vehicle.getLast_CheckDate());
             notificationsList.add(new Notification(vehicle.getNumplate(),
                     vehicle.getVehicle(),

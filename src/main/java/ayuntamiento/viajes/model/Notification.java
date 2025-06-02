@@ -1,7 +1,7 @@
 package ayuntamiento.viajes.model;
 
-import ayuntamiento.viajes.model.Vehicle.VehicleStatus;
-import ayuntamiento.viajes.model.Vehicle.VehicleType;
+import ayuntamiento.viajes.model.Traveller.VehicleStatus;
+import ayuntamiento.viajes.model.Traveller.VehicleType;
 
 /**
  * Clase entidad que se utiliza para guardar 
@@ -16,8 +16,8 @@ public class Notification {
     
     private String numberplate;
     private String vehicle;
-    private Vehicle.VehicleType type;
-    private Vehicle.VehicleStatus status;
+    private Traveller.VehicleType type;
+    private Traveller.VehicleStatus status;
     private String warning;
 
     public Notification() {}

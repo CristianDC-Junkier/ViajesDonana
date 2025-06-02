@@ -16,9 +16,9 @@ import javafx.scene.control.Label;
 import javafx.stage.Stage;
 
 import ayuntamiento.viajes.service.VehicleService;
-import ayuntamiento.viajes.model.Vehicle;
-import ayuntamiento.viajes.model.Vehicle.VehicleStatus;
-import ayuntamiento.viajes.model.Vehicle.VehicleType;
+import ayuntamiento.viajes.model.Traveller;
+import ayuntamiento.viajes.model.Traveller.VehicleStatus;
+import ayuntamiento.viajes.model.Traveller.VehicleType;
 
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -51,7 +51,7 @@ public class VehicleController extends BaseController implements Initializable {
     }
 
     @FXML
-    private TableView<Vehicle> vehicleTable;
+    private TableView<Traveller> vehicleTable;
     @FXML
     private TableColumn numplateColumn;
     @FXML
@@ -176,16 +176,16 @@ public class VehicleController extends BaseController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         showUserOption();
 
-        numplateColumn.setCellValueFactory(new PropertyValueFactory<Vehicle, String>("numplate"));
-        vehicleColumn.setCellValueFactory(new PropertyValueFactory<Vehicle, String>("vehicle"));
-        destinationColumn.setCellValueFactory(new PropertyValueFactory<Vehicle, String>("destination"));
-        typeColumn.setCellValueFactory(new PropertyValueFactory<Vehicle, VehicleType>("type"));
-        statusColumn.setCellValueFactory(new PropertyValueFactory<Vehicle, VehicleStatus>("status"));
-        allocationColumn.setCellValueFactory(new PropertyValueFactory<Vehicle, String>("allocation"));
-        kms_last_checkColumn.setCellValueFactory(new PropertyValueFactory<Vehicle, Integer>("kms_last_check"));
-        last_checkColumn.setCellValueFactory(new PropertyValueFactory<Vehicle, LocalDate>("last_check"));
-        itv_rentColumn.setCellValueFactory(new PropertyValueFactory<Vehicle, LocalDate>("itv_rent"));
-        insuranceColumn.setCellValueFactory(new PropertyValueFactory<Vehicle, LocalDate>("insurance"));
+        numplateColumn.setCellValueFactory(new PropertyValueFactory<Traveller, String>("numplate"));
+        vehicleColumn.setCellValueFactory(new PropertyValueFactory<Traveller, String>("vehicle"));
+        destinationColumn.setCellValueFactory(new PropertyValueFactory<Traveller, String>("destination"));
+        typeColumn.setCellValueFactory(new PropertyValueFactory<Traveller, VehicleType>("type"));
+        statusColumn.setCellValueFactory(new PropertyValueFactory<Traveller, VehicleStatus>("status"));
+        allocationColumn.setCellValueFactory(new PropertyValueFactory<Traveller, String>("allocation"));
+        kms_last_checkColumn.setCellValueFactory(new PropertyValueFactory<Traveller, Integer>("kms_last_check"));
+        last_checkColumn.setCellValueFactory(new PropertyValueFactory<Traveller, LocalDate>("last_check"));
+        itv_rentColumn.setCellValueFactory(new PropertyValueFactory<Traveller, LocalDate>("itv_rent"));
+        insuranceColumn.setCellValueFactory(new PropertyValueFactory<Traveller, LocalDate>("insurance"));
 
         vehicleTable.setPlaceholder(new Label("No existen vehículos"));
 
@@ -243,7 +243,7 @@ public class VehicleController extends BaseController implements Initializable {
                     "VehicleController - showActionDialog"));
         } else {
             try {
-                Vehicle vResult = ActionVehicleController.showActionVehicle((Stage) father.getScene().getWindow(),
+                Traveller vResult = ActionVehicleController.showActionVehicle((Stage) father.getScene().getWindow(),
                         vehicleTable.getSelectionModel().getSelectedItem(), mode);
                 if (vResult != null) {
                     if (mode == 0) {
@@ -263,7 +263,7 @@ public class VehicleController extends BaseController implements Initializable {
         }
     }
 
-    public void anadir(Vehicle vehicle) throws Exception {
+    public void anadir(Traveller vehicle) throws Exception {
         if (vehicleS.save(vehicle) == null) {
             throw new ControledException("La matricula introducida ya existe: " + vehicle.getNumplate(),
                     "VehicleController - anadir");
@@ -271,7 +271,7 @@ public class VehicleController extends BaseController implements Initializable {
         refreshTable(vehicleTable, vehicleS.findAll());
     }
 
-    public void modificar(Vehicle vehicle) throws Exception {
+    public void modificar(Traveller vehicle) throws Exception {
         if (vehicleS.modify(vehicle) == null) {
             throw new ControledException("La matricula introducida ya existe: " + vehicle.getNumplate(),
                     "VehicleController - anadir");
@@ -294,7 +294,7 @@ public class VehicleController extends BaseController implements Initializable {
         LocalDate selectedItvDate = itv_rentDP.getValue();
         LocalDate selectedInsuranceDate = insuranceDP.getValue();
 
-        List<Vehicle> filtered = vehicleS.findAll().stream()
+        List<Traveller> filtered = vehicleS.findAll().stream()
                 .filter(v
                         -> (vehicleText.isEmpty() || (v.getVehicle() != null && v.getVehicle().toLowerCase().contains(vehicleText)))
                 && (plateText.isEmpty() || (v.getNumplate() != null && v.getNumplate().toLowerCase().contains(plateText)))

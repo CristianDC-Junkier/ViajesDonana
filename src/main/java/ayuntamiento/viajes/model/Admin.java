@@ -7,7 +7,7 @@ package ayuntamiento.viajes.model;
  * @since 2025-05-08
  * @version 1.0
  */
-public class User {
+public class Admin {
 
     private long id;
     private UserType type;
@@ -19,10 +19,10 @@ public class User {
         ADMINISTRADOR
     }
 
-    public User() {
+    public Admin() {
     }
 
-    public User(int tipo, String usuario, String contrasena) {
+    public Admin(int tipo, String usuario, String contrasena) {
         this.type = UserType.values()[tipo];
         this.username = usuario;
         this.password = contrasena;

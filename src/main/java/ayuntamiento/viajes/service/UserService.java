@@ -5,7 +5,7 @@ import ayuntamiento.viajes.common.LoggerUtil;
 import ayuntamiento.viajes.common.SecurityUtil;
 import ayuntamiento.viajes.dao.UserDAO;
 import ayuntamiento.viajes.exception.LoginException;
-import ayuntamiento.viajes.model.User;
+import ayuntamiento.viajes.model.Admin;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -22,8 +22,8 @@ import java.util.stream.Collectors;
 public class UserService {
 
     private static final UserDAO userDAO;
-    private static List<User> usersList;
-    private static User userLog;
+    private static List<Admin> usersList;
+    private static Admin userLog;
 
     static {
         userDAO = new UserDAO();
@@ -34,12 +34,12 @@ public class UserService {
      * 
      * @return El usuario logeado
      */
-    public static User getUsuarioLog() {
+    public static Admin getUsuarioLog() {
         return userLog;
     }
 
     
-    public static void setUsuarioLog(User usuarioLog) {
+    public static void setUsuarioLog(Admin usuarioLog) {
         UserService.userLog = usuarioLog;
     }
 
@@ -51,8 +51,8 @@ public class UserService {
      * @return el usuario creado con el id
      * @throws SQLException si hubo algun fallo en guardando el usuario
      */
-    public User save(User entity) throws SQLException {
-        User result;
+    public Admin save(Admin entity) throws SQLException {
+        Admin result;
         boolean userExists = usersList.stream()
                 .anyMatch(user -> user.getUsername().equals(entity.getUsername()));
         if (userExists) {
@@ -72,8 +72,8 @@ public class UserService {
      * @return el usuario modificado
      * @throws SQLException si hubo algun fallo en la modificación
      */
-    public User modify(User entity) throws SQLException {
-        User result;
+    public Admin modify(Admin entity) throws SQLException {
+        Admin result;
         boolean userExists = usersList.stream()
                 .anyMatch(user -> user.getUsername().equals(entity.getUsername())
                 && user.getId() != entity.getId());
@@ -101,8 +101,8 @@ public class UserService {
      * @return el usuario modificado
      * @throws SQLException si hubo algun fallo en la modificación
      */
-    public User modifyProfile(User entity) throws SQLException {
-        User result;
+    public Admin modifyProfile(Admin entity) throws SQLException {
+        Admin result;
         boolean userExists;
         userExists = userDAO.findAll().stream()
                 .anyMatch(user -> user.getUsername().equals(entity.getUsername())
@@ -116,7 +116,7 @@ public class UserService {
         return result;
     }
 
-    public boolean delete(User entity) throws SQLException {
+    public boolean delete(Admin entity) throws SQLException {
         boolean deleted;
         deleted = userDAO.delete(entity);
         if (deleted) {
@@ -136,8 +136,8 @@ public class UserService {
      * @exception LoginException Falla si hubiera un problema cuando se crea el usuario
      * @return El usuario logeado
      */
-    public User findByCredentials(String user, String password) throws LoginException {
-        User credential = usersList.stream()
+    public Admin findByCredentials(String user, String password) throws LoginException {
+        Admin credential = usersList.stream()
                 .filter(userF -> userF.getUsername().equals(user))
                 .findFirst()
                 .orElse(null);
@@ -158,13 +158,13 @@ public class UserService {
         return userLog;
     }
 
-    public List<User> findByType(int type) {
+    public List<Admin> findByType(int type) {
         return usersList.stream()
                 .filter(u -> u.getType().ordinal() == type)
                 .collect(Collectors.toList());
     }
 
-    public List<User> findAll() {
+    public List<Admin> findAll() {
         return usersList;
     }
 

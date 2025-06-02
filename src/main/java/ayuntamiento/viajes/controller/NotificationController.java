@@ -1,7 +1,7 @@
 package ayuntamiento.viajes.controller;
 
 import ayuntamiento.viajes.model.Notification;
-import ayuntamiento.viajes.model.Vehicle;
+import ayuntamiento.viajes.model.Traveller;
 import ayuntamiento.viajes.service.NotificationService;
 import java.net.URL;
 import java.util.List;
@@ -75,7 +75,7 @@ public class NotificationController extends BaseController implements Initializa
 
         /* Filtro de tipo */
         typeCB.getItems().add("Todos");
-        for (Vehicle.VehicleType t : Vehicle.VehicleType.values()) {
+        for (Traveller.VehicleType t : Traveller.VehicleType.values()) {
             typeCB.getItems().add(t.toString());
         }
         typeCB.getSelectionModel().selectFirst();
@@ -84,7 +84,7 @@ public class NotificationController extends BaseController implements Initializa
 
         /* Filtro de estado */
         statusCB.getItems().add("Todos");
-        for (Vehicle.VehicleStatus t : Vehicle.VehicleStatus.values()) {
+        for (Traveller.VehicleStatus t : Traveller.VehicleStatus.values()) {
             statusCB.getItems().add(t.toString());
         }
         statusCB.getSelectionModel().selectFirst();

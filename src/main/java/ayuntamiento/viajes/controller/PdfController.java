@@ -2,8 +2,8 @@ package ayuntamiento.viajes.controller;
 
 import ayuntamiento.viajes.common.PropertiesUtil;
 import ayuntamiento.viajes.exception.ControledException;
-import ayuntamiento.viajes.model.Vehicle;
-import ayuntamiento.viajes.model.Vehicle.VehicleType;
+import ayuntamiento.viajes.model.Traveller;
+import ayuntamiento.viajes.model.Traveller.VehicleType;
 import ayuntamiento.viajes.service.PDFService;
 import ayuntamiento.viajes.service.VehicleService;
 
@@ -61,7 +61,7 @@ public class PdfController extends BaseController implements Initializable {
         showUserOption();
 
         vehicleTypePDF.getItems().add("Todos");
-        vehicleTypePDF.getItems().addAll(Arrays.asList(Vehicle.VehicleType.values()));
+        vehicleTypePDF.getItems().addAll(Arrays.asList(Traveller.VehicleType.values()));
         vehicleTypePDF.getSelectionModel().selectFirst();
 
         documentTypePDF.getItems().addAll("Notificaciones", "Listado", "Todo");

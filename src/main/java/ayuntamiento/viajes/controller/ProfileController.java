@@ -10,7 +10,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
 
 import ayuntamiento.viajes.service.UserService;
-import ayuntamiento.viajes.model.User;
+import ayuntamiento.viajes.model.Admin;
 import javafx.scene.control.PasswordField;
 
 /**
@@ -68,7 +68,7 @@ public class ProfileController extends BaseController implements Initializable {
                         == InfoController.DialogResult.REJECT) {
                     reset();
                 } else {
-                    User u = new User(0, nameProfileTF.getText(),
+                    Admin u = new Admin(0, nameProfileTF.getText(),
                             passwordProfileTF.getText());
                     u.setId(UserService.getUsuarioLog().getId());
 

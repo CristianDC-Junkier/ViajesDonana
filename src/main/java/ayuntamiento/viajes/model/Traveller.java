@@ -12,7 +12,7 @@ import java.time.format.DateTimeFormatter;
  * @since 2025-05-09
  * @version 1.2
  */
-public class Vehicle {
+public class Traveller {
 
     private long id;
     private String numplate;
@@ -50,10 +50,10 @@ public class Vehicle {
     private static final DateTimeFormatter formatter_Show_Date = DateTimeFormatter.ofPattern(SHOW_DATE_FORMAT);
 
     // Constructores
-    public Vehicle() {
+    public Traveller() {
     }
 
-    public Vehicle(String numplate, String vehicle, String destination, Integer type, Integer status,
+    public Traveller(String numplate, String vehicle, String destination, Integer type, Integer status,
             String allocation, Integer kms_last_check, String last_check, String itv_rentString, String insuranceString) {
         this.numplate = numplate;
         this.vehicle = vehicle;

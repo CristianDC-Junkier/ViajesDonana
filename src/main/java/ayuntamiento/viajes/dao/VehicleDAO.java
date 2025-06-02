@@ -1,6 +1,6 @@
 package ayuntamiento.viajes.dao;
 
-import ayuntamiento.viajes.model.Vehicle;
+import ayuntamiento.viajes.model.Traveller;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -19,10 +19,10 @@ import java.util.List;
  * @since 2025-05-09
  * @version 1.2
  */
-public class VehicleDAO implements IDao<Vehicle> {
+public class VehicleDAO implements IDao<Traveller> {
 
     @Override
-    public Vehicle save(Vehicle vehiculo) throws SQLException {
+    public Traveller save(Traveller vehiculo) throws SQLException {
         String sql = "INSERT INTO vehiculos (numplate, vehicle, destination, type, "
                 + "status, allocation, kms_last_check, last_check, itv_rent, insurance) "
                 + "VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
@@ -60,7 +60,7 @@ public class VehicleDAO implements IDao<Vehicle> {
     }
 
     @Override
-    public Vehicle modify(Vehicle vehiculo) throws SQLException {
+    public Traveller modify(Traveller vehiculo) throws SQLException {
         String sql = "UPDATE vehiculos SET numplate = ?, vehicle = ?, destination = ?, "
                 + "type = ?, status = ?, allocation = ?, kms_last_check = ?, last_check = ?, "
                 + "itv_rent = ?, insurance = ? WHERE id = ?";
@@ -90,7 +90,7 @@ public class VehicleDAO implements IDao<Vehicle> {
     }
 
     @Override
-    public boolean delete(Vehicle entity) throws SQLException {
+    public boolean delete(Traveller entity) throws SQLException {
         String sql = "DELETE FROM vehiculos WHERE id = ?";
         try (Connection conn = SQLiteDataBase.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
 
@@ -105,14 +105,14 @@ public class VehicleDAO implements IDao<Vehicle> {
     }
 
     @Override
-    public List<Vehicle> findAll() throws SQLException {
-        List<Vehicle> listV = new ArrayList<>();
+    public List<Traveller> findAll() throws SQLException {
+        List<Traveller> listV = new ArrayList<>();
         String sql = "SELECT * FROM vehiculos";
 
         try (Connection conn = SQLiteDataBase.getConnection(); Statement stmt = conn.createStatement(); ResultSet rs = stmt.executeQuery(sql)) {
 
             while (rs.next()) {
-                Vehicle v = new Vehicle();
+                Traveller v = new Traveller();
                 v.setId(rs.getInt("id"));
                 v.setNumplate(rs.getString("numplate"));
                 v.setVehicle(rs.getString("vehicle"));

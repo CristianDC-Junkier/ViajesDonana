@@ -1,8 +1,8 @@
 package ayuntamiento.viajes.controller;
 
-import ayuntamiento.viajes.model.Vehicle;
-import ayuntamiento.viajes.model.Vehicle.VehicleStatus;
-import ayuntamiento.viajes.model.Vehicle.VehicleType;
+import ayuntamiento.viajes.model.Traveller;
+import ayuntamiento.viajes.model.Traveller.VehicleStatus;
+import ayuntamiento.viajes.model.Traveller.VehicleType;
 import ayuntamiento.viajes.service.VehicleService;
 import java.net.URL;
 
@@ -65,7 +65,7 @@ public class StadisticsController extends BaseController implements Initializabl
     private Label useVehicles;
 
     private VehicleService vehicleS;
-    private List<Vehicle> listVehicles;
+    private List<Traveller> listVehicles;
 
     private Object selectedValue;
 
@@ -110,17 +110,17 @@ public class StadisticsController extends BaseController implements Initializabl
      *
      * @param list Lista de vehiculos para configurar el chart de seguros
      */
-    private void insuranceConfig(List<Vehicle> list) {
+    private void insuranceConfig(List<Traveller> list) {
         insuranceSBC.setAnimated(false);
 
         /* Obtener función clasificadora según el filtro */
-        Function<Vehicle, ?> classifier = getClassifierByFilter(filter);
+        Function<Traveller, ?> classifier = getClassifierByFilter(filter);
 
 
         /* Map<Clave de agrupación, Map<Categoría, Cuenta>>*/
         Map<String, Map<String, Integer>> dataMap = new HashMap<>();
 
-        for (Vehicle v : list) {
+        for (Traveller v : list) {
             Object keyObj = classifier.apply(v);
             if (keyObj == null) {
                 continue;
@@ -216,16 +216,16 @@ public class StadisticsController extends BaseController implements Initializabl
      *
      * @param list Lista de vehiculos para configurar el chart de seguros
      */
-    private void itv_rentConfig(List<Vehicle> list) {
+    private void itv_rentConfig(List<Traveller> list) {
         ITV_RentSBC.setAnimated(false);
 
         /* Obtener función clasificadora según el filtro */
-        Function<Vehicle, ?> classifier = getClassifierByFilter(filter);
+        Function<Traveller, ?> classifier = getClassifierByFilter(filter);
 
         /* Map<Clave de agrupación, Map<Categoría, Cuenta>>*/
         Map<String, Map<String, Integer>> dataMap = new HashMap<>();
 
-        for (Vehicle v : list) {
+        for (Traveller v : list) {
             Object keyObj = classifier.apply(v);
             if (keyObj == null) {
                 continue;
@@ -322,8 +322,8 @@ public class StadisticsController extends BaseController implements Initializabl
      *
      * @param list Lista de vehiculos para configurar el chart de seguros
      */
-    private void pieChartConf(List<Vehicle> list) {
-        Function<Vehicle, ?> classifier = getClassifierByFilter(filter);
+    private void pieChartConf(List<Traveller> list) {
+        Function<Traveller, ?> classifier = getClassifierByFilter(filter);
         Map<?, Integer> counts = countBy(classifier, list);
 
         ObservableList<PieChart.Data> pieChartData = FXCollections.observableArrayList();
@@ -395,7 +395,7 @@ public class StadisticsController extends BaseController implements Initializabl
         int lastcheckCount = 0;
         int useVehiclesCount = 0;
 
-        for (Vehicle v : listVehicles) {
+        for (Traveller v : listVehicles) {
             boolean matches = matchesFilter(v);
 
             if (matches) {
@@ -469,7 +469,7 @@ public class StadisticsController extends BaseController implements Initializabl
             }
 
             /*Filtrar la lista según filtro activo y valor seleccionado*/
-            List<Vehicle> filtered = listVehicles.stream()
+            List<Traveller> filtered = listVehicles.stream()
                     .filter(v -> {
                         return switch (filter) {
                             case TYPE ->
@@ -544,12 +544,12 @@ public class StadisticsController extends BaseController implements Initializabl
      * @param filter Indica el valor del filtro, pudiendose ser dos;
      * @return retorna la función de clasificación
      */
-    private Function<Vehicle, ?> getClassifierByFilter(VehicleFilter filter) {
+    private Function<Traveller, ?> getClassifierByFilter(VehicleFilter filter) {
         return switch (filter) {
             case STATUS ->
-                Vehicle::getStatus;
+                Traveller::getStatus;
             case TYPE ->
-                Vehicle::getType;
+                Traveller::getType;
         };
     }
 
@@ -560,7 +560,7 @@ public class StadisticsController extends BaseController implements Initializabl
      * @param v el vehículo a comprobar
      * @return si hace match o no
      */
-    private boolean matchesFilter(Vehicle v) {
+    private boolean matchesFilter(Traveller v) {
         if (selectedValue == null) {
             return true;
         }
@@ -581,9 +581,9 @@ public class StadisticsController extends BaseController implements Initializabl
      * @param list la lista a contar
      * @return Mapa del enumerado con recuento de sus valores
      */
-    private static <T> Map<T, Integer> countBy(Function<Vehicle, T> classifier, List<Vehicle> list) {
+    private static <T> Map<T, Integer> countBy(Function<Traveller, T> classifier, List<Traveller> list) {
         Map<T, Integer> countMap = new HashMap<>();
-        for (Vehicle v : list) {
+        for (Traveller v : list) {
             T key = classifier.apply(v);
             countMap.put(key, countMap.getOrDefault(key, 0) + 1);
         }

@@ -1,7 +1,7 @@
 package ayuntamiento.viajes.service;
 
 import ayuntamiento.viajes.exception.ControledException;
-import ayuntamiento.viajes.model.Vehicle;
+import ayuntamiento.viajes.model.Traveller;
 
 import com.itextpdf.io.font.constants.StandardFonts;
 import com.itextpdf.kernel.colors.Color;
@@ -44,12 +44,12 @@ public class PDFService {
     private int total;
     private int own;
     private int rent;
-    private Map<Vehicle.VehicleStatus, Integer> statusVehicle;
+    private Map<Traveller.VehicleStatus, Integer> statusVehicle;
 
     private final static VehicleService vehicleS;
-    private List<Vehicle> vehiclesList;
-    private List<Vehicle> firstPageVehicles;
-    private List<Vehicle> remainingVehicles;
+    private List<Traveller> vehiclesList;
+    private List<Traveller> firstPageVehicles;
+    private List<Traveller> remainingVehicles;
 
     private final Color[] COLORS = new Color[]{
         ColorConstants.BLACK,
@@ -88,7 +88,7 @@ public class PDFService {
         total = vehiclesList.size();
 
         vehiclesList.forEach(v -> {
-            if (v.getType() == Vehicle.VehicleType.Propiedad) {
+            if (v.getType() == Traveller.VehicleType.Propiedad) {
                 own++;
             } else {
                 rent++;
@@ -270,7 +270,7 @@ public class PDFService {
         
         if ("add".equals(template)) {
             for (int i = 0; i < remainingVehicles.size(); i += numVehNextPage) {
-                List<Vehicle> pageVehicles = remainingVehicles.subList(
+                List<Traveller> pageVehicles = remainingVehicles.subList(
                         i, Math.min(i + numVehNextPage, remainingVehicles.size())
                 );
 
@@ -353,15 +353,15 @@ public class PDFService {
         canvas.moveText(columnX[2] - columnX[1], 0);
         canvas.showText(String.valueOf(rent));
         canvas.moveText(columnX[3] - columnX[2], 0);
-        canvas.showText(String.valueOf(statusVehicle.getOrDefault(Vehicle.VehicleStatus.Buen_Estado, 0)));
+        canvas.showText(String.valueOf(statusVehicle.getOrDefault(Traveller.VehicleStatus.Buen_Estado, 0)));
         canvas.moveText(columnX[4] - columnX[3], 0);
-        canvas.showText(String.valueOf(statusVehicle.getOrDefault(Vehicle.VehicleStatus.Mal_Estado, 0)));
+        canvas.showText(String.valueOf(statusVehicle.getOrDefault(Traveller.VehicleStatus.Mal_Estado, 0)));
         canvas.moveText(columnX[5] - columnX[4], 0);
-        canvas.showText(String.valueOf(statusVehicle.getOrDefault(Vehicle.VehicleStatus.Averiado, 0)));
+        canvas.showText(String.valueOf(statusVehicle.getOrDefault(Traveller.VehicleStatus.Averiado, 0)));
         canvas.moveText(columnX[6] - columnX[5], 0);
-        canvas.showText(String.valueOf(statusVehicle.getOrDefault(Vehicle.VehicleStatus.Reparado, 0)));
+        canvas.showText(String.valueOf(statusVehicle.getOrDefault(Traveller.VehicleStatus.Reparado, 0)));
         canvas.moveText(columnX[7] - columnX[6], 0);
-        canvas.showText(String.valueOf(statusVehicle.getOrDefault(Vehicle.VehicleStatus.Fuera_de_Servicio, 0)));
+        canvas.showText(String.valueOf(statusVehicle.getOrDefault(Traveller.VehicleStatus.Fuera_de_Servicio, 0)));
 
         canvas.moveText(columnX[8] - columnX[7], 16f);
         canvas.setFillColor(COLORS[2]);
@@ -415,7 +415,7 @@ public class PDFService {
                 30f, 105f, 240f, 315f, 425f, 515f};
         }
 
-        for (Vehicle v : firstPageVehicles) {
+        for (Traveller v : firstPageVehicles) {
             canvas.beginText();
 
             canvas.moveText(columnX[0], y);
@@ -489,7 +489,7 @@ public class PDFService {
      * @param pageVehicles Lista de Vehículos para escribir
      * @throws IOException Error de escritura
      */
-    private void writeAddTable(PdfCanvas canvas, List<Vehicle> pageVehicles, String document) throws IOException {
+    private void writeAddTable(PdfCanvas canvas, List<Traveller> pageVehicles, String document) throws IOException {
         PdfFont font = PdfFontFactory.createFont(StandardFonts.COURIER);
         canvas.setFontAndSize(font, 8);
         canvas.setFillColor(COLORS[0]);
@@ -516,7 +516,7 @@ public class PDFService {
                 30f, 105f, 240f, 315f, 425f, 515f};
         }
 
-        for (Vehicle v : pageVehicles) {
+        for (Traveller v : pageVehicles) {
             canvas.beginText();
 
             canvas.moveText(columnX[0], y);

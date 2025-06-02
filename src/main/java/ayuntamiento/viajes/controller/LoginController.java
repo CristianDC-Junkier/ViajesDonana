@@ -6,7 +6,7 @@ import ayuntamiento.viajes.common.PreferencesUtil;
 import ayuntamiento.viajes.common.SecurityUtil;
 import ayuntamiento.viajes.exception.LoginException;
 import ayuntamiento.viajes.model.Preferences;
-import ayuntamiento.viajes.model.User;
+import ayuntamiento.viajes.model.Admin;
 import ayuntamiento.viajes.service.UserService;
 import ayuntamiento.viajes.service.VehicleService;
 import java.net.URL;
@@ -56,7 +56,7 @@ public class LoginController extends BaseController implements Initializable {
                 wrongUser(2000, "La contaseña no debe estar vacía ni contener los siguientes carácteres: <--> , <;>, <'>, <\">, </*>, <*/>");
             } else {
                 try {
-                    User userlog = usuarioS.findByCredentials(userField.getText(), passField.getText());
+                    Admin userlog = usuarioS.findByCredentials(userField.getText(), passField.getText());
                     rememberUser(userlog);
                     setVehicles();
                     ManagerUtil.moveTo("home");
@@ -118,7 +118,7 @@ public class LoginController extends BaseController implements Initializable {
         errorlabel.setText(msg);
     }
 
-    public void rememberUser(User userlog) {
+    public void rememberUser(Admin userlog) {
         Preferences pref = new Preferences();
 
         if (rememberCheck.isSelected()) {

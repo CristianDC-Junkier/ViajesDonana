@@ -18,7 +18,7 @@ import javafx.scene.control.Button;
 import javafx.collections.FXCollections;
 
 import ayuntamiento.viajes.service.UserService;
-import ayuntamiento.viajes.model.User;
+import ayuntamiento.viajes.model.Admin;
 
 /**
  * Clase controladora que se encarga del funcionamiento de la pestaña de
@@ -33,7 +33,7 @@ public class UserController extends BaseController implements Initializable {
     private final UserService userS;
 
     @FXML
-    private TableView<User> userTable;
+    private TableView<Admin> userTable;
     @FXML
     private TableColumn idColumn;
     @FXML
@@ -94,7 +94,7 @@ public class UserController extends BaseController implements Initializable {
                 throw new ControledException("La contraseña no debe contener más de 16 carácteres",
                         "UserController - add");
             } else {
-                User u = new User(0, addUserNameTF.getText(), addUserPassTF.getText());
+                Admin u = new Admin(0, addUserNameTF.getText(), addUserPassTF.getText());
                 if (addUserAdminCheck.isSelected()) {
                     u.setTipo(1);
                 }
@@ -147,13 +147,13 @@ public class UserController extends BaseController implements Initializable {
                 throw new ControledException("La contraseña no debe contener más de 16 carácteres ",
                         "UserController - modify");
             } else {
-                User u = new User(0, modUserNameTF.getText(), modUserPassTF.getText());
+                Admin u = new Admin(0, modUserNameTF.getText(), modUserPassTF.getText());
                 u.setId(userTable.getSelectionModel().getSelectedItem().getId());
                 if (modUserAdminCheck.isSelected()) {
                     u.setTipo(1);
                 }
 
-                User userMod = userS.modify(u);
+                Admin userMod = userS.modify(u);
                 if (userMod == null) {
                     modUserNameTF.setStyle(errorStyle);
                     throw new ControledException("El nombre de usuario ya existe: " + u.getUsername(), "UserController - modify");
@@ -261,9 +261,9 @@ public class UserController extends BaseController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         showUserOption();
 
-        idColumn.setCellValueFactory(new PropertyValueFactory<User, Long>("id"));
-        typeColumn.setCellValueFactory(new PropertyValueFactory<User, User.UserType>("type"));
-        userColumn.setCellValueFactory(new PropertyValueFactory<User, String>("username"));
+        idColumn.setCellValueFactory(new PropertyValueFactory<Admin, Long>("id"));
+        typeColumn.setCellValueFactory(new PropertyValueFactory<Admin, Admin.UserType>("type"));
+        userColumn.setCellValueFactory(new PropertyValueFactory<Admin, String>("username"));
 
         userTable.setItems(FXCollections.observableList(userS.findAll()));
     }
