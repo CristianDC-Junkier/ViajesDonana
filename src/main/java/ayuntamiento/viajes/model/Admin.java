@@ -16,9 +16,9 @@ public class Admin {
     public Admin() {
     }
 
-    public Admin(String usuario, String contrasena) {
-        this.username = usuario;
-        this.password = contrasena;
+    public Admin(String username, String password) {
+        this.username = username;
+        this.password = password;
     }
 
     public long getId() {
@@ -41,8 +41,8 @@ public class Admin {
         return password;
     }
 
-    public void setContraseña(String contrasena) {
-        this.password = contrasena;
+    public void setContraseña(String password) {
+        this.password = password;
     }
 
 }

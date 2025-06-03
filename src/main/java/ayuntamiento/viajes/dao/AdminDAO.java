@@ -21,7 +21,7 @@ public class AdminDAO implements IDao<Admin> {
 
     @Override
     public Admin save(Admin entity) throws SQLException {
-        String sql = "INSERT INTO admins (nickname, password) VALUES (?, ?)";
+        String sql = "INSERT INTO admins (username, password) VALUES (?, ?)";
 
         try (Connection conn = SQLiteDataBase.getConnection(); PreparedStatement pstmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 
@@ -51,7 +51,7 @@ public class AdminDAO implements IDao<Admin> {
 
     @Override
     public Admin modify(Admin entity) throws SQLException {
-        String sql = "UPDATE admins SET nickname = ?, password = ? WHERE id = ?";
+        String sql = "UPDATE admins SET username = ?, password = ? WHERE id = ?";
 
         try (Connection conn = SQLiteDataBase.getConnection(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
@@ -98,7 +98,7 @@ public class AdminDAO implements IDao<Admin> {
             while (rs.next()) {
                 Admin u = new Admin();
                 u.setId(rs.getInt("id"));
-                u.setUsername(rs.getString("nickname"));
+                u.setUsername(rs.getString("username"));
                 u.setContraseña(rs.getString("password"));
                 listA.add(u);
             }
@@ -121,7 +121,7 @@ public class AdminDAO implements IDao<Admin> {
                 if (rs.next()) {
                     a = new Admin();
                     a.setId(rs.getInt("id"));
-                    a.setUsername(rs.getString("nickname"));
+                    a.setUsername(rs.getString("username"));
                     a.setContraseña(rs.getString("password"));
                 }
             }

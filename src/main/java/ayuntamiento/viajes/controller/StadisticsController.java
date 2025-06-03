@@ -234,7 +234,7 @@ public class StadisticsController extends BaseController implements Initializabl
             String key = keyObj.toString();
 
             /* Aquí calculamos la categoría según fecha o cualquier criterio */
-            String cat = CATEGORIES.get(getCategoryByDate(v.getItv_RentDate()));
+            String cat = CATEGORIES.get(getCategoryByDate(v.getSignUpDate()));
 
             dataMap
                     .computeIfAbsent(key, k -> new HashMap<>())
@@ -400,19 +400,19 @@ public class StadisticsController extends BaseController implements Initializabl
 
             if (matches) {
                 filteredVehiclesCount++;
-                if (v.getKms_last_check() != null) {
-                    totalKms += v.getKms_last_check();
+                if (v.getOffice()!= null) {
+                    totalKms += v.getId();
                 }
             }
 
             if (matches) {
-                LocalDate checkDate = v.getLast_CheckDate();
+                LocalDate checkDate = v.getSignUpDate();
                 int category = getCategoryByDate(checkDate);
                 if (category == 0 || category == 1) {
                     lastcheckCount++;
                 }
 
-                if (!v.getDestination().isBlank() && !v.getAllocation().isBlank()) {
+                if (!v.getDni().isBlank() && !v.getDni().isBlank()) {
                     useVehiclesCount++;
                 }
             }
@@ -473,9 +473,9 @@ public class StadisticsController extends BaseController implements Initializabl
                     .filter(v -> {
                         return switch (filter) {
                             case TYPE ->
-                                v.getType().equals(selectedValue);
+                                v.getTrip().equals(selectedValue);
                             case STATUS ->
-                                v.getStatus().equals(selectedValue);
+                                v.getTrip().equals(selectedValue);
                             default ->
                                 true;
                         };
@@ -547,9 +547,9 @@ public class StadisticsController extends BaseController implements Initializabl
     private Function<Traveller, ?> getClassifierByFilter(VehicleFilter filter) {
         return switch (filter) {
             case STATUS ->
-                Traveller::getStatus;
+                Traveller::getOffice;
             case TYPE ->
-                Traveller::getType;
+                Traveller::getTrip;
         };
     }
 
@@ -566,9 +566,9 @@ public class StadisticsController extends BaseController implements Initializabl
         }
         return switch (filter) {
             case TYPE ->
-                v.getType().equals(selectedValue);
+                v.getTrip().equals(selectedValue);
             case STATUS ->
-                v.getStatus().equals(selectedValue);
+                v.getOffice().equals(selectedValue);
         };
     }
 

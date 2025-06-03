@@ -81,7 +81,7 @@ public abstract class BaseController {
      * Cambiar el texto del menú de usuarios/perfil segun el usuario
      */
     public void showUserOption() {
-        if (AdminService.getAdminLog().getType().ordinal() == 1) {
+        if (AdminService.getAdminLog().getId() == 1) {
             users.setText("Administración de Usuarios");
         } else {
             users.setText("Mi perfil");
@@ -90,7 +90,7 @@ public abstract class BaseController {
 
     @FXML
     private void userspanel() throws IOException {
-        if (AdminService.getAdminLog().getType().ordinal() == 1) {
+        if (AdminService.getAdminLog().getId() == 1) {
             ManagerUtil.moveTo("user");
 
         } else {

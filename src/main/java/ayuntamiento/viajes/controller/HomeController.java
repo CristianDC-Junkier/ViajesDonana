@@ -13,18 +13,12 @@ import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
 import java.util.ResourceBundle;
 
-import javafx.animation.KeyFrame;
-import javafx.animation.Timeline;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
-import javafx.scene.layout.StackPane;
-import javafx.scene.paint.Color;
-import javafx.scene.paint.CycleMethod;
-import javafx.scene.paint.RadialGradient;
-import javafx.scene.paint.Stop;
-import javafx.scene.shape.Circle;
-import javafx.util.Duration;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+
 
 /**
  * Controlador de la vista principal, se encarga de cargar por primera vez la
@@ -36,16 +30,14 @@ import javafx.util.Duration;
  */
 public class HomeController extends BaseController implements Initializable {
 
+
     @FXML
-    private StackPane notificationsAlert;
+    private ImageView sunIV;
     @FXML
-    private Label notificationsCount;
+    private ImageView stadisticsIV;
     @FXML
     private Label welcomeLabel;
-    @FXML
-    private Circle notificationsCircle;
 
-    private Timeline glowTimeline;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -54,12 +46,8 @@ public class HomeController extends BaseController implements Initializable {
     }
 
     @FXML
-    private void vehiclespanel() throws IOException {
-        ManagerUtil.moveTo("vehicle");
-    }
-
-    @FXML
-    private void notificationspanel() throws IOException {
+    private void travellerspanel() throws IOException {
+        ManagerUtil.moveTo("travellers");
     }
 
     @FXML
@@ -98,44 +86,23 @@ public class HomeController extends BaseController implements Initializable {
             error(ex);
         }
     }
-
-    /**
-     * Metodo que coloca una animación "Glow" circular en el número de
-     * notificaciones, para captar la atención.
-     */
-    private void setupGlowAnimation() {
-        glowTimeline = new Timeline(new KeyFrame(Duration.millis(100), event -> {
-            double time = System.currentTimeMillis() % 4000;
-            double progress = Math.abs(Math.sin(time / 4000.0 * Math.PI));
-
-            /*Radio animado más amplio para que se note*/
-            double animatedRadius = 0.4 + 0.1 * progress;
-
-            RadialGradient gradient = new RadialGradient(
-                    90,
-                    0.0,
-                    0.5, 0.4848,
-                    animatedRadius,
-                    true,
-                    CycleMethod.NO_CYCLE,
-                    new Stop(0.0, Color.WHITE),
-                    new Stop(0.0067, Color.WHITE),
-                    new Stop(0.141, Color.WHITE),
-                    new Stop(0.706, Color.web("#ff3b3b")),
-                    new Stop(1.0, Color.web("#8b0000"))
-            );
-
-            notificationsCircle.setFill(gradient);
-
-            /* Animación de escala del círculo, entre 0.9 y 1.1*/
-            double scale = 0.9 + 0.1 * progress;
-            notificationsCircle.setScaleX(scale);
-            notificationsCircle.setScaleY(scale);
-
-        }));
-
-        glowTimeline.setCycleCount(Timeline.INDEFINITE);
-        glowTimeline.play();
+    
+    @FXML
+    private void travellergif(){
+        sunIV.setImage(new Image(getClass().getResource("/ayuntamiento/viajes/icons/home_sun.gif").toExternalForm()));
     }
+    @FXML
+    private void travellerpng(){
+        sunIV.setImage(new Image(getClass().getResource("/ayuntamiento/viajes/icons/home_sun.png").toExternalForm()));
+    }
+    @FXML
+    private void stadisticsgif(){
+        stadisticsIV.setImage(new Image(getClass().getResource("/ayuntamiento/viajes/icons/stadistics_sun.gif").toExternalForm()));
+    }
+    @FXML
+    private void stadisticspng(){
+        stadisticsIV.setImage(new Image(getClass().getResource("/ayuntamiento/viajes/icons/stadistics_sun.png").toExternalForm()));
+    }
+    
 
 }

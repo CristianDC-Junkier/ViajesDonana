@@ -294,7 +294,7 @@ public class VehicleController extends BaseController implements Initializable {
         LocalDate selectedItvDate = itv_rentDP.getValue();
         LocalDate selectedInsuranceDate = insuranceDP.getValue();
 
-        List<Traveller> filtered = vehicleS.findAll().stream()
+        /*List<Traveller> filtered = vehicleS.findAll().stream()
                 .filter(v
                         -> (vehicleText.isEmpty() || (v.getName() != null && v.getName().toLowerCase().contains(vehicleText)))
                 && (plateText.isEmpty() || (v.getDni() != null && v.getDni().toLowerCase().contains(plateText)))
@@ -308,7 +308,7 @@ public class VehicleController extends BaseController implements Initializable {
                 )
                 .collect(Collectors.toList());
 
-        refreshTable(vehicleTable, filtered);
+        refreshTable(vehicleTable, filtered);*/
     }
 
     @FXML

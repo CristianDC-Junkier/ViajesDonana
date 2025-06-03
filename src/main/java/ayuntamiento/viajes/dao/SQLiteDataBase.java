@@ -63,7 +63,7 @@ public class SQLiteDataBase {
             sql = """
                 CREATE TABLE IF NOT EXISTS admins (
                     id INTEGER PRIMARY KEY AUTOINCREMENT,
-                    nickname TEXT NOT NULL UNIQUE,
+                    username TEXT NOT NULL UNIQUE,
                     password TEXT NOT NULL
                 );
             """;

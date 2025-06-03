@@ -68,11 +68,12 @@ public class ProfileController extends BaseController implements Initializable {
                         == InfoController.DialogResult.REJECT) {
                     reset();
                 } else {
-                    Admin u = new Admin(0, nameProfileTF.getText(),
-                            passwordProfileTF.getText());
-                    u.setId(AdminService.getAdminLog().getId());
+                    Admin a = new Admin();
+                    a.setUsername(nameProfileTF.getText());
+                    a.setContraseña(passwordProfileTF.getText());
+                    a.setId(AdminService.getAdminLog().getId());
 
-                    if (userS.modifyProfile(u) == null) {
+                    if (userS.modifyProfile(a) == null) {
                         throw new ControledException("El nombre de usuario ya existe", "ProfileController - modify");
                     } else {
                         reset();

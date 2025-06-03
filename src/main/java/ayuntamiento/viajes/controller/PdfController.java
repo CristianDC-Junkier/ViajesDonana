@@ -124,7 +124,7 @@ public class PdfController extends BaseController implements Initializable {
                     if (vehicleS.findAll().isEmpty()) {
                         info("No existen vehículos con alguna notificación", false);
                     } else {
-                        pdf.printNotification(namePDF.getText(), dirPDF.getText(), documentTypePDF.getValue().toString());
+                        //pdf.printNotification(namePDF.getText(), dirPDF.getText(), documentTypePDF.getValue().toString());
                     }
                 } else {
                     String typeSelected = vehicleTypePDF.getValue().toString();
@@ -133,21 +133,19 @@ public class PdfController extends BaseController implements Initializable {
                             if (vehicleS.findAll().isEmpty()) {
                                 info("No existen vehículos registrados", false);
                             } else {
-                                pdf.printAll(namePDF.getText(), dirPDF.getText(), documentTypePDF.getValue().toString());
+                               // pdf.printAll(namePDF.getText(), dirPDF.getText(), documentTypePDF.getValue().toString());
                             }
                         }
                         default -> {
                             if (vehicleS.findByTrip(TravellerOffice.valueOf(typeSelected).ordinal()).isEmpty()) {
                                 info("No existen vehículos registrados de tipo " + typeSelected , false);
                             } else {
-                                pdf.printType(namePDF.getText(), dirPDF.getText(), typeSelected, documentTypePDF.getValue().toString());
+                                //pdf.printType(namePDF.getText(), dirPDF.getText(), typeSelected, documentTypePDF.getValue().toString());
                             }
                         }
 
                     }
                 }
-            } catch (ControledException cE) {
-                error(cE);
             } catch (Exception ex) {
                 error(ex);
             }

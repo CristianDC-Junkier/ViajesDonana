@@ -110,18 +110,18 @@ public class ActionVehicleController implements Initializable {
         }
 
         vResult = new Traveller();
-        vResult.setDestination(destinationTF.getText().isBlank() ? null : destinationTF.getText());
+        //vResult.setDestination(destinationTF.getText().isBlank() ? null : destinationTF.getText());
         vResult.setDni(numplateTF.getText());
         vResult.setName(vehicleTF.getText());
-        vResult.setAllocation(allocationTF.getText().isBlank() ? null : allocationTF.getText());
-        vResult.setType(typeCB.getValue().ordinal());
-        vResult.setStatus(statusCB.getValue().ordinal());
+        //vResult.setAllocation(allocationTF.getText().isBlank() ? null : allocationTF.getText());
+        //vResult.setType(typeCB.getValue().ordinal());
+        //vResult.setStatus(statusCB.getValue().ordinal());
 
-        vResult.setItv_RentDate(itvrentDP.getValue());
+        //vResult.setItv_RentDate(itvrentDP.getValue());
         vResult.setSignUpDate(insuranceDP.getValue());
-        vResult.setLast_CheckDate(lastCheckDP.getValue());
+        //vResult.setLast_CheckDate(lastCheckDP.getValue());
 
-        vResult.setKms_last_check(km_lastCheckTF.getText().isBlank() ? null : Integer.valueOf(km_lastCheckTF.getText()));
+        //vResult.setKms_last_check(km_lastCheckTF.getText().isBlank() ? null : Integer.valueOf(km_lastCheckTF.getText()));
 
         if (typeAction == 1) {
             vResult.setId(vSelected.getId());
@@ -227,16 +227,16 @@ public class ActionVehicleController implements Initializable {
     }
 
     private void populateFields() {
-        destinationTF.setText(vSelected.getDestination());
+        //destinationTF.setText(vSelected.getDestination());
         numplateTF.setText(vSelected.getDni());
         vehicleTF.setText(vSelected.getName());
-        allocationTF.setText(vSelected.getAllocation());
-        typeCB.setValue(vSelected.getType());
-        statusCB.setValue(vSelected.getStatus());
-        itvrentDP.setValue(vSelected.getItv_RentDate());
+        //allocationTF.setText(vSelected.getAllocation());
+        //typeCB.setValue(vSelected.getType());
+        //statusCB.setValue(vSelected.getStatus());
+        //itvrentDP.setValue(vSelected.getItv_RentDate());
         insuranceDP.setValue(vSelected.getSignUpDate());
-        km_lastCheckTF.setText(vSelected.getKms_last_check() != null ? String.valueOf(vSelected.getKms_last_check()) : "");
-        lastCheckDP.setValue(vSelected.getLast_CheckDate());
+        //km_lastCheckTF.setText(vSelected.getKms_last_check() != null ? String.valueOf(vSelected.getKms_last_check()) : "");
+        //lastCheckDP.setValue(vSelected.getLast_CheckDate());
 
     }
 

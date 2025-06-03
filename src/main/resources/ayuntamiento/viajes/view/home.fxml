@@ -82,7 +82,7 @@
             </Label>
                 <HBox alignment="CENTER" spacing="50.0">
                     <children>
-                        <VBox alignment="CENTER" onMouseClicked="#notificationspanel" spacing="10.0" styleClass="glow" stylesheets="@../styles/global.css">
+                        <VBox alignment="CENTER" onMouseClicked="#travellerspanel" onMouseEntered="#travellergif" onMouseExited="#travellerpng" spacing="10.0" styleClass="glow" stylesheets="@../styles/global.css">
                             <children>
                         <StackPane prefHeight="120.0" prefWidth="100.0" stylesheets="@../styles/home.css">
                            <children>
@@ -124,9 +124,9 @@
                                     </LinearGradient>
                                  </fill>
                               </Circle>
-                              <ImageView fitHeight="70.0" fitWidth="70.0" mouseTransparent="true" nodeOrientation="INHERIT" pickOnBounds="true" preserveRatio="true" scaleZ="0.0" StackPane.alignment="CENTER">
+                              <ImageView fitHeight="60.0" fitWidth="70.0" mouseTransparent="true" nodeOrientation="INHERIT" pickOnBounds="true" preserveRatio="true" scaleZ="0.0" translateY="2.0" StackPane.alignment="CENTER">
                                  <image>
-                                    <Image url="@../icons/home_sun.gif" />
+                                    <Image url="@../icons/home_sun.png" />
                                  </image>
                                  <StackPane.margin>
                                     <Insets />
@@ -140,7 +140,7 @@
                               </ImageView>
                            </children>
                         </StackPane>
-                        <Label alignment="CENTER" prefWidth="200.0" text="Panel de notificaciones y avisos" textAlignment="CENTER" wrapText="true">
+                        <Label alignment="CENTER" prefWidth="200.0" text="Panel de viajeros" textAlignment="CENTER" wrapText="true">
                            <font>
                               <Font name="Trebuchet MS" size="14.0" />
                            </font>
@@ -150,7 +150,7 @@
                         <Cursor fx:constant="HAND" />
                      </cursor>
                         </VBox>
-                        <VBox alignment="CENTER" onMouseClicked="#stadisticspanel" spacing="10.0" styleClass="glow" stylesheets="@../styles/global.css">
+                        <VBox alignment="CENTER" onMouseClicked="#stadisticspanel" onMouseEntered="#stadisticsgif" onMouseExited="#stadisticspng" spacing="10.0" styleClass="glow" stylesheets="@../styles/global.css">
                             <children>
                         <StackPane prefHeight="120.0" prefWidth="100.0" stylesheets="@../styles/home.css">
                            <children>
@@ -192,9 +192,9 @@
                                     </LinearGradient>
                                  </fill>
                               </Circle>
-                              <ImageView fitHeight="52.0" fitWidth="50.0" mouseTransparent="true" pickOnBounds="true" preserveRatio="true">
+                              <ImageView fx:id="stadisticsIV" fitHeight="52.0" fitWidth="50.0" mouseTransparent="true" pickOnBounds="true" preserveRatio="true">
                                  <image>
-                                    <Image url="@../icons/home_stadistics.gif" />
+                                    <Image url="@../icons/home_stadistics.png" />
                                  </image>
                               </ImageView>
                            </children>

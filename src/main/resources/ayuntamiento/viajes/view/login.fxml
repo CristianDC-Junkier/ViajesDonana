@@ -111,7 +111,7 @@
                            </HBox.margin>
                         </CheckBox>
                         <Region prefHeight="200.0" prefWidth="200.0" />
-                        <ProgressIndicator prefHeight="21.0" prefWidth="30.0" />
+                        <ProgressIndicator fx:id="chargePI" focusTraversable="false" prefHeight="21.0" prefWidth="30.0" visible="false" />
                      </children>
                      <padding>
                         <Insets bottom="5.0" top="5.0" />

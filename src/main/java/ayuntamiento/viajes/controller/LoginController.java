@@ -18,6 +18,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.control.CheckBox;
+import javafx.scene.control.ProgressIndicator;
 
 /**
  * Clase que controla la creación el login de los usuarios y actua como vista
@@ -29,8 +30,10 @@ import javafx.scene.control.CheckBox;
  */
 public class LoginController extends BaseController implements Initializable {
 
-    AdminService usuarioS;
+    AdminService adminS;
 
+    @FXML
+    private ProgressIndicator chargePI;
     @FXML
     private TextField userField;
     @FXML
@@ -45,9 +48,10 @@ public class LoginController extends BaseController implements Initializable {
      * parte inferior del login
      */
     @FXML
-    public void login() {
+    private void login() {
         try {
-            usuarioS.rechargeList();
+            changePI();
+            adminS.rechargeList();
             if (SecurityUtil.checkBadOrEmptyString(userField.getText())) {
                 log("Error en el login, el usuario no es válido");
                 wrongUser(1000, "El nombre no debe estar vacía ni contener los siguientes carácteres: <--> , <;>, <'>, <\">, </*>, <*/>");
@@ -56,14 +60,14 @@ public class LoginController extends BaseController implements Initializable {
                 wrongUser(2000, "La contaseña no debe estar vacía ni contener los siguientes carácteres: <--> , <;>, <'>, <\">, </*>, <*/>");
             } else {
                 try {
-                    Admin userlog = usuarioS.findByCredentials(userField.getText(), passField.getText());
+                    Admin userlog = adminS.findByCredentials(userField.getText(), passField.getText());
                     rememberUser(userlog);
-                    setVehicles();
+                    setTravellers();
+                    changePI();
                     ManagerUtil.moveTo("home");
                 } catch (SQLException sqlE) {
                     error(new Exception(sqlE));
                 }
-
             }
         } catch (LoginException lE) {
             wrongUser(lE.getErrorCode(), lE.getMessage());
@@ -74,18 +78,18 @@ public class LoginController extends BaseController implements Initializable {
     }
 
     @FXML
-    public void userPressed() {
+    private void userPressed() {
         userField.setStyle("");
     }
 
     @FXML
-    public void passPressed() {
+    private void passPressed() {
         passField.setStyle("");
     }
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        usuarioS = new AdminService();
+        adminS = new AdminService();
         String username = PreferencesUtil.getPreferences().getRemember();
 
         if (username != null) {
@@ -97,7 +101,7 @@ public class LoginController extends BaseController implements Initializable {
     /**
      * Recarga por primera vez los vehiculos
      */
-    private void setVehicles() throws SQLException {
+    private void setTravellers() throws SQLException {
         TravellerService vS = new TravellerService();
         if (vS.findAll() == null) {
             vS.rechargeList();
@@ -105,7 +109,7 @@ public class LoginController extends BaseController implements Initializable {
 
     }
 
-    public void wrongUser(int error, String msg) {
+    private void wrongUser(int error, String msg) {
         if (error == 1000) {
             log("Error en el login, " + msg);
             userField.setStyle(errorStyle);
@@ -118,7 +122,7 @@ public class LoginController extends BaseController implements Initializable {
         errorlabel.setText(msg);
     }
 
-    public void rememberUser(Admin userlog) {
+    private void rememberUser(Admin userlog) {
         Preferences pref = new Preferences();
 
         if (rememberCheck.isSelected()) {
@@ -127,4 +131,10 @@ public class LoginController extends BaseController implements Initializable {
 
         PreferencesUtil.setPreferences(pref);
     }
+    
+    private void changePI(){
+        chargePI.setVisible(!chargePI.isVisible());
+        chargePI.setFocusTraversable(!chargePI.isFocusTraversable());
+    }
+    
 }
