@@ -27,8 +27,10 @@ import java.io.OutputStream;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * Clase que se encarga del comportamiento del pdf, de la escritura del mismo y
@@ -70,16 +72,34 @@ public class PDFService {
      *
      * @param name nombre elegido para el documento
      * @param dir directorio elegido para colocar el documento
+     * @param sort atributo sobre el que se va a ordenar la lista
      * @throws ControledException Excepciones que mostramos al usuario vienen de
      * print
      * @throws Exception Excepciones que no mostramos al usuario vienen de print
      */
-    public void printAll(String name, String dir) throws ControledException, Exception {
+    public void printAll(String name, String dir, String sort) throws ControledException, Exception {
         tripTraveller = new HashMap<>();
         own = 0;
         rent = 0;
 
-        travellersList = travellerS.findAll();
+        switch(sort){
+            case "Nombre" -> {
+                travellersList = travellerS.findAll().stream().sorted(Comparator.comparing(Traveller::getName)).collect(Collectors.toList());
+            }
+            case "Viaje" -> {
+                travellersList = travellerS.findAll().stream().sorted(Comparator.comparing(Traveller::getTrip).reversed()).collect(Collectors.toList());
+            }
+            case "Fecha de Inscripción" -> {
+                travellersList = travellerS.findAll().stream().sorted(Comparator.comparing(Traveller::getSignUpDate)).collect(Collectors.toList());
+            }
+            case "Lugar de Inscripción" -> {
+                travellersList = travellerS.findAll().stream().sorted(Comparator.comparing(Traveller::getOffice).reversed()).collect(Collectors.toList());
+            }
+            case "DNI" -> {
+                travellersList = travellerS.findAll().stream().sorted(Comparator.comparing(Traveller::getDni)).collect(Collectors.toList());
+            }
+        }
+        
         firstPageTravellers = travellersList.stream().limit(numTraInitialPage).toList();
         remainingTravellers = travellersList.stream().skip(numTraInitialPage).toList();
 

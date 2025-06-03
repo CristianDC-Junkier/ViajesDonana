@@ -3,7 +3,7 @@ package ayuntamiento.viajes.controller;
 import ayuntamiento.viajes.common.PropertiesUtil;
 import ayuntamiento.viajes.exception.ControledException;
 import ayuntamiento.viajes.model.Traveller;
-import ayuntamiento.viajes.model.Traveller.TravellerOffice;
+import ayuntamiento.viajes.model.Traveller.TravellerTrip;
 import ayuntamiento.viajes.service.PDFService;
 import ayuntamiento.viajes.service.TravellerService;
 
@@ -15,7 +15,6 @@ import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
-import java.util.List;
 import java.util.ResourceBundle;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -37,10 +36,10 @@ public class PdfController extends BaseController implements Initializable {
 
     @FXML
     private ChoiceBox sortCB;
-    //@FXML
-    //private ChoiceBox documentTypePDF;
     @FXML
-    private CheckBox onlyNotiCB;
+    private ChoiceBox tripTypeCB;
+    //@FXML
+    //private CheckBox onlyNotiCB;
     @FXML
     private TextField namePDF;
     @FXML
@@ -56,7 +55,6 @@ public class PdfController extends BaseController implements Initializable {
         pdf = new PDFService();
     }
 
- 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         showUserOption();
@@ -64,11 +62,12 @@ public class PdfController extends BaseController implements Initializable {
         sortCB.getItems().addAll("Nombre", "Viaje", "Fecha de Inscripción", "Lugar de Inscripción", "DNI");
         sortCB.getSelectionModel().selectFirst();
 
-        /*documentTypePDF.getItems().addAll("Notificaciones", "Listado", "Todo");
-        documentTypePDF.getSelectionModel().selectFirst();
-        documentTypePDF.setOnAction((event) -> {
-            changePDFName();
-        });*/
+        tripTypeCB.getItems().add("Todos");
+        tripTypeCB.getItems().addAll(Arrays.asList(Traveller.TravellerTrip.values()));
+        tripTypeCB.getSelectionModel().selectFirst();
+        tripTypeCB.setOnAction((event) -> {
+            changePDFName(tripTypeCB.getSelectionModel().getSelectedItem().toString());
+        });
 
         String userHome = System.getProperty("user.home");
         File defaultDir = new File(userHome, "Downloads");
@@ -108,7 +107,7 @@ public class PdfController extends BaseController implements Initializable {
     @FXML
     private void printPDF() {
 
-        TravellerService vehicleS = new TravellerService();
+        TravellerService travellerS = new TravellerService();
 
         if (isNotValidFileName()) {
             namePDF.setStyle(errorStyle);
@@ -120,32 +119,26 @@ public class PdfController extends BaseController implements Initializable {
                     "PDFController - printPDF"));
         } else {
             try {
-                /*if (onlyNotiCB.isSelected()) {
-                    if (vehicleS.findAll().isEmpty()) {
-                        info("No existen vehículos con alguna notificación", false);
-                    } else {
-                        //pdf.printNotification(namePDF.getText(), dirPDF.getText(), documentTypePDF.getValue().toString());
-                    }
-                } else {*/
-                    /*String typeSelected = vehicleTypePDF.getValue().toString();
-                    switch (typeSelected) {
-                        case "Todos" -> {*/
-                            if (vehicleS.findAll().isEmpty()) {
-                                info("No existen vehículos registrados", false);
-                            } else {
-                               pdf.printAll(namePDF.getText(), dirPDF.getText());
-                            }
-                        /*}
-                        default -> {
-                            if (vehicleS.findByTrip(TravellerOffice.valueOf(typeSelected).ordinal()).isEmpty()) {
-                                info("No existen vehículos registrados de tipo " + typeSelected , false);
-                            } else {
-                                //pdf.printType(namePDF.getText(), dirPDF.getText(), typeSelected, documentTypePDF.getValue().toString());
-                            }
-                        }
 
-                    }*/
-                //}
+                String typeSelected = tripTypeCB.getValue().toString();
+                switch (typeSelected) {
+                    case "Todos" -> {
+                        if (travellerS.findAll().isEmpty()) {
+                            info("No existen vehículos registrados", false);
+                        } else {
+                            pdf.printAll(namePDF.getText(), dirPDF.getText(), sortCB.getValue().toString());
+                        }
+                    }
+                    default -> {
+                        if (travellerS.findByTrip(TravellerTrip.valueOf(typeSelected).ordinal()).isEmpty()) {
+                            info("No existen vehículos registrados de tipo " + typeSelected, false);
+                        } else {
+                            pdf.printType(namePDF.getText(), dirPDF.getText(), typeSelected);
+                        }
+                    }
+
+                }
+
             } catch (Exception ex) {
                 error(ex);
             }
@@ -171,18 +164,14 @@ public class PdfController extends BaseController implements Initializable {
      * Cambia el nombre del PDF automáticamente
      */
     @FXML
-    private void changePDFName() {
-        /*if ("Todo".equals((String) documentTypePDF.getValue())) {
-            namePDF.setText("Informe-Completo-Vehiculos-"
-                    + LocalDate.now().format(dateformatter));
-        } else if ("Notificaciones".equals((String) documentTypePDF.getValue())) {
-            namePDF.setText("Notificaciones-Vehiculos-"
+    private void changePDFName(String extra) {
+        if ("Todos".equals(extra)) {
+            namePDF.setText("Listado-Viajes-"
                     + LocalDate.now().format(dateformatter));
         } else {
-            namePDF.setText("Listado-Vehiculos-"
+            namePDF.setText("Listado-Viajes-" + extra + "-"
                     + LocalDate.now().format(dateformatter));
-        }*/
-
+        }
     }
 
     private boolean isNotValidFileName() {

@@ -144,6 +144,27 @@
                               <Insets bottom="10.0" />
                            </padding>
                         </HBox>
+                        <Label contentDisplay="CENTER" layoutX="91.0" layoutY="10.0" nodeOrientation="LEFT_TO_RIGHT" prefWidth="241.0" text="Filtrar por Viaje" textFill="#007bff">
+                           <font>
+                              <Font name="Trebuchet MS Bold" size="18.0" />
+                           </font>
+                        </Label>
+                        <HBox alignment="CENTER_LEFT" layoutX="10.0" layoutY="41.0">
+                           <children>
+                              <ImageView fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../icons/pdf_choose-name.png" />
+                                 </image>
+                                 <HBox.margin>
+                                    <Insets left="30.0" right="18.0" />
+                                 </HBox.margin>
+                              </ImageView>
+                              <ChoiceBox fx:id="tripTypeCB" prefHeight="25.0" prefWidth="175.0" />
+                           </children>
+                           <padding>
+                              <Insets bottom="10.0" />
+                           </padding>
+                        </HBox>
                         <Label contentDisplay="CENTER" nodeOrientation="LEFT_TO_RIGHT" prefWidth="241.0" text="Nombre " textFill="#007bff">
                            <font>
                               <Font name="Trebuchet MS Bold" size="18.0" />
