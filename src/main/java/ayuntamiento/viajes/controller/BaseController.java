@@ -91,7 +91,7 @@ public abstract class BaseController {
     @FXML
     private void userspanel() throws IOException {
         if (AdminService.getAdminLog().getId() == 1) {
-            ManagerUtil.moveTo("user");
+            ManagerUtil.moveTo("admin");
 
         } else {
             ManagerUtil.moveTo("profile");

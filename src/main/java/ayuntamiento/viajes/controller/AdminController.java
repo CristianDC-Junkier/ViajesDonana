@@ -13,7 +13,6 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.TextField;
-import javafx.scene.control.CheckBox;
 import javafx.scene.control.Button;
 import javafx.collections.FXCollections;
 
@@ -25,7 +24,7 @@ import ayuntamiento.viajes.model.Admin;
  * administración de usuarios.
  *
  * @author Ramón Iglesias Granados
- * @since 2025-05-09
+ * @since 2025-06-03
  * @version 1.6
  */
 public class AdminController extends BaseController implements Initializable {
@@ -43,15 +42,11 @@ public class AdminController extends BaseController implements Initializable {
     private TextField addUserNameTF;
     @FXML
     private TextField addUserPassTF;
-    @FXML
-    private CheckBox addUserAdminCheck;
 
     @FXML
     private TextField modUserNameTF;
     @FXML
     private TextField modUserPassTF;
-    @FXML
-    private CheckBox modUserAdminCheck;
     @FXML
     private Button modButton;
 
@@ -206,13 +201,11 @@ public class AdminController extends BaseController implements Initializable {
         if (userTable.getSelectionModel().getSelectedItem().getId() == 1) {
             modUserNameTF.setDisable(true);
             modUserPassTF.setDisable(true);
-            modUserAdminCheck.setDisable(true);
             modButton.setDisable(true);
             delButton.setDisable(true);
         } else {
             modUserNameTF.setDisable(false);
             modUserPassTF.setDisable(false);
-            modUserAdminCheck.setDisable(false);
             modButton.setDisable(false);
             delButton.setDisable(false);
         }
@@ -259,11 +252,9 @@ public class AdminController extends BaseController implements Initializable {
     private void reset() {
         addUserNameTF.setText("");
         addUserPassTF.setText("");
-        addUserAdminCheck.setSelected(false);
 
         modUserNameTF.setText("");
         modUserPassTF.setText("");
-        modUserAdminCheck.setSelected(false);
 
         userTable.getSelectionModel().clearSelection();
         delUserNameTF.setText("");
