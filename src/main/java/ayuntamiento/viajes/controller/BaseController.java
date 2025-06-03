@@ -21,7 +21,7 @@ import javafx.stage.Stage;
  * prácticamente todos los controladores
  *
  * @author Cristian Delgado Cruz
- * @since 2025-05-09
+ * @since 2025-06-03
  * @version 1.2
  */
 public abstract class BaseController {

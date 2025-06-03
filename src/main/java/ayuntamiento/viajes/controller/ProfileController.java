@@ -23,7 +23,7 @@ import javafx.scene.control.PasswordField;
  */
 public class ProfileController extends BaseController implements Initializable {
 
-    AdminService userS;
+    AdminService adminS;
 
     @FXML
     private TextField nameProfileTF;
@@ -33,7 +33,7 @@ public class ProfileController extends BaseController implements Initializable {
     private final int numMaxChars = 16;
 
     public ProfileController() {
-        userS = new AdminService();
+        adminS = new AdminService();
     }
 
     /**
@@ -73,7 +73,7 @@ public class ProfileController extends BaseController implements Initializable {
                     a.setContraseña(passwordProfileTF.getText());
                     a.setId(AdminService.getAdminLog().getId());
 
-                    if (userS.modifyProfile(a) == null) {
+                    if (adminS.modifyProfile(a) == null) {
                         throw new ControledException("El nombre de usuario ya existe", "ProfileController - modify");
                     } else {
                         reset();

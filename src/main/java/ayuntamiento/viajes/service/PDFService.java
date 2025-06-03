@@ -27,7 +27,6 @@ import java.io.OutputStream;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.time.temporal.ChronoUnit;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -204,7 +203,7 @@ public class PDFService {
         writeLabels(canvas, type);
 
         writeTable(canvas);
-        addPage(type, pdfDocument, canvas);
+        addPage(pdfDocument, canvas);
 
         pdfDocument.close();
         templatePDF.deleteOnExit();
@@ -229,8 +228,6 @@ public class PDFService {
      * Función que añade la página principal y luego llama a las funciones para
      * escribir en ella en orden.
      *
-     * @param type Tipo de los vehiculos (Propiedad/Alquilado/Otro) para el
-     * label
      * @param template Tipo de template que utiliza (add/base)
      * @param document Tipo de documento que utiliza (Listado/Notificaciones)
      * @param pdfDocument Documento PDF original, por el cual se añaden páginas
@@ -240,7 +237,7 @@ public class PDFService {
      * @throws Exception Error que no mostramos al usuario y pasamos hacia
      * arriba
      */
-    private void addPage(String type, PdfDocument pdfDocument, PdfCanvas canvas) throws ControledException, Exception {
+    private void addPage(PdfDocument pdfDocument, PdfCanvas canvas) throws ControledException, Exception {
         File addTemplate;
 
         /*Añadir las diferentes páginas*/
@@ -352,7 +349,6 @@ public class PDFService {
      * Método que escribe la tabla principal
      *
      * @param canvas Página pdf sobre la que se escribirá
-     * @param document Tipo del documento (Todo/Listado/Notificaciones)
      * @throws IOException Error de escritura
      */
     private void writeTable(PdfCanvas canvas) throws IOException {
@@ -397,7 +393,6 @@ public class PDFService {
      * Metodo que escribe la tabla de las siguientes páginas a la principal
      *
      * @param canvas Página pdf sobre la que se escribirá
-     * @param document Tipo del documento (Todo/Listado/Notificaciones)
      * @param pageTravellers Lista de Vehículos para escribir
      * @throws IOException Error de escritura
      */
