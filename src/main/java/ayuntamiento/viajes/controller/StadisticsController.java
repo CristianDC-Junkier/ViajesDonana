@@ -7,13 +7,14 @@ import ayuntamiento.viajes.service.TravellerService;
 import java.net.URL;
 
 import java.time.LocalDate;
-import java.time.temporal.ChronoUnit;
+import java.time.YearMonth;
+import java.time.format.TextStyle;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
+import java.util.Objects;
 import java.util.ResourceBundle;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -26,8 +27,6 @@ import javafx.fxml.Initializable;
 
 import javafx.scene.chart.PieChart;
 import javafx.scene.control.Label;
-import javafx.scene.control.ToggleButton;
-import javafx.scene.paint.Color;
 
 /**
  * Clase controladora que se encarga de la vista de estadísticas, se controla
@@ -44,7 +43,7 @@ public class StadisticsController extends BaseController implements Initializabl
     @FXML
     private PieChart officePC;
     @FXML
-    private PieChart datPC;
+    private PieChart dayPC;
 
     @FXML
     private Label totalTravellers;
@@ -54,6 +53,8 @@ public class StadisticsController extends BaseController implements Initializabl
     private Label averageOffice;
     @FXML
     private Label averageDay;
+    @FXML
+    private Label chooseTravel;
 
     private TravellerService travellerS;
     private List<Traveller> listTraveller;
@@ -73,23 +74,23 @@ public class StadisticsController extends BaseController implements Initializabl
         //listTraveller = travellerS.findAll();
 
         listTraveller = List.of(
-                new Traveller("12345678A", "Ana Pérez", 0, 0, "01/05/2023"),
-                new Traveller("23456789B", "Luis Gómez", 1, 1, "01/05/2023"), // mismo día que Ana
-                new Traveller("34567890C", "María López", 2, 2, "20/03/2023"),
+                new Traveller("12345678A", "Ana Pérez", 0, 0, "01/06/2023"),
+                new Traveller("23456789B", "Luis Gómez", 1, 1, "01/06/2023"),
+                new Traveller("34567890C", "María López", 2, 2, "20/07/2023"),
                 new Traveller("45678901D", "Carlos Ruiz", 0, 3, "05/06/2023"),
-                new Traveller("56789012E", "Laura Martín", 1, 4, "12/02/2023"),
-                new Traveller("67890123F", "Javier Sánchez", 2, 5, "10/01/2023"),
-                new Traveller("78901234G", "Sofía Torres", 0, 0, "20/03/2023"), // mismo día que María
-                new Traveller("89012345H", "Miguel Fernández", 1, 1, "30/04/2023"),
-                new Traveller("90123456I", "Elena Díaz", 2, 2, "07/03/2023"),
+                new Traveller("56789012E", "Laura Martín", 1, 4, "12/07/2023"),
+                new Traveller("67890123F", "Javier Sánchez", 2, 5, "10/06/2023"),
+                new Traveller("78901234G", "Sofía Torres", 0, 0, "20/08/2023"),
+                new Traveller("89012345H", "Miguel Fernández", 1, 1, "30/09/2023"),
+                new Traveller("90123456I", "Elena Díaz", 2, 2, "07/09/2023"),
                 new Traveller("01234567J", "Pedro Morales", 0, 3, "19/06/2023"),
-                new Traveller("11223344K", "Isabel Ruiz", 1, 4, "12/02/2023"), // mismo día que Laura
-                new Traveller("22334455L", "Raúl Jiménez", 2, 5, "28/01/2023")
+                new Traveller("11223344K", "Isabel Ruiz", 1, 4, "12/07/2023"),
+                new Traveller("22334455L", "Raúl Jiménez", 2, 5, "28/06/2023")
         );
 
-        pieChartConf(listTraveller, Traveller::getTrip, travelPC);
-        pieChartConf(listTraveller, Traveller::getOffice, officePC);
-        pieChartConf(listTraveller, Traveller::getSignUpDate, datPC);
+        pieChartConf(listTraveller, Traveller::getTrip, travelPC, ChartType.TRAVEL);
+        pieChartConf(listTraveller, Traveller::getOffice, officePC, ChartType.OFFICE);
+        pieChartConf(listTraveller, Traveller::getSignUpDate, dayPC, ChartType.DATE);
 
         setupPieChartListeners();
 
@@ -102,24 +103,52 @@ public class StadisticsController extends BaseController implements Initializabl
      *
      * @param list Lista de vehiculos para configurar el chart de seguros
      */
-    private <T> void pieChartConf(List<Traveller> list, Function<Traveller, T> classifier, PieChart pieChart) {
-        Map<T, Integer> counts = countBy(classifier, list);
+    private <T> void pieChartConf(List<Traveller> list, Function<Traveller, T> classifier, PieChart pieChart, ChartType chartType) {
+        Map<String, Integer> counts = new HashMap<>();
 
-        ObservableList<PieChart.Data> pieChartData = FXCollections.observableArrayList();
+        switch (chartType) {
+            case DATE:
+                for (Traveller t : list) {
+                    LocalDate date = t.getSignUpDate();
+                    if (date != null) {
+                        String label = date.getMonth().getDisplayName(TextStyle.FULL, Locale.getDefault()) + " " + date.getYear();
+                        counts.put(label, counts.getOrDefault(label, 0) + 1);
+                    }
+                }
+                break;
 
-        for (Map.Entry<T, Integer> entry : counts.entrySet()) {
-            String label = entry.getKey().toString();
-            pieChartData.add(new PieChart.Data(label, entry.getValue()));
+            case TRAVEL:
+                Map<T, Integer> rawCounts = countBy(classifier, list);
+                List<Map.Entry<T, Integer>> sorted = rawCounts.entrySet()
+                        .stream()
+                        .sorted((a, b) -> b.getValue() - a.getValue())
+                        .collect(Collectors.toList());
+
+                int others = 0;
+                for (int i = 0; i < sorted.size(); i++) {
+                    if (i < 6) {
+                        counts.put(sorted.get(i).getKey().toString(), sorted.get(i).getValue());
+                    } else {
+                        others += sorted.get(i).getValue();
+                    }
+                }
+                if (others > 0) {
+                    counts.put("Otros", others);
+                }
+                break;
+
+            case OFFICE:
+            default:
+                for (Traveller t : list) {
+                    String label = classifier.apply(t).toString();
+                    counts.put(label, counts.getOrDefault(label, 0) + 1);
+                }
         }
 
-        pieChart.setData(pieChartData);
+        ObservableList<PieChart.Data> data = FXCollections.observableArrayList();
+        counts.forEach((k, v) -> data.add(new PieChart.Data(k + " (" + v + ")", v)));
 
-        for (PieChart.Data data : pieChart.getData()) {
-            String name = data.getName();
-            double value = data.getPieValue();
-            data.setName(name + " (" + (int) value + ")");
-        }
-
+        pieChart.setData(data);
         pieChart.setLegendVisible(true);
     }
 
@@ -146,9 +175,15 @@ public class StadisticsController extends BaseController implements Initializabl
                 .orElse(0);
 
         // Agrupar por fecha de signup y contar viajeros por día
-        Map<LocalDate, Long> signupGroups = list.stream()
-                .collect(Collectors.groupingBy(Traveller::getSignUpDate, Collectors.counting()));
-        double avgPerDay = signupGroups.values().stream()
+        Map<YearMonth, Long> signupGroupsByMonth = list.stream()
+                .map(Traveller::getSignUpDate)
+                .filter(Objects::nonNull)
+                .collect(Collectors.groupingBy(
+                        date -> YearMonth.from(date),
+                        Collectors.counting()
+                ));
+
+        double avgPerMonth = signupGroupsByMonth.values().stream()
                 .mapToLong(Long::longValue)
                 .average()
                 .orElse(0);
@@ -157,18 +192,18 @@ public class StadisticsController extends BaseController implements Initializabl
         totalTravellers.setText(String.valueOf(total));
         averageTravel.setText(String.format("%.2f", avgTripCount));
         averageOffice.setText(String.format("%.2f", avgOfficeCount));
-        averageDay.setText(String.format("%.2f", avgPerDay));
+        averageDay.setText(String.format("%.2f", avgPerMonth));
     }
 
     private void setupPieChartListeners() {
         travelPC.getData().forEach(data -> {
-            data.getNode().setOnMouseClicked(e -> handlePieChartClick(travelPC, data.getName(), Traveller::getTrip));
+            data.getNode().setOnMouseClicked(e -> handlePieChartClick(data.getName(), Traveller::getTrip, ChartType.TRAVEL));
         });
         officePC.getData().forEach(data -> {
-            data.getNode().setOnMouseClicked(e -> handlePieChartClick(officePC, data.getName(), Traveller::getOffice));
+            data.getNode().setOnMouseClicked(e -> handlePieChartClick(data.getName(), Traveller::getOffice, ChartType.OFFICE));
         });
-        datPC.getData().forEach(data -> {
-            data.getNode().setOnMouseClicked(e -> handlePieChartClick(datPC, data.getName(), Traveller::getSignUpDate));
+        dayPC.getData().forEach(data -> {
+            data.getNode().setOnMouseClicked(e -> handlePieChartClick(data.getName(), Traveller::getSignUpDate, ChartType.DATE));
         });
     }
 
@@ -179,27 +214,44 @@ public class StadisticsController extends BaseController implements Initializabl
      *
      * @param valueStr el nombre nodo elegido
      */
-    private <T> void handlePieChartClick(
-            PieChart pieChart,
-            Object clickedValue,
-            Function<Traveller, T> classifier
-    ) {
-        if (clickedValue.equals(selectedValue)) {
+    private <T> void handlePieChartClick(String clickedNameWithValue, Function<Traveller, T> classifier, ChartType chartType) {
+        String clickedValueStr = clickedNameWithValue.replaceAll("\\s*\\(.*\\)$", "").trim();
+
+        if (clickedValueStr.equals(selectedValue)) {
             selectedValue = null;
-            pieChartConf(listTraveller, classifier, pieChart);
+            chooseTravel.setText("Todos los viajes");
         } else {
-            selectedValue = clickedValue;
-
-            List<Traveller> filtered = listTraveller.stream()
-                    .filter(t -> clickedValue.equals(classifier.apply(t)))
-                    .collect(Collectors.toList());
-
-            pieChartConf(filtered, Traveller::getTrip, travelPC);
-            pieChartConf(filtered, Traveller::getOffice, officePC);
-            pieChartConf(filtered, Traveller::getSignUpDate, datPC);
-
-            rechargeLabels(filtered);
+            selectedValue = clickedValueStr;
+            switch (chartType) {
+                case DATE ->
+                    chooseTravel.setText("Viajeros desde " + selectedValue);
+                case TRAVEL ->
+                    chooseTravel.setText("Viajes de " + selectedValue);
+                case OFFICE ->
+                    chooseTravel.setText("Viajeros desde " + selectedValue);
+            }
         }
+
+        List<Traveller> filtered = selectedValue == null ? listTraveller : listTraveller.stream()
+                .filter(t -> {
+                    T value = classifier.apply(t);
+                    if (value == null) {
+                        return false;
+                    }
+                    if (chartType == ChartType.DATE && value instanceof LocalDate) {
+                        LocalDate dateValue = (LocalDate) value;
+                        String monthLabel = dateValue.getMonth().getDisplayName(TextStyle.FULL, Locale.getDefault()) + " " + dateValue.getYear();
+                        return clickedValueStr.equals(monthLabel);
+                    }
+                    return clickedValueStr.equals(value.toString());
+                }).toList();
+
+        pieChartConf(filtered, Traveller::getTrip, travelPC, ChartType.TRAVEL);
+        pieChartConf(filtered, Traveller::getOffice, officePC, ChartType.OFFICE);
+        pieChartConf(filtered, Traveller::getSignUpDate, dayPC, ChartType.DATE);
+
+        setupPieChartListeners();
+        rechargeLabels(filtered);
     }
 
     /**
