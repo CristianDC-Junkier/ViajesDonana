@@ -29,7 +29,7 @@ import javafx.scene.control.CheckBox;
  */
 public class LoginController extends BaseController implements Initializable {
 
-    AdminService usuarioS;
+    AdminService adminS;
 
     @FXML
     private TextField userField;
@@ -47,7 +47,7 @@ public class LoginController extends BaseController implements Initializable {
     @FXML
     public void login() {
         try {
-            usuarioS.rechargeList();
+            adminS.rechargeList();
             if (SecurityUtil.checkBadOrEmptyString(userField.getText())) {
                 log("Error en el login, el usuario no es válido");
                 wrongUser(1000, "El nombre no debe estar vacía ni contener los siguientes carácteres: <--> , <;>, <'>, <\">, </*>, <*/>");
@@ -56,7 +56,7 @@ public class LoginController extends BaseController implements Initializable {
                 wrongUser(2000, "La contaseña no debe estar vacía ni contener los siguientes carácteres: <--> , <;>, <'>, <\">, </*>, <*/>");
             } else {
                 try {
-                    Admin userlog = usuarioS.findByCredentials(userField.getText(), passField.getText());
+                    Admin userlog = adminS.findByCredentials(userField.getText(), passField.getText());
                     rememberUser(userlog);
                     setVehicles();
                     ManagerUtil.moveTo("home");
@@ -85,7 +85,7 @@ public class LoginController extends BaseController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        usuarioS = new AdminService();
+        adminS = new AdminService();
         String username = PreferencesUtil.getPreferences().getRemember();
 
         if (username != null) {

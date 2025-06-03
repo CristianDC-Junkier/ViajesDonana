@@ -28,16 +28,14 @@ import ayuntamiento.viajes.model.Admin;
  * @since 2025-05-09
  * @version 1.6
  */
-public class UserController extends BaseController implements Initializable {
+public class AdminController extends BaseController implements Initializable {
 
-    private final AdminService userS;
+    private final AdminService adminS;
 
     @FXML
     private TableView<Admin> userTable;
     @FXML
     private TableColumn idColumn;
-    @FXML
-    private TableColumn typeColumn;
     @FXML
     private TableColumn userColumn;
 
@@ -64,8 +62,8 @@ public class UserController extends BaseController implements Initializable {
 
     private final int numMaxChars = 16;
 
-    public UserController() {
-        userS = new AdminService();
+    public AdminController() {
+        adminS = new AdminService();
     }
 
     /**
@@ -94,18 +92,15 @@ public class UserController extends BaseController implements Initializable {
                 throw new ControledException("La contraseña no debe contener más de 16 carácteres",
                         "UserController - add");
             } else {
-                Admin u = new Admin(0, addUserNameTF.getText(), addUserPassTF.getText());
-                if (addUserAdminCheck.isSelected()) {
-                    u.setTipo(1);
-                }
+                Admin u = new Admin(addUserNameTF.getText(), addUserPassTF.getText());
 
-                if (userS.save(u) == null) {
+                if (adminS.save(u) == null) {
                     addUserPassTF.setStyle(errorStyle);
                     throw new ControledException("El nombre de usuario ya existe: " + u.getUsername(),
                             "UserController - add");
                 } else {
                     LoggerUtil.log("Usuario: " + u.getUsername() + " añadido correctamente");
-                    refreshTable(userTable, userS.findAll());
+                    refreshTable(userTable, adminS.findAll());
                     reset();
                 }
             }
@@ -147,23 +142,19 @@ public class UserController extends BaseController implements Initializable {
                 throw new ControledException("La contraseña no debe contener más de 16 carácteres ",
                         "UserController - modify");
             } else {
-                Admin u = new Admin(0, modUserNameTF.getText(), modUserPassTF.getText());
+                Admin u = new Admin(modUserNameTF.getText(), modUserPassTF.getText());
                 u.setId(userTable.getSelectionModel().getSelectedItem().getId());
-                if (modUserAdminCheck.isSelected()) {
-                    u.setTipo(1);
-                }
 
-                Admin userMod = userS.modify(u);
+                Admin userMod = adminS.modify(u);
                 if (userMod == null) {
                     modUserNameTF.setStyle(errorStyle);
                     throw new ControledException("El nombre de usuario ya existe: " + u.getUsername(), "UserController - modify");
                 } else {
-                    if (AdminService.getAdminLog().getId() == userMod.getId()
-                            && userMod.getType().ordinal() == 0) {
+                    if (AdminService.getAdminLog().getId() == userMod.getId()) {
                         ManagerUtil.reload();
                     } else {
                         info("Usuario, " + userMod.getUsername() + ", modificado con éxito", false);
-                        refreshTable(userTable, userS.findAll());
+                        refreshTable(userTable, adminS.findAll());
                         reset();
                     }
                 }
@@ -188,9 +179,9 @@ public class UserController extends BaseController implements Initializable {
                 throw new ControledException("Debe seleccionar un usuario de la tabla",
                         "UserController - delete");
             } else if (info("¿Está seguro de que quiere eliminar este usuario?", true) == InfoController.DialogResult.ACCEPT) {
-                if (userS.delete(userTable.getSelectionModel().getSelectedItem())) {
+                if (adminS.delete(userTable.getSelectionModel().getSelectedItem())) {
                     info("El Usuario fue eliminado con éxito", false);
-                    refreshTable(userTable, userS.findAll());
+                    refreshTable(userTable, adminS.findAll());
                     if (AdminService.getAdminLog() == null) {
                         ManagerUtil.reload();
                     }
@@ -227,11 +218,6 @@ public class UserController extends BaseController implements Initializable {
         }
 
         modUserNameTF.setText(userTable.getSelectionModel().getSelectedItem().getUsername());
-        if (userTable.getSelectionModel().getSelectedItem().getType().ordinal() == 0) {
-            modUserAdminCheck.setSelected(false);
-        } else {
-            modUserAdminCheck.setSelected(true);
-        }
         delUserNameTF.setText(userTable.getSelectionModel().getSelectedItem().getUsername());
 
         resetStyle();
@@ -262,10 +248,9 @@ public class UserController extends BaseController implements Initializable {
         showUserOption();
 
         idColumn.setCellValueFactory(new PropertyValueFactory<Admin, Long>("id"));
-        typeColumn.setCellValueFactory(new PropertyValueFactory<Admin, Admin.UserType>("type"));
         userColumn.setCellValueFactory(new PropertyValueFactory<Admin, String>("username"));
 
-        userTable.setItems(FXCollections.observableList(userS.findAll()));
+        userTable.setItems(FXCollections.observableList(adminS.findAll()));
     }
 
     /**

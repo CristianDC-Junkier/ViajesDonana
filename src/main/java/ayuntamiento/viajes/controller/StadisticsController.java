@@ -38,7 +38,7 @@ import javafx.scene.paint.Color;
  * las labels, los stackedbar charts y los pie charts
  *
  * @author Cristian Delgado Cruz
- * @since 2025-05-14
+ * @since 2025-06-02
  * @version 1.3
  */
 public class StadisticsController extends BaseController implements Initializable {
