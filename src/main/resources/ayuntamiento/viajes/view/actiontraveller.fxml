@@ -15,11 +15,11 @@
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
 
-<StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ayuntamiento.viajes.controller.ActionVehicleController">
+<StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="672.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ayuntamiento.viajes.controller.ActionTravellerController">
    <children>
-      <VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="550.0" prefWidth="650.0" styleClass="form-card">
+      <VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="458.0" prefWidth="627.0" styleClass="form-card">
          <children>
-            <Label fx:id="titleLabel" styleClass="title-label" text="Vehículo" textAlignment="CENTER">
+            <Label fx:id="titleLabel" styleClass="title-label" text="Viajero" textAlignment="CENTER">
                <font>
                   <Font name="Trebuchet MS" size="20.0" />
                </font>
@@ -27,28 +27,15 @@
                   <Insets top="20.0" />
                </VBox.margin>
             </Label>
-            <Line endX="491.2929382324219" endY="-0.4151079058647156" fill="#fa0000" startX="-57.607303619384766" startY="-0.41539785265922546" stroke="#f22c2c" strokeWidth="2.0" styleClass="decor-line">
+            <Line endX="549.9784545898438" endY="-0.4160062074661255" fill="#fa0000" startX="-57.607303619384766" startY="-0.41539785265922546" stroke="#f22c2c" strokeWidth="2.0" styleClass="decor-line">
                <VBox.margin>
                   <Insets />
                </VBox.margin>
             </Line>
-            <HBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="250.0" prefWidth="600.0" spacing="20.0">
+            <HBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="173.0" prefWidth="600.0" spacing="20.0">
                <children>
-                  <VBox alignment="CENTER" prefWidth="300.0" spacing="5.0">
+                  <VBox alignment="CENTER" prefWidth="304.0" spacing="5.0">
                      <children>
-                        <HBox alignment="CENTER_LEFT" prefHeight="50.0" spacing="15.0">
-                           <children>
-                              <ImageView fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@../icons/car-destination.png" />
-                                 </image>
-                                 <HBox.margin>
-                                    <Insets left="10.0" />
-                                 </HBox.margin>
-                              </ImageView>
-                              <TextField fx:id="destinationTF" alignment="CENTER" onKeyTyped="#destinationChange" prefWidth="170.0" promptText="Destino" styleClass="text-field" />
-                           </children>
-                        </HBox>
                         <StackPane prefHeight="50.0">
                            <children>
                               <HBox alignment="CENTER_LEFT" prefHeight="50.0" spacing="15.0">
@@ -61,7 +48,7 @@
                                           <Insets left="10.0" />
                                        </HBox.margin>
                                     </ImageView>
-                                    <TextField fx:id="numplateTF" alignment="CENTER" onKeyTyped="#numplateChange" prefWidth="170.0" promptText="Matrícula" styleClass="text-field" />
+                                    <TextField fx:id="dniTF" alignment="CENTER" onKeyTyped="#dniChange" prefHeight="25.0" prefWidth="195.0" promptText="DNI" styleClass="text-field" />
                                  </children>
                               </HBox>
                               <Label text="*" textFill="#ff3434" StackPane.alignment="TOP_RIGHT">
@@ -79,14 +66,6 @@
                         </StackPane>
                         <StackPane prefHeight="50.0">
                            <children>
-                              <Label text="*" textFill="#ff3434" StackPane.alignment="TOP_RIGHT">
-                                 <font>
-                                    <Font name="Trebuchet MS Bold" size="15.0" />
-                                 </font>
-                                 <StackPane.margin>
-                                    <Insets right="10.0" />
-                                 </StackPane.margin>
-                              </Label>
                               <HBox alignment="CENTER_LEFT" prefHeight="50.0" spacing="15.0">
                                  <children>
                                     <ImageView fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
@@ -97,43 +76,34 @@
                                           <Insets left="10.0" />
                                        </HBox.margin>
                                     </ImageView>
-                                    <TextField fx:id="vehicleTF" alignment="CENTER" onKeyTyped="#vehicleChange" prefWidth="170.0" promptText="Vehículo" styleClass="text-field">
+                                    <TextField fx:id="nameTF" alignment="CENTER" onKeyTyped="#nameChange" prefHeight="25.0" prefWidth="197.0" promptText="Nombre" styleClass="text-field">
                                        <HBox.margin>
                                           <Insets />
                                        </HBox.margin>
                                     </TextField>
                                  </children>
                               </HBox>
+                              <Label text="*" textFill="#ff3434" StackPane.alignment="TOP_RIGHT">
+                                 <font>
+                                    <Font name="Trebuchet MS Bold" size="15.0" />
+                                 </font>
+                                 <StackPane.margin>
+                                    <Insets right="10.0" />
+                                 </StackPane.margin>
+                              </Label>
                            </children>
                         </StackPane>
-                        <HBox alignment="CENTER_LEFT" prefHeight="50.0" spacing="15.0">
-                           <children>
-                              <ImageView fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@../icons/car-allocation.png" />
-                                 </image>
-                                 <HBox.margin>
-                                    <Insets left="10.0" />
-                                 </HBox.margin>
-                              </ImageView>
-                              <TextField fx:id="allocationTF" alignment="CENTER" onKeyTyped="#allocationChange" prefWidth="170.0" promptText="Asignación" styleClass="text-field">
-                                 <HBox.margin>
-                                    <Insets />
-                                 </HBox.margin>
-                              </TextField>
-                           </children>
-                        </HBox>
                      </children>
                      <HBox.margin>
                         <Insets left="30.0" />
                      </HBox.margin>
                   </VBox>
-                  <Line endX="-100.0" endY="249.69288635253906" startX="-100.0" stroke="#f22c2c" strokeWidth="2.0" styleClass="decor-line" />
-                  <VBox alignment="CENTER" prefWidth="300.0" spacing="5.0">
+                  <Line endX="-99.41421508789062" endY="173.58578491210938" startX="-100.0" stroke="#f22c2c" strokeWidth="2.0" styleClass="decor-line" />
+                  <VBox alignment="CENTER" prefHeight="173.0" prefWidth="216.0" spacing="5.0">
                      <children>
                         <StackPane prefHeight="50.0">
                            <children>
-                              <Label text="*" textFill="#ff3434" StackPane.alignment="TOP_RIGHT">
+                              <Label text="*" textFill="#ff3434" translateX="22.0" StackPane.alignment="TOP_RIGHT">
                                  <font>
                                     <Font name="Trebuchet MS Bold" size="15.0" />
                                  </font>
@@ -151,14 +121,14 @@
                                           <Insets left="10.0" />
                                        </HBox.margin>
                                     </ImageView>
-                                    <ChoiceBox fx:id="statusCB" prefWidth="170.0" />
+                                    <ChoiceBox fx:id="tripCB" prefWidth="170.0" />
                                  </children>
                               </HBox>
                            </children>
                         </StackPane>
                         <StackPane prefHeight="50.0">
                            <children>
-                              <Label text="*" textFill="#ff3434" StackPane.alignment="TOP_RIGHT">
+                              <Label text="*" textFill="#ff3434" translateX="22.0" StackPane.alignment="TOP_RIGHT">
                                  <font>
                                     <Font name="Trebuchet MS Bold" size="15.0" />
                                  </font>
@@ -176,37 +146,11 @@
                                           <Insets left="10.0" />
                                        </HBox.margin>
                                     </ImageView>
-                                    <ChoiceBox fx:id="typeCB" prefWidth="170.0" />
+                                    <ChoiceBox fx:id="officeCB" prefWidth="170.0" />
                                  </children>
                               </HBox>
                            </children>
                         </StackPane>
-                        <HBox alignment="CENTER_LEFT" prefHeight="50.0" spacing="15.0">
-                           <children>
-                              <ImageView fx:id="imageITVRent" fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@../icons/car-itv.png" />
-                                 </image>
-                                 <HBox.margin>
-                                    <Insets left="10.0" />
-                                 </HBox.margin>
-                              </ImageView>
-                              <DatePicker fx:id="itvrentDP" onAction="#itvrentChange" prefWidth="170.0" promptText="Itv/Alquiler" showWeekNumbers="true" />
-                           </children>
-                        </HBox>
-                        <HBox alignment="CENTER_LEFT" prefHeight="50.0" spacing="15.0">
-                           <children>
-                              <ImageView fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@../icons/car-insurance.png" />
-                                 </image>
-                                 <HBox.margin>
-                                    <Insets left="10.0" />
-                                 </HBox.margin>
-                              </ImageView>
-                              <DatePicker fx:id="insuranceDP" onAction="#insuranceChange" prefWidth="170.0" promptText="Seguro" showWeekNumbers="true" />
-                           </children>
-                        </HBox>
                      </children>
                      <HBox.margin>
                         <Insets right="30.0" />
@@ -217,23 +161,10 @@
                   <Insets />
                </VBox.margin>
             </HBox>
-            <Line endX="491.2929382324219" endY="-0.4151079058647156" fill="#fa0000" startX="-57.607303619384766" startY="-0.41539785265922546" stroke="#f22c2c" strokeWidth="2.0" styleClass="decor-line" />
-            <VBox alignment="CENTER" prefHeight="200.0" spacing="10.0">
+            <Line endX="549.9784545898438" endY="-0.4160062074661255" fill="#fa0000" startX="-57.607303619384766" startY="-0.41539785265922546" stroke="#f22c2c" strokeWidth="2.0" styleClass="decor-line" />
+            <VBox alignment="CENTER" prefHeight="67.0" prefWidth="600.0" spacing="10.0">
                <children>
-                  <HBox alignment="CENTER" prefHeight="32.0" prefWidth="275.0" spacing="15.0">
-                     <children>
-                        <ImageView fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@../icons/car-km.png" />
-                           </image>
-                           <HBox.margin>
-                              <Insets left="10.0" />
-                           </HBox.margin>
-                        </ImageView>
-                        <TextField fx:id="km_lastCheckTF" alignment="CENTER" prefHeight="25.0" prefWidth="170.0" promptText="Km última revisión" styleClass="text-field" />
-                     </children>
-                  </HBox>
-                  <HBox alignment="CENTER" prefHeight="32.0" prefWidth="275.0" spacing="15.0">
+                  <HBox alignment="TOP_CENTER" prefHeight="32.0" prefWidth="275.0" spacing="10.0">
                      <children>
                         <ImageView fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
                            <image>
@@ -243,7 +174,12 @@
                               <Insets left="10.0" />
                            </HBox.margin>
                         </ImageView>
-                        <DatePicker fx:id="lastCheckDP" onAction="#lastCheckChange" prefHeight="25.0" prefWidth="170.0" promptText="Fecha última revisión" showWeekNumbers="true" />
+                        <DatePicker fx:id="sign_upDP" onAction="#signupChange" prefHeight="25.0" prefWidth="170.0" promptText="Fecha inscripción" showWeekNumbers="true" />
+                        <Label alignment="TOP_LEFT" text="*" textFill="#ff3434">
+                           <font>
+                              <Font name="Trebuchet MS Bold" size="15.0" />
+                           </font>
+                        </Label>
                      </children>
                   </HBox>
                </children>
@@ -251,14 +187,14 @@
                   <Insets bottom="10.0" top="10.0" />
                </VBox.margin>
             </VBox>
-            <Line endX="491.2929382324219" endY="-0.4151079058647156" fill="#fa0000" startX="-57.607303619384766" startY="-0.41539785265922546" stroke="#f22c2c" strokeWidth="2.0" styleClass="decor-line">
+            <Line endX="549.9784545898438" endY="-0.4160062074661255" fill="#fa0000" startX="-57.607303619384766" startY="-0.41539785265922546" stroke="#f22c2c" strokeWidth="2.0" styleClass="decor-line">
                <VBox.margin>
                   <Insets />
                </VBox.margin>
             </Line>
             <HBox alignment="CENTER">
                <children>
-                  <Button fx:id="actionButton" cache="true" mnemonicParsing="false" onAction="#extractVehicle" prefHeight="30.0" prefWidth="100.0" text="Añadir" textAlignment="CENTER" textFill="WHITE" translateX="60.0">
+                  <Button fx:id="actionButton" cache="true" mnemonicParsing="false" onAction="#extract" prefHeight="30.0" prefWidth="100.0" text="Añadir" textAlignment="CENTER" textFill="WHITE" translateX="60.0">
                      <font>
                         <Font name="Trebuchet MS Bold" size="16.0" />
                      </font>
@@ -266,7 +202,7 @@
                         <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                      </padding>
                   </Button>
-                  <Label text="* Campos Obligatorios" textFill="#ff3434" translateX="200.0">
+                  <Label text="* Campos Obligatorios" textFill="#ff3434" translateX="175.0">
                      <font>
                         <Font name="Trebuchet MS Bold" size="10.0" />
                      </font>
