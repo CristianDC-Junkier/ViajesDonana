@@ -19,7 +19,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane fx:id="father" prefHeight="800.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ayuntamiento.viajes.controller.TravellerController">
+<BorderPane fx:id="father" prefHeight="800.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ayuntamiento.viajes.controller.TravellerController">
    <top>
       <HBox>
          <children>
@@ -165,10 +165,10 @@
             <TableView fx:id="travellerTable" prefHeight="482.0" prefWidth="979.0" VBox.vgrow="ALWAYS">
                <columns>
                   <TableColumn fx:id="dniColumn" editable="false" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefWidth="179.0" text="DNI" />
-                  <TableColumn fx:id="nameColumn" editable="false" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefWidth="321.0" text="Nombre" />
-                  <TableColumn fx:id="officeColumn" editable="false" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefWidth="179.0" text="Lugar de Inscripción" />
-                  <TableColumn fx:id="tripColumn" editable="false" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefWidth="193.0" text="Viaje" />
-                  <TableColumn fx:id="signupColumn" editable="false" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefWidth="172.0" text="Fecha de Inscripción" />
+                  <TableColumn fx:id="nameColumn" editable="false" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefWidth="268.79994201660156" text="Nombre" />
+                  <TableColumn fx:id="officeColumn" editable="false" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefWidth="145.60000610351562" text="Lugar de Inscripción" />
+                  <TableColumn fx:id="tripColumn" editable="false" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefWidth="212.0" text="Viaje" />
+                  <TableColumn fx:id="signupColumn" editable="false" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefWidth="156.7999267578125" text="Fecha de Inscripción" />
                </columns>
                <columnResizePolicy>
                   <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
@@ -214,7 +214,7 @@
       </VBox>
    </center>
    <stylesheets>
-      <URL value="@../styles/vehicle.css" />
       <URL value="@../styles/global.css" />
+      <URL value="@../styles/traveller.css" />
    </stylesheets>
 </BorderPane>

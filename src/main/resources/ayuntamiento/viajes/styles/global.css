@@ -55,11 +55,11 @@
     -fx-alignment: center;
 }
 .table-view .column-header-background {
-    -fx-background-color: #b21419;
+    -fx-background-color: #0056b3;
     -fx-background-radius: 5 5 0 0;
 }
 .table-view .column-header {
-    -fx-background-color: linear-gradient(from 0% 0% to 100% 100%, #b31217, #ff0000, #b21419);
+    -fx-background-color: linear-gradient(from 0% 0% to 100% 100%, #0056b3, #007bff, #0056b3);
     -fx-background-radius: 5 5 0 0;
 }
 .table-view .column-header .label {
@@ -90,7 +90,7 @@
 
 
 .searcher{
-    -fx-background-color: linear-gradient(from 0% 0% to 100% 100%, #b31217, #ff0000, #b21419);
+    -fx-background-color: linear-gradient(from 0% 0% to 100% 100%, #0056b3, #007bff, #0056b3);
     -fx-background-radius: 4 4 4 4;
 }
 

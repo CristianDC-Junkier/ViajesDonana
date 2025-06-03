@@ -18,15 +18,18 @@ import java.util.Objects;
 import java.util.ResourceBundle;
 import java.util.function.Function;
 import java.util.stream.Collectors;
+import javafx.application.Platform;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 
 import javafx.scene.chart.PieChart;
 import javafx.scene.control.Label;
+import javafx.scene.paint.Color;
 
 /**
  * Clase controladora que se encarga de la vista de estadísticas, se controla
@@ -61,9 +64,23 @@ public class StadisticsController extends BaseController implements Initializabl
 
     private Object selectedValue;
 
-    public enum ChartType {
+    private static final Color[] COLORS = {
+    Color.web("#0077B6"),  
+    Color.web("#F3722C"),  
+    Color.web("#00B4D8"),  
+    Color.web("#F8961E"),  
+    Color.web("#90E0EF"),  
+    Color.web("#F9844A"),  
+    Color.web("#CAF0F8"),  
+    Color.web("#FFA07A")   
+};
+
+
+    private enum ChartType {
         TRAVEL, OFFICE, DATE
     }
+
+    private final int numOfTravels = 6;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -95,61 +112,6 @@ public class StadisticsController extends BaseController implements Initializabl
         setupPieChartListeners();
 
         rechargeLabels(listTraveller);
-    }
-
-    /**
-     * Controla la configuración del piechart, añadiendo un label por cada tipo
-     * y valor de enumerado
-     *
-     * @param list Lista de vehiculos para configurar el chart de seguros
-     */
-    private <T> void pieChartConf(List<Traveller> list, Function<Traveller, T> classifier, PieChart pieChart, ChartType chartType) {
-        Map<String, Integer> counts = new HashMap<>();
-
-        switch (chartType) {
-            case DATE:
-                for (Traveller t : list) {
-                    LocalDate date = t.getSignUpDate();
-                    if (date != null) {
-                        String label = date.getMonth().getDisplayName(TextStyle.FULL, Locale.getDefault()) + " " + date.getYear();
-                        counts.put(label, counts.getOrDefault(label, 0) + 1);
-                    }
-                }
-                break;
-
-            case TRAVEL:
-                Map<T, Integer> rawCounts = countBy(classifier, list);
-                List<Map.Entry<T, Integer>> sorted = rawCounts.entrySet()
-                        .stream()
-                        .sorted((a, b) -> b.getValue() - a.getValue())
-                        .collect(Collectors.toList());
-
-                int others = 0;
-                for (int i = 0; i < sorted.size(); i++) {
-                    if (i < 6) {
-                        counts.put(sorted.get(i).getKey().toString(), sorted.get(i).getValue());
-                    } else {
-                        others += sorted.get(i).getValue();
-                    }
-                }
-                if (others > 0) {
-                    counts.put("Otros", others);
-                }
-                break;
-
-            case OFFICE:
-            default:
-                for (Traveller t : list) {
-                    String label = classifier.apply(t).toString();
-                    counts.put(label, counts.getOrDefault(label, 0) + 1);
-                }
-        }
-
-        ObservableList<PieChart.Data> data = FXCollections.observableArrayList();
-        counts.forEach((k, v) -> data.add(new PieChart.Data(k + " (" + v + ")", v)));
-
-        pieChart.setData(data);
-        pieChart.setLegendVisible(true);
     }
 
     /**
@@ -188,11 +150,66 @@ public class StadisticsController extends BaseController implements Initializabl
                 .average()
                 .orElse(0);
 
-        // Setear los valores a los labels
         totalTravellers.setText(String.valueOf(total));
         averageTravel.setText(String.format("%.2f", avgTripCount));
         averageOffice.setText(String.format("%.2f", avgOfficeCount));
         averageDay.setText(String.format("%.2f", avgPerMonth));
+    }
+
+    /**
+     * Controla la configuración del piechart, añadiendo un label por cada tipo
+     * y valor de enumerado
+     *
+     * @param list Lista de vehiculos para configurar el chart de seguros
+     */
+    private <T> void pieChartConf(List<Traveller> list, Function<Traveller, T> classifier, PieChart pieChart, ChartType chartType) {
+        Map<String, Integer> counts = new HashMap<>();
+
+        switch (chartType) {
+            case DATE:
+                for (Traveller t : list) {
+                    LocalDate date = t.getSignUpDate();
+                    if (date != null) {
+                        String label = date.getMonth().getDisplayName(TextStyle.FULL, Locale.getDefault()) + " " + date.getYear();
+                        counts.put(label, counts.getOrDefault(label, 0) + 1);
+                    }
+                }
+                break;
+
+            case TRAVEL:
+                Map<T, Integer> rawCounts = countBy(classifier, list);
+                List<Map.Entry<T, Integer>> sorted = rawCounts.entrySet()
+                        .stream()
+                        .sorted((a, b) -> b.getValue() - a.getValue())
+                        .collect(Collectors.toList());
+
+                int others = 0;
+                for (int i = 0; i < sorted.size(); i++) {
+                    if (i < numOfTravels) {
+                        counts.put(sorted.get(i).getKey().toString(), sorted.get(i).getValue());
+                    } else {
+                        others += sorted.get(i).getValue();
+                    }
+                }
+                if (others > 0) {
+                    counts.put("Otros", others);
+                }
+                break;
+
+            case OFFICE:
+            default:
+                for (Traveller t : list) {
+                    String label = classifier.apply(t).toString();
+                    counts.put(label, counts.getOrDefault(label, 0) + 1);
+                }
+        }
+
+        ObservableList<PieChart.Data> data = FXCollections.observableArrayList();
+        counts.forEach((k, v) -> data.add(new PieChart.Data(k + " (" + v + ")", v)));
+
+        pieChart.setData(data);
+        pieChart.setLegendVisible(true);
+        colorPieChartSlices(COLORS, pieChart);
     }
 
     private void setupPieChartListeners() {
@@ -270,6 +287,52 @@ public class StadisticsController extends BaseController implements Initializabl
             countMap.put(key, countMap.getOrDefault(key, 0) + 1);
         }
         return countMap;
+    }
+
+    /**
+     * Coloca los colores del las barras
+     */
+    private void colorPieChartSlices(Color[] colors, PieChart pieChart) {
+        Platform.runLater(() -> {
+            int index = 0;
+            for (PieChart.Data data : pieChart.getData()) {
+                Node node = data.getNode();
+                if (node != null && index < colors.length) {
+                    String rgb = toRgbString(colors[index]);
+
+                    node.setStyle("-fx-pie-color: " + rgb + ";");
+                    data.getNode().setStyle("-fx-pie-color: " + rgb + ";");
+
+                    final String type = data.getName();
+
+                    colorPieChartLegend(type, rgb, pieChart);
+                    index++;
+                }
+            }
+        });
+    }
+
+    /**
+     * Coloca los colores de la leyenda
+     */
+    private void colorPieChartLegend(String label, String rgb, PieChart pieChart) {
+        for (Node legend : pieChart.lookupAll("Label.chart-legend-item")) {
+            if (legend instanceof javafx.scene.control.Label labelNode) {
+                if (labelNode.getText().equals(label)) {
+                    Node symbol = labelNode.getGraphic();
+                    if (symbol != null) {
+                        symbol.setStyle("-fx-background-color: " + rgb + ";");
+                    }
+                }
+            }
+        }
+    }
+
+    private String toRgbString(Color color) {
+        return String.format("rgb(%d,%d,%d)",
+                (int) (color.getRed() * 255),
+                (int) (color.getGreen() * 255),
+                (int) (color.getBlue() * 255));
     }
 
 }

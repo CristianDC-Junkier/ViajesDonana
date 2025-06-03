@@ -121,7 +121,7 @@
                         <Insets bottom="10.0" />
                      </padding>
                         </HBox>
-                  <Line startX="400.0" stroke="#ef0101" strokeWidth="2.0">
+                  <Line startX="400.0" stroke="#007bff" strokeWidth="2.0">
                      <VBox.margin>
                         <Insets bottom="10.0" />
                      </VBox.margin>
@@ -133,7 +133,7 @@
                                       <Insets right="90.0" />
                                   </VBox.margin>
                               </HBox>
-                        <Label contentDisplay="CENTER" nodeOrientation="LEFT_TO_RIGHT" prefWidth="241.0" text="Nombre " textFill="#ef0101">
+                        <Label contentDisplay="CENTER" nodeOrientation="LEFT_TO_RIGHT" prefWidth="241.0" text="Nombre " textFill="#007bff">
                            <font>
                               <Font name="Trebuchet MS Bold" size="18.0" />
                            </font>
@@ -161,7 +161,7 @@
                                       <Insets bottom="15.0" right="18.0" />
                                   </VBox.margin>
                               </HBox>
-                        <Label contentDisplay="CENTER" nodeOrientation="LEFT_TO_RIGHT" prefWidth="243.0" text="Contraseña" textFill="#ef0101">
+                        <Label contentDisplay="CENTER" nodeOrientation="LEFT_TO_RIGHT" prefWidth="243.0" text="Contraseña" textFill="#007bff">
                            <font>
                               <Font name="Trebuchet MS Bold" size="18.0" />
                            </font>
@@ -187,7 +187,7 @@
                         <Insets bottom="15.0" top="10.0" />
                      </VBox.margin>
                   </VBox>
-                          <Line startX="400.0" stroke="#ef0101" strokeWidth="2.0">
+                          <Line startX="400.0" stroke="#007bff" strokeWidth="2.0">
                               <VBox.margin>
                                   <Insets bottom="15.0" top="10.0" />
                               </VBox.margin>
