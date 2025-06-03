@@ -20,7 +20,7 @@ import java.sql.Statement;
  *
  * @author Cristian Delgado Cruz
  * @since 2025-06-02
- * @version 1.0
+ * @version 1.1
  */
 public class SQLiteDataBase {
 
@@ -49,7 +49,7 @@ public class SQLiteDataBase {
     public static void initialize() {
         try (Connection conn = getConnection(); Statement stmt = conn.createStatement()) {
             String sql = """
-                CREATE TABLE IF NOT EXISTS travellers (
+                CREATE TABLE IF NOT EXISTS traveller (
                     id INTEGER PRIMARY KEY AUTOINCREMENT,
                     dni TEXT NOT NULL UNIQUE,
                     name TEXT NOT NULL,
@@ -61,7 +61,7 @@ public class SQLiteDataBase {
             stmt.execute(sql);
 
             sql = """
-                CREATE TABLE IF NOT EXISTS admins (
+                CREATE TABLE IF NOT EXISTS admin (
                     id INTEGER PRIMARY KEY AUTOINCREMENT,
                     username TEXT NOT NULL UNIQUE,
                     password TEXT NOT NULL
@@ -75,13 +75,12 @@ public class SQLiteDataBase {
         }
 
         /* Usuario Administrador */
-        String sql = "INSERT OR IGNORE INTO admins (nickname, password) VALUES (?, ?)";
+        String sql = "INSERT OR IGNORE INTO admin (username, password) VALUES (?, ?)";
 
         try (Connection conn = SQLiteDataBase.getConnection(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
-            pstmt.setInt(1, 1);
-            pstmt.setString(2, "admin");
-            pstmt.setString(3, SecurityUtil.hashPassword("admin"));
+            pstmt.setString(1, "admin");
+            pstmt.setString(2, SecurityUtil.hashPassword("admin"));
 
             pstmt.executeUpdate();
 

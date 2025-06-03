@@ -23,7 +23,7 @@ public class TravellerDAO implements IDao<Traveller> {
 
     @Override
     public Traveller save(Traveller traveller) throws SQLException {
-        String sql = "INSERT INTO travellers (dni, name, singup, office, trip)"
+        String sql = "INSERT INTO traveller (dni, name, singup, office, trip)"
                 + "VALUES(?, ?, ?, ?, ?)";
 
         try (Connection conn = SQLiteDataBase.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
@@ -55,7 +55,7 @@ public class TravellerDAO implements IDao<Traveller> {
 
     @Override
     public Traveller modify(Traveller traveller) throws SQLException {
-        String sql = "UPDATE travellers SET dni = ?, name = ?, singup = ?, "
+        String sql = "UPDATE traveller SET dni = ?, name = ?, singup = ?, "
                 + "office = ?, trip = ? WHERE id = ?";
         try (Connection conn = SQLiteDataBase.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
 
@@ -78,7 +78,7 @@ public class TravellerDAO implements IDao<Traveller> {
 
     @Override
     public boolean delete(Traveller entity) throws SQLException {
-        String sql = "DELETE FROM travellers WHERE id = ?";
+        String sql = "DELETE FROM traveller WHERE id = ?";
         try (Connection conn = SQLiteDataBase.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
 
             stmt.setLong(1, entity.getId());
@@ -94,7 +94,7 @@ public class TravellerDAO implements IDao<Traveller> {
     @Override
     public List<Traveller> findAll() throws SQLException {
         List<Traveller> listV = new ArrayList<>();
-        String sql = "SELECT * FROM travellers";
+        String sql = "SELECT * FROM traveller";
 
         try (Connection conn = SQLiteDataBase.getConnection(); Statement stmt = conn.createStatement(); ResultSet rs = stmt.executeQuery(sql)) {
 
@@ -118,7 +118,7 @@ public class TravellerDAO implements IDao<Traveller> {
     @Override
     public Traveller findById(int id) throws SQLException {
         Traveller t = null;
-        String sql = "SELECT * FROM travellers WHERE id = ?";
+        String sql = "SELECT * FROM traveller WHERE id = ?";
 
         try (Connection conn = SQLiteDataBase.getConnection(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
 

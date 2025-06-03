@@ -124,7 +124,7 @@
                                     </LinearGradient>
                                  </fill>
                               </Circle>
-                              <ImageView fitHeight="60.0" fitWidth="70.0" mouseTransparent="true" nodeOrientation="INHERIT" pickOnBounds="true" preserveRatio="true" scaleZ="0.0" translateY="2.0" StackPane.alignment="CENTER">
+                              <ImageView fx:id="sunIV" fitHeight="60.0" fitWidth="70.0" mouseTransparent="true" nodeOrientation="INHERIT" pickOnBounds="true" preserveRatio="true" scaleZ="0.0" translateY="2.0" StackPane.alignment="CENTER">
                                  <image>
                                     <Image url="@../icons/home_sun.png" />
                                  </image>

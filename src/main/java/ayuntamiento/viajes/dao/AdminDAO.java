@@ -21,7 +21,7 @@ public class AdminDAO implements IDao<Admin> {
 
     @Override
     public Admin save(Admin entity) throws SQLException {
-        String sql = "INSERT INTO admins (username, password) VALUES (?, ?)";
+        String sql = "INSERT INTO admin (username, password) VALUES (?, ?)";
 
         try (Connection conn = SQLiteDataBase.getConnection(); PreparedStatement pstmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 
@@ -51,7 +51,7 @@ public class AdminDAO implements IDao<Admin> {
 
     @Override
     public Admin modify(Admin entity) throws SQLException {
-        String sql = "UPDATE admins SET username = ?, password = ? WHERE id = ?";
+        String sql = "UPDATE admin SET username = ?, password = ? WHERE id = ?";
 
         try (Connection conn = SQLiteDataBase.getConnection(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
@@ -74,7 +74,7 @@ public class AdminDAO implements IDao<Admin> {
 
     @Override
     public boolean delete(Admin entity) throws SQLException {
-        String sql = "DELETE FROM admins WHERE id = ?";
+        String sql = "DELETE FROM admin WHERE id = ?";
 
         try (Connection conn = SQLiteDataBase.getConnection(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
@@ -91,7 +91,7 @@ public class AdminDAO implements IDao<Admin> {
     @Override
     public List<Admin> findAll() throws SQLException {
         List<Admin> listA = new ArrayList<>();
-        String sql = "SELECT * FROM admins";
+        String sql = "SELECT * FROM admin";
 
         try (Connection conn = SQLiteDataBase.getConnection(); Statement stmt = conn.createStatement(); ResultSet rs = stmt.executeQuery(sql)) {
 
@@ -112,7 +112,7 @@ public class AdminDAO implements IDao<Admin> {
     @Override
     public Admin findById(int id) throws SQLException {
         Admin a = null;
-        String sql = "SELECT * FROM admins WHERE id = ?";
+        String sql = "SELECT * FROM admin WHERE id = ?";
 
         try (Connection conn = SQLiteDataBase.getConnection(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
 

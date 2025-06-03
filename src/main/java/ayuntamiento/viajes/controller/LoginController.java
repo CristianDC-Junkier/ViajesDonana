@@ -25,8 +25,8 @@ import javafx.scene.control.ProgressIndicator;
  * inicial
  *
  * @author Cristian Delgado Cruz
- * @since 2025-05-14
- * @version 1.2
+ * @since 2025-06-03
+ * @version 1.0
  */
 public class LoginController extends BaseController implements Initializable {
 

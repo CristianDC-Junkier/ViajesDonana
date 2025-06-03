@@ -2,13 +2,12 @@ package ayuntamiento.viajes.model;
 
 import ayuntamiento.viajes.common.PropertiesUtil;
 import java.time.LocalDate;
-import java.time.YearMonth;
 import java.time.format.DateTimeFormatter;
 
 /**
- * Clase entidad que se utiliza para guardar los datos de los vehiculos
+ * Clase entidad que se utiliza para guardar los datos de los viajeros
  *
- * @author Ramón Iglesias
+ * @author Ramón Iglesias Granados
  * @since 2025-06-02
  * @version 1.2
  */

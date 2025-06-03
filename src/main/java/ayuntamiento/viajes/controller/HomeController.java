@@ -25,8 +25,8 @@ import javafx.scene.image.ImageView;
  * lista de vehículos de la base de datos y de generar las notificaciones
  *
  * @author Cristian
- * @since 2025-05-09
- * @version 1.1
+ * @since 2025-06-03
+ * @version 1.0
  */
 public class HomeController extends BaseController implements Initializable {
 
@@ -53,6 +53,7 @@ public class HomeController extends BaseController implements Initializable {
     @FXML
     private void stadisticspanel() throws IOException {
         ManagerUtil.moveTo("stadistics");
+        System.out.println("Me muevo");
     }
 
     @FXML
@@ -97,11 +98,11 @@ public class HomeController extends BaseController implements Initializable {
     }
     @FXML
     private void stadisticsgif(){
-        stadisticsIV.setImage(new Image(getClass().getResource("/ayuntamiento/viajes/icons/stadistics_sun.gif").toExternalForm()));
+        stadisticsIV.setImage(new Image(getClass().getResource("/ayuntamiento/viajes/icons/home_stadistics.gif").toExternalForm()));
     }
     @FXML
     private void stadisticspng(){
-        stadisticsIV.setImage(new Image(getClass().getResource("/ayuntamiento/viajes/icons/stadistics_sun.png").toExternalForm()));
+        stadisticsIV.setImage(new Image(getClass().getResource("/ayuntamiento/viajes/icons/home_stadistics.png").toExternalForm()));
     }
     
 
