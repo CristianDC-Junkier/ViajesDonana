@@ -381,7 +381,7 @@ public class PDFService {
             canvas.showText(v.getTrip().toString());
             
             canvas.moveText(columnX[3] - columnX[2], 0);
-            canvas.showText(v.getSignUp());
+            canvas.showText(v.getSignup());
 
             canvas.endText();
             canvas.setFillColor(COLORS[0]);
@@ -426,7 +426,7 @@ public class PDFService {
             canvas.showText(v.getTrip().toString());
             
             canvas.moveText(columnX[3] - columnX[2], 0);
-            canvas.showText(v.getSignUp());
+            canvas.showText(v.getSignup());
 
             canvas.endText();
             canvas.setFillColor(COLORS[0]);

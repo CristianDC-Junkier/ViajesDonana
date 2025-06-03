@@ -28,9 +28,9 @@ public class ManagerUtil {
             put("login", Map.of("title", "Login", "width", 1000, "height", 800));
             put("home", Map.of("title", "Inicio", "width", 1000, "height", 800));
             put("stadistics", Map.of("title", "Estadísticas", "width", 1000, "height", 800));
-            put("vehicle", Map.of("title", "Gestión de Vehículos", "width", 1250, "height", 800));
+            put("traveller", Map.of("title", "Gestión de Inscripciones", "width", 1250, "height", 800));
             put("pdf", Map.of("title", "Generador de PDFs", "width", 1000, "height", 800));
-            put("user", Map.of("title", "Gestión de Usuarios", "width", 1000, "height", 800));
+            put("admin", Map.of("title", "Gestión de Usuarios", "width", 1000, "height", 800));
             put("profile", Map.of("title", "Mi Perfil", "width", 1000, "height", 800));
             put("service_terms", Map.of("title", "Terminos de Servicio", "width", 1000, "height", 800));
         }
@@ -39,7 +39,7 @@ public class ManagerUtil {
     /*Lista de las páginas que siempre llevan al home, aunque sean invocadas
     desde otra parte*/
     private static final Set<String> RESET_TO_HOME
-            = Set.of("user", "profile", "service_terms");
+            = Set.of("admin", "profile", "service_terms");
 
     /*Valor inicial de las páginas actual y previa*/
     static {

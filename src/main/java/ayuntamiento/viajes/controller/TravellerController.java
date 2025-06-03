@@ -28,7 +28,6 @@ import javafx.collections.FXCollections;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
-import javafx.scene.control.TextFormatter;
 import javafx.util.converter.LocalDateStringConverter;
 
 /**
@@ -61,7 +60,7 @@ public class TravellerController extends BaseController implements Initializable
     @FXML
     private TableColumn tripColumn;
     @FXML
-    private TableColumn sign_upColumn;
+    private TableColumn signupColumn;
 
     @FXML
     private Label amount;
@@ -122,7 +121,7 @@ public class TravellerController extends BaseController implements Initializable
         nameColumn.setCellValueFactory(new PropertyValueFactory<Traveller, String>("name"));
         officeColumn.setCellValueFactory(new PropertyValueFactory<Traveller, TravellerOffice>("office"));
         tripColumn.setCellValueFactory(new PropertyValueFactory<Traveller, TravellerTrip>("trip"));
-        sign_upColumn.setCellValueFactory(new PropertyValueFactory<Traveller, LocalDate>("sign_up"));
+        signupColumn.setCellValueFactory(new PropertyValueFactory<Traveller, LocalDate>("signup"));
 
         travellerTable.setPlaceholder(new Label("No existen inscripciones"));
 

@@ -198,22 +198,24 @@ public class AdminController extends BaseController implements Initializable {
      */
     @FXML
     private void selected() {
-        if (userTable.getSelectionModel().getSelectedItem().getId() == 1) {
-            modUserNameTF.setDisable(true);
-            modUserPassTF.setDisable(true);
-            modButton.setDisable(true);
-            delButton.setDisable(true);
-        } else {
-            modUserNameTF.setDisable(false);
-            modUserPassTF.setDisable(false);
-            modButton.setDisable(false);
-            delButton.setDisable(false);
+        if (userTable.getSelectionModel().getSelectedItem() != null) {
+            if (userTable.getSelectionModel().getSelectedItem().getId() == 1) {
+                modUserNameTF.setDisable(true);
+                modUserPassTF.setDisable(true);
+                modButton.setDisable(true);
+                delButton.setDisable(true);
+            } else {
+                modUserNameTF.setDisable(false);
+                modUserPassTF.setDisable(false);
+                modButton.setDisable(false);
+                delButton.setDisable(false);
+            }
+
+            modUserNameTF.setText(userTable.getSelectionModel().getSelectedItem().getUsername());
+            delUserNameTF.setText(userTable.getSelectionModel().getSelectedItem().getUsername());
+
+            resetStyle();
         }
-
-        modUserNameTF.setText(userTable.getSelectionModel().getSelectedItem().getUsername());
-        delUserNameTF.setText(userTable.getSelectionModel().getSelectedItem().getUsername());
-
-        resetStyle();
     }
 
     @FXML

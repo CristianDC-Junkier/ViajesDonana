@@ -31,7 +31,7 @@ public class TravellerDAO implements IDao<Traveller> {
             stmt.setString(1, traveller.getDni());
             stmt.setString(2, traveller.getName());
             /*Object porque si no, no se come el nulo*/
-            stmt.setObject(3, traveller.getSignUp());
+            stmt.setObject(3, traveller.getSignup());
             stmt.setInt(4, traveller.getOffice().ordinal());
             stmt.setInt(5, traveller.getTrip().ordinal());
             int affectedRows = stmt.executeUpdate();
@@ -61,7 +61,7 @@ public class TravellerDAO implements IDao<Traveller> {
 
             stmt.setString(1, traveller.getDni());
             stmt.setString(2, traveller.getName());
-            stmt.setString(3, traveller.getSignUp());
+            stmt.setString(3, traveller.getSignup());
             stmt.setInt(4, traveller.getOffice().ordinal());
             stmt.setInt(5, traveller.getTrip().ordinal());
 
@@ -103,7 +103,7 @@ public class TravellerDAO implements IDao<Traveller> {
                 v.setId(rs.getInt("id"));
                 v.setDni(rs.getString("dni"));
                 v.setName(rs.getString("name"));
-                v.setSignUp(rs.getString("singup"));
+                v.setSignup(rs.getString("singup"));
                 v.setOffice(rs.getInt("office"));
                 v.setTrip(rs.getInt("trip"));
                 listV.add(v);
@@ -129,7 +129,7 @@ public class TravellerDAO implements IDao<Traveller> {
                     t.setId(rs.getInt("id"));
                     t.setDni(rs.getString("dni"));
                     t.setName(rs.getString("name"));
-                    t.setSignUp(rs.getString("singup"));
+                    t.setSignup(rs.getString("singup"));
                     t.setOffice(rs.getInt("office"));
                     t.setTrip(rs.getInt("trip"));
                 }

@@ -60,7 +60,7 @@ public class PdfController extends BaseController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         showUserOption();
 
-        vehicleTypePDF.getItems().add("Todos");
+        /*vehicleTypePDF.getItems().add("Todos");
         vehicleTypePDF.getItems().addAll(Arrays.asList(Traveller.TravellerOffice.values()));
         vehicleTypePDF.getSelectionModel().selectFirst();
 
@@ -68,7 +68,7 @@ public class PdfController extends BaseController implements Initializable {
         documentTypePDF.getSelectionModel().selectFirst();
         documentTypePDF.setOnAction((event) -> {
             changePDFName();
-        });
+        });*/
 
         String userHome = System.getProperty("user.home");
         File defaultDir = new File(userHome, "Downloads");
@@ -120,13 +120,13 @@ public class PdfController extends BaseController implements Initializable {
                     "PDFController - printPDF"));
         } else {
             try {
-                if (onlyNotiCB.isSelected()) {
+                /*if (onlyNotiCB.isSelected()) {
                     if (vehicleS.findAll().isEmpty()) {
                         info("No existen vehículos con alguna notificación", false);
                     } else {
                         //pdf.printNotification(namePDF.getText(), dirPDF.getText(), documentTypePDF.getValue().toString());
                     }
-                } else {
+                } else {*/
                     String typeSelected = vehicleTypePDF.getValue().toString();
                     switch (typeSelected) {
                         case "Todos" -> {
@@ -145,7 +145,7 @@ public class PdfController extends BaseController implements Initializable {
                         }
 
                     }
-                }
+                //}
             } catch (Exception ex) {
                 error(ex);
             }

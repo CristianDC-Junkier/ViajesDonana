@@ -168,7 +168,7 @@
                   <TableColumn fx:id="nameColumn" editable="false" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefWidth="321.0" text="Nombre" />
                   <TableColumn fx:id="officeColumn" editable="false" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefWidth="179.0" text="Lugar de Inscripción" />
                   <TableColumn fx:id="tripColumn" editable="false" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefWidth="193.0" text="Viaje" />
-                  <TableColumn fx:id="sign_upColumn" editable="false" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefWidth="172.0" text="Fecha de Inscripción" />
+                  <TableColumn fx:id="signupColumn" editable="false" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefWidth="172.0" text="Fecha de Inscripción" />
                </columns>
                <columnResizePolicy>
                   <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />

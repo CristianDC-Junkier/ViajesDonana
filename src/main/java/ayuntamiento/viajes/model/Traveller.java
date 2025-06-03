@@ -18,7 +18,7 @@ public class Traveller {
     private String name;
     private TravellerOffice office;
     private TravellerTrip trip;
-    private LocalDate sign_up;
+    private LocalDate signup;
 
     public enum TravellerOffice {
         Propiedad,
@@ -52,7 +52,7 @@ public class Traveller {
         this.name = name;
         this.office = TravellerOffice.values()[office];
         this.trip = TravellerTrip.values()[trip];
-        this.sign_up = (sign_upString != null && !sign_upString.isBlank()) ? parseSignUp(sign_upString) : null;
+        this.signup = (sign_upString != null && !sign_upString.isBlank()) ? parseSignUp(sign_upString) : null;
 
     }
 
@@ -92,24 +92,24 @@ public class Traveller {
         return trip;
     }
 
-    public void setTrip(Integer status) {
-        this.trip = TravellerTrip.values()[status];
+    public void setTrip(Integer trip) {
+        this.trip = TravellerTrip.values()[trip];
     }
 
     public LocalDate getSignUpDate() {
-        return this.sign_up;
+        return this.signup;
     }
 
-    public void setSignUpDate(LocalDate insurance) {
-        this.sign_up = insurance;
+    public void setSignUpDate(LocalDate sign_up) {
+        this.signup = sign_up;
     }
 
-    public String getSignUp() {
-        return sign_up != null ? sign_up.format(formatter_Show_Date) : null;
+    public String getSignup() {
+        return signup != null ? signup.format(formatter_Show_Date) : null;
     }
 
-    public void setSignUp(String dateString) {
-        this.sign_up = parseSignUp(dateString);
+    public void setSignup(String dateString) {
+        this.signup = parseSignUp(dateString);
     }
 
     private LocalDate parseSignUp(String dateString) {
