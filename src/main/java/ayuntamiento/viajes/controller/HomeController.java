@@ -53,7 +53,6 @@ public class HomeController extends BaseController implements Initializable {
     @FXML
     private void stadisticspanel() throws IOException {
         ManagerUtil.moveTo("stadistics");
-        System.out.println("Me muevo");
     }
 
     @FXML
