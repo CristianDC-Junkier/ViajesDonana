@@ -15,6 +15,7 @@ import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
+import java.util.List;
 import java.util.ResourceBundle;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -35,9 +36,9 @@ import javafx.stage.DirectoryChooser;
 public class PdfController extends BaseController implements Initializable {
 
     @FXML
-    private ChoiceBox vehicleTypePDF;
-    @FXML
-    private ChoiceBox documentTypePDF;
+    private ChoiceBox sortCB;
+    //@FXML
+    //private ChoiceBox documentTypePDF;
     @FXML
     private CheckBox onlyNotiCB;
     @FXML
@@ -60,11 +61,10 @@ public class PdfController extends BaseController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         showUserOption();
 
-        /*vehicleTypePDF.getItems().add("Todos");
-        vehicleTypePDF.getItems().addAll(Arrays.asList(Traveller.TravellerOffice.values()));
-        vehicleTypePDF.getSelectionModel().selectFirst();
+        sortCB.getItems().addAll("Nombre", "Viaje", "Fecha de Inscripción", "Lugar de Inscripción", "DNI");
+        sortCB.getSelectionModel().selectFirst();
 
-        documentTypePDF.getItems().addAll("Notificaciones", "Listado", "Todo");
+        /*documentTypePDF.getItems().addAll("Notificaciones", "Listado", "Todo");
         documentTypePDF.getSelectionModel().selectFirst();
         documentTypePDF.setOnAction((event) -> {
             changePDFName();
@@ -74,7 +74,7 @@ public class PdfController extends BaseController implements Initializable {
         File defaultDir = new File(userHome, "Downloads");
         dirPDF.setText(defaultDir.getAbsolutePath());
 
-        namePDF.setText("Notificaciones-Vehiculos-"
+        namePDF.setText("Listado-Viajes-"
                 + LocalDate.now().format(dateformatter));
     }
 
@@ -127,15 +127,15 @@ public class PdfController extends BaseController implements Initializable {
                         //pdf.printNotification(namePDF.getText(), dirPDF.getText(), documentTypePDF.getValue().toString());
                     }
                 } else {*/
-                    String typeSelected = vehicleTypePDF.getValue().toString();
+                    /*String typeSelected = vehicleTypePDF.getValue().toString();
                     switch (typeSelected) {
-                        case "Todos" -> {
+                        case "Todos" -> {*/
                             if (vehicleS.findAll().isEmpty()) {
                                 info("No existen vehículos registrados", false);
                             } else {
-                               // pdf.printAll(namePDF.getText(), dirPDF.getText(), documentTypePDF.getValue().toString());
+                               pdf.printAll(namePDF.getText(), dirPDF.getText());
                             }
-                        }
+                        /*}
                         default -> {
                             if (vehicleS.findByTrip(TravellerOffice.valueOf(typeSelected).ordinal()).isEmpty()) {
                                 info("No existen vehículos registrados de tipo " + typeSelected , false);
@@ -144,7 +144,7 @@ public class PdfController extends BaseController implements Initializable {
                             }
                         }
 
-                    }
+                    }*/
                 //}
             } catch (Exception ex) {
                 error(ex);
@@ -164,7 +164,7 @@ public class PdfController extends BaseController implements Initializable {
 
     @FXML
     private void selectNotiCB() {
-        vehicleTypePDF.setDisable(!vehicleTypePDF.isDisable());
+        //vehicleTypePDF.setDisable(!vehicleTypePDF.isDisable());
     }
 
     /**
@@ -172,7 +172,7 @@ public class PdfController extends BaseController implements Initializable {
      */
     @FXML
     private void changePDFName() {
-        if ("Todo".equals((String) documentTypePDF.getValue())) {
+        /*if ("Todo".equals((String) documentTypePDF.getValue())) {
             namePDF.setText("Informe-Completo-Vehiculos-"
                     + LocalDate.now().format(dateformatter));
         } else if ("Notificaciones".equals((String) documentTypePDF.getValue())) {
@@ -181,7 +181,7 @@ public class PdfController extends BaseController implements Initializable {
         } else {
             namePDF.setText("Listado-Vehiculos-"
                     + LocalDate.now().format(dateformatter));
-        }
+        }*/
 
     }
 
