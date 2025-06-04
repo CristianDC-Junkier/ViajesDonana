@@ -294,7 +294,7 @@ public class PDFService {
 
         String date = LocalDate.now().format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
 
-        float x = 490f;
+        float x = 350f;
         float y = 657f;
         canvas.moveText(x, y);
         canvas.showText(date);
@@ -316,10 +316,10 @@ public class PDFService {
         canvas.setFontAndSize(font, 10);
         canvas.setFillColor(COLORS[0]);
 
-        float y = 602f;
+        float y = 612f;
 
         float[] columnX = new float[]{
-            35f, 77f, 128f, 178f, 216f, 259f, 309f, 356f, 412f};
+            65f, 130f, 200f, 178f, 216f, 259f, 309f, 356f, 412f};
 
         canvas.moveText(columnX[0], y);
         canvas.showText(String.valueOf(total));
@@ -327,7 +327,7 @@ public class PDFService {
         canvas.showText(String.valueOf(own));
         canvas.moveText(columnX[2] - columnX[1], 0);
         canvas.showText(String.valueOf(rent));
-        canvas.moveText(columnX[3] - columnX[2], 0);
+        /*canvas.moveText(columnX[3] - columnX[2], 0);
         canvas.showText(String.valueOf(tripTraveller.getOrDefault(Traveller.TravellerTrip.Buen_Estado, 0)));
         canvas.moveText(columnX[4] - columnX[3], 0);
         canvas.showText(String.valueOf(tripTraveller.getOrDefault(Traveller.TravellerTrip.Mal_Estado, 0)));
@@ -336,9 +336,9 @@ public class PDFService {
         canvas.moveText(columnX[6] - columnX[5], 0);
         canvas.showText(String.valueOf(tripTraveller.getOrDefault(Traveller.TravellerTrip.Reparado, 0)));
         canvas.moveText(columnX[7] - columnX[6], 0);
-        canvas.showText(String.valueOf(tripTraveller.getOrDefault(Traveller.TravellerTrip.Fuera_de_Servicio, 0)));
+        canvas.showText(String.valueOf(tripTraveller.getOrDefault(Traveller.TravellerTrip.Fuera_de_Servicio, 0)));*/
 
-        canvas.moveText(columnX[8] - columnX[7], 16f);
+        canvas.moveText(columnX[8] - columnX[2], 16f);
         canvas.setFillColor(COLORS[2]);
 
         switch (type) {
@@ -386,10 +386,10 @@ public class PDFService {
             canvas.showText(v.getName());
 
             canvas.moveText(columnX[2] - columnX[1], 0);
-            canvas.showText(v.getOffice().toString());
+            canvas.showText(v.getTrip().toString());
 
             canvas.moveText(columnX[3] - columnX[2], 0);
-            canvas.showText(v.getTrip().toString());
+            canvas.showText(v.getOffice().toString());
 
             canvas.moveText(columnX[4] - columnX[3], 0);
             canvas.showText(v.getSignup());
@@ -412,14 +412,14 @@ public class PDFService {
         canvas.setFontAndSize(font, 8);
         canvas.setFillColor(COLORS[0]);
 
-        float startY = 642f;
+        float startY = 635f;
 
         float rowHeight = 20.54f;
         float y = startY;
 
         /*Posiciones absolutas para cada columna*/
         float[] columnX = new float[]{
-            30f, 105f, 240f, 315f, 425f, 515f};
+            60f, 125f, 300f, 390f, 490f};
 
         for (Traveller v : pageTravellers) {
             canvas.beginText();
@@ -431,10 +431,10 @@ public class PDFService {
             canvas.showText(v.getName());
 
             canvas.moveText(columnX[2] - columnX[1], 0);
-            canvas.showText(v.getOffice().toString());
+            canvas.showText(v.getTrip().toString());
 
             canvas.moveText(columnX[3] - columnX[2], 0);
-            canvas.showText(v.getTrip().toString());
+            canvas.showText(v.getOffice().toString());
 
             canvas.moveText(columnX[3] - columnX[2], 0);
             canvas.showText(v.getSignup());

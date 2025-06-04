@@ -88,22 +88,9 @@ public class StadisticsController extends BaseController implements Initializabl
 
         selectedValue = null;
         travellerS = new TravellerService();
-        //listTraveller = travellerS.findAll();
+        listTraveller = travellerS.findAll();
 
-        listTraveller = List.of(
-                new Traveller("12345678A", "Ana Pérez", 0, 0, "01/06/2023"),
-                new Traveller("23456789B", "Luis Gómez", 1, 1, "01/06/2023"),
-                new Traveller("34567890C", "María López", 2, 2, "20/07/2023"),
-                new Traveller("45678901D", "Carlos Ruiz", 0, 3, "05/06/2023"),
-                new Traveller("56789012E", "Laura Martín", 1, 4, "12/07/2023"),
-                new Traveller("67890123F", "Javier Sánchez", 2, 5, "10/06/2023"),
-                new Traveller("78901234G", "Sofía Torres", 0, 0, "20/08/2023"),
-                new Traveller("89012345H", "Miguel Fernández", 1, 1, "30/09/2023"),
-                new Traveller("90123456I", "Elena Díaz", 2, 2, "07/09/2023"),
-                new Traveller("01234567J", "Pedro Morales", 0, 3, "19/06/2023"),
-                new Traveller("11223344K", "Isabel Ruiz", 1, 4, "12/07/2023"),
-                new Traveller("22334455L", "Raúl Jiménez", 2, 5, "28/06/2023")
-        );
+        
 
         pieChartConf(listTraveller, Traveller::getTrip, travelPC, ChartType.TRAVEL);
         pieChartConf(listTraveller, Traveller::getOffice, officePC, ChartType.OFFICE);
