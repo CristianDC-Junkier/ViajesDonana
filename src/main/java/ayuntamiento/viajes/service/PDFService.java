@@ -82,24 +82,8 @@ public class PDFService {
         own = 0;
         rent = 0;
 
-        switch(sort){
-            case "Nombre" -> {
-                travellersList = travellerS.findAll().stream().sorted(Comparator.comparing(Traveller::getName)).collect(Collectors.toList());
-            }
-            case "Viaje" -> {
-                travellersList = travellerS.findAll().stream().sorted(Comparator.comparing(Traveller::getTrip).reversed()).collect(Collectors.toList());
-            }
-            case "Fecha de Inscripción" -> {
-                travellersList = travellerS.findAll().stream().sorted(Comparator.comparing(Traveller::getSignUpDate)).collect(Collectors.toList());
-            }
-            case "Lugar de Inscripción" -> {
-                travellersList = travellerS.findAll().stream().sorted(Comparator.comparing(Traveller::getOffice).reversed()).collect(Collectors.toList());
-            }
-            case "DNI" -> {
-                travellersList = travellerS.findAll().stream().sorted(Comparator.comparing(Traveller::getDni)).collect(Collectors.toList());
-            }
-        }
-        
+        travellersList = sort(travellerS.findAll(), sort);
+
         firstPageTravellers = travellersList.stream().limit(numTraInitialPage).toList();
         remainingTravellers = travellersList.stream().skip(numTraInitialPage).toList();
 
@@ -123,22 +107,29 @@ public class PDFService {
      * @param name nombre elegido para el documento
      * @param dir directorio elegido para colocar el documento
      * @param type titularidad del vehículo por el cual se va a filtrar
+     * @param sort criterio para ordenar la lista
      * @throws ControledException Excepciones que mostramos al usuario vienen de
      * print
      * @throws Exception Excepciones que no mostramos al usuario vienen de print
      */
-    public void printType(String name, String dir, String type) throws ControledException, Exception {
+    public void printType(String name, String dir, String type, String sort) throws ControledException, Exception {
         tripTraveller = new HashMap<>();
         own = 0;
         rent = 0;
 
         switch (type) {
-            case "Propiedad" ->
-                travellersList = travellerS.findByTrip(0);
-            case "Alquiler" ->
-                travellersList = travellerS.findByTrip(1);
+            case "Buen_Estado" ->
+                travellersList = sort(travellerS.findByTrip(0), sort);
+            case "Mal_Estado" ->
+                travellersList = sort(travellerS.findByTrip(1), sort);
+            case "Averiado" ->
+                travellersList = sort(travellerS.findByTrip(2), sort);
+            case "Reparado" ->
+                travellersList = sort(travellerS.findByTrip(3), sort);
+            case "Fuera_de_Servicio" ->
+                travellersList = sort(travellerS.findByTrip(4), sort);
             case "Otro" ->
-                travellersList = travellerS.findByTrip(2);
+                travellersList = sort(travellerS.findByTrip(5), sort);
             default -> {
             }
         }
@@ -383,7 +374,7 @@ public class PDFService {
 
         /*Posiciones absolutas para cada columna*/
         float[] columnX = new float[]{
-            30f, 105f, 240f, 315f, 425f, 515f};
+            60f, 125f, 300f, 390f, 490f};
 
         for (Traveller v : firstPageTravellers) {
             canvas.beginText();
@@ -399,8 +390,8 @@ public class PDFService {
 
             canvas.moveText(columnX[3] - columnX[2], 0);
             canvas.showText(v.getTrip().toString());
-            
-            canvas.moveText(columnX[3] - columnX[2], 0);
+
+            canvas.moveText(columnX[4] - columnX[3], 0);
             canvas.showText(v.getSignup());
 
             canvas.endText();
@@ -444,7 +435,7 @@ public class PDFService {
 
             canvas.moveText(columnX[3] - columnX[2], 0);
             canvas.showText(v.getTrip().toString());
-            
+
             canvas.moveText(columnX[3] - columnX[2], 0);
             canvas.showText(v.getSignup());
 
@@ -486,5 +477,27 @@ public class PDFService {
         }
 
         return tempFile;
+    }
+
+    private List<Traveller> sort(List<Traveller> list, String sort) {
+        List<Traveller> sortList = null;
+        switch (sort) {
+            case "Nombre" -> {
+                sortList = list.stream().sorted(Comparator.comparing(Traveller::getName)).collect(Collectors.toList());
+            }
+            case "Viaje" -> {
+                sortList = list.stream().sorted(Comparator.comparing(Traveller::getTrip).reversed()).collect(Collectors.toList());
+            }
+            case "Fecha de Inscripción" -> {
+                sortList = list.stream().sorted(Comparator.comparing(Traveller::getSignUpDate)).collect(Collectors.toList());
+            }
+            case "Lugar de Inscripción" -> {
+                sortList = list.stream().sorted(Comparator.comparing(Traveller::getOffice).reversed()).collect(Collectors.toList());
+            }
+            case "DNI" -> {
+                sortList = list.stream().sorted(Comparator.comparing(Traveller::getDni)).collect(Collectors.toList());
+            }
+        }
+        return sortList;
     }
 }

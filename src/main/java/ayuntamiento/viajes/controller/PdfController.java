@@ -120,7 +120,8 @@ public class PdfController extends BaseController implements Initializable {
         } else {
             try {
 
-                String typeSelected = tripTypeCB.getValue().toString();
+                String typeSelected = toEnumCompatible(tripTypeCB.getValue().toString());
+                
                 switch (typeSelected) {
                     case "Todos" -> {
                         if (travellerS.findAll().isEmpty()) {
@@ -133,7 +134,7 @@ public class PdfController extends BaseController implements Initializable {
                         if (travellerS.findByTrip(TravellerTrip.valueOf(typeSelected).ordinal()).isEmpty()) {
                             info("No existen vehículos registrados de tipo " + typeSelected, false);
                         } else {
-                            pdf.printType(namePDF.getText(), dirPDF.getText(), typeSelected);
+                            pdf.printType(namePDF.getText(), dirPDF.getText(), typeSelected, sortCB.getValue().toString());
                         }
                     }
 
@@ -169,7 +170,7 @@ public class PdfController extends BaseController implements Initializable {
             namePDF.setText("Listado-Viajes-"
                     + LocalDate.now().format(dateformatter));
         } else {
-            namePDF.setText("Listado-Viajes-" + extra + "-"
+            namePDF.setText("Listado-Viajes-" + toEnumCompatible(extra) + "-"
                     + LocalDate.now().format(dateformatter));
         }
     }
@@ -182,6 +183,10 @@ public class PdfController extends BaseController implements Initializable {
         String folderPath = dirPDF.getText();
         Path path = Paths.get(folderPath);
         return !Files.exists(path) || !Files.isDirectory(path);
+    }
+    
+    private String toEnumCompatible(String s){
+        return s.replace(' ', '_');
     }
 
 }
