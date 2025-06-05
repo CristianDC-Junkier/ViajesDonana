@@ -18,7 +18,6 @@ import java.util.Arrays;
 import java.util.ResourceBundle;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.CheckBox;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TextField;
 import javafx.stage.DirectoryChooser;
@@ -29,7 +28,7 @@ import javafx.stage.DirectoryChooser;
  * correctos.
  *
  * @author Cristian Delgado Cruz
- * @since 2025-05-19
+ * @since 2025-06-04
  * @version 1.1
  */
 public class PdfController extends BaseController implements Initializable {

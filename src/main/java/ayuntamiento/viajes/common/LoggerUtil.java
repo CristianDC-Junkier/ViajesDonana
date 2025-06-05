@@ -23,7 +23,7 @@ import java.util.List;
  *
  * @author Cristian Delgado Cruz
  * @since 2025-06-02
- * @version 1.2
+ * @version 1.0
  */
 public class LoggerUtil {
 

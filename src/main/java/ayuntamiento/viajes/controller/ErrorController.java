@@ -14,8 +14,8 @@ import javafx.stage.Stage;
  * Controlador que controla el dialog de errores, 
  * mostrandole al usuario su error.
  * 
- * @author Cristian
- * @since 2025-05-12
+ * @author Cristian Delgado Cruz
+ * @since 2025-06-05
  * @version 1.1
  */
 public class ErrorController {

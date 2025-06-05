@@ -18,7 +18,7 @@ import javafx.scene.control.PasswordField;
  * del usuario, no administrador, logeado.
  *
  * @author Cristian Delgado Cruz
- * @since 2025-05-19
+ * @since 2025-06-03
  * @version 1.1
  */
 public class ProfileController extends BaseController implements Initializable {

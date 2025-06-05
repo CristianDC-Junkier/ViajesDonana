@@ -12,8 +12,8 @@ import java.util.stream.Collectors;
  * el servicio especifico de ello.
  *
  * @author Cristian Delgado Cruz
- * @since 2025-05-12
- * @version 1.4
+ * @since 2025-06-04
+ * @version 1.2
  */
 public class TravellerService {
 

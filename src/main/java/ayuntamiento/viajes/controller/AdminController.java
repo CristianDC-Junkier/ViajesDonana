@@ -21,7 +21,7 @@ import ayuntamiento.viajes.model.Admin;
 
 /**
  * Clase controladora que se encarga del funcionamiento de la pestaña de
- * administración de usuarios.
+ * administración de administradores.
  *
  * @author Ramón Iglesias Granados
  * @since 2025-06-03

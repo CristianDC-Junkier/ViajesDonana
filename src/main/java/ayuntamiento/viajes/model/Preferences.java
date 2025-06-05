@@ -5,8 +5,8 @@ package ayuntamiento.viajes.model;
  * las preferencias en un JSON
  * 
  * @author Cristian Delgado Cruz
- * @since 2025-05-14
- * @version 1.1
+ * @since 2025-06-05
+ * @version 1.0
  */
 public class Preferences {
 

@@ -21,8 +21,7 @@ import javafx.scene.image.ImageView;
 
 
 /**
- * Controlador de la vista principal, se encarga de cargar por primera vez la
- * lista de vehículos de la base de datos y de generar las notificaciones
+ * Controlador de la vista principal, FALTA
  *
  * @author Cristian
  * @since 2025-06-03

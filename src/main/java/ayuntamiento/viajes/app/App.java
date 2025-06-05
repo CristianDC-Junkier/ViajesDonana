@@ -21,8 +21,8 @@ import javafx.stage.Screen;
  * pantalla y cambiar de pantalla
  *
  * @author Cristian Delgado Cruz
- * @since 2025-05-05
- * @version 1.4
+ * @since 2025-06-02
+ * @version 1.0
  */
 public class App extends Application {
 

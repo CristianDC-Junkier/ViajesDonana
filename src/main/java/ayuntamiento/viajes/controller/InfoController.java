@@ -16,8 +16,8 @@ import javafx.stage.Stage;
  * mostrandole al usuario la información o pidiendole
  * confirmación sobre algo.
  * 
- * @author Cristian
- * @since 2025-05-20
+ * @author Cristian Delgado Cruz
+ * @since 2025-06-05
  * @version 1.0
  */
 public class InfoController {

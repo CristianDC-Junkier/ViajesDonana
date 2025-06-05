@@ -7,7 +7,7 @@ import org.mindrot.jbcrypt.BCrypt;
  * y además la comprobaciones de strings
  * 
  * @author Cristian Delgado Cruz
- * @since 2025-05-13
+ * @since 2025-06-02
  * @version 1.1
  */
 public class SecurityUtil {

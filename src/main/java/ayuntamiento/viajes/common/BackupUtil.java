@@ -20,8 +20,8 @@ import java.util.Date;
  * creación de los BackUps de SQLite
  * 
  * @author Cristian Delgado Cruz
- * @since 2025-05-14
- * @version 1.1
+ * @since 2025-06-02
+ * @version 1.0
  */
 public class BackupUtil {
 

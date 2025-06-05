@@ -7,7 +7,7 @@ package ayuntamiento.viajes.controller;
  * de moverse entre páginas que da BaseController.
  *
  * @author Ramón Iglesias
- * @since 2025-05-22
+ * @since 2025-06-05
  * @version 1.0
  */
 public class Service_termsController extends BaseController{}

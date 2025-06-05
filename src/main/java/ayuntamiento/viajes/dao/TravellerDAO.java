@@ -13,7 +13,7 @@ import java.util.List;
 
 /**
  * Clase que se encarga de hacer la conexión con la base de datos para el manejo
- * de los datos de los vehiculos
+ * de los datos de los travellers
  *
  * @author Cristian Delgado Cruz
  * @since 2025-06-02

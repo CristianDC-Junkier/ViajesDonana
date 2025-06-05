@@ -11,7 +11,7 @@ import java.util.List;
 
 /**
  * Clase que se encarga de hacer la conexión con la base de datos para el manejo
- * de los datos de los usarios
+ * de los datos de los administradores
  *
  * @author Cristian Delgado Cruz
  * @since 2025-06-02

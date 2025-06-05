@@ -11,7 +11,7 @@ import java.util.Properties;
  * configuración del proyecto
  *
  * @author Cristian Delgado Cruz
- * @since 2025-05-14
+ * @since 2025-06-02
  * @version 1.0
  */
 public class PropertiesUtil {

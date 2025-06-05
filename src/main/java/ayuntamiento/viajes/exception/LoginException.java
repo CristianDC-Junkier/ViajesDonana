@@ -6,7 +6,7 @@ package ayuntamiento.viajes.exception;
  * siendo 1000 fallo de usuario y 2000 fallo de contraseña
  * 
  * @author Cristian Delgado Cruz
- * @since 2025-05-12
+ * @since 2025-06-05
  * @version 1.0
  */
 public class LoginException extends Exception {

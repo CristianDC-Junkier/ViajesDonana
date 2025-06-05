@@ -33,7 +33,7 @@ import javafx.scene.paint.Color;
 
 /**
  * Clase controladora que se encarga de la vista de estadísticas, se controla
- * las labels, los stackedbar charts y los pie charts
+ * las labels y los pie charts
  *
  * @author Cristian Delgado Cruz
  * @since 2025-06-03

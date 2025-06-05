@@ -37,7 +37,7 @@ import java.util.stream.Collectors;
  * la elección de los diferentes tipos
  *
  * @author Cristian Delgado Cruz
- * @since 2025-05-20
+ * @since 2025-06-03
  * @version 1.2
  */
 public class PDFService {

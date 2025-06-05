@@ -6,7 +6,7 @@ package ayuntamiento.viajes.exception;
  * que controlemos nosotros mismos
  * 
  * @author Cristian Delgado Cruz
- * @since 2025-05-28
+ * @since 2025-06-05
  * @version 1.0
  */
 public class ControledException extends Exception{

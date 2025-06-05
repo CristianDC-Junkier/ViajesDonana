@@ -14,8 +14,8 @@ import java.util.Set;
  * su tamaño de ventana
  *
  * @author Ramón Iglesias Granados
- * @since 2025-05-21
- * @version 1.3
+ * @since 2025-06-02
+ * @version 1.0
  */
 public class ManagerUtil {
 

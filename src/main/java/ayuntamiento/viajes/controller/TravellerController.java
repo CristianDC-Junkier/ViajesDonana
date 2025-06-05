@@ -31,11 +31,11 @@ import javafx.scene.control.TextField;
 import javafx.util.converter.LocalDateStringConverter;
 
 /**
- * FXML Controller class
+ * Clase Controladora que se encarga de los travellers existentes
  *
  * @author Ramón Iglesias Granados
- * @since 2025-05-09
- * @version 1.7
+ * @since 2025-06-03
+ * @version 1.2
  */
 public class TravellerController extends BaseController implements Initializable {
 

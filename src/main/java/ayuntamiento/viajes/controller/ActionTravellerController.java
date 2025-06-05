@@ -17,15 +17,14 @@ import java.time.DateTimeException;
 import java.time.format.DateTimeFormatter;
 import java.util.ResourceBundle;
 import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.StackPane;
 
 /**
  * Clase que se encarga de la pestaña de añadir y modificar vehículos, es un
- * dialog modal, que depende de VehicleController
+ * dialog modal, que depende de TravellerController
  *
  * @author Ramón Iglesias Granados
- * @since 2025-05-14
+ * @since 2025-06-02
  * @version 1.2
  */
 public class ActionTravellerController implements Initializable {
