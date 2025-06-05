@@ -13,27 +13,6 @@ import org.mindrot.jbcrypt.BCrypt;
 public class SecurityUtil {
 
     /**
-    * Crea el hash de la contraseña pasada por parametro
-    * 
-    * @param passwordFlat contraseña plana
-    * @return hash de la contraseña
-    */
-    public static String hashPassword(String passwordFlat) {
-        return BCrypt.hashpw(passwordFlat, BCrypt.gensalt());
-    }
-
-    /**
-    * Cromprueba si un hash corresponde a una contraseña
-    * 
-    * @param passwordFlat contraseña plana
-    * @param hash el hash original guardado en la BD
-    * @return la verificación de que es correcto o no
-    */
-    public static boolean verifyPassword(String passwordFlat, String hash) {
-        return BCrypt.checkpw(passwordFlat, hash);
-    }
-
-    /**
     * Cromprueba si una cadena es maliciosa o esta vacía
     * 
     * @param s cadena introducida

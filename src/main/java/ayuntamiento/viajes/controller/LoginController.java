@@ -5,13 +5,10 @@ import ayuntamiento.viajes.common.ManagerUtil;
 import ayuntamiento.viajes.common.PreferencesUtil;
 import ayuntamiento.viajes.common.SecurityUtil;
 import ayuntamiento.viajes.exception.LoginException;
-import ayuntamiento.viajes.model.Preferences;
-import ayuntamiento.viajes.model.Admin;
-import ayuntamiento.viajes.service.AdminService;
-import ayuntamiento.viajes.service.TravellerService;
+import ayuntamiento.viajes.service.LoginService;
 import java.net.URL;
-import java.sql.SQLException;
 import java.util.ResourceBundle;
+import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
@@ -30,7 +27,7 @@ import javafx.scene.control.ProgressIndicator;
  */
 public class LoginController extends BaseController implements Initializable {
 
-    AdminService adminS;
+    LoginService loginS;
 
     @FXML
     private ProgressIndicator chargePI;
@@ -49,32 +46,51 @@ public class LoginController extends BaseController implements Initializable {
      */
     @FXML
     private void login() {
-        try {
+        changePI(); // Mostrar "cargando"
+
+        String username = userField.getText();
+        String password = passField.getText();
+
+        if (SecurityUtil.checkBadOrEmptyString(username)) {
+            log("Error en el login, el usuario no es válido");
+            wrongUser(1000, "El nombre no debe estar vacío ni contener los siguientes caracteres: <--> , <;>, <'>, <\">, </*>, <*/>");
             changePI();
-            adminS.rechargeList();
-            if (SecurityUtil.checkBadOrEmptyString(userField.getText())) {
-                log("Error en el login, el usuario no es válido");
-                wrongUser(1000, "El nombre no debe estar vacía ni contener los siguientes carácteres: <--> , <;>, <'>, <\">, </*>, <*/>");
-            } else if (SecurityUtil.checkBadOrEmptyString(passField.getText())) {
-                log("Error en el login, la contraseña no es válida");
-                wrongUser(2000, "La contaseña no debe estar vacía ni contener los siguientes carácteres: <--> , <;>, <'>, <\">, </*>, <*/>");
-            } else {
-                try {
-                    Admin userlog = adminS.findByCredentials(userField.getText(), passField.getText());
-                    rememberUser(userlog);
-                    setTravellers();
-                    changePI();
-                    ManagerUtil.moveTo("home");
-                } catch (SQLException sqlE) {
-                    error(new Exception(sqlE));
-                }
-            }
-        } catch (LoginException lE) {
-            wrongUser(lE.getErrorCode(), lE.getMessage());
-        } catch (Exception ex) {
-            error(ex);
+            return;
         }
 
+        if (SecurityUtil.checkBadOrEmptyString(password)) {
+            log("Error en el login, la contraseña no es válida");
+            wrongUser(2000, "La contraseña no debe estar vacía ni contener los siguientes caracteres: <--> , <;>, <'>, <\">, </*>, <*/>");
+            changePI();
+            return;
+        }
+
+        // Ejecutar login en segundo plano
+        Task<Void> loginTask = new Task<>() {
+            @Override
+            protected Void call() throws Exception {
+                loginS.login(username, password);
+                return null;
+            }
+        };
+
+        loginTask.setOnSucceeded(e -> {
+            changePI(); 
+            System.out.println("Hola");
+            ManagerUtil.moveTo("home"); 
+        });
+
+        loginTask.setOnFailed(e -> {
+            changePI(); 
+            Throwable error = loginTask.getException();
+            if (error instanceof LoginException le) {
+                wrongUser(le.getErrorCode(), le.getMessage());
+            } else {
+                error((Exception) error);
+            }
+        });
+
+        new Thread(loginTask).start(); // Inicia el hilo
     }
 
     @FXML
@@ -88,8 +104,9 @@ public class LoginController extends BaseController implements Initializable {
     }
 
     @Override
-    public void initialize(URL url, ResourceBundle rb) {
-        adminS = new AdminService();
+    public void initialize(URL url, ResourceBundle rb
+    ) {
+        loginS = new LoginService();
         String username = PreferencesUtil.getPreferences().getRemember();
 
         if (username != null) {
@@ -98,43 +115,33 @@ public class LoginController extends BaseController implements Initializable {
         }
     }
 
-    /**
-     * Recarga por primera vez los vehiculos
-     */
-    private void setTravellers() throws SQLException {
-        TravellerService vS = new TravellerService();
-        if (vS.findAll() == null) {
-            vS.rechargeList();
-        }
-
-    }
-
     private void wrongUser(int error, String msg) {
-        if (error == 1000) {
-            log("Error en el login, " + msg);
-            userField.setStyle(errorStyle);
-        } else if (error == 2000) {
-            log("Error en el login, " + msg);
-            passField.setStyle(errorStyle);
+        switch (error) {
+            case 1000:
+                log("Error en el login, " + msg);
+                userField.setStyle(errorStyle);
+                break;
+            case 2000:
+                log("Error en el login, " + msg);
+                passField.setStyle(errorStyle);
+                break;
+            case 401:
+                log("Error en el login, " + msg);
+                userField.setStyle(errorStyle);
+                passField.setStyle(errorStyle);
+                break;
+            default:
+                log("Error en el login, " + msg);
+                break;
         }
         userField.setText("");
         passField.setText("");
         errorlabel.setText(msg);
     }
 
-    private void rememberUser(Admin userlog) {
-        Preferences pref = new Preferences();
-
-        if (rememberCheck.isSelected()) {
-            pref.setRemember(userlog.getUsername());
-        }
-
-        PreferencesUtil.setPreferences(pref);
-    }
-    
-    private void changePI(){
+    private void changePI() {
         chargePI.setVisible(!chargePI.isVisible());
         chargePI.setFocusTraversable(!chargePI.isFocusTraversable());
     }
-    
+
 }

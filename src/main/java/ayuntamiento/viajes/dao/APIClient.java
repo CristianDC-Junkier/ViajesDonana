@@ -1,0 +1,71 @@
+package ayuntamiento.viajes.dao;
+
+import ayuntamiento.viajes.common.PropertiesUtil;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import java.io.IOException;
+import java.net.URI;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
+import java.util.List;
+
+/**
+ *
+ * @author Cristian Delgado Cruz
+ * @since 2025-06-05
+ * @version 1.0
+ */
+public abstract class APIClient<T> {
+
+    protected final String BASE_URL = PropertiesUtil.getProperty("API_URL");
+    private final Class<T> typeParameterClass;
+    protected final HttpClient client = HttpClient.newHttpClient();
+    protected final ObjectMapper objectMapper = new ObjectMapper();
+
+    public APIClient(Class<T> typeParameterClass) {
+        this.typeParameterClass = typeParameterClass;
+    }
+
+    public List<T> getAll(String endpoint) throws IOException, InterruptedException {
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(BASE_URL + endpoint))
+                .GET()
+                .build();
+
+        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        return objectMapper.readValue(response.body(), objectMapper.getTypeFactory().constructCollectionType(List.class, typeParameterClass));
+    }
+
+    public T getById(String endpoint, int id) throws IOException, InterruptedException {
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(BASE_URL + endpoint + "/" + id))
+                .GET()
+                .build();
+
+        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        return objectMapper.readValue(response.body(), typeParameterClass);
+    }
+
+    public T create(String endpoint, T obj) throws IOException, InterruptedException {
+        String json = objectMapper.writeValueAsString(obj);
+
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(BASE_URL + endpoint))
+                .header("Content-Type", "application/json")
+                .POST(HttpRequest.BodyPublishers.ofString(json))
+                .build();
+
+        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        return objectMapper.readValue(response.body(), typeParameterClass);
+    }
+
+    public void delete(String endpoint, int id) throws IOException, InterruptedException {
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(BASE_URL + endpoint + "/" + id))
+                .DELETE()
+                .build();
+
+        client.send(request, HttpResponse.BodyHandlers.ofString());
+    }
+}

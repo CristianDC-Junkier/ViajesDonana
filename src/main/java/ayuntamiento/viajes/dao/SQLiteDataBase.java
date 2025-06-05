@@ -80,7 +80,7 @@ public class SQLiteDataBase {
         try (Connection conn = SQLiteDataBase.getConnection(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
             pstmt.setString(1, "admin");
-            pstmt.setString(2, SecurityUtil.hashPassword("admin"));
+            pstmt.setString(2, "admin");
 
             pstmt.executeUpdate();
 

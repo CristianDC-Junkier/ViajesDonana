@@ -22,8 +22,6 @@ public class TravellerService {
 
     static {
         travellerDAO = new TravellerDAO();
-        
-        
     }
 
     public Traveller save(Traveller entity) throws SQLException {
