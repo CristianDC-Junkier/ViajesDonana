@@ -4,7 +4,6 @@ import ayuntamiento.viajes.dao.LoginDAO;
 import ayuntamiento.viajes.exception.LoginException;
 import ayuntamiento.viajes.model.Admin;
 import com.fasterxml.jackson.databind.JsonNode;
-import java.io.IOException;
 
 /**
  *
@@ -41,7 +40,7 @@ public class LoginService {
         LoginService.adminLog = adminLog;
     }
 
-    public void login(String username, String password) throws LoginException , Exception{
+    public void login(String username, String password) throws LoginException, Exception {
         JsonNode result = loginDAO.login(username, password);
         adminLog = new Admin();
         adminLog.setUsername(username);
@@ -49,12 +48,12 @@ public class LoginService {
         adminLog.setId(result.get("id").asLong());
         LoginService.secret_Token = result.get("id").asText();
     }
-    public static boolean relog() throws LoginException, Exception{
+
+    public static boolean relog() throws LoginException, Exception {
         boolean logueado = false;
-        LoginService.secret_Token = 
-                loginDAO.login(adminLog.getUsername(), adminLog.getPassword()).get("id").asText();
+        LoginService.secret_Token
+                = loginDAO.login(adminLog.getUsername(), adminLog.getPassword()).get("id").asText();
         return logueado;
     }
-    
 
 }

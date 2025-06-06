@@ -26,7 +26,8 @@ public class LoginDAO extends APIClient<Admin> {
      *
      * @param username Nombre de usuario
      * @param password Contraseña
-     * @return Token JWT si es correcto
+     * @return JsonNode con el token y el id llamado
+     * @throws LoginException Excepcion Controlada
      */
     public JsonNode login(String username, String password) throws LoginException, Exception{
         int maxRetries = 3;
