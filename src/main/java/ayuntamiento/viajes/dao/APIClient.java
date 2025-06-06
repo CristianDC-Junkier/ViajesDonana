@@ -38,6 +38,7 @@ public abstract class APIClient<T> {
                 .build();
 
         HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        System.out.println(response.body());
         return objectMapper.readValue(response.body(), objectMapper.getTypeFactory().constructCollectionType(List.class, typeParameterClass));
     }
 
@@ -63,6 +64,7 @@ public abstract class APIClient<T> {
                 .build();
 
         HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        System.out.println(response.body());
         return objectMapper.readValue(response.body(), typeParameterClass);
     }
 
@@ -77,6 +79,7 @@ public abstract class APIClient<T> {
                 .build();
 
         HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        System.out.println(response.body());
         return objectMapper.readValue(response.body(), typeParameterClass);
     }
 

@@ -31,7 +31,12 @@ public class TravellerService {
         if (vehicleExists) {
             result = null;
         } else {
+            try{
             result = (Traveller) travellerDAO.save(entity);
+            }catch(Exception ex){
+                System.out.println(ex);
+                return null;
+            }
             rechargeList();
         }
         return result;
@@ -43,7 +48,12 @@ public class TravellerService {
                 .anyMatch(vehicle -> vehicle.getDni().equalsIgnoreCase(entity.getDni())
                 && vehicle.getId() != entity.getId());
         if (vehicleExists) {
+            try{
             result = null;
+            }catch(Exception ex){
+                System.out.println(ex);
+                return null;
+            }
         } else {
             result = (Traveller) travellerDAO.modify(entity, entity.getId());
             rechargeList();
@@ -77,7 +87,6 @@ public class TravellerService {
     }
 
     public void rechargeList() throws IOException, InterruptedException {
-        System.out.println("recharge list");
         travellerList = travellerDAO.findAll();
         /*travellerList = List.of(
                 new Traveller("12345678A", "Ana Pérez", 0, 0, "01/06/2023"),
