@@ -46,7 +46,7 @@ public class LoginService {
         adminLog.setUsername(username);
         adminLog.setContraseña(password);
         adminLog.setId(result.get("id").asLong());
-        LoginService.secret_Token = result.get("id").asText();
+        LoginService.secret_Token = result.get("token").asText();
     }
 
     public static boolean relog() throws LoginException, Exception {

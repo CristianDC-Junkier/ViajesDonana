@@ -77,6 +77,7 @@ public class TravellerService {
     }
 
     public void rechargeList() throws IOException, InterruptedException {
+        System.out.println("recharge list");
         travellerList = travellerDAO.findAll();
         /*travellerList = List.of(
                 new Traveller("12345678A", "Ana Pérez", 0, 0, "01/06/2023"),

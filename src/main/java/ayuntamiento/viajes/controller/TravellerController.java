@@ -19,6 +19,7 @@ import ayuntamiento.viajes.service.TravellerService;
 import ayuntamiento.viajes.model.Traveller;
 import ayuntamiento.viajes.model.Traveller.TravellerTrip;
 import ayuntamiento.viajes.model.Traveller.TravellerOffice;
+import java.io.IOException;
 
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -45,8 +46,9 @@ public class TravellerController extends BaseController implements Initializable
     private static final DateTimeFormatter formatter_Show_Date = DateTimeFormatter.ofPattern(SHOW_DATE_FORMAT);
 
 
-    public TravellerController() {
+    public TravellerController() throws IOException, InterruptedException {
         travellerS = new TravellerService();
+        travellerS.rechargeList();
     }
 
     @FXML

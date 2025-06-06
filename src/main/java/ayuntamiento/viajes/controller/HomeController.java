@@ -47,13 +47,11 @@ public class HomeController extends BaseController implements Initializable {
 
     @FXML
     private void travellerspanel() throws IOException {
-        System.out.println("viajeros");
         ManagerUtil.moveTo("traveller");
     }
 
     @FXML
     private void stadisticspanel() throws IOException {
-        System.out.println("estadisticas");
         ManagerUtil.moveTo("stadistics");
     }
 
