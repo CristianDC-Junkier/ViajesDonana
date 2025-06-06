@@ -1,6 +1,7 @@
 package ayuntamiento.viajes.dao;
 
 import ayuntamiento.viajes.common.PropertiesUtil;
+import ayuntamiento.viajes.service.LoginService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.IOException;
@@ -30,7 +31,7 @@ public abstract class APIClient<T> {
     public List<T> getAll(String endpoint) throws IOException, InterruptedException {
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(BASE_URL + endpoint))
-                .header("Authorization", "Bearer " + PropertiesUtil.getProperty("API_TOKEN"))
+                .header("Authorization", "Bearer " + LoginService.getSecret_token())
                 .GET()
                 .build();
 
@@ -41,7 +42,7 @@ public abstract class APIClient<T> {
     public T getById(String endpoint, int id) throws IOException, InterruptedException {
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(BASE_URL + endpoint + "/" + id))
-                .header("Authorization", "Bearer " + PropertiesUtil.getProperty("API_TOKEN"))
+                .header("Authorization", "Bearer " + LoginService.getSecret_token())
                 .GET()
                 .build();
 
@@ -55,7 +56,7 @@ public abstract class APIClient<T> {
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(BASE_URL + endpoint))
                 .header("Content-Type", "application/json")
-                .header("Authorization", "Bearer " + PropertiesUtil.getProperty("API_TOKEN"))
+                .header("Authorization", "Bearer " + LoginService.getSecret_token())
                 .POST(HttpRequest.BodyPublishers.ofString(json))
                 .build();
 
@@ -66,7 +67,7 @@ public abstract class APIClient<T> {
     public void delete(String endpoint, int id) throws IOException, InterruptedException {
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(BASE_URL + endpoint + "/" + id))
-                .header("Authorization", "Bearer " + PropertiesUtil.getProperty("API_TOKEN"))
+                .header("Authorization", "Bearer " + LoginService.getSecret_token())
                 .DELETE()
                 .build();
 
