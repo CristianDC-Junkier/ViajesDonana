@@ -2,7 +2,7 @@ package ayuntamiento.viajes.service;
 
 import ayuntamiento.viajes.dao.TravellerDAO;
 import ayuntamiento.viajes.model.Traveller;
-import java.sql.SQLException;
+import java.io.IOException;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -24,7 +24,7 @@ public class TravellerService {
         travellerDAO = new TravellerDAO();
     }
 
-    public Traveller save(Traveller entity) throws SQLException {
+    public Traveller save(Traveller entity) throws IOException, InterruptedException {
         Traveller result;
         boolean vehicleExists = travellerList.stream()
                 .anyMatch(vehicle -> vehicle.getDni().equalsIgnoreCase(entity.getDni()));
@@ -37,7 +37,7 @@ public class TravellerService {
         return result;
     }
 
-    public Traveller modify(Traveller entity) throws SQLException {
+    public Traveller modify(Traveller entity) throws IOException, InterruptedException {
         Traveller result;
         boolean vehicleExists = travellerList.stream()
                 .anyMatch(vehicle -> vehicle.getDni().equalsIgnoreCase(entity.getDni())
@@ -45,15 +45,15 @@ public class TravellerService {
         if (vehicleExists) {
             result = null;
         } else {
-            result = travellerDAO.modify(entity);
+            result = (Traveller) travellerDAO.modify(entity, entity.getId());
             rechargeList();
         }
         return result;
     }
 
-    public boolean delete(Traveller entity) throws SQLException {
+    public boolean delete(Traveller entity) throws IOException, InterruptedException   {
         boolean deleted;
-        deleted = travellerDAO.delete(entity);
+        deleted = travellerDAO.delete(entity.getId());
         if (deleted) {
             rechargeList();
         }
@@ -76,7 +76,7 @@ public class TravellerService {
                 .collect(Collectors.toList());
     }
 
-    public void rechargeList() throws SQLException {
+    public void rechargeList() throws IOException, InterruptedException {
         travellerList = travellerDAO.findAll();
         /*travellerList = List.of(
                 new Traveller("12345678A", "Ana Pérez", 0, 0, "01/06/2023"),
