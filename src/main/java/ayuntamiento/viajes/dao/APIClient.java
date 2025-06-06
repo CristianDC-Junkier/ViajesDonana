@@ -3,6 +3,8 @@ package ayuntamiento.viajes.dao;
 import ayuntamiento.viajes.common.PropertiesUtil;
 import ayuntamiento.viajes.service.LoginService;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
 import java.io.IOException;
 import java.net.URI;
@@ -28,6 +30,8 @@ public abstract class APIClient<T> {
     public APIClient(Class<T> typeParameterClass, String endpoint) {
         this.typeParameterClass = typeParameterClass;
         this.endpoint = endpoint;
+        objectMapper.registerModule(new JavaTimeModule()); 
+        objectMapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS); 
     }
 
     public List<T> findAll() throws IOException, InterruptedException {

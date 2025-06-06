@@ -1,6 +1,8 @@
 package ayuntamiento.viajes.model;
 
 import ayuntamiento.viajes.common.PropertiesUtil;
+import com.fasterxml.jackson.annotation.JsonGetter;
+import com.fasterxml.jackson.annotation.JsonSetter;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
@@ -56,10 +58,16 @@ public class Traveller {
 
     }
 
+    @JsonGetter("office")
+    public int getOfficeOrdinal() {
+        return office.ordinal();
+    }
+
     public TravellerOffice getOffice() {
         return office;
     }
 
+    @JsonSetter("office")
     public void setOffice(Integer office) {
         this.office = TravellerOffice.values()[office];
     }
@@ -88,10 +96,16 @@ public class Traveller {
         this.name = name;
     }
 
+    @JsonGetter("trip")
+    public int getTripOrdinal() {
+        return trip.ordinal();
+    }
+
     public TravellerTrip getTrip() {
         return trip;
     }
 
+    @JsonSetter("trip")
     public void setTrip(Integer trip) {
         this.trip = TravellerTrip.values()[trip];
     }

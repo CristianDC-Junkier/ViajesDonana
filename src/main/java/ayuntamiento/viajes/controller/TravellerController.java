@@ -48,7 +48,11 @@ public class TravellerController extends BaseController implements Initializable
 
     public TravellerController() throws IOException, InterruptedException {
         travellerS = new TravellerService();
+        try{
         travellerS.rechargeList();
+        }catch(Exception ex){
+            System.out.println(ex);
+        }
     }
 
     @FXML
