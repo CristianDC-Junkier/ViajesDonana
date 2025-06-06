@@ -65,6 +65,7 @@ public class PDFService {
     static {
         travellerS = new TravellerService();
     }
+    
 
     /**
      * Metodo que recoge todos los vehículos y cuenta los que son propiedad del
@@ -81,7 +82,8 @@ public class PDFService {
         tripTraveller = new HashMap<>();
         own = 0;
         rent = 0;
-
+      
+        travellerS.rechargeList();
         travellersList = sort(travellerS.findAll(), sort);
 
         firstPageTravellers = travellersList.stream().limit(numTraInitialPage).toList();

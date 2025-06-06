@@ -4,6 +4,7 @@ import ayuntamiento.viajes.model.Traveller;
 import ayuntamiento.viajes.model.Traveller.TravellerTrip;
 import ayuntamiento.viajes.model.Traveller.TravellerOffice;
 import ayuntamiento.viajes.service.TravellerService;
+import java.io.IOException;
 import java.net.URL;
 
 import java.time.LocalDate;
@@ -17,6 +18,8 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.ResourceBundle;
 import java.util.function.Function;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import javafx.application.Platform;
 
@@ -88,6 +91,15 @@ public class StadisticsController extends BaseController implements Initializabl
 
         selectedValue = null;
         travellerS = new TravellerService();
+        try {
+            travellerS.rechargeList();
+        } catch (IOException ex) {
+            Logger.getLogger(StadisticsController.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (InterruptedException ex) {
+            Logger.getLogger(StadisticsController.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (Exception ex) {
+            Logger.getLogger(StadisticsController.class.getName()).log(Level.SEVERE, null, ex);
+        }
         listTraveller = travellerS.findAll();
 
         

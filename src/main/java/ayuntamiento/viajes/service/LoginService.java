@@ -52,7 +52,7 @@ public class LoginService {
     public static boolean relog() throws LoginException, Exception {
         boolean logueado = false;
         LoginService.secret_Token
-                = loginDAO.login(adminLog.getUsername(), adminLog.getPassword()).get("id").asText();
+                = loginDAO.login(adminLog.getUsername(), adminLog.getPassword()).get("token").asText();
         return logueado;
     }
 

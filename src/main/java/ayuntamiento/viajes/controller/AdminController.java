@@ -59,9 +59,8 @@ public class AdminController extends BaseController implements Initializable {
 
     private final int numMaxChars = 16;
 
-    public AdminController() throws IOException, InterruptedException {
+    public AdminController() {
         adminS = new AdminService();
-        adminS.rechargeList();
     }
 
     /**

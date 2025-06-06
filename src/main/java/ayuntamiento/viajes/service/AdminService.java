@@ -1,9 +1,9 @@
 package ayuntamiento.viajes.service;
 
-
 import ayuntamiento.viajes.dao.AdminDAO;
+import ayuntamiento.viajes.exception.APIException;
+import ayuntamiento.viajes.exception.ControledException;
 import ayuntamiento.viajes.model.Admin;
-import java.io.IOException;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -34,7 +34,11 @@ public class AdminService {
      * @throws java.io.IOException
      * @throws java.lang.InterruptedException
      */
-    public Admin save(Admin entity) throws IOException, InterruptedException {
+    public Admin save(Admin entity) throws ControledException, Exception {
+        return save(entity, true);
+    }
+
+    private Admin save(Admin entity, boolean allowRetry) throws ControledException, Exception {
         Admin result;
         boolean userExists = adminList.stream()
                 .anyMatch(user -> user.getUsername().equals(entity.getUsername()));
@@ -42,9 +46,27 @@ public class AdminService {
             return null;
         }
         entity.setContraseña(entity.getPassword());
-        result = (Admin) adminDAO.save(entity);
-        adminList.add(result);
-        return result;
+        try {
+            result = (Admin) adminDAO.save(entity);
+            adminList.add(result);
+            return result;
+        } catch (APIException apiE) {
+            switch (apiE.getStatusCode()) {
+                case 400, 404 ->
+                    throw new ControledException(apiE.getMessage(), "AdminService - save");
+                case 401 -> {
+                    if (allowRetry) {
+                        LoginService.relog();
+                        return save(entity, false);
+                    } else {
+                        throw new Exception(apiE.getMessage());
+                    }
+                }
+                default ->
+                    throw new Exception(apiE.getMessage());
+
+            }
+        }
     }
 
     /**
@@ -57,7 +79,13 @@ public class AdminService {
      * @throws java.io.IOException
      * @throws java.lang.InterruptedException
      */
-    public Admin modify(Admin entity) throws SQLException, IOException, InterruptedException {
+    // Método público sin el parámetro allowRetry
+    public Admin modify(Admin entity) throws Exception {
+        return modify(entity, true); // permite un reintento por defecto
+    }
+
+    // Método privado con control de reintento
+    private Admin modify(Admin entity, boolean allowRetry) throws Exception {
         Admin result;
         boolean userExists = adminList.stream()
                 .anyMatch(user -> user.getUsername().equals(entity.getUsername())
@@ -65,17 +93,39 @@ public class AdminService {
         if (userExists) {
             return null;
         }
+
         entity.setContraseña(entity.getPassword());
-        result = (Admin) adminDAO.modify(entity, entity.getId());
-        for (int i = 0; i < adminList.size(); i++) {
-            if (adminList.get(i).getId() == entity.getId()) {
-                adminList.set(i, entity);
+        try {
+            result = (Admin) adminDAO.modify(entity, entity.getId());
+
+            for (int i = 0; i < adminList.size(); i++) {
+                if (adminList.get(i).getId() == entity.getId()) {
+                    adminList.set(i, result);
+                }
+            }
+
+            if (result.getId() == LoginService.getAdminLog().getId()) {
+                LoginService.setAdminLog(result);
+            }
+
+            return result;
+
+        } catch (APIException apiE) {
+            switch (apiE.getStatusCode()) {
+                case 400, 404 ->
+                    throw new ControledException(apiE.getMessage(), "AdminService - modify");
+                case 401 -> {
+                    if (allowRetry) {
+                        LoginService.relog();
+                        return modify(entity, false);
+                    } else {
+                        throw new Exception(apiE.getMessage());
+                    }
+                }
+                default ->
+                    throw new Exception(apiE.getMessage());
             }
         }
-        if (result.getId() == LoginService.getAdminLog().getId()) {
-            LoginService.setAdminLog(result);
-        }
-        return result;
     }
 
     /**
@@ -89,40 +139,117 @@ public class AdminService {
      * @throws java.io.IOException
      * @throws java.lang.InterruptedException
      */
-    public Admin modifyProfile(Admin entity) throws SQLException, IOException, InterruptedException {
+    // Método público sin parámetro, permite reintento por defecto
+    public Admin modifyProfile(Admin entity) throws Exception {
+        return modifyProfile(entity, true);
+    }
+
+    // Método privado con control de reintento
+    private Admin modifyProfile(Admin entity, boolean allowRetry) throws Exception {
         Admin result;
-        boolean userExists;
-        userExists = adminList.stream()
-                .anyMatch((user -> user.getUsername().equals(entity.getUsername())
-                && user.getId() != entity.getId()));
+        boolean userExists = adminList.stream()
+                .anyMatch(user -> user.getUsername().equals(entity.getUsername())
+                && user.getId() != entity.getId());
+
         if (userExists) {
             return null;
         }
+
         entity.setContraseña(entity.getPassword());
-        result = (Admin) adminDAO.modify(entity, entity.getId());
-        LoginService.setAdminLog(result);
-        return result;
+
+        try {
+            result = (Admin) adminDAO.modify(entity, entity.getId());
+            LoginService.setAdminLog(result);
+            adminList = null;
+            return result;
+
+        } catch (APIException apiE) {
+            switch (apiE.getStatusCode()) {
+                case 400, 404 ->
+                    throw new ControledException(apiE.getMessage(), "AdminService - modifyProfile");
+                case 401 -> {
+                    if (allowRetry) {
+                        LoginService.relog();
+                        return modifyProfile(entity, false);
+                    } else {
+                        throw new Exception(apiE.getMessage());
+                    }
+                }
+                default ->
+                    throw new Exception(apiE.getMessage());
+            }
+        }
     }
 
-    public boolean delete(Admin entity) throws SQLException, IOException, InterruptedException {
+    // Método público con reintento por defecto
+    public boolean delete(Admin entity) throws Exception {
+        return delete(entity, true);
+    }
+
+    // Método privado con control de reintento
+    private boolean delete(Admin entity, boolean allowRetry) throws Exception {
         boolean deleted;
-        deleted = adminDAO.delete(entity.getId());
-        if (deleted) {
-            if (LoginService.getAdminLog().getId() == entity.getId()) {
-                LoginService.setAdminLog(null);
+
+        try {
+            deleted = adminDAO.delete(entity.getId());
+
+            if (deleted) {
+                if (LoginService.getAdminLog().getId() == entity.getId()) {
+                    LoginService.setAdminLog(null);
+                }
+                adminList.remove(entity);
             }
-            adminList.remove(entity);
+
+            return deleted;
+
+        } catch (APIException apiE) {
+            switch (apiE.getStatusCode()) {
+                case 400, 404 ->
+                    throw new ControledException(apiE.getMessage(), "AdminService - delete");
+                case 401 -> {
+                    if (allowRetry) {
+                        LoginService.relog();
+                        return delete(entity, false);
+                    } else {
+                        throw new Exception(apiE.getMessage());
+                    }
+                }
+                default ->
+                    throw new Exception(apiE.getMessage());
+            }
         }
-        return deleted;
     }
 
     public List<Admin> findAll() {
         return adminList;
     }
 
-    public void rechargeList() throws IOException, InterruptedException {
-        adminList = adminDAO.findAll();
+    // Método público con reintento por defecto
+    public static void rechargeList() throws Exception {
+        rechargeList(true);
+    }
 
+   // Método privado con control de reintento
+    private static void rechargeList(boolean allowRetry) throws Exception {
+        try {
+            adminList = adminDAO.findAll();
+        } catch (APIException apiE) {
+            System.out.println(apiE.getStatusCode());
+            switch (apiE.getStatusCode()) {
+                case 400, 404 ->
+                    throw new ControledException(apiE.getMessage(), "AdminService - rechargeList");
+                case 401 -> {
+                    if (allowRetry) {
+                        LoginService.relog();
+                        rechargeList(false);
+                    } else {
+                        throw new Exception(apiE.getMessage());
+                    }
+                }
+                default ->
+                    throw new Exception(apiE.getMessage());
+            }
+        }
     }
 
 }

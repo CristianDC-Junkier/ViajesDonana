@@ -2,6 +2,7 @@ package ayuntamiento.viajes.app;
 
 import ayuntamiento.viajes.common.LoggerUtil;
 
+
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -42,6 +43,7 @@ public class App extends Application {
         try {
             /*Log*/
             LoggerUtil.iniLog();
+
 
             /*FXML inicial*/
             scene = new Scene(loadFXML("/ayuntamiento/viajes/view/login"), 1000, 800);

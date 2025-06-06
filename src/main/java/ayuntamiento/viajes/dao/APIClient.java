@@ -1,12 +1,13 @@
 package ayuntamiento.viajes.dao;
 
 import ayuntamiento.viajes.common.PropertiesUtil;
+import ayuntamiento.viajes.exception.APIException;
 import ayuntamiento.viajes.service.LoginService;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
-import java.io.IOException;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
@@ -30,11 +31,11 @@ public abstract class APIClient<T> {
     public APIClient(Class<T> typeParameterClass, String endpoint) {
         this.typeParameterClass = typeParameterClass;
         this.endpoint = endpoint;
-        objectMapper.registerModule(new JavaTimeModule()); 
-        objectMapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS); 
+        objectMapper.registerModule(new JavaTimeModule());
+        objectMapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
     }
 
-    public List<T> findAll() throws IOException, InterruptedException {
+    public List<T> findAll() throws APIException, Exception {
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(BASE_URL + "/" + endpoint))
                 .header("Authorization", "Bearer " + LoginService.getSecret_token())
@@ -42,11 +43,19 @@ public abstract class APIClient<T> {
                 .build();
 
         HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
-        System.out.println(response.body());
-        return objectMapper.readValue(response.body(), objectMapper.getTypeFactory().constructCollectionType(List.class, typeParameterClass));
+        int statusCode = response.statusCode();
+        String responseBody = response.body();
+
+        if (statusCode == 200) {
+            return objectMapper.readValue(response.body(), objectMapper.getTypeFactory().constructCollectionType(List.class, typeParameterClass));
+        } else {
+            JsonNode jsonNode = objectMapper.readTree(responseBody);
+            String message = jsonNode.has("error") ? jsonNode.get("error").asText() : "Error en la API ";
+            throw new APIException(statusCode, message);
+        }
     }
 
-    public T findById(long id) throws IOException, InterruptedException {
+    public T findById(long id) throws APIException, Exception {
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(BASE_URL + "/" + endpoint + "/" + id))
                 .header("Authorization", "Bearer " + LoginService.getSecret_token())
@@ -54,10 +63,17 @@ public abstract class APIClient<T> {
                 .build();
 
         HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
-        return objectMapper.readValue(response.body(), typeParameterClass);
+        int statusCode = response.statusCode();
+        String responseBody = response.body();
+
+        if (statusCode == 200) {
+            return objectMapper.readValue(response.body(), typeParameterClass);
+        } else {
+            throw new APIException(statusCode, responseBody);
+        }
     }
 
-    public T save(T obj) throws IOException, InterruptedException {
+    public T save(T obj) throws APIException, Exception {
         String json = objectMapper.writeValueAsString(obj);
 
         HttpRequest request = HttpRequest.newBuilder()
@@ -68,11 +84,17 @@ public abstract class APIClient<T> {
                 .build();
 
         HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
-        System.out.println(response.body());
-        return objectMapper.readValue(response.body(), typeParameterClass);
+        int statusCode = response.statusCode();
+        String responseBody = response.body();
+
+        if (statusCode == 200) {
+            return objectMapper.readValue(response.body(), typeParameterClass);
+        } else {
+            throw new APIException(statusCode, responseBody);
+        }
     }
 
-    public T modify(T obj, long id) throws IOException, InterruptedException {
+    public T modify(T obj, long id) throws APIException, Exception {
         String json = objectMapper.writeValueAsString(obj);
 
         HttpRequest request = HttpRequest.newBuilder()
@@ -83,11 +105,17 @@ public abstract class APIClient<T> {
                 .build();
 
         HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
-        System.out.println(response.body());
-        return objectMapper.readValue(response.body(), typeParameterClass);
+        int statusCode = response.statusCode();
+        String responseBody = response.body();
+
+        if (statusCode == 200) {
+            return objectMapper.readValue(response.body(), typeParameterClass);
+        } else {
+            throw new APIException(statusCode, responseBody);
+        }
     }
 
-    public boolean delete(long id) throws IOException, InterruptedException {
+    public boolean delete(long id) throws APIException, Exception {
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(BASE_URL + "/" + endpoint + "/" + id))
                 .header("Authorization", "Bearer " + LoginService.getSecret_token())
@@ -95,6 +123,14 @@ public abstract class APIClient<T> {
                 .build();
 
         HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
-        return response.statusCode() == 200 || response.statusCode() == 204;
+        int statusCode = response.statusCode();
+        String responseBody = response.body();
+
+        if (statusCode == 200 || response.statusCode() == 204) {
+            return true;
+        } else {
+            throw new APIException(statusCode, responseBody);
+        }
     }
+
 }

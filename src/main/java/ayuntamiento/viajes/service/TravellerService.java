@@ -24,7 +24,7 @@ public class TravellerService {
         travellerDAO = new TravellerDAO();
     }
 
-    public Traveller save(Traveller entity) throws IOException, InterruptedException {
+    public Traveller save(Traveller entity) throws IOException, InterruptedException, Exception {
         Traveller result;
         boolean vehicleExists = travellerList.stream()
                 .anyMatch(vehicle -> vehicle.getDni().equalsIgnoreCase(entity.getDni()));
@@ -42,7 +42,7 @@ public class TravellerService {
         return result;
     }
 
-    public Traveller modify(Traveller entity) throws IOException, InterruptedException {
+    public Traveller modify(Traveller entity) throws IOException, InterruptedException, Exception {
         Traveller result;
         boolean vehicleExists = travellerList.stream()
                 .anyMatch(vehicle -> vehicle.getDni().equalsIgnoreCase(entity.getDni())
@@ -61,7 +61,7 @@ public class TravellerService {
         return result;
     }
 
-    public boolean delete(Traveller entity) throws IOException, InterruptedException   {
+    public boolean delete(Traveller entity) throws IOException, InterruptedException, Exception   {
         boolean deleted;
         deleted = travellerDAO.delete(entity.getId());
         if (deleted) {
@@ -86,7 +86,7 @@ public class TravellerService {
                 .collect(Collectors.toList());
     }
 
-    public void rechargeList() throws IOException, InterruptedException {
+    public static void rechargeList() throws IOException, InterruptedException, Exception {
         travellerList = travellerDAO.findAll();
         /*travellerList = List.of(
                 new Traveller("12345678A", "Ana Pérez", 0, 0, "01/06/2023"),

@@ -92,7 +92,14 @@ public abstract class BaseController {
     @FXML
     private void userspanel() throws IOException {
         if (LoginService.getAdminLog().getId() == 1) {
-            ManagerUtil.moveTo("admin");
+            try {
+                AdminService.rechargeList();
+                ManagerUtil.moveTo("admin");
+            } catch (ControledException cE) {
+                error(cE);
+            } catch (Exception ex) {
+                error(ex);
+            }
 
         } else {
             ManagerUtil.moveTo("profile");

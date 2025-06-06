@@ -4,6 +4,7 @@ import ayuntamiento.viajes.common.ManagerUtil;
 import ayuntamiento.viajes.exception.ControledException;
 import ayuntamiento.viajes.service.AdminService;
 import ayuntamiento.viajes.service.LoginService;
+import ayuntamiento.viajes.service.TravellerService;
 import java.awt.Desktop;
 import java.io.File;
 
@@ -20,7 +21,6 @@ import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
-
 /**
  * Controlador de la vista principal, FALTA
  *
@@ -30,14 +30,12 @@ import javafx.scene.image.ImageView;
  */
 public class HomeController extends BaseController implements Initializable {
 
-
     @FXML
     private ImageView sunIV;
     @FXML
     private ImageView stadisticsIV;
     @FXML
     private Label welcomeLabel;
-
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -47,17 +45,38 @@ public class HomeController extends BaseController implements Initializable {
 
     @FXML
     private void travellerspanel() throws IOException {
-        ManagerUtil.moveTo("traveller");
+        try {
+            TravellerService.rechargeList();
+            ManagerUtil.moveTo("traveller");
+        } catch (ControledException cE) {
+            error(cE);
+        } catch (Exception ex) {
+            error(ex);
+        }
     }
 
     @FXML
     private void stadisticspanel() throws IOException {
-        ManagerUtil.moveTo("stadistics");
+        try {
+            TravellerService.rechargeList();
+            ManagerUtil.moveTo("stadistics");
+        } catch (ControledException cE) {
+            error(cE);
+        } catch (Exception ex) {
+            error(ex);
+        }
     }
 
     @FXML
     private void pdfspanel() throws IOException {
-        ManagerUtil.moveTo("pdf");
+        try {
+            TravellerService.rechargeList();
+            ManagerUtil.moveTo("pdf");
+        } catch (ControledException cE) {
+            error(cE);
+        } catch (Exception ex) {
+            error(ex);
+        }
     }
 
     @FXML
@@ -86,23 +105,25 @@ public class HomeController extends BaseController implements Initializable {
             error(ex);
         }
     }
-    
+
     @FXML
-    private void travellergif(){
+    private void travellergif() {
         sunIV.setImage(new Image(getClass().getResource("/ayuntamiento/viajes/icons/home_sun.gif").toExternalForm()));
     }
+
     @FXML
-    private void travellerpng(){
+    private void travellerpng() {
         sunIV.setImage(new Image(getClass().getResource("/ayuntamiento/viajes/icons/home_sun.png").toExternalForm()));
     }
+
     @FXML
-    private void stadisticsgif(){
+    private void stadisticsgif() {
         stadisticsIV.setImage(new Image(getClass().getResource("/ayuntamiento/viajes/icons/home_stadistics.gif").toExternalForm()));
     }
+
     @FXML
-    private void stadisticspng(){
+    private void stadisticspng() {
         stadisticsIV.setImage(new Image(getClass().getResource("/ayuntamiento/viajes/icons/home_stadistics.png").toExternalForm()));
     }
-    
 
 }
