@@ -4,6 +4,7 @@ import static ayuntamiento.viajes.common.LoggerUtil.log;
 import ayuntamiento.viajes.common.ManagerUtil;
 import ayuntamiento.viajes.common.PreferencesUtil;
 import ayuntamiento.viajes.common.SecurityUtil;
+import ayuntamiento.viajes.common.TaskExecutorUtil;
 import ayuntamiento.viajes.exception.LoginException;
 import ayuntamiento.viajes.service.LoginService;
 import java.net.URL;
@@ -46,7 +47,7 @@ public class LoginController extends BaseController implements Initializable {
      */
     @FXML
     private void login() {
-        changePI(); // Mostrar "cargando"
+        changePI(); 
 
         String username = userField.getText();
         String password = passField.getText();
@@ -66,31 +67,25 @@ public class LoginController extends BaseController implements Initializable {
         }
 
         // Ejecutar login en segundo plano
-        Task<Void> loginTask = new Task<>() {
-            @Override
-            protected Void call() throws Exception {
-                loginS.login(username, password);
-                return null;
-            }
-        };
+        TaskExecutorUtil.runAsync(
+                () -> {
+                    loginS.login(username, password);
+                    return null;
+                },
+                result -> {
+                    changePI();
+                    ManagerUtil.moveTo("home");
+                },
+                error -> {
+                    changePI();
+                    if (error instanceof LoginException le) {
+                        wrongUser(le.getErrorCode(), le.getMessage());
+                    } else {
+                        error((Exception) error);
+                    }
+                }
+        );
 
-        loginTask.setOnSucceeded(e -> {
-            changePI(); 
-            System.out.println("Hola");
-            ManagerUtil.moveTo("home"); 
-        });
-
-        loginTask.setOnFailed(e -> {
-            changePI(); 
-            Throwable error = loginTask.getException();
-            if (error instanceof LoginException le) {
-                wrongUser(le.getErrorCode(), le.getMessage());
-            } else {
-                error((Exception) error);
-            }
-        });
-
-        new Thread(loginTask).start(); // Inicia el hilo
     }
 
     @FXML
