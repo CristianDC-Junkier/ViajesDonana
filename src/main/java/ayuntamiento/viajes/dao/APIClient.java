@@ -23,14 +23,16 @@ public abstract class APIClient<T> {
     private final Class<T> typeParameterClass;
     protected final HttpClient client = HttpClient.newHttpClient();
     protected final ObjectMapper objectMapper = new ObjectMapper();
+    protected String endpoint;
 
-    public APIClient(Class<T> typeParameterClass) {
+    public APIClient(Class<T> typeParameterClass, String endpoint) {
         this.typeParameterClass = typeParameterClass;
+        this.endpoint = endpoint;
     }
 
-    public List<T> getAll(String endpoint) throws IOException, InterruptedException {
+    public List<T> findAll() throws IOException, InterruptedException {
         HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create(BASE_URL + endpoint))
+                .uri(URI.create(BASE_URL + "/" + endpoint))
                 .header("Authorization", "Bearer " + LoginService.getSecret_token())
                 .GET()
                 .build();
@@ -39,9 +41,9 @@ public abstract class APIClient<T> {
         return objectMapper.readValue(response.body(), objectMapper.getTypeFactory().constructCollectionType(List.class, typeParameterClass));
     }
 
-    public T getById(String endpoint, int id) throws IOException, InterruptedException {
+    public T findById(int id) throws IOException, InterruptedException {
         HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create(BASE_URL + endpoint + "/" + id))
+                .uri(URI.create(BASE_URL + "/" + endpoint + "/" + id))
                 .header("Authorization", "Bearer " + LoginService.getSecret_token())
                 .GET()
                 .build();
@@ -50,11 +52,11 @@ public abstract class APIClient<T> {
         return objectMapper.readValue(response.body(), typeParameterClass);
     }
 
-    public T create(String endpoint, T obj) throws IOException, InterruptedException {
+    public T save(T obj) throws IOException, InterruptedException {
         String json = objectMapper.writeValueAsString(obj);
 
         HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create(BASE_URL + endpoint))
+                .uri(URI.create(BASE_URL + "/" + endpoint))
                 .header("Content-Type", "application/json")
                 .header("Authorization", "Bearer " + LoginService.getSecret_token())
                 .POST(HttpRequest.BodyPublishers.ofString(json))
@@ -64,13 +66,28 @@ public abstract class APIClient<T> {
         return objectMapper.readValue(response.body(), typeParameterClass);
     }
 
-    public void delete(String endpoint, int id) throws IOException, InterruptedException {
+    public T modify(T obj, int id) throws IOException, InterruptedException {
+        String json = objectMapper.writeValueAsString(obj);
+
         HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create(BASE_URL + endpoint + "/" + id))
+                .uri(URI.create(BASE_URL + "/" + endpoint + "/" + id))
+                .header("Content-Type", "application/json")
+                .header("Authorization", "Bearer " + LoginService.getSecret_token())
+                .PUT(HttpRequest.BodyPublishers.ofString(json))
+                .build();
+
+        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        return objectMapper.readValue(response.body(), typeParameterClass);
+    }
+
+    public boolean delete(int id) throws IOException, InterruptedException {
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(BASE_URL + "/" + endpoint + "/" + id))
                 .header("Authorization", "Bearer " + LoginService.getSecret_token())
                 .DELETE()
                 .build();
 
-        client.send(request, HttpResponse.BodyHandlers.ofString());
+        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        return response.statusCode() == 200 || response.statusCode() == 204;
     }
 }

@@ -18,7 +18,7 @@ import java.net.http.HttpResponse;
 public class LoginDAO extends APIClient<Admin> {
 
     public LoginDAO() {
-        super(Admin.class);
+        super(Admin.class,"status");
     }
 
     /**
@@ -40,7 +40,7 @@ public class LoginDAO extends APIClient<Admin> {
         for (int attempt = 1; attempt <= maxRetries; attempt++) {
             try {
                 HttpRequest request = HttpRequest.newBuilder()
-                        .uri(URI.create(BASE_URL + "/status/login"))
+                        .uri(URI.create(BASE_URL + "/" + endpoint + "/login"))
                         .header("Content-Type", "application/json")
                         .header("Authorization", "Bearer " + PropertiesUtil.getProperty("API_TOKEN"))
                         .POST(HttpRequest.BodyPublishers.ofString(objectMapper.writeValueAsString(loginPayload)))

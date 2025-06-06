@@ -31,7 +31,7 @@ public class TravellerService {
         if (vehicleExists) {
             result = null;
         } else {
-            result = travellerDAO.save(entity);
+            result = (Traveller) travellerDAO.save(entity);
             rechargeList();
         }
         return result;
