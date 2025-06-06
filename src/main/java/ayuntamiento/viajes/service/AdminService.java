@@ -23,25 +23,9 @@ public class AdminService {
 
     private static final AdminDAO adminDAO;
     private static List<Admin> adminList;
-    private static Admin adminLog;
 
     static {
         adminDAO = new AdminDAO();
-        adminLog = new Admin();
-        adminLog.setId(1);
-    }
-
-    /**
-     * Funcion para recojer el usuario
-     *
-     * @return El usuario logeado
-     */
-    public static Admin getAdminLog() {
-        return adminLog;
-    }
-
-    public static void setAdminLog(Admin adminLog) {
-        AdminService.adminLog = adminLog;
     }
 
     /**
@@ -91,8 +75,8 @@ public class AdminService {
                 adminList.set(i, entity);
             }
         }
-        if (result.getId() == adminLog.getId()) {
-            adminLog = result;
+        if (result.getId() == LoginService.getAdminLog().getId()) {
+            LoginService.setAdminLog(result);
         }
         return result;
     }
@@ -119,7 +103,7 @@ public class AdminService {
         }
         entity.setContraseña(entity.getPassword());
         result = (Admin) adminDAO.modify(entity, entity.getId());
-        adminLog = result;
+        LoginService.setAdminLog(result);
         return result;
     }
 
@@ -127,8 +111,8 @@ public class AdminService {
         boolean deleted;
         deleted = adminDAO.delete(entity.getId());
         if (deleted) {
-            if (adminLog.getId() == entity.getId()) {
-                adminLog = null;
+            if (LoginService.getAdminLog().getId() == entity.getId()) {
+                LoginService.setAdminLog(null);
             }
             adminList.remove(entity);
         }

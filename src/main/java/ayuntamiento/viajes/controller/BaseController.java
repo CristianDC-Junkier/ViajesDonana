@@ -6,6 +6,7 @@ import static ayuntamiento.viajes.common.ManagerUtil.getPage;
 import ayuntamiento.viajes.controller.InfoController.DialogResult;
 import ayuntamiento.viajes.exception.ControledException;
 import ayuntamiento.viajes.service.AdminService;
+import ayuntamiento.viajes.service.LoginService;
 
 import java.io.IOException;
 import java.util.List;
@@ -81,7 +82,7 @@ public abstract class BaseController {
      * Cambiar el texto del menú de usuarios/perfil segun el usuario
      */
     public void showUserOption() {
-        if (AdminService.getAdminLog().getId() == 1) {
+        if (LoginService.getAdminLog().getId() == 1) {
             users.setText("Administración de Usuarios");
         } else {
             users.setText("Mi perfil");
@@ -90,7 +91,8 @@ public abstract class BaseController {
 
     @FXML
     private void userspanel() throws IOException {
-        if (AdminService.getAdminLog().getId() == 1) {
+        System.out.println("administradores");
+        if (LoginService.getAdminLog().getId() == 1) {
             ManagerUtil.moveTo("admin");
 
         } else {
@@ -106,7 +108,7 @@ public abstract class BaseController {
 
     @FXML
     private void exit() throws IOException {
-        AdminService.setAdminLog(null);
+        LoginService.setAdminLog(null);
         ManagerUtil.moveTo("login");
 
     }

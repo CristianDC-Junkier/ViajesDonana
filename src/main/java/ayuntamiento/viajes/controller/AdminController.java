@@ -18,6 +18,7 @@ import javafx.collections.FXCollections;
 
 import ayuntamiento.viajes.service.AdminService;
 import ayuntamiento.viajes.model.Admin;
+import ayuntamiento.viajes.service.LoginService;
 
 /**
  * Clase controladora que se encarga del funcionamiento de la pestaña de
@@ -145,7 +146,7 @@ public class AdminController extends BaseController implements Initializable {
                     modUserNameTF.setStyle(errorStyle);
                     throw new ControledException("El nombre de usuario ya existe: " + u.getUsername(), "UserController - modify");
                 } else {
-                    if (AdminService.getAdminLog().getId() == userMod.getId()) {
+                    if (LoginService.getAdminLog().getId() == userMod.getId()) {
                         ManagerUtil.reload();
                     } else {
                         info("Usuario, " + userMod.getUsername() + ", modificado con éxito", false);
@@ -177,7 +178,7 @@ public class AdminController extends BaseController implements Initializable {
                 if (adminS.delete(userTable.getSelectionModel().getSelectedItem())) {
                     info("El Usuario fue eliminado con éxito", false);
                     refreshTable(userTable, adminS.findAll());
-                    if (AdminService.getAdminLog() == null) {
+                    if (LoginService.getAdminLog() == null) {
                         ManagerUtil.reload();
                     }
                 } else {

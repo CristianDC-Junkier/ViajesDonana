@@ -3,6 +3,7 @@ package ayuntamiento.viajes.controller;
 import ayuntamiento.viajes.common.ManagerUtil;
 import ayuntamiento.viajes.exception.ControledException;
 import ayuntamiento.viajes.service.AdminService;
+import ayuntamiento.viajes.service.LoginService;
 import java.awt.Desktop;
 import java.io.File;
 
@@ -41,16 +42,18 @@ public class HomeController extends BaseController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         showUserOption();
-        welcomeLabel.setText("¡ Bienvenido a la aplicación, " + AdminService.getAdminLog().getUsername() + " !");
+        welcomeLabel.setText("¡ Bienvenido a la aplicación, " + LoginService.getAdminLog().getUsername() + " !");
     }
 
     @FXML
     private void travellerspanel() throws IOException {
+        System.out.println("viajeros");
         ManagerUtil.moveTo("traveller");
     }
 
     @FXML
     private void stadisticspanel() throws IOException {
+        System.out.println("estadisticas");
         ManagerUtil.moveTo("stadistics");
     }
 
