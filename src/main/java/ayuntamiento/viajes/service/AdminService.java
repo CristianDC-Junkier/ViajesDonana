@@ -100,8 +100,6 @@ public class AdminService {
 
         } catch (APIException apiE) {
             errorHandler(apiE, allowRetry, "modify");
-            System.out.println("true");
-
             return null;
         }
     }

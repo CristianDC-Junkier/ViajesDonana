@@ -9,7 +9,6 @@ import ayuntamiento.viajes.exception.LoginException;
 import ayuntamiento.viajes.service.LoginService;
 import java.net.URL;
 import java.util.ResourceBundle;
-import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
@@ -17,6 +16,9 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ProgressIndicator;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.StackPane;
+
 
 /**
  * Clase que controla la creación el login de los usuarios y actua como vista
@@ -31,6 +33,8 @@ public class LoginController extends BaseController implements Initializable {
     LoginService loginS;
 
     @FXML
+    private StackPane father;
+    @FXML
     private ProgressIndicator chargePI;
     @FXML
     private TextField userField;
@@ -40,6 +44,8 @@ public class LoginController extends BaseController implements Initializable {
     private Label errorlabel;
     @FXML
     private CheckBox rememberCheck;
+    @FXML
+    private ImageView backgroundIV;
 
     /**
      * Intenta crear al usuario, en caso de error se coloca un mensaje en la
@@ -99,8 +105,11 @@ public class LoginController extends BaseController implements Initializable {
     }
 
     @Override
-    public void initialize(URL url, ResourceBundle rb
-    ) {
+    public void initialize(URL url, ResourceBundle rb) 
+    {
+        backgroundIV.fitWidthProperty().bind(father.widthProperty());
+        backgroundIV.fitHeightProperty().bind(father.heightProperty());
+
         loginS = new LoginService();
         String username = PreferencesUtil.getPreferences().getRemember();
 

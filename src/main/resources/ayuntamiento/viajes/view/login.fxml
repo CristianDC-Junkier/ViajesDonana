@@ -24,7 +24,7 @@
 
 <StackPane fx:id="father" prefHeight="800.0" prefWidth="1000.0" styleClass="mainFxmlClass" stylesheets="@../styles/login.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ayuntamiento.viajes.controller.LoginController">
     <children>
-      <ImageView cache="true" fitHeight="800.0" fitWidth="1000.0" pickOnBounds="true">
+      <ImageView fx:id="backgroundIV" cache="true" fitHeight="800.0" fitWidth="1000.0" pickOnBounds="true">
          <image>
             <Image url="@../icons/login-background.jpg" />
          </image>
