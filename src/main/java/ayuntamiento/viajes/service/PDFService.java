@@ -83,7 +83,7 @@ public class PDFService {
         own = 0;
         rent = 0;
       
-        travellerS.rechargeList();
+        TravellerService.rechargeList();
         travellersList = sort(travellerS.findAll(), sort);
 
         firstPageTravellers = travellersList.stream().limit(numTraInitialPage).toList();
@@ -119,23 +119,8 @@ public class PDFService {
         own = 0;
         rent = 0;
 
-        switch (type) {
-            case "Buen_Estado" ->
-                travellersList = sort(travellerS.findByTrip(0), sort);
-            case "Mal_Estado" ->
-                travellersList = sort(travellerS.findByTrip(1), sort);
-            case "Averiado" ->
-                travellersList = sort(travellerS.findByTrip(2), sort);
-            case "Reparado" ->
-                travellersList = sort(travellerS.findByTrip(3), sort);
-            case "Fuera_de_Servicio" ->
-                travellersList = sort(travellerS.findByTrip(4), sort);
-            case "Otro" ->
-                travellersList = sort(travellerS.findByTrip(5), sort);
-            default -> {
-            }
-        }
-
+         travellersList = sort(travellerS.findByTrip(Traveller.TravellerTrip.valueOf(type).ordinal()), sort);
+        
         firstPageTravellers = travellersList.stream().limit(numTraInitialPage).toList();
         remainingTravellers = travellersList.stream().skip(numTraInitialPage).toList();
 

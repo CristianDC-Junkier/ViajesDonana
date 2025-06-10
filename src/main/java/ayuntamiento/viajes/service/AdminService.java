@@ -74,6 +74,7 @@ public class AdminService {
     // Método privado con control de reintento
     private Admin modify(Admin entity, boolean allowRetry) throws Exception {
         Admin result;
+
         boolean userExists = adminList.stream()
                 .anyMatch(user -> user.getUsername().equals(entity.getUsername())
                 && user.getId() != entity.getId());
@@ -99,6 +100,8 @@ public class AdminService {
 
         } catch (APIException apiE) {
             errorHandler(apiE, allowRetry, "modify");
+            System.out.println("true");
+
             return null;
         }
     }
