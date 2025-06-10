@@ -65,10 +65,9 @@ public class PDFService {
     static {
         travellerS = new TravellerService();
     }
-    
 
     /**
-     * Metodo que recoge todos los vehículos y cuenta los que son propiedad del
+     * Metodo que recoge todos los travellers y cuenta los que son propiedad del
      * ayuntamiento, y los que no lo son, mandando a generar el pdf
      *
      * @param name nombre elegido para el documento
@@ -82,8 +81,7 @@ public class PDFService {
         tripTraveller = new HashMap<>();
         own = 0;
         rent = 0;
-      
-        TravellerService.rechargeList();
+
         travellersList = sort(travellerS.findAll(), sort);
 
         firstPageTravellers = travellersList.stream().limit(numTraInitialPage).toList();
@@ -104,11 +102,11 @@ public class PDFService {
     }
 
     /**
-     * Metodo que recoge los vehículos por tipo y manda a generar el pdf.
+     * Metodo que recoge los viajes por tipo y manda a generar el pdf.
      *
      * @param name nombre elegido para el documento
      * @param dir directorio elegido para colocar el documento
-     * @param type titularidad del vehículo por el cual se va a filtrar
+     * @param type viaje por el que se va a filtrar
      * @param sort criterio para ordenar la lista
      * @throws ControledException Excepciones que mostramos al usuario vienen de
      * print
@@ -119,8 +117,8 @@ public class PDFService {
         own = 0;
         rent = 0;
 
-         travellersList = sort(travellerS.findByTrip(Traveller.TravellerTrip.valueOf(type).ordinal()), sort);
-        
+        travellersList = sort(travellerS.findByTrip(Traveller.TravellerTrip.valueOf(type).ordinal()), sort);
+
         firstPageTravellers = travellersList.stream().limit(numTraInitialPage).toList();
         remainingTravellers = travellersList.stream().skip(numTraInitialPage).toList();
 
@@ -138,47 +136,12 @@ public class PDFService {
     }
 
     /**
-     * Metodo que recoge todos los vehículos con notificación y manda a generar
-     * el pdf
-     *
-     * @param name nombre elegido para el documento
-     * @param dir directorio elegido para colocar el documento
-     * @throws ControledException Excepciones que mostramos al usuario vienen de
-     * print
-     * @throws Exception Excepciones que no mostramos al usuario vienen de print
-     */
-    public void printNotification(String name, String dir) throws ControledException, Exception {
-        tripTraveller = new HashMap<>();
-        own = 0;
-        rent = 0;
-
-        travellersList = travellerS.findAll();
-        firstPageTravellers = travellersList.stream().limit(numTraInitialPage).toList();
-        remainingTravellers = travellersList.stream().skip(numTraInitialPage).toList();
-
-        total = travellersList.size();
-
-        travellersList.forEach(v -> {
-            if ("Propiedad".equals(v.getOffice().toString())) {
-                own++;
-            } else {
-                rent++;
-            }
-            tripTraveller.put(v.getTrip(), tripTraveller.getOrDefault(v.getTrip(), 0) + 1);
-        });
-        print(name, dir, "Notificados");
-    }
-
-    /**
      * Función principal que se encarga de controlar los valores que le llegan
      * para llamar a las demás funciones y contruir el documento
      *
      * @param name Nombre del PDF
      * @param dir Dirección de la carpeta
-     * @param type Tipo de los vehiculos (Propiedad/Alquilado/Otro) para el
-     * label
-     * @param document Tipo del documento (Todo/Listado/Notificaciones) para
-     * elegir la plantilla
+     * @param type Tipo de los viajes para el label
      * @throws ControledException Error Controlado que pasamos hacia arriba
      * @throws Exception Error No controlado que pasamos hacia arriba
      */
@@ -226,8 +189,6 @@ public class PDFService {
      * Función que añade la página principal y luego llama a las funciones para
      * escribir en ella en orden.
      *
-     * @param template Tipo de template que utiliza (add/base)
-     * @param document Tipo de documento que utiliza (Listado/Notificaciones)
      * @param pdfDocument Documento PDF original, por el cual se añaden páginas
      * @param canvas PDF donde se escribe
      * @throws ControledException Error que mostramos al usuario y pasamos hacia
@@ -293,7 +254,7 @@ public class PDFService {
      * Método que escribe la linea inicial de las páginas principales
      *
      * @param canvas Página pdf sobre la que se escribirá
-     * @param type Tipo de los vehiculos (Propiedad/Alquilado/Otro)
+     * @param type Tipo del viaje
      * @throws IOException Error de escritura
      */
     private void writeLabels(PdfCanvas canvas, String type) throws IOException {
@@ -314,32 +275,14 @@ public class PDFService {
         canvas.showText(String.valueOf(own));
         canvas.moveText(columnX[2] - columnX[1], 0);
         canvas.showText(String.valueOf(rent));
-        /*canvas.moveText(columnX[3] - columnX[2], 0);
-        canvas.showText(String.valueOf(tripTraveller.getOrDefault(Traveller.TravellerTrip.Buen_Estado, 0)));
-        canvas.moveText(columnX[4] - columnX[3], 0);
-        canvas.showText(String.valueOf(tripTraveller.getOrDefault(Traveller.TravellerTrip.Mal_Estado, 0)));
-        canvas.moveText(columnX[5] - columnX[4], 0);
-        canvas.showText(String.valueOf(tripTraveller.getOrDefault(Traveller.TravellerTrip.Averiado, 0)));
-        canvas.moveText(columnX[6] - columnX[5], 0);
-        canvas.showText(String.valueOf(tripTraveller.getOrDefault(Traveller.TravellerTrip.Reparado, 0)));
-        canvas.moveText(columnX[7] - columnX[6], 0);
-        canvas.showText(String.valueOf(tripTraveller.getOrDefault(Traveller.TravellerTrip.Fuera_de_Servicio, 0)));*/
 
-        canvas.moveText(columnX[8] - columnX[2], 16f);
-        canvas.setFillColor(COLORS[2]);
-
-        switch (type) {
-            case "Propiedad" ->
-                canvas.showText(String.valueOf("Solo vehículos propios."));
-            case "Alquiler" ->
-                canvas.showText(String.valueOf("Solo vehículos alquilados."));
-            case "Otros" ->
-                canvas.showText(String.valueOf("Otros vehículos."));
-            case "Notificados" ->
-                canvas.showText(String.valueOf("Solo vehículos con notificación."));
-            default -> {
-            }
+        if (!type.equals("Todos")) {
+            canvas.moveText(columnX[8] - columnX[2], 16f);
+            canvas.setFillColor(COLORS[2]);
+            canvas.showText(String.valueOf("Viajes hacia " 
+                    + type.replace('_', ' ')));
         }
+
         canvas.endText();
     }
 
@@ -361,7 +304,7 @@ public class PDFService {
 
         /*Posiciones absolutas para cada columna*/
         float[] columnX = new float[]{
-            60f, 125f, 300f, 390f, 490f};
+            60f, 150f, 300f, 405f, 490f};
 
         for (Traveller v : firstPageTravellers) {
             canvas.beginText();
@@ -406,7 +349,7 @@ public class PDFService {
 
         /*Posiciones absolutas para cada columna*/
         float[] columnX = new float[]{
-            60f, 125f, 300f, 390f, 490f};
+            60f, 150f, 300f, 405f, 490f};
 
         for (Traveller v : pageTravellers) {
             canvas.beginText();

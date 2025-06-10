@@ -4,7 +4,7 @@ import ayuntamiento.viajes.model.Traveller;
 import ayuntamiento.viajes.model.Traveller.TravellerTrip;
 import ayuntamiento.viajes.model.Traveller.TravellerOffice;
 import ayuntamiento.viajes.service.TravellerService;
-import java.io.IOException;
+
 import java.net.URL;
 
 import java.time.LocalDate;
@@ -18,18 +18,14 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.ResourceBundle;
 import java.util.function.Function;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import java.util.stream.Collectors;
-import javafx.application.Platform;
 
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
-
 import javafx.scene.chart.PieChart;
 import javafx.scene.control.Label;
 import javafx.scene.paint.Color;
@@ -68,16 +64,15 @@ public class StadisticsController extends BaseController implements Initializabl
     private Object selectedValue;
 
     private static final Color[] COLORS = {
-    Color.web("#0077B6"),  
-    Color.web("#F3722C"),  
-    Color.web("#00B4D8"),  
-    Color.web("#F8961E"),  
-    Color.web("#90E0EF"),  
-    Color.web("#F9844A"),  
-    Color.web("#CAF0F8"),  
-    Color.web("#FFA07A")   
-};
-
+        Color.web("#0077B6"),
+        Color.web("#F3722C"),
+        Color.web("#00B4D8"),
+        Color.web("#F8961E"),
+        Color.web("#90E0EF"),
+        Color.web("#F9844A"),
+        Color.web("#CAF0F8"),
+        Color.web("#FFA07A")
+    };
 
     private enum ChartType {
         TRAVEL, OFFICE, DATE
@@ -91,18 +86,7 @@ public class StadisticsController extends BaseController implements Initializabl
 
         selectedValue = null;
         travellerS = new TravellerService();
-        try {
-            travellerS.rechargeList();
-        } catch (IOException ex) {
-            Logger.getLogger(StadisticsController.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (InterruptedException ex) {
-            Logger.getLogger(StadisticsController.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (Exception ex) {
-            Logger.getLogger(StadisticsController.class.getName()).log(Level.SEVERE, null, ex);
-        }
         listTraveller = travellerS.findAll();
-
-        
 
         pieChartConf(listTraveller, Traveller::getTrip, travelPC, ChartType.TRAVEL);
         pieChartConf(listTraveller, Traveller::getOffice, officePC, ChartType.OFFICE);
@@ -114,12 +98,15 @@ public class StadisticsController extends BaseController implements Initializabl
     }
 
     /**
-     *
+     * Recargar los valores de los labels segun la lista que se le pasa
+     * 
+     * @param list Lista de travellers
+     * 
      */
     private void rechargeLabels(List<Traveller> list) {
         int total = list.size();
 
-        // Agrupar por trip y contar viajeros por trip
+        /* Agrupar por trip y contar viajeros por trip */
         Map<TravellerTrip, Long> tripGroups = list.stream()
                 .collect(Collectors.groupingBy(Traveller::getTrip, Collectors.counting()));
         double avgTripCount = tripGroups.values().stream()
@@ -127,7 +114,7 @@ public class StadisticsController extends BaseController implements Initializabl
                 .average()
                 .orElse(0);
 
-        // Agrupar por office y contar viajeros por office
+        /* Agrupar por office y contar viajeros por office */
         Map<TravellerOffice, Long> officeGroups = list.stream()
                 .collect(Collectors.groupingBy(Traveller::getOffice, Collectors.counting()));
         double avgOfficeCount = officeGroups.values().stream()
@@ -135,7 +122,7 @@ public class StadisticsController extends BaseController implements Initializabl
                 .average()
                 .orElse(0);
 
-        // Agrupar por fecha de signup y contar viajeros por día
+        /* Agrupar por fecha de signup y contar viajeros por día */
         Map<YearMonth, Long> signupGroupsByMonth = list.stream()
                 .map(Traveller::getSignUpDate)
                 .filter(Objects::nonNull)
@@ -158,9 +145,14 @@ public class StadisticsController extends BaseController implements Initializabl
     /**
      * Controla la configuración del piechart, añadiendo un label por cada tipo
      * y valor de enumerado
-     *
-     * @param list Lista de vehiculos para configurar el chart de seguros
+     * 
+     * @param <T> Valor del dato de la función por la cual se va a clasificar
+     * @param list lista de travellers
+     * @param classifier función clasificadora
+     * @param pieChart Piechart el cual se va a configurar
+     * @param chartType Tipo de piechart que se va a configurar
      */
+
     private <T> void pieChartConf(List<Traveller> list, Function<Traveller, T> classifier, PieChart pieChart, ChartType chartType) {
         Map<String, Integer> counts = new HashMap<>();
 
@@ -174,7 +166,6 @@ public class StadisticsController extends BaseController implements Initializabl
                     }
                 }
                 break;
-
             case TRAVEL:
                 Map<T, Integer> rawCounts = countBy(classifier, list);
                 List<Map.Entry<T, Integer>> sorted = rawCounts.entrySet()
@@ -227,8 +218,11 @@ public class StadisticsController extends BaseController implements Initializabl
      * Metodo que llaman los diferentes gráficos cuando se hace click en alguno
      * de sus nodos de datos (el tipo de nodo depende del filtro), para
      * recalibrar los datos por ese valor
-     *
-     * @param valueStr el nombre nodo elegido
+     * 
+      * @param <T> Valor del dato de la función por la cual se va a clasificar
+     * @param clickedNameWithValue nodo clickado
+     * @param classifier función clasificadora
+     * @param chartType Tipo de piechart que se va a configurar
      */
     private <T> void handlePieChartClick(String clickedNameWithValue, Function<Traveller, T> classifier, ChartType chartType) {
         String clickedValueStr = clickedNameWithValue.replaceAll("\\s*\\(.*\\)$", "").trim();
@@ -271,7 +265,7 @@ public class StadisticsController extends BaseController implements Initializabl
     }
 
     /**
-     * Metodo que respecto a un función para clasificar y una lista de vehículos
+     * Metodo que respecto a un función para clasificar y una lista de travellers
      * devuelve el mapa con el enumerado y el recuento de los valores.
      *
      * @param <T> Valor que puede ser cualquiera de los enumerados
@@ -289,7 +283,7 @@ public class StadisticsController extends BaseController implements Initializabl
     }
 
     /**
-     * Coloca los colores del las barras
+     * Coloca los colores de los sectores
      */
     private void colorPieChartSlices(Color[] colors, PieChart pieChart) {
         Platform.runLater(() -> {

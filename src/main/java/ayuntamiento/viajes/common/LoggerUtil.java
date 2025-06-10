@@ -1,7 +1,6 @@
 package ayuntamiento.viajes.common;
 
 import ayuntamiento.viajes.model.Admin;
-import ayuntamiento.viajes.service.AdminService;
 import ayuntamiento.viajes.service.LoginService;
 
 import java.io.BufferedWriter;

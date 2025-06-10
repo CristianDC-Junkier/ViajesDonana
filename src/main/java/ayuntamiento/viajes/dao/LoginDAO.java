@@ -12,8 +12,12 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 
 /**
+ * Clase que se encarga de hacer la conexión con la base de datos para el manejo
+ * de los datos del login
  *
- * @author Cristian
+ * @author Cristian Delgado Cruz
+ * @since 2025-06-02
+ * @version 1.0
  */
 public class LoginDAO extends APIClient<Admin> {
 
@@ -22,7 +26,8 @@ public class LoginDAO extends APIClient<Admin> {
     }
 
     /**
-     * Llama a la API de login y devuelve el JWT.
+     * Llama a la API de login y devuelve el JWT, en caso de error de conexión
+     * lo reintenta un total de 3 veces más con intervalos de 2 segundos.
      *
      * @param username Nombre de usuario
      * @param password Contraseña

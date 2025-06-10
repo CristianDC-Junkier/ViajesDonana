@@ -37,8 +37,6 @@ public class PdfController extends BaseController implements Initializable {
     private ChoiceBox sortCB;
     @FXML
     private ChoiceBox tripTypeCB;
-    //@FXML
-    //private CheckBox onlyNotiCB;
     @FXML
     private TextField namePDF;
     @FXML
@@ -124,14 +122,14 @@ public class PdfController extends BaseController implements Initializable {
                 switch (typeSelected) {
                     case "Todos" -> {
                         if (travellerS.findAll().isEmpty()) {
-                            info("No existen vehículos registrados", false);
+                            info("No existen viajeros registrados", false);
                         } else {
                             pdf.printAll(namePDF.getText(), dirPDF.getText(), sortCB.getValue().toString());
                         }
                     }
                     default -> {
                         if (travellerS.findByTrip(TravellerTrip.valueOf(typeSelected).ordinal()).isEmpty()) {
-                            info("No existen vehículos registrados de tipo " + typeSelected, false);
+                            info("No existen viajeros registrados para el viaje " + typeSelected, false);
                         } else {
                             pdf.printType(namePDF.getText(), dirPDF.getText(), typeSelected, sortCB.getValue().toString());
                         }
@@ -155,10 +153,6 @@ public class PdfController extends BaseController implements Initializable {
         dirPDF.setStyle("");
     }
 
-    @FXML
-    private void selectNotiCB() {
-        //vehicleTypePDF.setDisable(!vehicleTypePDF.isDisable());
-    }
 
     /**
      * Cambia el nombre del PDF automáticamente

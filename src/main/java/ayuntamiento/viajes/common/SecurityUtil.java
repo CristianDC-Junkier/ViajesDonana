@@ -1,10 +1,8 @@
 package ayuntamiento.viajes.common;
 
-import org.mindrot.jbcrypt.BCrypt;
 
 /**
- * Clase que Controla la transformación de las contraseñas en hash
- * y además la comprobaciones de strings
+ * Clase que comprueba las Strings
  * 
  * @author Cristian Delgado Cruz
  * @since 2025-06-02

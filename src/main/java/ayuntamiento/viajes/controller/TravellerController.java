@@ -32,7 +32,7 @@ import javafx.scene.control.TextField;
 import javafx.util.converter.LocalDateStringConverter;
 
 /**
- * Clase Controladora que se encarga de los travellers existentes
+ * Clase Controladora que se encarga de gestionar los travellers existentes
  *
  * @author Ramón Iglesias Granados
  * @since 2025-06-03
@@ -45,12 +45,11 @@ public class TravellerController extends BaseController implements Initializable
     private static final String SHOW_DATE_FORMAT = PropertiesUtil.getProperty("SHOW_DATE_FORMAT");
     private static final DateTimeFormatter formatter_Show_Date = DateTimeFormatter.ofPattern(SHOW_DATE_FORMAT);
 
-
     public TravellerController() throws IOException, InterruptedException {
         travellerS = new TravellerService();
-        try{
-        travellerS.rechargeList();
-        }catch(Exception ex){
+        try {
+            travellerS.rechargeList();
+        } catch (Exception ex) {
             System.out.println(ex);
         }
     }
@@ -94,7 +93,7 @@ public class TravellerController extends BaseController implements Initializable
     }
 
     /**
-     * Metodo que elimina un vehículo, controla que el vehículo exista
+     * Metodo que elimina un traveller, controla que el traveller exista,
      * preguntando si de verdad quieres hacerlo, colocando el field en rojo si
      * algo falla
      */
@@ -159,9 +158,9 @@ public class TravellerController extends BaseController implements Initializable
     }
 
     /**
-     * Este metodo sirve para llamar a ActionTravellerController, donde mode es si
- se pulso el botón de añadir(0) o modificar(1), en caso de que fuera
- modificar se debe haber seleccionado un vehiculo
+     * Este metodo sirve para llamar a ActionTravellerController, donde mode es
+     * si se pulso el botón de añadir(0) o modificar(1), en caso de que fuera
+     * modificar se debe haber seleccionado un vehiculo
      *
      * @param mode comprueba si fue llamado desde añadir(0) o modificar(1)
      */
@@ -237,9 +236,9 @@ public class TravellerController extends BaseController implements Initializable
 
         officeCB.setValue(officeCB.getItems().get(0));
         tripCB.setValue(tripCB.getItems().get(0));
-        
+
         sign_upDP.setValue(null);
-        
+
         applyAllFilters();
 
     }

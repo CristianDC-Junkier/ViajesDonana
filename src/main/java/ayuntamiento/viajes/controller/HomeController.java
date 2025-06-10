@@ -21,7 +21,8 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
 /**
- * Controlador de la vista principal, FALTA
+ * Controlador de la vista principal, se encarga de hacer el traspaso a las 
+ * diferentes partes de la app, y actua de página de inicio
  *
  * @author Cristian
  * @since 2025-06-03

@@ -5,8 +5,12 @@ import java.util.function.Consumer;
 import javafx.concurrent.Task;
 
 /**
- *
- * @author Cristian
+ * Clase que se utiliza para hacer que carga de funciones en segundo plano
+ * sin afectar al entorno visual
+ * 
+ * @author Cristian Delgado Cruz
+ * @since 2025-06-06
+ * @version 1.0
  */
 public class TaskExecutorUtil {
 

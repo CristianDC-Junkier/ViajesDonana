@@ -72,7 +72,11 @@ public class LoginController extends BaseController implements Initializable {
             return;
         }
 
-        // Ejecutar login en segundo plano
+        /**
+         * Ejecuta el login en segundo plano
+         * para no molestar a la interfaz
+         * 
+         */
         TaskExecutorUtil.runAsync(
                 () -> {
                     loginS.login(username, password);
@@ -121,22 +125,20 @@ public class LoginController extends BaseController implements Initializable {
 
     private void wrongUser(int error, String msg) {
         switch (error) {
-            case 1000:
+            case 1000 -> {
                 log("Error en el login, " + msg);
                 userField.setStyle(errorStyle);
-                break;
-            case 2000:
+            }
+            case 2000 -> {
                 log("Error en el login, " + msg);
                 passField.setStyle(errorStyle);
-                break;
-            case 401:
+            }
+            case 401 -> {
                 log("Error en el login, " + msg);
                 userField.setStyle(errorStyle);
                 passField.setStyle(errorStyle);
-                break;
-            default:
-                log("Error en el login, " + msg);
-                break;
+            }
+            default -> log("Error en el login, " + msg);
         }
         userField.setText("");
         passField.setText("");

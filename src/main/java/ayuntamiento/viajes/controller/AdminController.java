@@ -22,7 +22,7 @@ import ayuntamiento.viajes.service.LoginService;
 
 /**
  * Clase controladora que se encarga del funcionamiento de la pestaña de
- * administración de administradores.
+ * administración de administradores(usuarios).
  *
  * @author Ramón Iglesias Granados
  * @since 2025-06-03
@@ -63,7 +63,7 @@ public class AdminController extends BaseController implements Initializable {
     }
 
     /**
-     * Metodo que añade un usuario Controla que no se envie un nombre o clave de
+     * Metodo que añade un administrador Controla que no se envie un nombre o clave de
      * un tamaño superior a 16 carácteres, ni tampoco vacio, colocando el field
      * en rojo si algo falla
      */
@@ -109,7 +109,7 @@ public class AdminController extends BaseController implements Initializable {
     }
 
     /**
-     * Metodo que modifica un usuario Controla que no se envie un nombre o clave
+     * Metodo que modifica un administrador Controla que no se envie un nombre o clave
      * de un tamaño superior a 16 carácteres, ni tampoco vacio, colocando el
      * field en rojo si algo falla
      */
@@ -164,7 +164,7 @@ public class AdminController extends BaseController implements Initializable {
     }
 
     /**
-     * Metodo que elimina un usuario, controla que el usuario exista preguntando
+     * Metodo que elimina un administrador, controla que el usuario administrador, preguntando
      * si de verdad quieres hacerlo, colocando el field en rojo si algo falla
      */
     @FXML

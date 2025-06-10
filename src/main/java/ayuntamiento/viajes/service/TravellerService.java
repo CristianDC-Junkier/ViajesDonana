@@ -27,14 +27,14 @@ public class TravellerService {
     }
 
     /**
-     * Metodo que guarda un viajero en la base de datos
+     * Metodo que guarda un traveller en la base de datos, se controla con
+     * SecurityUtil la contraseña.
      *
-     * @param entity el viajero que pasa a ser guardado
-     * @return el viajero creado con el id
-     * @throws ControledException
-     * @throws Exception
+     * @param entity el traveller que pasa a ser guardado
+     * @return el traveller creado con el id
+     * @throws ControledException una excepción controlada
+     * @throws Exception una excepción no controlada
      */
-    // Método público con reintento por defecto
     public Traveller save(Traveller entity) throws ControledException, Exception {
         return save(entity, true);
     }
@@ -49,7 +49,6 @@ public class TravellerService {
         try {
             result = (Traveller) travellerDAO.save(entity);
             travellerList.add(result);
-            //rechargeList();
             return result;
         } catch (APIException apiE) {
             errorHandler(apiE, allowRetry, "save");
@@ -57,16 +56,18 @@ public class TravellerService {
         }
     }
 
+
     /**
-     * Metodo que modifica y guarda en la base de datos el viajero
+     * Metodo que modifica y guarda en la base de datos el traveller, se
+     * controla con SecurityUtil la contraseña.
      *
-     * @param entity el viajero que pasa a ser modificado
-     * @return el viajero modificado
-     * @throws Exception
+     * @param entity el traveller que pasa a ser modificado
+     * @return el traveller modificado
+     * @throws ControledException una excepción controlada
+     * @throws Exception una excepción no controlada
      */
-    // Método público con reintento por defecto
     public Traveller modify(Traveller entity) throws Exception {
-        return modify(entity, true); // permite un reintento por defecto
+        return modify(entity, true); 
     }
 
     public Traveller modify(Traveller entity, boolean allowRetry) throws Exception {
@@ -92,14 +93,13 @@ public class TravellerService {
         }
     }
 
-    // Método público con reintento por defecto
-
     /**
-     * Método que borra un viajero de la base de datos
+     * Metodo que elimina un traveller de la base de datos.
      *
-     * @param entity el viajero a borrar
-     * @return un booleano que confirma si se ha realizado el borrado correctamente
-     * @throws Exception
+     * @param entity el traveller logeado con los datos modificados
+     * @return si fue o no eliminado
+     * @throws ControledException una excepción controlada
+     * @throws Exception una excepción no controlada
      */
     public boolean delete(Traveller entity) throws Exception {
         return delete(entity, true);
@@ -109,9 +109,6 @@ public class TravellerService {
         boolean deleted;
         try {
             deleted = travellerDAO.delete(entity.getId());
-            /*if (deleted) {
-                rechargeList();
-            }*/
             travellerList.remove(entity);
             return deleted;
         } catch (APIException apiE) {
@@ -146,28 +143,22 @@ public class TravellerService {
         } catch (APIException apiE) {
             errorHandler(apiE, allowRetry, "rechargeList");
         }
-        /*travellerList = List.of(
-                new Traveller("12345678A", "Ana Pérez", 0, 0, "01/06/2023"),
-                new Traveller("23456789B", "Luis Gómez", 1, 1, "01/06/2023"),
-                new Traveller("34567890C", "María López", 2, 2, "20/07/2023"),
-                new Traveller("45678901D", "Carlos Ruiz", 0, 3, "05/06/2023"),
-                new Traveller("56789012E", "Laura Martín", 1, 4, "12/07/2023"),
-                new Traveller("67890123F", "Javier Sánchez", 2, 5, "10/06/2023"),
-                new Traveller("78901234G", "Sofía Torres", 0, 0, "20/08/2023"),
-                new Traveller("89012345H", "Miguel Fernández", 1, 1, "30/09/2023"),
-                new Traveller("90123456I", "Elena Díaz", 2, 2, "07/09/2023"),
-                new Traveller("01234567J", "Pedro Morales", 0, 3, "19/06/2023"),
-                new Traveller("11223344K", "Isabel Ruiz", 1, 4, "12/07/2023"),
-                new Traveller("22334455L", "Raúl Jiménez", 2, 5, "28/06/2023")
-                
-        );*/
-
     }
 
+    /**
+     * Metodo que utilizamos para comprobar que tipo de error hubo
+     *
+     * @param apiE Excepción que se llama
+     * @param allowRetry Booleano que indica si hay o no un reintento, por fallo
+     * de token
+     * @param method método que lo invocó
+     * @throws ControledException una excepción controlada
+     * @throws Exception una excepción no controlada
+     */
     private static void errorHandler(APIException apiE, boolean allowRetry, String method) throws ControledException, Exception {
         switch (apiE.getStatusCode()) {
             case 400, 404 ->
-                throw new ControledException(apiE.getMessage(), "AdminService - " + method);
+                throw new ControledException(apiE.getMessage(), "TravellerService - " + method);
             case 401 -> {
                 if (allowRetry) {
                     LoginService.relog();

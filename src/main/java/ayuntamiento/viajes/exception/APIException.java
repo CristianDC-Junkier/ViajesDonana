@@ -2,8 +2,12 @@
 package ayuntamiento.viajes.exception;
 
 /**
- *
- * @author Cristian
+ * Controlador que crea una Excepcion para aquellas dentro del progama
+ * que ocurren por la base de datos
+ * 
+ * @author Cristian Delgado Cruz
+ * @since 2025-06-06
+ * @version 1.0
  */
 public class APIException extends Exception {
     private final int statusCode;

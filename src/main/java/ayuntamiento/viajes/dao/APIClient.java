@@ -15,8 +15,13 @@ import java.net.http.HttpResponse;
 import java.util.List;
 
 /**
- *
+ * Clase base de los DAO, se encargan de ofrecer los 
+ * controles a las diferentes clases dao, permitiendo simplemente cambiar 
+ * el valor T por el valor de la clase que la instanció.
+ * 
+ * 
  * @author Cristian Delgado Cruz
+ * @param <T> valor de la subclase
  * @since 2025-06-05
  * @version 1.0
  */
@@ -28,6 +33,12 @@ public abstract class APIClient<T> {
     protected final ObjectMapper objectMapper = new ObjectMapper();
     protected String endpoint;
 
+    /**
+     * Constructor único de la clase, es invocado por sus hijas
+     * 
+     * @param typeParameterClass Tipo de la subclase
+     * @param endpoint dirección final a la que se envía la petición.
+     */
     public APIClient(Class<T> typeParameterClass, String endpoint) {
         this.typeParameterClass = typeParameterClass;
         this.endpoint = endpoint;

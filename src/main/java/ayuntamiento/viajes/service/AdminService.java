@@ -9,8 +9,8 @@ import java.sql.SQLException;
 import java.util.List;
 
 /**
- * Clase que se encarga de dar a los controladores acceso a los usuarios siendo
- * el servicio especifico de ello.
+ * Clase que se encarga de dar a los controladores acceso a los administradores
+ * siendo el servicio especifico de ello.
  *
  * @author Cristian Delgado Cruz
  * @since 2025-06-02
@@ -26,13 +26,13 @@ public class AdminService {
     }
 
     /**
-     * Metodo que guarda un usuario en la base de datos, se controla con
-     * SecurityUtil la contraseña, creando un hash y guardandola
+     * Metodo que guarda un administrador en la base de datos, se controla con
+     * SecurityUtil la contraseña.
      *
      * @param entity el usuario que pasa a ser guardado
-     * @return el usuario creado con el id
-     * @throws ControledException
-     * @throws Exception
+     * @return el administrador creado con el id
+     * @throws ControledException una excepción controlada
+     * @throws Exception una excepción no controlada
      */
     public Admin save(Admin entity) throws ControledException, Exception {
         return save(entity, true);
@@ -57,22 +57,19 @@ public class AdminService {
     }
 
     /**
-     * Metodo que modifica y guarda en la base de datos el usuario se controla
-     * con SecurityUtil la contraseña, creando un hash y guardandola
+     * Metodo que modifica y guarda en la base de datos el administrador, se
+     * controla con SecurityUtil la contraseña.
      *
      * @param entity el usuario que pasa a ser modificado
      * @return el usuario modificado
-     * @throws SQLException si hubo algun fallo en la modificación
-     * @throws java.io.IOException
-     * @throws java.lang.InterruptedException
+     * @throws ControledException una excepción controlada
+     * @throws Exception una excepción no controlada
      */
-    // Método público sin el parámetro allowRetry
-    public Admin modify(Admin entity) throws Exception {
-        return modify(entity, true); // permite un reintento por defecto
+    public Admin modify(Admin entity) throws ControledException, Exception {
+        return modify(entity, true);
     }
 
-    // Método privado con control de reintento
-    private Admin modify(Admin entity, boolean allowRetry) throws Exception {
+    private Admin modify(Admin entity, boolean allowRetry) throws ControledException, Exception {
         Admin result;
 
         boolean userExists = adminList.stream()
@@ -105,23 +102,19 @@ public class AdminService {
     }
 
     /**
-     * Metodo que modifica y guarda en la base de datos el usuario desde su
-     * perfil se controla con SecurityUtil la contraseña, creando un hash y
-     * guardandola
+     * Metodo que modifica y guarda en la base de datos el administrador 
+     * desde su perfil, se controla con SecurityUtil la contraseña.
      *
-     * @param entity el usuario logeado con los datos modificados
-     * @return el usuario modificado
-     * @throws SQLException si hubo algun fallo en la modificación
-     * @throws java.io.IOException
-     * @throws java.lang.InterruptedException
+     * @param entity el admin logeado con los datos modificados
+     * @return el administrador modificado
+     * @throws ControledException una excepción controlada
+     * @throws Exception una excepción no controlada
      */
-    // Método público sin parámetro, permite reintento por defecto
-    public Admin modifyProfile(Admin entity) throws Exception {
+    public Admin modifyProfile(Admin entity) throws ControledException, Exception {
         return modifyProfile(entity, true);
     }
 
-    // Método privado con control de reintento
-    private Admin modifyProfile(Admin entity, boolean allowRetry) throws Exception {
+    private Admin modifyProfile(Admin entity, boolean allowRetry) throws ControledException, Exception {
         Admin result;
         boolean userExists = adminList.stream()
                 .anyMatch(user -> user.getUsername().equals(entity.getUsername())
@@ -145,13 +138,19 @@ public class AdminService {
         }
     }
 
-    // Método público con reintento por defecto
-    public boolean delete(Admin entity) throws Exception {
+    /**
+     * Metodo que elimina un administrador de la base de datos.
+     *
+     * @param entity el admin logeado con los datos modificados
+     * @return si fue o no eliminado
+     * @throws ControledException una excepción controlada
+     * @throws Exception una excepción no controlada
+     */
+    public boolean delete(Admin entity) throws ControledException, Exception {
         return delete(entity, true);
     }
 
-    // Método privado con control de reintento
-    private boolean delete(Admin entity, boolean allowRetry) throws Exception {
+    private boolean delete(Admin entity, boolean allowRetry) throws ControledException, Exception {
         boolean deleted;
 
         try {
@@ -176,13 +175,11 @@ public class AdminService {
         return adminList;
     }
 
-    // Método público con reintento por defecto
-    public static void rechargeList() throws Exception {
+    public static void rechargeList() throws ControledException, Exception {
         rechargeList(true);
     }
 
-    // Método privado con control de reintento
-    private static void rechargeList(boolean allowRetry) throws Exception {
+    private static void rechargeList(boolean allowRetry) throws ControledException, Exception {
         try {
             adminList = adminDAO.findAll();
         } catch (APIException apiE) {
@@ -190,6 +187,15 @@ public class AdminService {
         }
     }
 
+    
+    /**
+     * Metodo que utilizamos para comprobar que tipo de error hubo
+     * @param apiE Excepción que se llama
+     * @param allowRetry Booleano que indica si hay o no un reintento, por fallo de token
+     * @param method método que lo invocó
+     * @throws ControledException una excepción controlada
+     * @throws Exception una excepción no controlada
+     */
     private static void errorHandler(APIException apiE, boolean allowRetry, String method) throws ControledException, Exception {
         switch (apiE.getStatusCode()) {
             case 400, 404 ->

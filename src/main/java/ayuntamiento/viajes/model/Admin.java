@@ -1,7 +1,7 @@
 package ayuntamiento.viajes.model;
 
 /**
- * Clase entidad que se encarga de los usuarios
+ * Clase entidad que se encarga de los administradores (usuarios)
  * 
  * @author Cristian Delgado Cruz
  * @since 2025-06-02

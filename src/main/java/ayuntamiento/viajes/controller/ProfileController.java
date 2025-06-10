@@ -16,7 +16,7 @@ import javafx.scene.control.PasswordField;
 
 /**
  * Clase controladora que se encarga del funcionamiento de la pestaña del perfil
- * del usuario, no administrador, logeado.
+ * del administrador, no admin principal, logeado.
  *
  * @author Cristian Delgado Cruz
  * @since 2025-06-03

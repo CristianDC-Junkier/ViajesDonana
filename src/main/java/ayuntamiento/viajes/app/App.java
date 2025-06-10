@@ -29,8 +29,7 @@ public class App extends Application {
 
     /**
      * Metodo override de Application, se encarga de iniciar la aplicación para
-     * ello cre el log, y la base de datos si no existiera, además de
-     * inicializarla comienza con el login y en caso de un error lo indica en el
+     * ello cre el log, comienza con el login y en caso de un error lo indica en el
      * Log
      *
      * @since 2025-05-05

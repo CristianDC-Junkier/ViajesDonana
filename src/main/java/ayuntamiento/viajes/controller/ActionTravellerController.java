@@ -9,13 +9,17 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
-import javafx.scene.control.*;
 import javafx.stage.Stage;
 
 import java.net.URL;
 import java.time.DateTimeException;
 import java.time.format.DateTimeFormatter;
 import java.util.ResourceBundle;
+import javafx.scene.control.Button;
+import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.DatePicker;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.layout.StackPane;
 
@@ -123,15 +127,15 @@ public class ActionTravellerController implements Initializable {
     }
 
     /**
-     * Metodo que llama el controlador de vehículos recoge el vehicle
+     * Metodo que llama el controlador de Traveller recoge el traveller
      * seleccionado si fuera modificar el tipo que le llega, siendo 0 = añadir y
      * 1 = modificar y el vista/escena que lo llama
      *
      * @param parent vista/escena que lo llama
-     * @param selected vehículo que se modifica, en otro caso, null
+     * @param selected traveller que se modifica, en otro caso, null
      * @param type 0 si es añadir, 1 si es modificar
      *
-     * @return vehículo que se añadirá, o que se modificará
+     * @return traveller que se añadirá, o que se modificará
      * @throws Exception errores en la carga del dialogo
      */
     public static Traveller showActionTraveller(Stage parent, Traveller selected, int type) throws Exception {
