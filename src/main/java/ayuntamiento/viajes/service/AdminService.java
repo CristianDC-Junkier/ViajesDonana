@@ -51,23 +51,8 @@ public class AdminService {
             adminList.add(result);
             return result;
         } catch (APIException apiE) {
-            switch (apiE.getStatusCode()) {
-                case 400, 404 -> {
-                    rechargeList();
-                    throw new ControledException(apiE.getMessage(), "AdminService - save");
-                }
-                case 401 -> {
-                    if (allowRetry) {
-                        LoginService.relog();
-                        return save(entity, false);
-                    } else {
-                        throw new Exception(apiE.getMessage());
-                    }
-                }
-                default ->
-                    throw new Exception(apiE.getMessage());
-
-            }
+            errorHandler(apiE, allowRetry, "save");
+            return null;
         }
     }
 
@@ -113,22 +98,8 @@ public class AdminService {
             return result;
 
         } catch (APIException apiE) {
-            switch (apiE.getStatusCode()) {
-                case 400, 404 -> {
-                    rechargeList();
-                    throw new ControledException(apiE.getMessage(), "AdminService - modify");
-                }
-                case 401 -> {
-                    if (allowRetry) {
-                        LoginService.relog();
-                        return modify(entity, false);
-                    } else {
-                        throw new Exception(apiE.getMessage());
-                    }
-                }
-                default ->
-                    throw new Exception(apiE.getMessage());
-            }
+            errorHandler(apiE, allowRetry, "modify");
+            return null;
         }
     }
 
@@ -168,22 +139,8 @@ public class AdminService {
             return result;
 
         } catch (APIException apiE) {
-            switch (apiE.getStatusCode()) {
-                case 400, 404 -> {
-                    rechargeList();
-                    throw new ControledException(apiE.getMessage(), "AdminService - modifyProfile");
-                }
-                case 401 -> {
-                    if (allowRetry) {
-                        LoginService.relog();
-                        return modifyProfile(entity, false);
-                    } else {
-                        throw new Exception(apiE.getMessage());
-                    }
-                }
-                default ->
-                    throw new Exception(apiE.getMessage());
-            }
+            errorHandler(apiE, allowRetry, "modifyProfile");
+            return null;
         }
     }
 
@@ -209,22 +166,8 @@ public class AdminService {
             return deleted;
 
         } catch (APIException apiE) {
-            switch (apiE.getStatusCode()) {
-                case 400, 404 -> {
-                    rechargeList();
-                    throw new ControledException(apiE.getMessage(), "AdminService - delete");
-                }
-                case 401 -> {
-                    if (allowRetry) {
-                        LoginService.relog();
-                        return delete(entity, false);
-                    } else {
-                        throw new Exception(apiE.getMessage());
-                    }
-                }
-                default ->
-                    throw new Exception(apiE.getMessage());
-            }
+            errorHandler(apiE, allowRetry, "delete");
+            return false;
         }
     }
 
@@ -242,21 +185,24 @@ public class AdminService {
         try {
             adminList = adminDAO.findAll();
         } catch (APIException apiE) {
-            System.out.println(apiE.getStatusCode());
-            switch (apiE.getStatusCode()) {
-                case 400, 404 ->
-                    throw new ControledException(apiE.getMessage(), "AdminService - rechargeList");
-                case 401 -> {
-                    if (allowRetry) {
-                        LoginService.relog();
-                        rechargeList(false);
-                    } else {
-                        throw new Exception(apiE.getMessage());
-                    }
-                }
-                default ->
+            errorHandler(apiE, allowRetry, "rechargeList");
+        }
+    }
+
+    private static void errorHandler(APIException apiE, boolean allowRetry, String method) throws ControledException, Exception {
+        switch (apiE.getStatusCode()) {
+            case 400, 404 ->
+                throw new ControledException(apiE.getMessage(), "AdminService - " + method);
+            case 401 -> {
+                if (allowRetry) {
+                    LoginService.relog();
+                    rechargeList(false);
+                } else {
                     throw new Exception(apiE.getMessage());
+                }
             }
+            default ->
+                throw new Exception(apiE.getMessage());
         }
     }
 
