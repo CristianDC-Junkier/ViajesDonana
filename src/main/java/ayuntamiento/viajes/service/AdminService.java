@@ -45,7 +45,7 @@ public class AdminService {
         if (userExists) {
             return null;
         }
-        entity.setContraseña(entity.getPassword());
+        entity.setPassword(entity.getPassword());
         try {
             result = (Admin) adminDAO.save(entity);
             adminList.add(result);
@@ -82,7 +82,7 @@ public class AdminService {
             return null;
         }
 
-        entity.setContraseña(entity.getPassword());
+        entity.setPassword(entity.getPassword());
         try {
             result = (Admin) adminDAO.modify(entity, entity.getId());
 
@@ -133,7 +133,7 @@ public class AdminService {
             return null;
         }
 
-        entity.setContraseña(entity.getPassword());
+        entity.setPassword(entity.getPassword());
 
         try {
             result = (Admin) adminDAO.modify(entity, entity.getId());

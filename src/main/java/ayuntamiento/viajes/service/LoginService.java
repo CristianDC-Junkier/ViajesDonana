@@ -44,7 +44,7 @@ public class LoginService {
         JsonNode result = loginDAO.login(username, password);
         adminLog = new Admin();
         adminLog.setUsername(username);
-        adminLog.setContraseña(password);
+        adminLog.setPassword(password);
         adminLog.setId(result.get("id").asLong());
         LoginService.secret_Token = result.get("token").asText();
     }
