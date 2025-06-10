@@ -71,7 +71,7 @@ public class ProfileController extends BaseController implements Initializable {
                 } else {
                     Admin a = new Admin();
                     a.setUsername(nameProfileTF.getText());
-                    a.setContraseña(passwordProfileTF.getText());
+                    a.setPassword(passwordProfileTF.getText());
                     a.setId(LoginService.getAdminLog().getId());
 
                     if (adminS.modifyProfile(a) == null) {
