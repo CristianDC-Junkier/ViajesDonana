@@ -19,7 +19,6 @@ import javafx.collections.FXCollections;
 import ayuntamiento.viajes.service.AdminService;
 import ayuntamiento.viajes.model.Admin;
 import ayuntamiento.viajes.service.LoginService;
-import java.io.IOException;
 
 /**
  * Clase controladora que se encarga del funcionamiento de la pestaña de
