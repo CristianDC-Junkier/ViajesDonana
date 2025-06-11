@@ -13,6 +13,7 @@ import javafx.stage.Stage;
 
 import java.net.URL;
 import java.time.DateTimeException;
+import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ResourceBundle;
 import javafx.scene.control.Button;
@@ -68,7 +69,6 @@ public class ActionTravellerController implements Initializable {
         nameTF.setStyle("");
     }
 
-
     @FXML
     private void signupChange() {
         sign_upDP.setStyle("");
@@ -119,6 +119,7 @@ public class ActionTravellerController implements Initializable {
         if (typeAction == 0) {
             actionButton.setText("Añadir");
             titleLabel.setText("Añadir Viajero");
+            sign_upDP.setValue(LocalDate.now());
         } else {
             actionButton.setText("Modificar");
             titleLabel.setText("Modificar Viajero");
@@ -184,7 +185,7 @@ public class ActionTravellerController implements Initializable {
         boolean correct = true;
         String errorStyle = "-fx-background-color: linear-gradient(from 0% 0% to 100% 100%, #e52d27, #b31217);";
 
-       if (SecurityUtil.checkBadOrEmptyString(dniTF.getText())) {
+        if (SecurityUtil.checkBadOrEmptyString(dniTF.getText())) {
             dniTF.setStyle(errorStyle);
             correct = false;
         } else if (SecurityUtil.checkBadOrEmptyString(nameTF.getText())) {
@@ -198,7 +199,7 @@ public class ActionTravellerController implements Initializable {
     private boolean checkDates() {
         boolean correct = true;
         String errorStyle = "-fx-background-color: linear-gradient(from 0% 0% to 100% 100%, #e52d27, #b31217);";
-        
+
         if (!isValidDateFormat(sign_upDP, formatter_Show_Date, errorStyle)) {
             correct = false;
         }
