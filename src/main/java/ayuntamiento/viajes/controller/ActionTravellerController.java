@@ -185,7 +185,8 @@ public class ActionTravellerController implements Initializable {
         boolean correct = true;
         String errorStyle = "-fx-background-color: linear-gradient(from 0% 0% to 100% 100%, #e52d27, #b31217);";
 
-        if (SecurityUtil.checkBadOrEmptyString(dniTF.getText())) {
+        if (SecurityUtil.checkBadOrEmptyString(dniTF.getText()) 
+                || !SecurityUtil.checkDNI_NIE(dniTF.getText())) {
             dniTF.setStyle(errorStyle);
             correct = false;
         } else if (SecurityUtil.checkBadOrEmptyString(nameTF.getText())) {
