@@ -102,8 +102,8 @@ public class AdminService {
     }
 
     /**
-     * Metodo que modifica y guarda en la base de datos el administrador 
-     * desde su perfil, se controla con SecurityUtil la contraseña.
+     * Metodo que modifica y guarda en la base de datos el administrador desde
+     * su perfil, se controla con SecurityUtil la contraseña.
      *
      * @param entity el admin logeado con los datos modificados
      * @return el administrador modificado
@@ -187,23 +187,25 @@ public class AdminService {
         }
     }
 
-    
     /**
      * Metodo que utilizamos para comprobar que tipo de error hubo
+     *
      * @param apiE Excepción que se llama
-     * @param allowRetry Booleano que indica si hay o no un reintento, por fallo de token
+     * @param allowRetry Booleano que indica si hay o no un reintento, por fallo
+     * de token
      * @param method método que lo invocó
      * @throws ControledException una excepción controlada
      * @throws Exception una excepción no controlada
      */
     private static void errorHandler(APIException apiE, boolean allowRetry, String method) throws ControledException, Exception {
         switch (apiE.getStatusCode()) {
-            case 400, 404 ->
+            case 400, 404 -> {
+                rechargeList(false);
                 throw new ControledException(apiE.getMessage(), "AdminService - " + method);
+            }
             case 401 -> {
                 if (allowRetry) {
                     LoginService.relog();
-                    rechargeList(false);
                 } else {
                     throw new Exception(apiE.getMessage());
                 }

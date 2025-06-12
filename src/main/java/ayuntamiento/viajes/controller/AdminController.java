@@ -102,6 +102,7 @@ public class AdminController extends BaseController implements Initializable {
             }
         } catch (ControledException cE) {
             error(cE);
+            refreshTable(userTable, adminS.findAll());
         } catch (Exception ex) {
             error(ex);
             reset();
@@ -157,6 +158,7 @@ public class AdminController extends BaseController implements Initializable {
             }
         } catch (ControledException cE) {
             error(cE);
+            refreshTable(userTable, adminS.findAll());
         } catch (Exception ex) {
             error(ex);
             reset();
@@ -187,6 +189,7 @@ public class AdminController extends BaseController implements Initializable {
             }
         } catch (ControledException cE) {
             error(cE);
+            refreshTable(userTable, adminS.findAll());
         } catch (Exception ex) {
             error(ex);
         }

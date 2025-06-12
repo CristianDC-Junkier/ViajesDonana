@@ -56,7 +56,6 @@ public class TravellerService {
         }
     }
 
-
     /**
      * Metodo que modifica y guarda en la base de datos el traveller, se
      * controla con SecurityUtil la contraseña.
@@ -67,7 +66,7 @@ public class TravellerService {
      * @throws Exception una excepción no controlada
      */
     public Traveller modify(Traveller entity) throws Exception {
-        return modify(entity, true); 
+        return modify(entity, true);
     }
 
     public Traveller modify(Traveller entity, boolean allowRetry) throws Exception {
@@ -157,12 +156,13 @@ public class TravellerService {
      */
     private static void errorHandler(APIException apiE, boolean allowRetry, String method) throws ControledException, Exception {
         switch (apiE.getStatusCode()) {
-            case 400, 404 ->
+            case 400, 404 -> {
+                rechargeList(false);
                 throw new ControledException(apiE.getMessage(), "TravellerService - " + method);
+            }
             case 401 -> {
                 if (allowRetry) {
                     LoginService.relog();
-                    rechargeList(false);
                 } else {
                     throw new Exception(apiE.getMessage());
                 }

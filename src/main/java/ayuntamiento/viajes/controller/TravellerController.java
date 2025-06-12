@@ -113,6 +113,7 @@ public class TravellerController extends BaseController implements Initializable
                     }
                 }
             } catch (Exception ex) {
+                refreshTable(travellerTable, travellerS.findAll());
                 error(ex);
             }
         }
