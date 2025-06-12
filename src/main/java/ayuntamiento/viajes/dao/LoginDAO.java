@@ -47,6 +47,7 @@ public class LoginDAO extends APIClient<Admin> {
                 HttpRequest request = HttpRequest.newBuilder()
                         .uri(URI.create(BASE_URL + "/" + endpoint + "/login"))
                         .header("Content-Type", "application/json")
+                        .header("Accept", "application/json")
                         .header("Authorization", "Bearer " + PropertiesUtil.getProperty("API_TOKEN"))
                         .POST(HttpRequest.BodyPublishers.ofString(objectMapper.writeValueAsString(loginPayload)))
                         .build();

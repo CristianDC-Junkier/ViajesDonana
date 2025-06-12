@@ -50,6 +50,7 @@ public abstract class APIClient<T> {
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(BASE_URL + "/" + endpoint))
                 .header("Authorization", "Bearer " + LoginService.getSecret_token())
+                .header("Accept", "application/json")
                 .GET()
                 .build();
 
@@ -70,6 +71,7 @@ public abstract class APIClient<T> {
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(BASE_URL + "/" + endpoint + "/" + id))
                 .header("Authorization", "Bearer " + LoginService.getSecret_token())
+                .header("Accept", "application/json")
                 .GET()
                 .build();
 
@@ -90,6 +92,7 @@ public abstract class APIClient<T> {
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(BASE_URL + "/" + endpoint))
                 .header("Content-Type", "application/json")
+                .header("Accept", "application/json")
                 .header("Authorization", "Bearer " + LoginService.getSecret_token())
                 .POST(HttpRequest.BodyPublishers.ofString(json))
                 .build();
@@ -111,6 +114,7 @@ public abstract class APIClient<T> {
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(BASE_URL + "/" + endpoint + "/" + id))
                 .header("Content-Type", "application/json")
+                .header("Accept", "application/json")
                 .header("Authorization", "Bearer " + LoginService.getSecret_token())
                 .PUT(HttpRequest.BodyPublishers.ofString(json))
                 .build();
@@ -129,6 +133,7 @@ public abstract class APIClient<T> {
     public boolean delete(long id) throws APIException, Exception {
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(BASE_URL + "/" + endpoint + "/" + id))
+                .header("Accept", "application/json")
                 .header("Authorization", "Bearer " + LoginService.getSecret_token())
                 .DELETE()
                 .build();
