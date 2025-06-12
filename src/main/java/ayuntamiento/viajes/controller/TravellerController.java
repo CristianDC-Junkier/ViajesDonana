@@ -183,8 +183,9 @@ public class TravellerController extends BaseController implements Initializable
                     }
                     refreshTable(travellerTable, travellerS.findAll());
                 }
-            } catch (ControledException ex) {
-                error(ex);
+            } catch (ControledException cE) {
+                refreshTable(travellerTable, travellerS.findAll());
+                error(cE);
             } catch (Exception ex) {
                 error(ex);
             }
@@ -193,6 +194,7 @@ public class TravellerController extends BaseController implements Initializable
 
     public void anadir(Traveller entity) throws Exception {
         if (travellerS.save(entity) == null) {
+            refreshTable(travellerTable, travellerS.findAll());
             throw new ControledException("El DNI introducido ya existe: " + entity.getDni(),
                     "TravellerController - anadir");
         }
@@ -201,6 +203,7 @@ public class TravellerController extends BaseController implements Initializable
 
     public void modificar(Traveller entity) throws Exception {
         if (travellerS.modify(entity) == null) {
+            refreshTable(travellerTable, travellerS.findAll());
             throw new ControledException("El DNI introducido ya existe: " + entity.getDni(),
                     "TravellerController - anadir");
         }
