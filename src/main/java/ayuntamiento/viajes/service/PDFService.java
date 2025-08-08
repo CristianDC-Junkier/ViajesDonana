@@ -1,5 +1,6 @@
 package ayuntamiento.viajes.service;
 
+import ayuntamiento.viajes.common.Departments;
 import ayuntamiento.viajes.exception.ControledException;
 import ayuntamiento.viajes.model.Traveller;
 
@@ -45,7 +46,7 @@ public class PDFService {
     private int total;
     private int own;
     private int rent;
-    private Map<Traveller.TravellerTrip, Integer> tripTraveller;
+    private Map<Departments, Integer> departmentTraveller;
 
     private final static TravellerService travellerS;
     private List<Traveller> travellersList;
@@ -78,7 +79,7 @@ public class PDFService {
      * @throws Exception Excepciones que no mostramos al usuario vienen de print
      */
     public void printAll(String name, String dir, String sort) throws ControledException, Exception {
-        tripTraveller = new HashMap<>();
+        departmentTraveller = new HashMap<>();
         own = 0;
         rent = 0;
 
@@ -90,12 +91,12 @@ public class PDFService {
         total = travellersList.size();
 
         travellersList.forEach(v -> {
-            if (v.getDepartment() == Traveller.TravellerOffice.Propiedad) {
+            if (v.getDepartment().getId() == Departments.Admin.ordinal()) {
                 own++;
             } else {
                 rent++;
             }
-            tripTraveller.put(v.getTrip(), tripTraveller.getOrDefault(v.getTrip(), 0) + 1);
+            departmentTraveller.put(Departments.valueOf(v.getDepartment().getName()), departmentTraveller.getOrDefault(v.getTrip(), 0) + 1);
         });
 
         print(name, dir, "Todos");
@@ -113,7 +114,7 @@ public class PDFService {
      * @throws Exception Excepciones que no mostramos al usuario vienen de print
      */
     public void printType(String name, String dir, String type, String sort) throws ControledException, Exception {
-        tripTraveller = new HashMap<>();
+        departmentTraveller = new HashMap<>();
         own = 0;
         rent = 0;
 
@@ -130,7 +131,7 @@ public class PDFService {
             } else {
                 rent++;
             }
-            tripTraveller.put(v.getTrip(), tripTraveller.getOrDefault(v.getTrip(), 0) + 1);
+            departmentTraveller.put(v.getTrip(), departmentTraveller.getOrDefault(v.getTrip(), 0) + 1);
         });
         print(name, dir, type);
     }

@@ -5,7 +5,6 @@ import ayuntamiento.viajes.exception.APIException;
 import ayuntamiento.viajes.exception.ControledException;
 import ayuntamiento.viajes.model.Admin;
 
-import java.sql.SQLException;
 import java.util.List;
 
 /**

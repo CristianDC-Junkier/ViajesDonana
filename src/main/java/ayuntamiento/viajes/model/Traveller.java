@@ -1,8 +1,6 @@
 package ayuntamiento.viajes.model;
 
 import ayuntamiento.viajes.common.PropertiesUtil;
-import com.fasterxml.jackson.annotation.JsonGetter;
-import com.fasterxml.jackson.annotation.JsonSetter;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 

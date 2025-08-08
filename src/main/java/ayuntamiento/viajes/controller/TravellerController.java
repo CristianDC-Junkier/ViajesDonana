@@ -18,6 +18,7 @@ import javafx.stage.Stage;
 
 import ayuntamiento.viajes.service.TravellerService;
 import ayuntamiento.viajes.model.Traveller;
+import ayuntamiento.viajes.service.LoginService;
 import java.io.IOException;
 
 import java.time.format.DateTimeFormatter;
@@ -47,7 +48,7 @@ public class TravellerController extends BaseController implements Initializable
     public TravellerController() throws IOException, InterruptedException {
         travellerS = new TravellerService();
         try {
-            travellerS.rechargeList();
+            TravellerService.rechargeList();
         } catch (Exception ex) {
             System.out.println(ex);
         }

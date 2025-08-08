@@ -104,7 +104,7 @@ public class TravellerService {
         return delete(entity, true);
     }
 
-    public boolean delete(Traveller entity, boolean allowRetry) throws Exception {
+    public boolean delete(Traveller entity,  boolean allowRetry) throws Exception {
         boolean deleted;
         try {
             deleted = travellerDAO.delete(entity.getId());
@@ -128,7 +128,7 @@ public class TravellerService {
 
     public List<Traveller> findByDepartment(int department) {
         return travellerList.stream()
-                .filter(v -> v.getDepartment().getNameOrdinal() == department)
+                .filter(v -> v.getDepartment().getId() == department)
                 .collect(Collectors.toList());
     }
 
@@ -138,9 +138,15 @@ public class TravellerService {
 
     public static void rechargeList(boolean allowRetry) throws IOException, InterruptedException, Exception {
         try {
-            travellerList = travellerDAO.findAll();
+            long department = LoginService.getAdminDepartment();
+            if(department == 7){
+                travellerList = travellerDAO.findAll();
+            }
+            else{
+                travellerList = travellerDAO.findByDepartment(department);
+            }
         } catch (APIException apiE) {
-            errorHandler(apiE, allowRetry, "rechargeList");
+            errorHandler(apiE,allowRetry, "rechargeList");
         }
     }
 

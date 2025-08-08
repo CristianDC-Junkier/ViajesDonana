@@ -10,7 +10,7 @@ import javafx.collections.ObservableList;
 public class Department {
 
     private long id;
-    private Departments name;
+    private String name;
     
     private ObservableList<Long> travels;
     private ObservableList<Long> travellers;
@@ -18,12 +18,10 @@ public class Department {
     
     
 
-    public Department() {
-
-    }
+    public Department() {}
     
-    public Department(Integer name, ObservableList<Long> travels, ObservableList<Long> travellers, long adminId){
-        this.name = Departments.values()[name];
+    public Department(Departments department, ObservableList<Long> travels, ObservableList<Long> travellers, long adminId){
+        this.name = department.name();
         this.travels = travels;
         this.travellers = travellers;
         this.adminId = adminId;
@@ -36,16 +34,16 @@ public class Department {
         this.id = id;
     }
     
-    //@JsonGetter("name")
-    public int getNameOrdinal() {
-        return name.ordinal();
-    }
-    public Departments getName() {
+    public String getName() {
         return name;
     }
     //@JsonSetter("name")
-    public void setOffice(Integer name) {
-        this.name = Departments.values()[name];
+    public void setName(String name) {
+        this.name = name;
+    }
+    public void setDepartament (Departments department) {
+        this.setId(department.ordinal());
+        this.setName(department.name());
     }
     
     public ObservableList<Long> getTravels(){

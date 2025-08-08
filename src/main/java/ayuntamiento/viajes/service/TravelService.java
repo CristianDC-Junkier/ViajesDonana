@@ -114,7 +114,7 @@ public class TravelService {
     
     public List<Travel> findByDepartment(int department) {
         return travelList.stream()
-                .filter(v -> v.getDepartment().getNameOrdinal() == department)
+                .filter(v -> v.getDepartment().getId() == department)
                 .collect(Collectors.toList());
     }
     
@@ -124,7 +124,12 @@ public class TravelService {
 
     public static void rechargeList(boolean allowRetry) throws IOException, InterruptedException, Exception {
         try {
-            travelList = travelDAO.findAll();
+            long department = LoginService.getAdminDepartment();
+            if(department == 7){
+                travelList = travelDAO.findAll();
+            }else{
+                travelList = travelDAO.findByDepartment(department);
+            }
         } catch (APIException apiE) {
             errorHandler(apiE, allowRetry, "rechargeList");
         }

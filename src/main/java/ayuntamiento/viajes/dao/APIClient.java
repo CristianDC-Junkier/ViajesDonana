@@ -1,5 +1,6 @@
 package ayuntamiento.viajes.dao;
 
+import ayuntamiento.viajes.common.Departments;
 import ayuntamiento.viajes.common.PropertiesUtil;
 import ayuntamiento.viajes.exception.APIException;
 import ayuntamiento.viajes.service.LoginService;
@@ -83,6 +84,27 @@ public abstract class APIClient<T> {
             return objectMapper.readValue(response.body(), typeParameterClass);
         } else {
             throw new APIException(statusCode, responseBody);
+        }
+    }
+    
+    public List<T> findByDepartment(long department) throws APIException, Exception {
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(BASE_URL + "/" + endpoint + "/department/" + department))
+                .header("Authorization", "Bearer " + LoginService.getSecret_token())
+                .header("Accept", "application/json")
+                .GET()
+                .build();
+
+        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        int statusCode = response.statusCode();
+        String responseBody = response.body();
+
+        if (statusCode == 200) {
+            return objectMapper.readValue(response.body(), objectMapper.getTypeFactory().constructCollectionType(List.class, typeParameterClass));
+        } else {
+            JsonNode jsonNode = objectMapper.readTree(responseBody);
+            String message = jsonNode.has("error") ? jsonNode.get("error").asText() : "Error en la API ";
+            throw new APIException(statusCode, message);
         }
     }
 
