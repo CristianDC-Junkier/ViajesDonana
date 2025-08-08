@@ -1,5 +1,6 @@
 package ayuntamiento.viajes.controller;
 
+import ayuntamiento.viajes.common.Departments;
 import ayuntamiento.viajes.common.LoggerUtil;
 import ayuntamiento.viajes.common.ManagerUtil;
 import ayuntamiento.viajes.common.SecurityUtil;
@@ -19,6 +20,7 @@ import javafx.collections.FXCollections;
 import ayuntamiento.viajes.service.AdminService;
 import ayuntamiento.viajes.model.Admin;
 import ayuntamiento.viajes.service.LoginService;
+import javafx.scene.control.ChoiceBox;
 
 /**
  * Clase controladora que se encarga del funcionamiento de la pestaña de
@@ -38,16 +40,22 @@ public class AdminController extends BaseController implements Initializable {
     private TableColumn idColumn;
     @FXML
     private TableColumn userColumn;
+    @FXML
+    private TableColumn departmentColumn;
 
     @FXML
     private TextField addUserNameTF;
     @FXML
     private TextField addUserPassTF;
+    @FXML
+    private ChoiceBox<Departments> addUserDepCB;
 
     @FXML
     private TextField modUserNameTF;
     @FXML
     private TextField modUserPassTF;
+    @FXML
+    private ChoiceBox<Departments> modUserDepCB;
     @FXML
     private Button modButton;
 
@@ -248,8 +256,15 @@ public class AdminController extends BaseController implements Initializable {
 
         idColumn.setCellValueFactory(new PropertyValueFactory<Admin, Long>("id"));
         userColumn.setCellValueFactory(new PropertyValueFactory<Admin, String>("username"));
+        departmentColumn.setCellValueFactory(new PropertyValueFactory<Admin, Departments>("department"));
 
         userTable.setItems(FXCollections.observableList(adminS.findAll()));
+        
+        addUserDepCB.getItems().setAll(Departments.values());
+        addUserDepCB.setValue(addUserDepCB.getItems().get(0));
+        
+        modUserDepCB.getItems().setAll(Departments.values());
+        modUserDepCB.setValue(modUserDepCB.getItems().get(0));
     }
 
     /**

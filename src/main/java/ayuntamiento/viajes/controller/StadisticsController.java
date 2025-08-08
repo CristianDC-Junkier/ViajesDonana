@@ -89,7 +89,7 @@ public class StadisticsController extends BaseController implements Initializabl
         listTraveller = travellerS.findAll();
 
         pieChartConf(listTraveller, Traveller::getTrip, travelPC, ChartType.TRAVEL);
-        pieChartConf(listTraveller, Traveller::getOffice, officePC, ChartType.OFFICE);
+        pieChartConf(listTraveller, Traveller::getDepartment, officePC, ChartType.OFFICE);
         pieChartConf(listTraveller, Traveller::getSignUpDate, dayPC, ChartType.DATE);
 
         setupPieChartListeners();
@@ -116,7 +116,7 @@ public class StadisticsController extends BaseController implements Initializabl
 
         /* Agrupar por office y contar viajeros por office */
         Map<TravellerOffice, Long> officeGroups = list.stream()
-                .collect(Collectors.groupingBy(Traveller::getOffice, Collectors.counting()));
+                .collect(Collectors.groupingBy(Traveller::getDepartment, Collectors.counting()));
         double avgOfficeCount = officeGroups.values().stream()
                 .mapToLong(Long::longValue)
                 .average()
@@ -207,7 +207,7 @@ public class StadisticsController extends BaseController implements Initializabl
             data.getNode().setOnMouseClicked(e -> handlePieChartClick(data.getName(), Traveller::getTrip, ChartType.TRAVEL));
         });
         officePC.getData().forEach(data -> {
-            data.getNode().setOnMouseClicked(e -> handlePieChartClick(data.getName(), Traveller::getOffice, ChartType.OFFICE));
+            data.getNode().setOnMouseClicked(e -> handlePieChartClick(data.getName(), Traveller::getDepartment, ChartType.OFFICE));
         });
         dayPC.getData().forEach(data -> {
             data.getNode().setOnMouseClicked(e -> handlePieChartClick(data.getName(), Traveller::getSignUpDate, ChartType.DATE));
@@ -257,7 +257,7 @@ public class StadisticsController extends BaseController implements Initializabl
                 }).toList();
 
         pieChartConf(filtered, Traveller::getTrip, travelPC, ChartType.TRAVEL);
-        pieChartConf(filtered, Traveller::getOffice, officePC, ChartType.OFFICE);
+        pieChartConf(filtered, Traveller::getDepartment, officePC, ChartType.OFFICE);
         pieChartConf(filtered, Traveller::getSignUpDate, dayPC, ChartType.DATE);
 
         setupPieChartListeners();

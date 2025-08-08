@@ -90,7 +90,7 @@ public class PDFService {
         total = travellersList.size();
 
         travellersList.forEach(v -> {
-            if (v.getOffice() == Traveller.TravellerOffice.Propiedad) {
+            if (v.getDepartment() == Traveller.TravellerOffice.Propiedad) {
                 own++;
             } else {
                 rent++;
@@ -125,7 +125,7 @@ public class PDFService {
         total = travellersList.size();
 
         travellersList.forEach(v -> {
-            if ("Propiedad".equals(v.getOffice().toString())) {
+            if ("Propiedad".equals(v.getDepartment().toString())) {
                 own++;
             } else {
                 rent++;
@@ -319,7 +319,7 @@ public class PDFService {
             canvas.showText(v.getTrip().toString());
 
             canvas.moveText(columnX[3] - columnX[2], 0);
-            canvas.showText(v.getOffice().toString());
+            canvas.showText(v.getDepartment().toString());
 
             canvas.moveText(columnX[4] - columnX[3], 0);
             canvas.showText(v.getSignup());
@@ -364,7 +364,7 @@ public class PDFService {
             canvas.showText(v.getTrip().toString());
 
             canvas.moveText(columnX[3] - columnX[2], 0);
-            canvas.showText(v.getOffice().toString());
+            canvas.showText(v.getDepartment().toString());
 
             canvas.moveText(columnX[3] - columnX[2], 0);
             canvas.showText(v.getSignup());
@@ -422,7 +422,7 @@ public class PDFService {
                 sortList = list.stream().sorted(Comparator.comparing(Traveller::getSignUpDate)).collect(Collectors.toList());
             }
             case "Lugar de Inscripción" -> {
-                sortList = list.stream().sorted(Comparator.comparing(Traveller::getOffice).reversed()).collect(Collectors.toList());
+                sortList = list.stream().sorted(Comparator.comparing(Traveller::getDepartment).reversed()).collect(Collectors.toList());
             }
             case "DNI" -> {
                 sortList = list.stream().sorted(Comparator.comparing(Traveller::getDni)).collect(Collectors.toList());

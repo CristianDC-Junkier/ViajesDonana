@@ -1,88 +1,81 @@
 package ayuntamiento.viajes.service;
 
-import ayuntamiento.viajes.dao.TravellerDAO;
+import ayuntamiento.viajes.dao.TravelDAO;
 import ayuntamiento.viajes.exception.APIException;
 import ayuntamiento.viajes.exception.ControledException;
-import ayuntamiento.viajes.model.Traveller;
+import ayuntamiento.viajes.model.Travel;
 import java.io.IOException;
-
 import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * Clase que se encarga de dar a los controladores acceso a los viajeros siendo
- * el servicio especifico de ello.
  *
- * @author Cristian Delgado Cruz
- * @since 2025-06-04
- * @version 1.3
+ * @author Ramón Iglesias
  */
-public class TravellerService {
-
-    private static final TravellerDAO travellerDAO;
-    private static List<Traveller> travellerList;
-
-    static {
-        travellerDAO = new TravellerDAO();
+public class TravelService {
+    
+    private static final TravelDAO travelDAO;
+    private static List<Travel> travelList;
+    
+    static{
+        travelDAO = new TravelDAO();
     }
-
+    
     /**
-     * Metodo que guarda un traveller en la base de datos, se controla con
+     * Metodo que guarda un travel en la base de datos, se controla con
      * SecurityUtil la contraseña.
      *
-     * @param entity el traveller que pasa a ser guardado
-     * @return el traveller creado con el id
+     * @param entity el travel que pasa a ser guardado
+     * @return el travel creado con el id
      * @throws ControledException una excepción controlada
      * @throws Exception una excepción no controlada
      */
-    public Traveller save(Traveller entity) throws ControledException, Exception {
+    public Travel save(Travel entity) throws ControledException, Exception{
         return save(entity, true);
     }
-
-    private Traveller save(Traveller entity, boolean allowRetry) throws ControledException, Exception {
-        Traveller result;
-        boolean travellerExists = travellerList.stream()
-                .anyMatch(traveller -> traveller.getDni().equalsIgnoreCase(entity.getDni()));
-        if (travellerExists) {
+    public Travel save(Travel entity, boolean allowRetry) throws ControledException, Exception{
+        Travel result;
+        boolean travelExists = travelList.stream()
+                .anyMatch(travel -> travel.getDescriptor().equalsIgnoreCase(entity.getDescriptor()));
+        if(travelExists){
             result = null;
         }
-        try {
-            result = (Traveller) travellerDAO.save(entity);
-            travellerList.add(result);
+        try{
+            result = (Travel) travelDAO.save(entity);
+            travelList.add(result);
             return result;
-        } catch (APIException apiE) {
+        } catch (APIException apiE){
             errorHandler(apiE, allowRetry, "save");
             return null;
         }
     }
-
+    
     /**
-     * Metodo que modifica y guarda en la base de datos el traveller, se
+     * Metodo que modifica y guarda en la base de datos el travel, se
      * controla con SecurityUtil la contraseña.
      *
-     * @param entity el traveller que pasa a ser modificado
-     * @return el traveller modificado
+     * @param entity el travel que pasa a ser modificado
+     * @return el travel modificado
      * @throws ControledException una excepción controlada
      * @throws Exception una excepción no controlada
      */
-    public Traveller modify(Traveller entity) throws Exception {
+    public Travel modify(Travel entity) throws Exception {
         return modify(entity, true);
     }
-
-    public Traveller modify(Traveller entity, boolean allowRetry) throws Exception {
-        Traveller result;
-        boolean travellerExists = travellerList.stream()
-                .anyMatch(traveller -> traveller.getDni().equalsIgnoreCase(entity.getDni())
-                && traveller.getId() != entity.getId());
+    public Travel modify(Travel entity, boolean allowRetry) throws Exception {
+        Travel result;
+        boolean travellerExists = travelList.stream()
+                .anyMatch(travel -> travel.getDescriptor().equalsIgnoreCase(entity.getDescriptor())
+                && travel.getId() != entity.getId());
         if (travellerExists) {
             return null;
         }
         try {
-            result = (Traveller) travellerDAO.modify(entity, entity.getId());
+            result = (Travel) travelDAO.modify(entity, entity.getId());
             //rechargeList();
-            for (int i = 0; i < travellerList.size(); i++) {
-                if (travellerList.get(i).getId() == entity.getId()) {
-                    travellerList.set(i, result);
+            for (int i = 0; i < travelList.size(); i++) {
+                if (travelList.get(i).getId() == entity.getId()) {
+                    travelList.set(i, result);
                 }
             }
             return result;
@@ -91,59 +84,52 @@ public class TravellerService {
             return null;
         }
     }
-
+    
     /**
-     * Metodo que elimina un traveller de la base de datos.
+     * Metodo que elimina un travel de la base de datos.
      *
-     * @param entity el traveller logeado con los datos modificados
+     * @param entity el travel logeado con los datos modificados
      * @return si fue o no eliminado
      * @throws ControledException una excepción controlada
      * @throws Exception una excepción no controlada
      */
-    public boolean delete(Traveller entity) throws Exception {
+    public boolean delete(Travel entity) throws Exception {
         return delete(entity, true);
     }
-
-    public boolean delete(Traveller entity, boolean allowRetry) throws Exception {
+    public boolean delete(Travel entity, boolean allowRetry) throws Exception {
         boolean deleted;
         try {
-            deleted = travellerDAO.delete(entity.getId());
-            travellerList.remove(entity);
+            deleted = travelDAO.delete(entity.getId());
+            travelList.remove(entity);
             return deleted;
         } catch (APIException apiE) {
             errorHandler(apiE, allowRetry, "delete");
             return false;
         }
     }
-
-    public List<Traveller> findAll() {
-        return travellerList;
+    
+    public List<Travel> findAll() {
+        return travelList;
     }
-
-    public List<Traveller> findByTrip(long trip) {
-        return travellerList.stream()
-                .filter(v -> v.getTrip().getId() == trip)
-                .collect(Collectors.toList());
-    }
-
-    public List<Traveller> findByDepartment(int department) {
-        return travellerList.stream()
+    
+    public List<Travel> findByDepartment(int department) {
+        return travelList.stream()
                 .filter(v -> v.getDepartment().getNameOrdinal() == department)
                 .collect(Collectors.toList());
     }
-
+    
     public static void rechargeList() throws Exception {
         rechargeList(true);
     }
 
     public static void rechargeList(boolean allowRetry) throws IOException, InterruptedException, Exception {
         try {
-            travellerList = travellerDAO.findAll();
+            travelList = travelDAO.findAll();
         } catch (APIException apiE) {
             errorHandler(apiE, allowRetry, "rechargeList");
         }
     }
-
+    
     /**
      * Metodo que utilizamos para comprobar que tipo de error hubo
      *
@@ -171,5 +157,4 @@ public class TravellerService {
                 throw new Exception(apiE.getMessage());
         }
     }
-
 }

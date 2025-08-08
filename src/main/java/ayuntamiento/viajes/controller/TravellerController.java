@@ -1,5 +1,6 @@
 package ayuntamiento.viajes.controller;
 
+import ayuntamiento.viajes.common.Departments;
 import ayuntamiento.viajes.common.PropertiesUtil;
 import static ayuntamiento.viajes.controller.BaseController.refreshTable;
 import ayuntamiento.viajes.exception.ControledException;
@@ -17,8 +18,6 @@ import javafx.stage.Stage;
 
 import ayuntamiento.viajes.service.TravellerService;
 import ayuntamiento.viajes.model.Traveller;
-import ayuntamiento.viajes.model.Traveller.TravellerTrip;
-import ayuntamiento.viajes.model.Traveller.TravellerOffice;
 import java.io.IOException;
 
 import java.time.format.DateTimeFormatter;
@@ -61,7 +60,7 @@ public class TravellerController extends BaseController implements Initializable
     @FXML
     private TableColumn nameColumn;
     @FXML
-    private TableColumn officeColumn;
+    private TableColumn departmentColumn;
     @FXML
     private TableColumn tripColumn;
     @FXML
@@ -78,7 +77,7 @@ public class TravellerController extends BaseController implements Initializable
     @FXML
     private ChoiceBox tripCB;
     @FXML
-    private ChoiceBox officeCB;
+    private ChoiceBox departmentCB;
     @FXML
     private DatePicker sign_upDP;
 
@@ -125,21 +124,21 @@ public class TravellerController extends BaseController implements Initializable
 
         dniColumn.setCellValueFactory(new PropertyValueFactory<Traveller, String>("dni"));
         nameColumn.setCellValueFactory(new PropertyValueFactory<Traveller, String>("name"));
-        officeColumn.setCellValueFactory(new PropertyValueFactory<Traveller, TravellerOffice>("office"));
-        tripColumn.setCellValueFactory(new PropertyValueFactory<Traveller, TravellerTrip>("trip"));
+        departmentColumn.setCellValueFactory(new PropertyValueFactory<Traveller, Departments>("office"));
+        tripColumn.setCellValueFactory(new PropertyValueFactory<Traveller, String>("trip"));
         signupColumn.setCellValueFactory(new PropertyValueFactory<Traveller, LocalDate>("signup"));
 
         travellerTable.setPlaceholder(new Label("No existen inscripciones"));
 
-        // Filtro de titularidad
-        officeCB.getItems().add("Todos");
-        for (TravellerOffice type : TravellerOffice.values()) {
-            officeCB.getItems().add(type.toString());
+        // Filtro de departamento
+        departmentCB.getItems().add("Todos");
+        for (Departments type : Departments.values()) {
+            departmentCB.getItems().add(type.toString());
         }
-        officeCB.getSelectionModel().selectFirst();
-        officeCB.valueProperty().addListener((obs, oldType, newType) -> applyAllFilters());
+        departmentCB.getSelectionModel().selectFirst();
+        departmentCB.valueProperty().addListener((obs, oldType, newType) -> applyAllFilters());
 
-        // Filtro de estado
+        // Filtro de viaje
         tripCB.getItems().add("Todos");
         for (TravellerTrip status : TravellerTrip.values()) {
             tripCB.getItems().add(status.toString());
@@ -215,7 +214,7 @@ public class TravellerController extends BaseController implements Initializable
         String nameText = nameTF.getText() != null ? nameTF.getText().toLowerCase().trim() : "";
         String dniText = dniTF.getText() != null ? dniTF.getText().toLowerCase().trim() : "";
 
-        String selectedOffice = officeCB.getValue().toString();
+        String selectedOffice = departmentCB.getValue().toString();
         String selectedTrip = tripCB.getValue().toString();
 
         LocalDate selectedInsuranceDate = sign_upDP.getValue();
@@ -224,7 +223,7 @@ public class TravellerController extends BaseController implements Initializable
                 .filter(t
                         -> (nameText.isEmpty() || (t.getName() != null && t.getName().toLowerCase().contains(nameText)))
                 && (dniText.isEmpty() || (t.getDni() != null && t.getDni().toLowerCase().contains(dniText)))
-                && (selectedOffice.equals("Todos") || (t.getOffice() != null && t.getOffice().toString().equalsIgnoreCase(selectedOffice)))
+                && (selectedOffice.equals("Todos") || (t.getDepartment() != null && t.getDepartment().toString().equalsIgnoreCase(selectedOffice)))
                 && (selectedTrip.equals("Todos") || (t.getTrip() != null && t.getTrip().toString().equalsIgnoreCase(selectedTrip)))
                 && (selectedInsuranceDate == null || (t.getSignUpDate() != null && t.getSignUpDate().isBefore(selectedInsuranceDate)))
                 )
@@ -238,7 +237,7 @@ public class TravellerController extends BaseController implements Initializable
         nameTF.setText("");
         dniTF.setText("");
 
-        officeCB.setValue(officeCB.getItems().get(0));
+        departmentCB.setValue(departmentCB.getItems().get(0));
         tripCB.setValue(tripCB.getItems().get(0));
 
         sign_upDP.setValue(null);

@@ -1,10 +1,9 @@
 package ayuntamiento.viajes.controller;
 
+import ayuntamiento.viajes.common.Departments;
 import ayuntamiento.viajes.common.PropertiesUtil;
 import ayuntamiento.viajes.common.SecurityUtil;
 import ayuntamiento.viajes.model.Traveller;
-import ayuntamiento.viajes.model.Traveller.TravellerTrip;
-import ayuntamiento.viajes.model.Traveller.TravellerOffice;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -46,7 +45,7 @@ public class ActionTravellerController implements Initializable {
     @FXML
     private TextField nameTF;
     @FXML
-    private ChoiceBox<TravellerOffice> officeCB;
+    private ChoiceBox<Departments> departmnetCB;
     @FXML
     private ChoiceBox<TravellerTrip> tripCB;
     @FXML
@@ -84,7 +83,7 @@ public class ActionTravellerController implements Initializable {
         tResult = new Traveller();
         tResult.setDni(dniTF.getText());
         tResult.setName(nameTF.getText());
-        tResult.setOffice(officeCB.getValue().ordinal());
+        tResult.setOffice(departmnetCB.getValue().ordinal());
         tResult.setTrip(tripCB.getValue().ordinal());
 
         tResult.setSignUpDate(sign_upDP.getValue());
@@ -112,8 +111,8 @@ public class ActionTravellerController implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         tripCB.getItems().setAll(TravellerTrip.values());
         tripCB.setValue(tripCB.getItems().get(0));
-        officeCB.getItems().setAll(TravellerOffice.values());
-        officeCB.setValue(officeCB.getItems().get(0));
+        departmnetCB.getItems().setAll(Departments.values());
+        departmnetCB.setValue(departmnetCB.getItems().get(0));
 
         /*Cambiar el titulo y los labels dependiendo del tipo*/
         if (typeAction == 0) {
@@ -175,7 +174,7 @@ public class ActionTravellerController implements Initializable {
     private void populateFields() {
         dniTF.setText(tSelected.getDni());
         nameTF.setText(tSelected.getName());
-        officeCB.setValue(tSelected.getOffice());
+        departmnetCB.setValue(tSelected.getDepartment());
         tripCB.setValue(tSelected.getTrip());
         sign_upDP.setValue(tSelected.getSignUpDate());
 

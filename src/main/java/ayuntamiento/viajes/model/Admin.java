@@ -12,19 +12,20 @@ public class Admin {
     private long id;
     private String username;
     private String password;
+    private Department department;
 
     public Admin() {
     }
 
-    public Admin(String username, String password) {
+    public Admin(String username, String password, Department department) {
         this.username = username;
         this.password = password;
+        this.department = department;
     }
 
     public long getId() {
         return id;
     }
-
     public void setId(long id) {
         this.id = id;
     }
@@ -32,7 +33,6 @@ public class Admin {
     public String getUsername() {
         return username;
     }
-
     public void setUsername(String username) {
         this.username = username;
     }
@@ -40,9 +40,15 @@ public class Admin {
     public String getPassword() {
         return password;
     }
-
     public void setPassword(String password) {
         this.password = password;
+    }
+    
+    public Department getDepartment(){
+        return department;
+    }
+    public void setDepartment(Department department){
+        this.department = department;
     }
 
 }

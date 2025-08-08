@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Line?>
+<?import javafx.scene.text.Font?>
+
+
+<StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="450.0" prefWidth="672.0" stylesheets="@../styles/actiontraveller.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ayuntamiento.viajes.controller.ActiontravelController">
+   <children>
+      <VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="392.0" prefWidth="627.0" styleClass="form-card" stylesheets="@../styles/global.css">
+         <children>
+            <Label fx:id="titleLabel" styleClass="title-label" text="Viaje" textAlignment="CENTER">
+               <font>
+                  <Font name="Trebuchet MS" size="20.0" />
+               </font>
+               <VBox.margin>
+                  <Insets top="20.0" />
+               </VBox.margin>
+            </Label>
+            <Line endX="549.9784545898438" endY="-0.4160062074661255" fill="#007bff" startX="-57.607303619384766" startY="-0.41539785265922546" stroke="#007bff" strokeWidth="2.0" styleClass="decor-line">
+               <VBox.margin>
+                  <Insets />
+               </VBox.margin>
+            </Line>
+            <HBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="173.0" prefWidth="600.0" spacing="20.0">
+               <children>
+                  <VBox alignment="CENTER" prefHeight="110.0" prefWidth="700.0" spacing="5.0">
+                     <children>
+                        <StackPane prefHeight="50.0">
+                           <children>
+                              <HBox alignment="CENTER" prefHeight="50.0" spacing="15.0">
+                                 <children>
+                                    <ImageView fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../icons/action_travel.png" />
+                                       </image>
+                                       <HBox.margin>
+                                          <Insets left="10.0" />
+                                       </HBox.margin>
+                                    </ImageView>
+                                    <TextField fx:id="descriptorTF" alignment="CENTER" onKeyTyped="#dniChange" prefHeight="26.0" prefWidth="340.0" promptText="Descripción" styleClass="text-field" />
+                                    <Label text="*" textFill="#ff3434">
+                                       <font>
+                                          <Font name="Trebuchet MS Bold" size="15.0" />
+                                       </font>
+                                    </Label>
+                                 </children>
+                              </HBox>
+                           </children>
+                           <VBox.margin>
+                              <Insets />
+                           </VBox.margin>
+                        </StackPane>
+                        <HBox alignment="CENTER" prefHeight="90.0" prefWidth="200.0">
+                           <children>
+                              <StackPane prefHeight="50.0">
+                                 <children>
+                                    <HBox alignment="CENTER_LEFT" prefHeight="50.0" spacing="16.0">
+                                       <children>
+                                          <ImageView fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
+                                             <image>
+                                                <Image url="@../icons/action_office.png" />
+                                             </image>
+                                             <HBox.margin>
+                                                <Insets left="20.0" />
+                                             </HBox.margin>
+                                          </ImageView>
+                                          <ChoiceBox fx:id="departmnetCB" prefHeight="25.0" prefWidth="175.0" />
+                                          <Label text="*" textFill="#ff3434">
+                                             <font>
+                                                <Font name="Trebuchet MS Bold" size="15.0" />
+                                             </font>
+                                          </Label>
+                                       </children>
+                                    </HBox>
+                                 </children>
+                              </StackPane>
+                              <StackPane prefHeight="50.0">
+                                 <children>
+                                    <HBox alignment="CENTER_LEFT" prefHeight="50.0" spacing="15.0">
+                                       <children>
+                                          <ImageView fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
+                                             <image>
+                                                <Image url="@../icons/action_profile.png" />
+                                             </image>
+                                             <HBox.margin>
+                                                <Insets left="10.0" />
+                                             </HBox.margin>
+                                          </ImageView>
+                                          <TextField fx:id="descriptorTF1" alignment="CENTER" onKeyTyped="#dniChange" prefHeight="26.0" prefWidth="80.0" promptText="Descripción" styleClass="text-field" />
+                                          <Label text="*" textFill="#ff3434">
+                                             <font>
+                                                <Font name="Trebuchet MS Bold" size="15.0" />
+                                             </font>
+                                          </Label>
+                                       </children>
+                                    </HBox>
+                                 </children>
+                              </StackPane>
+                           </children>
+                        </HBox>
+                     </children>
+                     <HBox.margin>
+                        <Insets />
+                     </HBox.margin>
+                  </VBox>
+               </children>
+               <VBox.margin>
+                  <Insets />
+               </VBox.margin>
+            </HBox>
+            <Line endX="549.9784545898438" endY="-0.4160062074661255" fill="#fa0000" startX="-57.607303619384766" startY="-0.41539785265922546" stroke="#f22c2c" strokeWidth="2.0" styleClass="decor-line" />
+            <HBox alignment="CENTER">
+               <children>
+                  <Button fx:id="actionButton" cache="true" mnemonicParsing="false" onAction="#extract" prefHeight="30.0" prefWidth="100.0" text="Añadir" textAlignment="CENTER" textFill="WHITE" translateX="60.0">
+                     <font>
+                        <Font name="Trebuchet MS Bold" size="16.0" />
+                     </font>
+                     <padding>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                     </padding>
+                  </Button>
+                  <Label text="* Campos Obligatorios" textFill="#ff3434" translateX="175.0">
+                     <font>
+                        <Font name="Trebuchet MS Bold" size="10.0" />
+                     </font>
+                  </Label>
+               </children>
+            </HBox>
+         </children>
+         <StackPane.margin>
+            <Insets />
+         </StackPane.margin>
+      </VBox>
+   </children>
+</StackPane>
