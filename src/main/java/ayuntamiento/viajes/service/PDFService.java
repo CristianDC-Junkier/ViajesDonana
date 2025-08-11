@@ -103,22 +103,22 @@ public class PDFService {
     }
 
     /**
-     * Metodo que recoge los viajes por tipo y manda a generar el pdf.
+     * Metodo que recoge los viajes por departamento y manda a generar el pdf.
      *
      * @param name nombre elegido para el documento
      * @param dir directorio elegido para colocar el documento
-     * @param type viaje por el que se va a filtrar
+     * @param department viaje por el que se va a filtrar
      * @param sort criterio para ordenar la lista
      * @throws ControledException Excepciones que mostramos al usuario vienen de
      * print
      * @throws Exception Excepciones que no mostramos al usuario vienen de print
      */
-    public void printType(String name, String dir, String type, String sort) throws ControledException, Exception {
+    public void printType(String name, String dir, int department, String sort) throws ControledException, Exception {
         departmentTraveller = new HashMap<>();
         own = 0;
         rent = 0;
 
-        travellersList = sort(travellerS.findByTrip(Traveller.TravellerTrip.valueOf(type).ordinal()), sort);
+        travellersList = sort(travellerS.findByDepartment(department), sort);
 
         firstPageTravellers = travellersList.stream().limit(numTraInitialPage).toList();
         remainingTravellers = travellersList.stream().skip(numTraInitialPage).toList();
@@ -131,9 +131,10 @@ public class PDFService {
             } else {
                 rent++;
             }
-            departmentTraveller.put(v.getTrip(), departmentTraveller.getOrDefault(v.getTrip(), 0) + 1);
+            departmentTraveller.put(Departments.values()[department], 
+                    departmentTraveller.getOrDefault(Departments.values()[department].toString(), 0) + 1);
         });
-        print(name, dir, type);
+        print(name, dir, Departments.values()[department].toString());
     }
 
     /**
@@ -417,13 +418,13 @@ public class PDFService {
                 sortList = list.stream().sorted(Comparator.comparing(Traveller::getName)).collect(Collectors.toList());
             }
             case "Viaje" -> {
-                sortList = list.stream().sorted(Comparator.comparing(Traveller::getTrip).reversed()).collect(Collectors.toList());
+                //sortList = list.stream().sorted(Comparator.comparing(Traveller::getTrip).reversed()).collect(Collectors.toList());
             }
             case "Fecha de Inscripción" -> {
                 sortList = list.stream().sorted(Comparator.comparing(Traveller::getSignUpDate)).collect(Collectors.toList());
             }
             case "Lugar de Inscripción" -> {
-                sortList = list.stream().sorted(Comparator.comparing(Traveller::getDepartment).reversed()).collect(Collectors.toList());
+                //sortList = list.stream().sorted(Comparator.comparing(Traveller::getDepartment).reversed()).collect(Collectors.toList());
             }
             case "DNI" -> {
                 sortList = list.stream().sorted(Comparator.comparing(Traveller::getDni)).collect(Collectors.toList());
