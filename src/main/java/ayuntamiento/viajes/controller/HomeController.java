@@ -80,6 +80,32 @@ public class HomeController extends BaseController implements Initializable {
             error(ex);
         }
     }
+    
+    @FXML
+    private void travelspanel() throws IOException {
+        try {
+            TravelService.rechargeList();
+            ManagerUtil.moveTo("travel");
+        } catch (ControledException cE) {
+            error(cE);
+        } catch (Exception ex) {
+            error(ex);
+        }
+    }
+    
+    /**
+     * Oculta el boton de acceso al panel de viajes segun el usuario
+     */
+    private void showTravelButton(){
+        if (LoginService.getAdminLog().getId() == 1) {
+            travelVB.setVisible(true);
+            travelVB.setManaged(true);
+        }
+        else{
+            travelVB.setVisible(false);
+            travelVB.setManaged(false);
+        }
+    }
 
     @FXML
     private void stadisticspanel() throws IOException {
