@@ -4,6 +4,7 @@ import ayuntamiento.viajes.common.Departments;
 import static ayuntamiento.viajes.controller.BaseController.refreshTable;
 import ayuntamiento.viajes.model.Department;
 import ayuntamiento.viajes.model.Travel;
+import ayuntamiento.viajes.service.TravelService;
 import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -24,6 +25,8 @@ import javafx.scene.control.cell.PropertyValueFactory;
  */
 public class TravelController extends BaseController implements Initializable {
 
+    private final TravelService travelS;
+    
     @FXML
     private TableView<Travel> travelTable;
     @FXML
@@ -43,6 +46,9 @@ public class TravelController extends BaseController implements Initializable {
     @FXML
     private ChoiceBox departmentCB;
     
+    public TravelController() {
+        travelS = new TravelService();
+    }
     
     private void add(){
         //TO DO
@@ -76,12 +82,12 @@ public class TravelController extends BaseController implements Initializable {
     @FXML
     private void applyAllFilters() {
         String nameText = nameTF.getText() != null ? nameTF.getText().toLowerCase().trim() : "";
-        String selectedOffice = departmentCB.getValue().toString();
+        String selectedDepartment = departmentCB.getValue().toString();
 
         /*List<Travel> filtered = travelS.findAll().stream()
                 .filter(t
-                        -> (nameText.isEmpty() || (t.getName() != null && t.getName().toLowerCase().contains(nameText)))
-                && (selectedOffice.equals("Todos") || (t.getDepartment() != null && t.getDepartment().toString().equalsIgnoreCase(selectedOffice)))
+                        -> (nameText.isEmpty() || (t.getDescriptor() != null && t.getDescriptor().toLowerCase().contains(nameText)))
+                && (selectedDepartment.equals("Todos") || (t.getDepartment() != null && t.getDepartment().toString().equalsIgnoreCase(selectedDepartment)))
                 )
                 .collect(Collectors.toList());
 

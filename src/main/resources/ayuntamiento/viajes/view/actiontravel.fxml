@@ -13,7 +13,6 @@
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
 
-
 <StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="450.0" prefWidth="672.0" stylesheets="@../styles/actiontraveller.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ayuntamiento.viajes.controller.ActiontravelController">
    <children>
       <VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="392.0" prefWidth="627.0" styleClass="form-card" stylesheets="@../styles/global.css">
@@ -74,7 +73,7 @@
                                                 <Insets left="20.0" />
                                              </HBox.margin>
                                           </ImageView>
-                                          <ChoiceBox fx:id="departmnetCB" prefHeight="25.0" prefWidth="175.0" />
+                                          <ChoiceBox fx:id="departmentCB" prefHeight="25.0" prefWidth="175.0" />
                                           <Label text="*" textFill="#ff3434">
                                              <font>
                                                 <Font name="Trebuchet MS Bold" size="15.0" />
@@ -96,7 +95,7 @@
                                                 <Insets left="10.0" />
                                              </HBox.margin>
                                           </ImageView>
-                                          <TextField fx:id="descriptorTF1" alignment="CENTER" onKeyTyped="#dniChange" prefHeight="26.0" prefWidth="80.0" promptText="Descripción" styleClass="text-field" />
+                                          <TextField fx:id="tSeatsTF" alignment="CENTER" onKeyTyped="#dniChange" prefHeight="26.0" prefWidth="80.0" promptText="Descripción" styleClass="text-field" />
                                           <Label text="*" textFill="#ff3434">
                                              <font>
                                                 <Font name="Trebuchet MS Bold" size="15.0" />

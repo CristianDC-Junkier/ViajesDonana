@@ -145,7 +145,7 @@
                                           <Insets left="20.0" />
                                        </HBox.margin>
                                     </ImageView>
-                                    <ChoiceBox fx:id="departmnetCB" prefHeight="25.0" prefWidth="175.0" />
+                                    <ChoiceBox fx:id="departmentCB" prefHeight="25.0" prefWidth="175.0" />
                                  </children>
                               </HBox>
                            </children>
