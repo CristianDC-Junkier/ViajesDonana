@@ -1,9 +1,12 @@
 package ayuntamiento.viajes.controller;
 
-import ayuntamiento.viajes.common.Departments;
 import ayuntamiento.viajes.common.PropertiesUtil;
 import ayuntamiento.viajes.common.SecurityUtil;
+import ayuntamiento.viajes.model.Department;
+import ayuntamiento.viajes.model.Travel;
 import ayuntamiento.viajes.model.Traveller;
+import ayuntamiento.viajes.service.DepartmentService;
+import ayuntamiento.viajes.service.TravelService;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -14,6 +17,7 @@ import java.net.URL;
 import java.time.DateTimeException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 import java.util.ResourceBundle;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
@@ -22,6 +26,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.layout.StackPane;
+import javafx.util.StringConverter;
 
 /**
  * Clase que se encarga de la pestaña de añadir y modificar vehículos, es un
@@ -32,6 +37,9 @@ import javafx.scene.layout.StackPane;
  * @version 1.2
  */
 public class ActionTravellerController implements Initializable {
+
+    private final static TravelService TravelerS;
+    private final static DepartmentService DepartmentS;
 
     private static Traveller tSelected;
     private static Traveller tResult;
@@ -45,9 +53,9 @@ public class ActionTravellerController implements Initializable {
     @FXML
     private TextField nameTF;
     @FXML
-    private ChoiceBox<Departments> departmnetCB;
+    private ChoiceBox<Department> departmnetCB;
     @FXML
-    private ChoiceBox<TravellerTrip> tripCB;
+    private ChoiceBox<Travel> tripCB;
     @FXML
     private DatePicker sign_upDP;
     @FXML
@@ -57,6 +65,11 @@ public class ActionTravellerController implements Initializable {
 
     private static final String SHOW_DATE_FORMAT = PropertiesUtil.getProperty("SHOW_DATE_FORMAT");
     private static final DateTimeFormatter formatter_Show_Date = DateTimeFormatter.ofPattern(SHOW_DATE_FORMAT);
+    
+    static {
+        TravelerS = new TravelService();
+        DepartmentS = new DepartmentService();
+    }
 
     @FXML
     private void dniChange() {
@@ -83,8 +96,8 @@ public class ActionTravellerController implements Initializable {
         tResult = new Traveller();
         tResult.setDni(dniTF.getText());
         tResult.setName(nameTF.getText());
-        tResult.setOffice(departmnetCB.getValue().ordinal());
-        tResult.setTrip(tripCB.getValue().ordinal());
+        tResult.setDepartment(departmnetCB.getValue());
+        tResult.setTrip(tripCB.getValue());
 
         tResult.setSignUpDate(sign_upDP.getValue());
 
@@ -109,10 +122,44 @@ public class ActionTravellerController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        tripCB.getItems().setAll(TravellerTrip.values());
-        tripCB.setValue(tripCB.getItems().get(0));
-        departmnetCB.getItems().setAll(Departments.values());
+        // Carga departamentos desde DepartmentService
+        List<Department> departments = DepartmentS.findAll();
+        departmnetCB.getItems().setAll(departments);
         departmnetCB.setValue(departmnetCB.getItems().get(0));
+
+        // Para mostrar solo el nombre en departmnetCB
+        departmnetCB.setConverter(new StringConverter<Department>() {
+            @Override
+            public String toString(Department department) {
+                return department == null ? "" : department.getName();
+            }
+            @Override
+            public Department fromString(String string) {
+                return null;
+            }
+        });
+        // Carga viajes desde TravelService
+        List<Travel> travels = TravelerS.findAll();
+        tripCB.getItems().setAll(travels);
+        tripCB.setValue(travels.isEmpty() ? null : travels.get(0));
+
+        // Para mostrar solo el descriptor y bus en tripCB
+        tripCB.setConverter(new StringConverter<Travel>() {
+            @Override
+            public String toString(Travel travel) {
+                if (travel == null) {
+                    return "";
+                } else if (travel.getBus() == 0) {
+                    return travel.getDescriptor();
+                } else {
+                    return travel.getDescriptor() + " - Bus " + travel.getBus();
+                }
+            }
+            @Override
+            public Travel fromString(String string) {
+                return null;
+            }
+        });
 
         /*Cambiar el titulo y los labels dependiendo del tipo*/
         if (typeAction == 0) {
@@ -184,7 +231,7 @@ public class ActionTravellerController implements Initializable {
         boolean correct = true;
         String errorStyle = "-fx-background-color: linear-gradient(from 0% 0% to 100% 100%, #e52d27, #b31217);";
 
-        if (SecurityUtil.checkBadOrEmptyString(dniTF.getText()) 
+        if (SecurityUtil.checkBadOrEmptyString(dniTF.getText())
                 || !SecurityUtil.checkDNI_NIE(dniTF.getText())) {
             dniTF.setStyle(errorStyle);
             correct = false;

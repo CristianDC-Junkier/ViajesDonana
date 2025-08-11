@@ -27,10 +27,10 @@ public class Traveller {
     public Traveller() {
     }
 
-    public Traveller(String dni, String name, Department office, Travel trip, String sign_upString) {
+    public Traveller(String dni, String name, Department deparment, Travel trip, String sign_upString) {
         this.dni = dni;
         this.name = name;
-        this.department = office;
+        this.department = deparment;
         this.trip = trip;
         this.signup = (sign_upString != null && !sign_upString.isBlank()) ? parseSignUp(sign_upString) : null;
 
@@ -39,8 +39,8 @@ public class Traveller {
     public Department getDepartment() {
         return department;
     }
-    public void setOffice(Department office) {
-        this.department = office;
+    public void setDepartment(Department deparment) {
+        this.department = deparment;
     }
 
     public long getId() {

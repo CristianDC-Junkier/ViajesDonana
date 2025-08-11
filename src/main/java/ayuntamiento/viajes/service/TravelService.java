@@ -6,6 +6,7 @@ import ayuntamiento.viajes.exception.ControledException;
 import ayuntamiento.viajes.model.Travel;
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
@@ -20,6 +21,22 @@ public class TravelService {
     static{
         travelDAO = new TravelDAO();
     }
+    
+    
+    /**
+     * Metodo que devuelve un mapa de viajes por el id y el descriptor
+     * de la lista
+     *
+     * @return el mapa creado
+     */
+    public static Map<String, Travel> getTravelMapByDescriptorAndBus() {
+    return travelList.stream()
+        .collect(Collectors.toMap(
+            t -> t.getDescriptor() + " - Bus " + t.getBus(),
+            t -> t
+        ));
+}
+
     
     /**
      * Metodo que guarda un travel en la base de datos, se controla con

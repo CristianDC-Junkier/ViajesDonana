@@ -2,9 +2,10 @@ package ayuntamiento.viajes.controller;
 
 import ayuntamiento.viajes.common.PropertiesUtil;
 import ayuntamiento.viajes.exception.ControledException;
-import ayuntamiento.viajes.model.Traveller;
-import ayuntamiento.viajes.model.Traveller.TravellerTrip;
+import ayuntamiento.viajes.model.Travel;
+import ayuntamiento.viajes.service.LoginService;
 import ayuntamiento.viajes.service.PDFService;
+import ayuntamiento.viajes.service.TravelService;
 import ayuntamiento.viajes.service.TravellerService;
 
 import java.io.File;
@@ -14,13 +15,14 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.Arrays;
+import java.util.List;
 import java.util.ResourceBundle;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TextField;
 import javafx.stage.DirectoryChooser;
+import javafx.util.StringConverter;
 
 /**
  * Clase que se encarga del control de la vista de creación de pdfs así como de
@@ -43,6 +45,7 @@ public class PdfController extends BaseController implements Initializable {
     private TextField dirPDF;
 
     private final static PDFService pdf;
+    private final static TravelService TravelerS;
 
     private static final String INVALID_FILENAME_CHARS = "[\\\\/:*?\"<>|]";
     private static final String DATE_FORMAT = PropertiesUtil.getProperty("DATE_FORMAT");
@@ -50,6 +53,7 @@ public class PdfController extends BaseController implements Initializable {
 
     static {
         pdf = new PDFService();
+        TravelerS = new TravelService();
     }
 
     @Override
@@ -60,8 +64,27 @@ public class PdfController extends BaseController implements Initializable {
         sortCB.getSelectionModel().selectFirst();
 
         tripTypeCB.getItems().add("Todos");
-        tripTypeCB.getItems().addAll(Arrays.asList(Traveller.TravellerTrip.values()));
+        List<Travel> travels = TravelerS.findByDepartment(
+                (int) LoginService.getAdminLog().getDepartment().getId());
+        tripTypeCB.getItems().setAll(travels);
         tripTypeCB.getSelectionModel().selectFirst();
+        // Para mostrar solo el descriptor y bus en tripCB
+        tripTypeCB.setConverter(new StringConverter<Travel>() {
+            @Override
+            public String toString(Travel travel) {
+                if (travel == null) {
+                    return "";
+                } else if (travel.getBus() == 0) {
+                    return travel.getDescriptor();
+                } else {
+                    return travel.getDescriptor() + " - Bus " + travel.getBus();
+                }
+            }
+            @Override
+            public Travel fromString(String string) {
+                return null;
+            }
+        });
         tripTypeCB.setOnAction((event) -> {
             changePDFName(tripTypeCB.getSelectionModel().getSelectedItem().toString());
         });
