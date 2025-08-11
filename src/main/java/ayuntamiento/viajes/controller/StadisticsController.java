@@ -1,8 +1,8 @@
 package ayuntamiento.viajes.controller;
 
+import ayuntamiento.viajes.model.Department;
+import ayuntamiento.viajes.model.Travel;
 import ayuntamiento.viajes.model.Traveller;
-import ayuntamiento.viajes.model.Traveller.TravellerTrip;
-import ayuntamiento.viajes.model.Traveller.TravellerOffice;
 import ayuntamiento.viajes.service.TravellerService;
 
 import java.net.URL;
@@ -106,16 +106,16 @@ public class StadisticsController extends BaseController implements Initializabl
     private void rechargeLabels(List<Traveller> list) {
         int total = list.size();
 
-        /* Agrupar por trip y contar viajeros por trip */
-        Map<TravellerTrip, Long> tripGroups = list.stream()
+        /* Agrupar por viaje y contar viajeros por viaje */
+        Map<Travel, Long> tripGroups = list.stream()
                 .collect(Collectors.groupingBy(Traveller::getTrip, Collectors.counting()));
         double avgTripCount = tripGroups.values().stream()
                 .mapToLong(Long::longValue)
                 .average()
                 .orElse(0);
 
-        /* Agrupar por office y contar viajeros por office */
-        Map<TravellerOffice, Long> officeGroups = list.stream()
+        /* Agrupar por departamento y contar viajeros por departamento */
+        Map<Department, Long> officeGroups = list.stream()
                 .collect(Collectors.groupingBy(Traveller::getDepartment, Collectors.counting()));
         double avgOfficeCount = officeGroups.values().stream()
                 .mapToLong(Long::longValue)

@@ -46,9 +46,10 @@ public class PDFService {
     private int total;
     private int own;
     private int rent;
+    
     private Map<Departments, Integer> departmentTraveller;
-
     private final static TravellerService travellerS;
+    
     private List<Traveller> travellersList;
     private List<Traveller> firstPageTravellers;
     private List<Traveller> remainingTravellers;
@@ -113,7 +114,7 @@ public class PDFService {
      * print
      * @throws Exception Excepciones que no mostramos al usuario vienen de print
      */
-    public void printType(String name, String dir, int department, String sort) throws ControledException, Exception {
+    public void printType(String name, String dir, long department, String sort) throws ControledException, Exception {
         departmentTraveller = new HashMap<>();
         own = 0;
         rent = 0;
@@ -131,10 +132,10 @@ public class PDFService {
             } else {
                 rent++;
             }
-            departmentTraveller.put(Departments.values()[department], 
-                    departmentTraveller.getOrDefault(Departments.values()[department].toString(), 0) + 1);
+            departmentTraveller.put(Departments.values()[(int)department], 
+                    departmentTraveller.getOrDefault(Departments.values()[(int)department].toString(), 0) + 1);
         });
-        print(name, dir, Departments.values()[department].toString());
+        print(name, dir, Departments.values()[(int)department].toString());
     }
 
     /**

@@ -4,6 +4,8 @@ import ayuntamiento.viajes.common.Departments;
 import ayuntamiento.viajes.common.PropertiesUtil;
 import static ayuntamiento.viajes.controller.BaseController.refreshTable;
 import ayuntamiento.viajes.exception.ControledException;
+import ayuntamiento.viajes.model.Department;
+import ayuntamiento.viajes.model.Travel;
 import java.net.URL;
 import java.util.ResourceBundle;
 import java.time.LocalDate;
@@ -18,7 +20,8 @@ import javafx.stage.Stage;
 
 import ayuntamiento.viajes.service.TravellerService;
 import ayuntamiento.viajes.model.Traveller;
-import ayuntamiento.viajes.service.LoginService;
+import ayuntamiento.viajes.service.DepartmentService;
+import ayuntamiento.viajes.service.TravelService;
 import java.io.IOException;
 
 import java.time.format.DateTimeFormatter;
@@ -29,6 +32,7 @@ import javafx.collections.FXCollections;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
+import javafx.util.StringConverter;
 import javafx.util.converter.LocalDateStringConverter;
 
 /**
@@ -36,23 +40,16 @@ import javafx.util.converter.LocalDateStringConverter;
  *
  * @author Ramón Iglesias Granados
  * @since 2025-06-03
- * @version 1.2
+ * @version 1.3
  */
 public class TravellerController extends BaseController implements Initializable {
 
-    private final TravellerService travellerS;
+    private final static TravellerService travellerS;
+    public final static TravelService travelS;
+    public final static DepartmentService departmentS;
 
     private static final String SHOW_DATE_FORMAT = PropertiesUtil.getProperty("SHOW_DATE_FORMAT");
     private static final DateTimeFormatter formatter_Show_Date = DateTimeFormatter.ofPattern(SHOW_DATE_FORMAT);
-
-    public TravellerController() throws IOException, InterruptedException {
-        travellerS = new TravellerService();
-        try {
-            TravellerService.rechargeList();
-        } catch (Exception ex) {
-            System.out.println(ex);
-        }
-    }
 
     @FXML
     private TableView<Traveller> travellerTable;
@@ -76,11 +73,25 @@ public class TravellerController extends BaseController implements Initializable
     private TextField nameTF;
 
     @FXML
-    private ChoiceBox tripCB;
+    private ChoiceBox<Travel> tripCB;
     @FXML
-    private ChoiceBox departmentCB;
+    private ChoiceBox<Department> departmentCB;
     @FXML
     private DatePicker sign_upDP;
+
+    static {
+        travellerS = new TravellerService();
+        travelS = new TravelService();
+        departmentS = new DepartmentService();
+    }
+
+    public TravellerController() throws IOException, InterruptedException {
+        try {
+            TravellerService.rechargeList();
+        } catch (Exception ex) {
+            System.out.println(ex);
+        }
+    }
 
     @FXML
     private void add() {
@@ -131,20 +142,55 @@ public class TravellerController extends BaseController implements Initializable
 
         travellerTable.setPlaceholder(new Label("No existen inscripciones"));
 
-        // Filtro de departamento
-        departmentCB.getItems().add("Todos");
-        for (Departments type : Departments.values()) {
-            departmentCB.getItems().add(type.toString());
-        }
-        departmentCB.getSelectionModel().selectFirst();
+        Department allDepartment = new Department();
+        allDepartment.setId(0);
+        allDepartment.setName("Todos");
+
+        // Carga departamentos desde DepartmentService
+        List<Department> departments = departmentS.findAll();
+        departmentCB.getItems().addAll(departments);
+        departmentCB.setValue(departmentCB.getItems().get(0));
+
+        // Para mostrar solo el nombre en departmnetCB
+        departmentCB.setConverter(new StringConverter<Department>() {
+            @Override
+            public String toString(Department department) {
+                return department == null ? "" : department.getName();
+            }
+
+            @Override
+            public Department fromString(String string) {
+                return null;
+            }
+        });
         departmentCB.valueProperty().addListener((obs, oldType, newType) -> applyAllFilters());
 
-        // Filtro de viaje
-        tripCB.getItems().add("Todos");
-        for (TravellerTrip status : TravellerTrip.values()) {
-            tripCB.getItems().add(status.toString());
-        }
-        tripCB.getSelectionModel().selectFirst();
+        Travel allTravels = new Travel();
+        allTravels.setId(0);
+        allTravels.setDescriptor("Todos");
+        allTravels.setBus(0);
+
+        // Carga viajes desde TravelService
+        List<Travel> travels = travelS.findAll();
+        tripCB.getItems().addAll(travels);
+        tripCB.setValue(travels.isEmpty() ? null : travels.get(0));
+
+        // Para mostrar solo el descriptor en tripCB
+        tripCB.setConverter(new StringConverter<Travel>() {
+            @Override
+            public String toString(Travel travel) {
+                if (travel == null) {
+                    return "";
+                } else {
+                    return travel.getDescriptor();
+                }
+            }
+
+            @Override
+            public Travel fromString(String string) {
+                return null;
+            }
+        });
         tripCB.valueProperty().addListener((obs, oldType, newType) -> applyAllFilters());
 
         // Filtro de DatePicker
@@ -215,17 +261,18 @@ public class TravellerController extends BaseController implements Initializable
         String nameText = nameTF.getText() != null ? nameTF.getText().toLowerCase().trim() : "";
         String dniText = dniTF.getText() != null ? dniTF.getText().toLowerCase().trim() : "";
 
-        String selectedOffice = departmentCB.getValue().toString();
-        String selectedTrip = tripCB.getValue().toString();
+        long selectedDepartment = departmentCB.getValue().getId();
+        long selectedTrip = tripCB.getValue().getId();
 
         LocalDate selectedInsuranceDate = sign_upDP.getValue();
 
         List<Traveller> filtered = travellerS.findAll().stream()
                 .filter(t
-                        -> (nameText.isEmpty() || (t.getName() != null && t.getName().toLowerCase().contains(nameText)))
+                        -> 
+                   (nameText.isEmpty() || (t.getName() != null && t.getName().toLowerCase().contains(nameText)))
                 && (dniText.isEmpty() || (t.getDni() != null && t.getDni().toLowerCase().contains(dniText)))
-                && (selectedOffice.equals("Todos") || (t.getDepartment() != null && t.getDepartment().toString().equalsIgnoreCase(selectedOffice)))
-                && (selectedTrip.equals("Todos") || (t.getTrip() != null && t.getTrip().toString().equalsIgnoreCase(selectedTrip)))
+                && (selectedDepartment == 0 || (t.getDepartment() != null && t.getDepartment().getId() == selectedDepartment))
+                && (selectedTrip == 0 || (t.getTrip() != null && t.getTrip().getId() == selectedTrip))
                 && (selectedInsuranceDate == null || (t.getSignUpDate() != null && t.getSignUpDate().isBefore(selectedInsuranceDate)))
                 )
                 .collect(Collectors.toList());

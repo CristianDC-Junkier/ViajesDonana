@@ -5,8 +5,12 @@ import ayuntamiento.viajes.common.ManagerUtil;
 import ayuntamiento.viajes.common.PreferencesUtil;
 import ayuntamiento.viajes.common.SecurityUtil;
 import ayuntamiento.viajes.common.TaskExecutorUtil;
+import ayuntamiento.viajes.exception.ControledException;
 import ayuntamiento.viajes.exception.LoginException;
+import ayuntamiento.viajes.service.DepartmentService;
 import ayuntamiento.viajes.service.LoginService;
+import ayuntamiento.viajes.service.TravelService;
+import ayuntamiento.viajes.service.TravellerService;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.fxml.FXML;
@@ -18,7 +22,6 @@ import javafx.scene.control.CheckBox;
 import javafx.scene.control.ProgressIndicator;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.StackPane;
-
 
 /**
  * Clase que controla la creación el login de los usuarios y actua como vista
@@ -53,7 +56,7 @@ public class LoginController extends BaseController implements Initializable {
      */
     @FXML
     private void login() {
-        changePI(); 
+        changePI();
 
         String username = userField.getText();
         String password = passField.getText();
@@ -73,9 +76,8 @@ public class LoginController extends BaseController implements Initializable {
         }
 
         /**
-         * Ejecuta el login en segundo plano
-         * para no molestar a la interfaz
-         * 
+         * Ejecuta el login en segundo plano para no molestar a la interfaz
+         *
          */
         TaskExecutorUtil.runAsync(
                 () -> {
@@ -84,6 +86,14 @@ public class LoginController extends BaseController implements Initializable {
                 },
                 result -> {
                     changePI();
+                    try {
+                        DepartmentService.rechargeList();
+                        TravelService.rechargeList();
+                    } catch (ControledException cE) {
+                        error(cE);
+                    } catch (Exception ex) {
+                        error(ex);
+                    }
                     ManagerUtil.moveTo("home");
                 },
                 error -> {
@@ -109,8 +119,7 @@ public class LoginController extends BaseController implements Initializable {
     }
 
     @Override
-    public void initialize(URL url, ResourceBundle rb) 
-    {
+    public void initialize(URL url, ResourceBundle rb) {
         backgroundIV.fitWidthProperty().bind(father.widthProperty());
         backgroundIV.fitHeightProperty().bind(father.heightProperty());
 
@@ -138,7 +147,8 @@ public class LoginController extends BaseController implements Initializable {
                 userField.setStyle(errorStyle);
                 passField.setStyle(errorStyle);
             }
-            default -> log("Error en el login, " + msg);
+            default ->
+                log("Error en el login, " + msg);
         }
         userField.setText("");
         passField.setText("");

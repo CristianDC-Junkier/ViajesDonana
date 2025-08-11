@@ -126,7 +126,7 @@ public class TravellerService {
                 .collect(Collectors.toList());
     }
 
-    public List<Traveller> findByDepartment(int department) {
+    public List<Traveller> findByDepartment(long department) {
         return travellerList.stream()
                 .filter(v -> v.getDepartment().getId() == department)
                 .collect(Collectors.toList());

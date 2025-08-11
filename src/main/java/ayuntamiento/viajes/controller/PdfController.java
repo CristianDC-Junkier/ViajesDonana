@@ -36,16 +36,16 @@ import javafx.util.StringConverter;
 public class PdfController extends BaseController implements Initializable {
 
     @FXML
-    private ChoiceBox sortCB;
+    private ChoiceBox <String> sortCB;
     @FXML
-    private ChoiceBox tripTypeCB;
+    private ChoiceBox<Travel> tripTypeCB;
     @FXML
     private TextField namePDF;
     @FXML
     private TextField dirPDF;
 
     private final static PDFService pdf;
-    private final static TravelService TravelerS;
+    private final static TravelService TravelS;
 
     private static final String INVALID_FILENAME_CHARS = "[\\\\/:*?\"<>|]";
     private static final String DATE_FORMAT = PropertiesUtil.getProperty("DATE_FORMAT");
@@ -53,7 +53,7 @@ public class PdfController extends BaseController implements Initializable {
 
     static {
         pdf = new PDFService();
-        TravelerS = new TravelService();
+        TravelS = new TravelService();
     }
 
     @Override
@@ -63,18 +63,23 @@ public class PdfController extends BaseController implements Initializable {
         sortCB.getItems().addAll("Nombre", "Viaje", "Fecha de Inscripción", "Lugar de Inscripción", "DNI");
         sortCB.getSelectionModel().selectFirst();
 
-        tripTypeCB.getItems().add("Todos");
-        List<Travel> travels = TravelerS.findByDepartment(
+        Travel allTravels = new Travel();
+        allTravels.setId(0);
+        allTravels.setDescriptor("Todos");
+        allTravels.setBus(0);
+        
+        tripTypeCB.getItems().add(allTravels);
+        List<Travel> travels = TravelS.findByDepartment(
                 (int) LoginService.getAdminLog().getDepartment().getId());
-        tripTypeCB.getItems().setAll(travels);
+        tripTypeCB.getItems().addAll(travels);
         tripTypeCB.getSelectionModel().selectFirst();
         // Para mostrar solo el descriptor y bus en tripCB
         tripTypeCB.setConverter(new StringConverter<Travel>() {
             @Override
             public String toString(Travel travel) {
                 if (travel == null) {
-                    return "";
-                } else if (travel.getBus() == 0) {
+                    return ""; 
+                } else if (travel.getId() == 0 || travel.getBus() == 0) {
                     return travel.getDescriptor();
                 } else {
                     return travel.getDescriptor() + " - Bus " + travel.getBus();
@@ -140,24 +145,21 @@ public class PdfController extends BaseController implements Initializable {
         } else {
             try {
 
-                String typeSelected = toEnumCompatible(tripTypeCB.getValue().toString());
-                
-                switch (typeSelected) {
-                    case "Todos" -> {
-                        if (travellerS.findAll().isEmpty()) {
+                if(tripTypeCB.getValue().getId() == 0){
+                     if (travellerS.findAll().isEmpty()) {
                             info("No existen viajeros registrados", false);
                         } else {
-                            pdf.printAll(namePDF.getText(), dirPDF.getText(), sortCB.getValue().toString());
+                            pdf.printAll(namePDF.getText(), dirPDF.getText(), sortCB.getValue());
                         }
-                    }
-                    default -> {
-                        if (travellerS.findByTrip(TravellerTrip.valueOf(typeSelected).ordinal()).isEmpty()) {
-                            info("No existen viajeros registrados para el viaje " + typeSelected, false);
+                }else{
+                     if (travellerS.findByTrip(tripTypeCB.getValue().getId()).isEmpty()) {
+                            info("No existen viajeros registrados para el viaje " + 
+                                    tripTypeCB.getValue().getDescriptor() + " - Bus " + tripTypeCB.getValue().getBus(), false);
                         } else {
-                            pdf.printType(namePDF.getText(), dirPDF.getText(), typeSelected, sortCB.getValue().toString());
+                            pdf.printType(namePDF.getText(), dirPDF.getText(), 
+                                    tripTypeCB.getValue().getId(),
+                                    sortCB.getValue());
                         }
-                    }
-
                 }
 
             } catch (Exception ex) {
@@ -175,7 +177,6 @@ public class PdfController extends BaseController implements Initializable {
     private void dirChangePDF() {
         dirPDF.setStyle("");
     }
-
 
     /**
      * Cambia el nombre del PDF automáticamente
@@ -200,8 +201,8 @@ public class PdfController extends BaseController implements Initializable {
         Path path = Paths.get(folderPath);
         return !Files.exists(path) || !Files.isDirectory(path);
     }
-    
-    private String toEnumCompatible(String s){
+
+    private String toEnumCompatible(String s) {
         return s.replace(' ', '_');
     }
 

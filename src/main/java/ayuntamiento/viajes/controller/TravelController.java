@@ -78,14 +78,14 @@ public class TravelController extends BaseController implements Initializable {
         String nameText = nameTF.getText() != null ? nameTF.getText().toLowerCase().trim() : "";
         String selectedOffice = departmentCB.getValue().toString();
 
-        List<Travel> filtered = travelS.findAll().stream()
+        /*List<Travel> filtered = travelS.findAll().stream()
                 .filter(t
                         -> (nameText.isEmpty() || (t.getName() != null && t.getName().toLowerCase().contains(nameText)))
                 && (selectedOffice.equals("Todos") || (t.getDepartment() != null && t.getDepartment().toString().equalsIgnoreCase(selectedOffice)))
                 )
                 .collect(Collectors.toList());
 
-        refreshTable(travelTable, filtered);
+        refreshTable(travelTable, filtered);*/
     }
 
     @FXML
