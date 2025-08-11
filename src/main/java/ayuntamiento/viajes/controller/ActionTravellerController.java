@@ -38,7 +38,7 @@ import javafx.util.StringConverter;
  */
 public class ActionTravellerController implements Initializable {
 
-    private final static TravelService TravelerS;
+    private final static TravelService TravelS;
     private final static DepartmentService DepartmentS;
 
     private static Traveller tSelected;
@@ -53,7 +53,7 @@ public class ActionTravellerController implements Initializable {
     @FXML
     private TextField nameTF;
     @FXML
-    private ChoiceBox<Department> departmnetCB;
+    private ChoiceBox<Department> departmentCB;
     @FXML
     private ChoiceBox<Travel> tripCB;
     @FXML
@@ -67,7 +67,7 @@ public class ActionTravellerController implements Initializable {
     private static final DateTimeFormatter formatter_Show_Date = DateTimeFormatter.ofPattern(SHOW_DATE_FORMAT);
     
     static {
-        TravelerS = new TravelService();
+        TravelS = new TravelService();
         DepartmentS = new DepartmentService();
     }
 
@@ -96,7 +96,7 @@ public class ActionTravellerController implements Initializable {
         tResult = new Traveller();
         tResult.setDni(dniTF.getText());
         tResult.setName(nameTF.getText());
-        tResult.setDepartment(departmnetCB.getValue());
+        tResult.setDepartment(departmentCB.getValue());
         tResult.setTrip(tripCB.getValue());
 
         tResult.setSignUpDate(sign_upDP.getValue());
@@ -124,11 +124,11 @@ public class ActionTravellerController implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         // Carga departamentos desde DepartmentService
         List<Department> departments = DepartmentS.findAll();
-        departmnetCB.getItems().setAll(departments);
-        departmnetCB.setValue(departmnetCB.getItems().get(0));
+        departmentCB.getItems().setAll(departments);
+        departmentCB.setValue(departmentCB.getItems().get(0));
 
         // Para mostrar solo el nombre en departmnetCB
-        departmnetCB.setConverter(new StringConverter<Department>() {
+        departmentCB.setConverter(new StringConverter<Department>() {
             @Override
             public String toString(Department department) {
                 return department == null ? "" : department.getName();
@@ -139,7 +139,7 @@ public class ActionTravellerController implements Initializable {
             }
         });
         // Carga viajes desde TravelService
-        List<Travel> travels = TravelerS.findAll();
+        List<Travel> travels = TravelS.findAll();
         tripCB.getItems().setAll(travels);
         tripCB.setValue(travels.isEmpty() ? null : travels.get(0));
 
@@ -221,7 +221,7 @@ public class ActionTravellerController implements Initializable {
     private void populateFields() {
         dniTF.setText(tSelected.getDni());
         nameTF.setText(tSelected.getName());
-        departmnetCB.setValue(tSelected.getDepartment());
+        departmentCB.setValue(tSelected.getDepartment());
         tripCB.setValue(tSelected.getTrip());
         sign_upDP.setValue(tSelected.getSignUpDate());
 
