@@ -3,7 +3,9 @@ package ayuntamiento.viajes.service;
 import ayuntamiento.viajes.dao.AdminDAO;
 import ayuntamiento.viajes.exception.APIException;
 import ayuntamiento.viajes.exception.ControledException;
+import ayuntamiento.viajes.exception.QuietException;
 import ayuntamiento.viajes.model.Admin;
+import java.util.ArrayList;
 
 import java.util.List;
 
@@ -22,6 +24,7 @@ public class AdminService {
 
     static {
         adminDAO = new AdminDAO();
+        adminList = new ArrayList<>();
     }
 
     /**
@@ -196,7 +199,7 @@ public class AdminService {
      * @throws ControledException una excepción controlada
      * @throws Exception una excepción no controlada
      */
-    private static void errorHandler(APIException apiE, boolean allowRetry, String method) throws ControledException, Exception {
+    private static void errorHandler(APIException apiE, boolean allowRetry, String method) throws ControledException, QuietException, Exception {
         switch (apiE.getStatusCode()) {
             case 400, 404 -> {
                 rechargeList(false);
@@ -208,6 +211,9 @@ public class AdminService {
                 } else {
                     throw new Exception(apiE.getMessage());
                 }
+            }
+            case 204 -> {
+                throw new QuietException(apiE.getMessage(), "AdminService - " + method);
             }
             default ->
                 throw new Exception(apiE.getMessage());

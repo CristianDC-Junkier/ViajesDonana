@@ -1,6 +1,5 @@
 package ayuntamiento.viajes.controller;
 
-import ayuntamiento.viajes.common.Departments;
 import static ayuntamiento.viajes.controller.BaseController.refreshTable;
 import ayuntamiento.viajes.model.Department;
 import ayuntamiento.viajes.model.Travel;
@@ -71,10 +70,10 @@ public class TravelController extends BaseController implements Initializable {
         
         travelTable.setPlaceholder(new Label("No existen viajes"));
         
-        departmentCB.getItems().add("Todos");
+        /*departmentCB.getItems().add("Todos");
         for (Departments type : Departments.values()) {
             departmentCB.getItems().add(type.toString());
-        }
+        }*/
         departmentCB.getSelectionModel().selectFirst();
         departmentCB.valueProperty().addListener((obs, oldType, newType) -> applyAllFilters());
     }    

@@ -5,6 +5,7 @@ import ayuntamiento.viajes.common.ManagerUtil;
 import static ayuntamiento.viajes.common.ManagerUtil.getPage;
 import ayuntamiento.viajes.controller.InfoController.DialogResult;
 import ayuntamiento.viajes.exception.ControledException;
+import ayuntamiento.viajes.exception.QuietException;
 import ayuntamiento.viajes.service.AdminService;
 import ayuntamiento.viajes.service.LoginService;
 
@@ -23,7 +24,7 @@ import javafx.stage.Stage;
  *
  * @author Cristian Delgado Cruz
  * @since 2025-06-03
- * @version 1.2
+ * @version 1.3
  */
 public abstract class BaseController {
 
@@ -45,6 +46,15 @@ public abstract class BaseController {
         Stage parentStage = (Stage) father.getScene().getWindow();
         ErrorController.showErrorDialog(parentStage, cE.getMessage());
         log("Error - " + cE.getWhere() + ": \n" + cE.getMessage());
+    }
+
+    /**
+     * Muestra un dialogo de error de una excepcion warning que solo va al log
+     *
+     * @param qE La excepción que ocurrió
+     */
+    public void error(QuietException qE) {
+        log("Warning - " + qE.getWhere() + ": \n" + qE.getMessage());
     }
 
     /**
@@ -91,12 +101,15 @@ public abstract class BaseController {
 
     @FXML
     private void userspanel() throws IOException {
-        if (LoginService.getAdminLog().getId() == 1) {
+        if (LoginService.getAdminDepartment() == 7) {
             try {
                 AdminService.rechargeList();
                 ManagerUtil.moveTo("admin");
             } catch (ControledException cE) {
                 error(cE);
+            } catch (QuietException qE) {
+                error(qE);
+                ManagerUtil.moveTo("admin");
             } catch (Exception ex) {
                 error(ex);
             }

@@ -3,6 +3,7 @@ package ayuntamiento.viajes.service;
 import ayuntamiento.viajes.dao.LoginDAO;
 import ayuntamiento.viajes.exception.LoginException;
 import ayuntamiento.viajes.model.Admin;
+import ayuntamiento.viajes.model.Department;
 import com.fasterxml.jackson.databind.JsonNode;
 
 /**
@@ -39,14 +40,14 @@ public class LoginService {
     public static void setAdminLog(Admin adminLog) {
         LoginService.adminLog = adminLog;
     }
-    
+
     /**
      * Funcion para recoger el departamento del usuario
      *
      * @return El usuario logeado
      */
     public static long getAdminDepartment() {
-        return adminLog.getId();
+        return adminLog.getDepartment().getId();
     }
 
     public void login(String username, String password) throws LoginException, Exception {
@@ -55,6 +56,15 @@ public class LoginService {
         adminLog.setUsername(username);
         adminLog.setPassword(password);
         adminLog.setId(result.get("id").asLong());
+
+        JsonNode departmentNode = result.get("department");
+        if (departmentNode != null && !departmentNode.isNull()) {
+            Department dept = new Department();
+            dept.setId(departmentNode.get("id").asLong());
+            dept.setName(departmentNode.get("name").asText());
+            adminLog.setDepartment(dept);
+        }
+
         LoginService.secret_Token = result.get("token").asText();
     }
 

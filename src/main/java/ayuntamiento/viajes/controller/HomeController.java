@@ -2,6 +2,7 @@ package ayuntamiento.viajes.controller;
 
 import ayuntamiento.viajes.common.ManagerUtil;
 import ayuntamiento.viajes.exception.ControledException;
+import ayuntamiento.viajes.exception.QuietException;
 import ayuntamiento.viajes.service.LoginService;
 import ayuntamiento.viajes.service.TravellerService;
 import java.awt.Desktop;
@@ -21,7 +22,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
 /**
- * Controlador de la vista principal, se encarga de hacer el traspaso a las 
+ * Controlador de la vista principal, se encarga de hacer el traspaso a las
  * diferentes partes de la app, y actua de página de inicio
  *
  * @author Cristian
@@ -50,6 +51,9 @@ public class HomeController extends BaseController implements Initializable {
             ManagerUtil.moveTo("traveller");
         } catch (ControledException cE) {
             error(cE);
+        } catch (QuietException qE) {
+            error(qE);
+            ManagerUtil.moveTo("traveller");
         } catch (Exception ex) {
             error(ex);
         }
@@ -62,6 +66,9 @@ public class HomeController extends BaseController implements Initializable {
             ManagerUtil.moveTo("stadistics");
         } catch (ControledException cE) {
             error(cE);
+        } catch (QuietException qE) {
+            error(qE);
+            ManagerUtil.moveTo("stadistics");
         } catch (Exception ex) {
             error(ex);
         }
@@ -72,8 +79,11 @@ public class HomeController extends BaseController implements Initializable {
         try {
             TravellerService.rechargeList();
             ManagerUtil.moveTo("pdf");
-        } catch (ControledException cE) {
+         } catch (ControledException cE) {
             error(cE);
+        } catch (QuietException qE) {
+            error(qE);
+            ManagerUtil.moveTo("pdf");
         } catch (Exception ex) {
             error(ex);
         }
@@ -99,8 +109,10 @@ public class HomeController extends BaseController implements Initializable {
                         + "Revise la carpeta de instalación", "HomeController - openManual");
             }
 
-        } catch (ControledException cE) {
+         } catch (ControledException cE) {
             error(cE);
+        } catch (QuietException qE) {
+            error(qE);
         } catch (Exception ex) {
             error(ex);
         }

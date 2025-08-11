@@ -3,8 +3,10 @@ package ayuntamiento.viajes.service;
 import ayuntamiento.viajes.dao.TravellerDAO;
 import ayuntamiento.viajes.exception.APIException;
 import ayuntamiento.viajes.exception.ControledException;
+import ayuntamiento.viajes.exception.QuietException;
 import ayuntamiento.viajes.model.Traveller;
 import java.io.IOException;
+import java.util.ArrayList;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -24,6 +26,7 @@ public class TravellerService {
 
     static {
         travellerDAO = new TravellerDAO();
+        travellerList = new ArrayList<>();
     }
 
     /**
@@ -104,7 +107,7 @@ public class TravellerService {
         return delete(entity, true);
     }
 
-    public boolean delete(Traveller entity,  boolean allowRetry) throws Exception {
+    public boolean delete(Traveller entity, boolean allowRetry) throws Exception {
         boolean deleted;
         try {
             deleted = travellerDAO.delete(entity.getId());
@@ -139,14 +142,13 @@ public class TravellerService {
     public static void rechargeList(boolean allowRetry) throws IOException, InterruptedException, Exception {
         try {
             long department = LoginService.getAdminDepartment();
-            if(department == 7){
+            if (department == 7) {
                 travellerList = travellerDAO.findAll();
-            }
-            else{
+            } else {
                 travellerList = travellerDAO.findByDepartment(department);
             }
         } catch (APIException apiE) {
-            errorHandler(apiE,allowRetry, "rechargeList");
+            errorHandler(apiE, allowRetry, "rechargeList");
         }
     }
 
@@ -160,7 +162,7 @@ public class TravellerService {
      * @throws ControledException una excepción controlada
      * @throws Exception una excepción no controlada
      */
-    private static void errorHandler(APIException apiE, boolean allowRetry, String method) throws ControledException, Exception {
+    private static void errorHandler(APIException apiE, boolean allowRetry, String method) throws ControledException, QuietException, Exception {
         switch (apiE.getStatusCode()) {
             case 400, 404 -> {
                 rechargeList(false);
@@ -172,6 +174,9 @@ public class TravellerService {
                 } else {
                     throw new Exception(apiE.getMessage());
                 }
+            }
+            case 204 -> {
+                throw new QuietException(apiE.getMessage(), "TravellerService - " + method);
             }
             default ->
                 throw new Exception(apiE.getMessage());

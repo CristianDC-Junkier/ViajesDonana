@@ -1,6 +1,5 @@
 package ayuntamiento.viajes.controller;
 
-import ayuntamiento.viajes.common.Departments;
 import ayuntamiento.viajes.common.LoggerUtil;
 import ayuntamiento.viajes.common.ManagerUtil;
 import ayuntamiento.viajes.common.SecurityUtil;
@@ -262,7 +261,7 @@ public class AdminController extends BaseController implements Initializable {
 
         idColumn.setCellValueFactory(new PropertyValueFactory<Admin, Long>("id"));
         userColumn.setCellValueFactory(new PropertyValueFactory<Admin, String>("username"));
-        departmentColumn.setCellValueFactory(new PropertyValueFactory<Admin, Departments>("department"));
+        departmentColumn.setCellValueFactory(new PropertyValueFactory<Admin, Department>("department"));
 
         userTable.setItems(FXCollections.observableList(adminS.findAll()));
         

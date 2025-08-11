@@ -1,6 +1,5 @@
 package ayuntamiento.viajes.dao;
 
-import ayuntamiento.viajes.common.Departments;
 import ayuntamiento.viajes.common.PropertiesUtil;
 import ayuntamiento.viajes.exception.APIException;
 import ayuntamiento.viajes.service.LoginService;
@@ -16,11 +15,11 @@ import java.net.http.HttpResponse;
 import java.util.List;
 
 /**
- * Clase base de los DAO, se encargan de ofrecer los 
- * controles a las diferentes clases dao, permitiendo simplemente cambiar 
- * el valor T por el valor de la clase que la instanció.
- * 
- * 
+ * Clase base de los DAO, se encargan de ofrecer los controles a las diferentes
+ * clases dao, permitiendo simplemente cambiar el valor T por el valor de la
+ * clase que la instanció.
+ *
+ *
  * @author Cristian Delgado Cruz
  * @param <T> valor de la subclase
  * @since 2025-06-05
@@ -36,7 +35,7 @@ public abstract class APIClient<T> {
 
     /**
      * Constructor único de la clase, es invocado por sus hijas
-     * 
+     *
      * @param typeParameterClass Tipo de la subclase
      * @param endpoint dirección final a la que se envía la petición.
      */
@@ -48,6 +47,7 @@ public abstract class APIClient<T> {
     }
 
     public List<T> findAll() throws APIException, Exception {
+        System.out.println(BASE_URL + "/" + endpoint);
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(BASE_URL + "/" + endpoint))
                 .header("Authorization", "Bearer " + LoginService.getSecret_token())
@@ -59,12 +59,22 @@ public abstract class APIClient<T> {
         int statusCode = response.statusCode();
         String responseBody = response.body();
 
-        if (statusCode == 200) {
-            return objectMapper.readValue(response.body(), objectMapper.getTypeFactory().constructCollectionType(List.class, typeParameterClass));
-        } else {
-            JsonNode jsonNode = objectMapper.readTree(responseBody);
-            String message = jsonNode.has("error") ? jsonNode.get("error").asText() : "Error en la API ";
-            throw new APIException(statusCode, message);
+        System.out.println(statusCode);
+
+        
+        switch (statusCode) {
+            case 200 -> {
+                        System.out.println(response.body());
+                return objectMapper.readValue(response.body(), objectMapper.getTypeFactory().constructCollectionType(List.class, typeParameterClass));
+            }
+            case 204 -> {
+                throw new APIException(statusCode, "Lista vacia");
+            }
+            default -> {
+                JsonNode jsonNode = objectMapper.readTree(responseBody);
+                String message = jsonNode.has("error") ? jsonNode.get("error").asText() : "Error en la API ";
+                throw new APIException(statusCode, message);
+            }
         }
     }
 
@@ -86,7 +96,7 @@ public abstract class APIClient<T> {
             throw new APIException(statusCode, responseBody);
         }
     }
-    
+
     public List<T> findByDepartment(long department) throws APIException, Exception {
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(BASE_URL + "/" + endpoint + "/department/" + department))
@@ -99,12 +109,18 @@ public abstract class APIClient<T> {
         int statusCode = response.statusCode();
         String responseBody = response.body();
 
-        if (statusCode == 200) {
-            return objectMapper.readValue(response.body(), objectMapper.getTypeFactory().constructCollectionType(List.class, typeParameterClass));
-        } else {
-            JsonNode jsonNode = objectMapper.readTree(responseBody);
-            String message = jsonNode.has("error") ? jsonNode.get("error").asText() : "Error en la API ";
-            throw new APIException(statusCode, message);
+        switch (statusCode) {
+            case 200 -> {
+                return objectMapper.readValue(response.body(), objectMapper.getTypeFactory().constructCollectionType(List.class, typeParameterClass));
+            }
+            case 204 -> {
+                throw new APIException(statusCode, "Lista vacia por departamento: " + department);
+            }
+            default -> {
+                JsonNode jsonNode = objectMapper.readTree(responseBody);
+                String message = jsonNode.has("error") ? jsonNode.get("error").asText() : "Error en la API ";
+                throw new APIException(statusCode, message);
+            }
         }
     }
 

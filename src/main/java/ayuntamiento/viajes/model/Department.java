@@ -1,6 +1,5 @@
 package ayuntamiento.viajes.model;
 
-import ayuntamiento.viajes.common.Departments;
 import javafx.collections.ObservableList;
 
 /**
@@ -19,8 +18,9 @@ public class Department {
     public Department() {
     }
 
-    public Department(Departments department, ObservableList<Long> travels, ObservableList<Long> travellers, long adminId) {
-        this.name = department.name();
+    public Department(long id, String name, ObservableList<Long> travels, ObservableList<Long> travellers, long adminId) {
+        this.id = id;
+        this.name = name;
         this.travels = travels;
         this.travellers = travellers;
         this.adminId = adminId;
@@ -41,11 +41,6 @@ public class Department {
     //@JsonSetter("name")
     public void setName(String name) {
         this.name = name;
-    }
-
-    public void setDepartament(Departments department) {
-        this.setId(department.ordinal());
-        this.setName(department.name());
     }
 
     public ObservableList<Long> getTravels() {

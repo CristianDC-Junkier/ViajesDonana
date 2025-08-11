@@ -1,7 +1,7 @@
 package ayuntamiento.viajes.service;
 
-import ayuntamiento.viajes.common.Departments;
 import ayuntamiento.viajes.exception.ControledException;
+import ayuntamiento.viajes.model.Department;
 import ayuntamiento.viajes.model.Traveller;
 
 import com.itextpdf.io.font.constants.StandardFonts;
@@ -46,10 +46,11 @@ public class PDFService {
     private int total;
     private int own;
     private int rent;
-    
-    private Map<Departments, Integer> departmentTraveller;
+
+    private Map<Department, Integer> departmentTraveller;
     private final static TravellerService travellerS;
-    
+    private final static DepartmentService departmetS;
+
     private List<Traveller> travellersList;
     private List<Traveller> firstPageTravellers;
     private List<Traveller> remainingTravellers;
@@ -66,6 +67,7 @@ public class PDFService {
 
     static {
         travellerS = new TravellerService();
+        departmetS = new DepartmentService();
     }
 
     /**
@@ -92,12 +94,12 @@ public class PDFService {
         total = travellersList.size();
 
         travellersList.forEach(v -> {
-            if (v.getDepartment().getId() == Departments.Admin.ordinal()) {
+            if (v.getDepartment().getId() == 7) {
                 own++;
             } else {
                 rent++;
             }
-            departmentTraveller.put(Departments.valueOf(v.getDepartment().getName()), departmentTraveller.getOrDefault(v.getTrip(), 0) + 1);
+            departmentTraveller.put(v.getDepartment(), departmentTraveller.getOrDefault(v.getTrip(), 0) + 1);
         });
 
         print(name, dir, "Todos");
@@ -132,10 +134,9 @@ public class PDFService {
             } else {
                 rent++;
             }
-            departmentTraveller.put(Departments.values()[(int)department], 
-                    departmentTraveller.getOrDefault(Departments.values()[(int)department].toString(), 0) + 1);
+            departmentTraveller.put(v.getDepartment(), departmentTraveller.getOrDefault(v.getTrip(), 0) + 1);
         });
-        print(name, dir, Departments.values()[(int)department].toString());
+        print(name, dir,departmetS.findById(department).get().getName());
     }
 
     /**
@@ -282,7 +283,7 @@ public class PDFService {
         if (!type.equals("Todos")) {
             canvas.moveText(columnX[8] - columnX[2], 16f);
             canvas.setFillColor(COLORS[2]);
-            canvas.showText(String.valueOf("Viajes hacia " 
+            canvas.showText(String.valueOf("Viajes hacia "
                     + type.replace('_', ' ')));
         }
 

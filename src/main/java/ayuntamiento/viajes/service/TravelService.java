@@ -3,8 +3,10 @@ package ayuntamiento.viajes.service;
 import ayuntamiento.viajes.dao.TravelDAO;
 import ayuntamiento.viajes.exception.APIException;
 import ayuntamiento.viajes.exception.ControledException;
+import ayuntamiento.viajes.exception.QuietException;
 import ayuntamiento.viajes.model.Travel;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -14,30 +16,29 @@ import java.util.stream.Collectors;
  * @author Ramón Iglesias
  */
 public class TravelService {
-    
+
     private static final TravelDAO travelDAO;
     private static List<Travel> travelList;
-    
-    static{
+
+    static {
         travelDAO = new TravelDAO();
+        travelList = new ArrayList<>();
     }
-    
-    
+
     /**
-     * Metodo que devuelve un mapa de viajes por el id y el descriptor
-     * de la lista
+     * Metodo que devuelve un mapa de viajes por el id y el descriptor de la
+     * lista
      *
      * @return el mapa creado
      */
     public static Map<String, Travel> getTravelMapByDescriptorAndBus() {
-    return travelList.stream()
-        .collect(Collectors.toMap(
-            t -> t.getDescriptor() + " - Bus " + t.getBus(),
-            t -> t
-        ));
-}
+        return travelList.stream()
+                .collect(Collectors.toMap(
+                        t -> t.getDescriptor() + " - Bus " + t.getBus(),
+                        t -> t
+                ));
+    }
 
-    
     /**
      * Metodo que guarda un travel en la base de datos, se controla con
      * SecurityUtil la contraseña.
@@ -47,29 +48,30 @@ public class TravelService {
      * @throws ControledException una excepción controlada
      * @throws Exception una excepción no controlada
      */
-    public Travel save(Travel entity) throws ControledException, Exception{
+    public Travel save(Travel entity) throws ControledException, Exception {
         return save(entity, true);
     }
-    public Travel save(Travel entity, boolean allowRetry) throws ControledException, Exception{
+
+    public Travel save(Travel entity, boolean allowRetry) throws ControledException, Exception {
         Travel result;
         boolean travelExists = travelList.stream()
                 .anyMatch(travel -> travel.getDescriptor().equalsIgnoreCase(entity.getDescriptor()));
-        if(travelExists){
+        if (travelExists) {
             result = null;
         }
-        try{
+        try {
             result = (Travel) travelDAO.save(entity);
             travelList.add(result);
             return result;
-        } catch (APIException apiE){
+        } catch (APIException apiE) {
             errorHandler(apiE, allowRetry, "save");
             return null;
         }
     }
-    
+
     /**
-     * Metodo que modifica y guarda en la base de datos el travel, se
-     * controla con SecurityUtil la contraseña.
+     * Metodo que modifica y guarda en la base de datos el travel, se controla
+     * con SecurityUtil la contraseña.
      *
      * @param entity el travel que pasa a ser modificado
      * @return el travel modificado
@@ -79,6 +81,7 @@ public class TravelService {
     public Travel modify(Travel entity) throws Exception {
         return modify(entity, true);
     }
+
     public Travel modify(Travel entity, boolean allowRetry) throws Exception {
         Travel result;
         boolean travellerExists = travelList.stream()
@@ -101,7 +104,7 @@ public class TravelService {
             return null;
         }
     }
-    
+
     /**
      * Metodo que elimina un travel de la base de datos.
      *
@@ -113,6 +116,7 @@ public class TravelService {
     public boolean delete(Travel entity) throws Exception {
         return delete(entity, true);
     }
+
     public boolean delete(Travel entity, boolean allowRetry) throws Exception {
         boolean deleted;
         try {
@@ -124,17 +128,17 @@ public class TravelService {
             return false;
         }
     }
-    
+
     public List<Travel> findAll() {
         return travelList;
     }
-    
+
     public List<Travel> findByDepartment(int department) {
         return travelList.stream()
                 .filter(v -> v.getDepartment().getId() == department)
                 .collect(Collectors.toList());
     }
-    
+
     public static void rechargeList() throws Exception {
         rechargeList(true);
     }
@@ -142,16 +146,16 @@ public class TravelService {
     public static void rechargeList(boolean allowRetry) throws IOException, InterruptedException, Exception {
         try {
             long department = LoginService.getAdminDepartment();
-            if(department == 7){
+            if (department == 7) {
                 travelList = travelDAO.findAll();
-            }else{
+            } else {
                 travelList = travelDAO.findByDepartment(department);
             }
         } catch (APIException apiE) {
             errorHandler(apiE, allowRetry, "rechargeList");
         }
     }
-    
+
     /**
      * Metodo que utilizamos para comprobar que tipo de error hubo
      *
@@ -162,11 +166,14 @@ public class TravelService {
      * @throws ControledException una excepción controlada
      * @throws Exception una excepción no controlada
      */
-    private static void errorHandler(APIException apiE, boolean allowRetry, String method) throws ControledException, Exception {
+    private static void errorHandler(APIException apiE, boolean allowRetry, String method) throws ControledException, QuietException, Exception {
         switch (apiE.getStatusCode()) {
             case 400, 404 -> {
-                rechargeList(false);
-                throw new ControledException(apiE.getMessage(), "TravellerService - " + method);
+                if (allowRetry) {
+                    rechargeList(false);
+                } else {
+                    throw new ControledException(apiE.getMessage(), "TravellerService - " + method);
+                }
             }
             case 401 -> {
                 if (allowRetry) {
@@ -174,6 +181,9 @@ public class TravelService {
                 } else {
                     throw new Exception(apiE.getMessage());
                 }
+            }
+            case 204 -> {
+                throw new QuietException(apiE.getMessage(), "TravellerService - " + method);
             }
             default ->
                 throw new Exception(apiE.getMessage());

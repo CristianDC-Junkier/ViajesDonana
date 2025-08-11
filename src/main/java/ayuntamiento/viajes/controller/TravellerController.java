@@ -1,9 +1,9 @@
 package ayuntamiento.viajes.controller;
 
-import ayuntamiento.viajes.common.Departments;
 import ayuntamiento.viajes.common.PropertiesUtil;
 import static ayuntamiento.viajes.controller.BaseController.refreshTable;
 import ayuntamiento.viajes.exception.ControledException;
+import ayuntamiento.viajes.exception.QuietException;
 import ayuntamiento.viajes.model.Department;
 import ayuntamiento.viajes.model.Travel;
 import java.net.URL;
@@ -85,14 +85,6 @@ public class TravellerController extends BaseController implements Initializable
         departmentS = new DepartmentService();
     }
 
-    public TravellerController() throws IOException, InterruptedException {
-        try {
-            TravellerService.rechargeList();
-        } catch (Exception ex) {
-            System.out.println(ex);
-        }
-    }
-
     @FXML
     private void add() {
         showActionDialog(0);
@@ -136,15 +128,14 @@ public class TravellerController extends BaseController implements Initializable
 
         dniColumn.setCellValueFactory(new PropertyValueFactory<Traveller, String>("dni"));
         nameColumn.setCellValueFactory(new PropertyValueFactory<Traveller, String>("name"));
-        departmentColumn.setCellValueFactory(new PropertyValueFactory<Traveller, Departments>("office"));
+        departmentColumn.setCellValueFactory(new PropertyValueFactory<Traveller, String>("department"));
         tripColumn.setCellValueFactory(new PropertyValueFactory<Traveller, String>("trip"));
         signupColumn.setCellValueFactory(new PropertyValueFactory<Traveller, LocalDate>("signup"));
-
-        travellerTable.setPlaceholder(new Label("No existen inscripciones"));
 
         Department allDepartment = new Department();
         allDepartment.setId(0);
         allDepartment.setName("Todos");
+        departmentCB.getItems().add(allDepartment);
 
         // Carga departamentos desde DepartmentService
         List<Department> departments = departmentS.findAll();
@@ -169,6 +160,7 @@ public class TravellerController extends BaseController implements Initializable
         allTravels.setId(0);
         allTravels.setDescriptor("Todos");
         allTravels.setBus(0);
+        tripCB.getItems().add(allTravels);
 
         // Carga viajes desde TravelService
         List<Travel> travels = travelS.findAll();
@@ -197,10 +189,12 @@ public class TravellerController extends BaseController implements Initializable
         sign_upDP.setShowWeekNumbers(false);
         sign_upDP.setConverter(new LocalDateStringConverter(formatter_Show_Date, null));
 
-        travellerTable.setItems(FXCollections.observableList(travellerS.findAll()));
-
         travellerTable.setPlaceholder(new Label("No existen inscripciones"));
-        amount.setText("Inscripciones en Total: " + travellerS.findAll().size());
+
+        if (travellerS.findAll() != null) {
+            travellerTable.setItems(FXCollections.observableList(travellerS.findAll()));
+            amount.setText("Inscripciones en Total: " + travellerS.findAll().size());
+        }
 
     }
 
@@ -268,8 +262,7 @@ public class TravellerController extends BaseController implements Initializable
 
         List<Traveller> filtered = travellerS.findAll().stream()
                 .filter(t
-                        -> 
-                   (nameText.isEmpty() || (t.getName() != null && t.getName().toLowerCase().contains(nameText)))
+                        -> (nameText.isEmpty() || (t.getName() != null && t.getName().toLowerCase().contains(nameText)))
                 && (dniText.isEmpty() || (t.getDni() != null && t.getDni().toLowerCase().contains(dniText)))
                 && (selectedDepartment == 0 || (t.getDepartment() != null && t.getDepartment().getId() == selectedDepartment))
                 && (selectedTrip == 0 || (t.getTrip() != null && t.getTrip().getId() == selectedTrip))

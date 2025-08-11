@@ -7,6 +7,7 @@ import ayuntamiento.viajes.common.SecurityUtil;
 import ayuntamiento.viajes.common.TaskExecutorUtil;
 import ayuntamiento.viajes.exception.ControledException;
 import ayuntamiento.viajes.exception.LoginException;
+import ayuntamiento.viajes.exception.QuietException;
 import ayuntamiento.viajes.service.DepartmentService;
 import ayuntamiento.viajes.service.LoginService;
 import ayuntamiento.viajes.service.TravelService;
@@ -88,9 +89,28 @@ public class LoginController extends BaseController implements Initializable {
                     changePI();
                     try {
                         DepartmentService.rechargeList();
+                    } catch (ControledException cE) {
+                        error(cE);
+                    } catch (QuietException qE) {
+                        error(qE);
+                    } catch (Exception ex) {
+                        error(ex);
+                    }
+                    try {
                         TravelService.rechargeList();
                     } catch (ControledException cE) {
                         error(cE);
+                    } catch (QuietException qE) {
+                        error(qE);
+                    } catch (Exception ex) {
+                        error(ex);
+                    }
+                    try {
+                        TravellerService.rechargeList();
+                    } catch (ControledException cE) {
+                        error(cE);
+                    } catch (QuietException qE) {
+                        error(qE);
                     } catch (Exception ex) {
                         error(ex);
                     }
