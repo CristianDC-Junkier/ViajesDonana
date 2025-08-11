@@ -1,9 +1,9 @@
 package ayuntamiento.viajes.controller;
 
+import ayuntamiento.viajes.common.ComboBoxUtil;
 import ayuntamiento.viajes.common.PropertiesUtil;
 import static ayuntamiento.viajes.controller.BaseController.refreshTable;
 import ayuntamiento.viajes.exception.ControledException;
-import ayuntamiento.viajes.exception.QuietException;
 import ayuntamiento.viajes.model.Department;
 import ayuntamiento.viajes.model.Travel;
 import java.net.URL;
@@ -22,7 +22,6 @@ import ayuntamiento.viajes.service.TravellerService;
 import ayuntamiento.viajes.model.Traveller;
 import ayuntamiento.viajes.service.DepartmentService;
 import ayuntamiento.viajes.service.TravelService;
-import java.io.IOException;
 
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -32,7 +31,6 @@ import javafx.collections.FXCollections;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
-import javafx.util.StringConverter;
 import javafx.util.converter.LocalDateStringConverter;
 
 /**
@@ -141,19 +139,7 @@ public class TravellerController extends BaseController implements Initializable
         List<Department> departments = departmentS.findAll();
         departmentCB.getItems().addAll(departments);
         departmentCB.setValue(departmentCB.getItems().get(0));
-
-        // Para mostrar solo el nombre en departmnetCB
-        departmentCB.setConverter(new StringConverter<Department>() {
-            @Override
-            public String toString(Department department) {
-                return department == null ? "" : department.getName();
-            }
-
-            @Override
-            public Department fromString(String string) {
-                return null;
-            }
-        });
+        ComboBoxUtil.setDepartmentNameConverter(departmentCB);
         departmentCB.valueProperty().addListener((obs, oldType, newType) -> applyAllFilters());
 
         Travel allTravels = new Travel();
@@ -166,23 +152,7 @@ public class TravellerController extends BaseController implements Initializable
         List<Travel> travels = travelS.findAll();
         tripCB.getItems().addAll(travels);
         tripCB.setValue(travels.isEmpty() ? null : travels.get(0));
-
-        // Para mostrar solo el descriptor en tripCB
-        tripCB.setConverter(new StringConverter<Travel>() {
-            @Override
-            public String toString(Travel travel) {
-                if (travel == null) {
-                    return "";
-                } else {
-                    return travel.getDescriptor();
-                }
-            }
-
-            @Override
-            public Travel fromString(String string) {
-                return null;
-            }
-        });
+        ComboBoxUtil.setTravelConverter(tripCB);
         tripCB.valueProperty().addListener((obs, oldType, newType) -> applyAllFilters());
 
         // Filtro de DatePicker

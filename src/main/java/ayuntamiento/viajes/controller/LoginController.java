@@ -88,33 +88,27 @@ public class LoginController extends BaseController implements Initializable {
                 result -> {
                     changePI();
                     try {
-                        DepartmentService.rechargeList();
+                        try {
+                            DepartmentService.rechargeList();
+                        } catch (QuietException qE) {
+                            error(qE);
+                        }
+                        try {
+                            TravelService.rechargeList();
+                        } catch (QuietException qE) {
+                            error(qE);
+                        }
+                        try {
+                            TravellerService.rechargeList();
+                        } catch (QuietException qE) {
+                            error(qE);
+                        }
+                        ManagerUtil.moveTo("home");
                     } catch (ControledException cE) {
                         error(cE);
-                    } catch (QuietException qE) {
-                        error(qE);
                     } catch (Exception ex) {
                         error(ex);
                     }
-                    try {
-                        TravelService.rechargeList();
-                    } catch (ControledException cE) {
-                        error(cE);
-                    } catch (QuietException qE) {
-                        error(qE);
-                    } catch (Exception ex) {
-                        error(ex);
-                    }
-                    try {
-                        TravellerService.rechargeList();
-                    } catch (ControledException cE) {
-                        error(cE);
-                    } catch (QuietException qE) {
-                        error(qE);
-                    } catch (Exception ex) {
-                        error(ex);
-                    }
-                    ManagerUtil.moveTo("home");
                 },
                 error -> {
                     changePI();

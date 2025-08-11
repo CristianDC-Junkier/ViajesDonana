@@ -12,12 +12,12 @@ public class Admin {
     private long id;
     private String username;
     private String password;
-    private Department department;
+    private long department;
 
     public Admin() {
     }
 
-    public Admin(String username, String password, Department department) {
+    public Admin(String username, String password, long department) {
         this.username = username;
         this.password = password;
         this.department = department;
@@ -44,10 +44,10 @@ public class Admin {
         this.password = password;
     }
     
-    public Department getDepartment(){
+    public long getDepartment(){
         return department;
     }
-    public void setDepartment(Department department){
+    public void setDepartment(long department){
         this.department = department;
     }
 

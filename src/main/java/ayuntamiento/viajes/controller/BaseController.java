@@ -6,6 +6,7 @@ import static ayuntamiento.viajes.common.ManagerUtil.getPage;
 import ayuntamiento.viajes.controller.InfoController.DialogResult;
 import ayuntamiento.viajes.exception.ControledException;
 import ayuntamiento.viajes.exception.QuietException;
+
 import ayuntamiento.viajes.service.AdminService;
 import ayuntamiento.viajes.service.LoginService;
 
@@ -144,4 +145,5 @@ public abstract class BaseController {
         table.layout();
         table.setItems(FXCollections.observableList(tableList));
     }
+
 }

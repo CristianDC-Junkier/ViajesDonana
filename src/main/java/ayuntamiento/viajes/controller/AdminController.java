@@ -1,5 +1,6 @@
 package ayuntamiento.viajes.controller;
 
+import ayuntamiento.viajes.common.ComboBoxUtil;
 import ayuntamiento.viajes.common.LoggerUtil;
 import ayuntamiento.viajes.common.ManagerUtil;
 import ayuntamiento.viajes.common.SecurityUtil;
@@ -23,7 +24,6 @@ import ayuntamiento.viajes.service.DepartmentService;
 import ayuntamiento.viajes.service.LoginService;
 import java.util.List;
 import javafx.scene.control.ChoiceBox;
-import javafx.util.StringConverter;
 
 /**
  * Clase controladora que se encarga del funcionamiento de la pestaña de
@@ -101,7 +101,7 @@ public class AdminController extends BaseController implements Initializable {
                 throw new ControledException("La contraseña no debe contener más de 16 carácteres",
                         "UserController - add");
             } else {
-                Admin u = new Admin(addUserNameTF.getText(), addUserPassTF.getText(),addUserDepCB.getValue());
+                Admin u = new Admin(addUserNameTF.getText(), addUserPassTF.getText(),modUserDepCB.getValue().getId());
 
                 if (adminS.save(u) == null) {
                     addUserPassTF.setStyle(errorStyle);
@@ -152,7 +152,7 @@ public class AdminController extends BaseController implements Initializable {
                 throw new ControledException("La contraseña no debe contener más de 16 carácteres ",
                         "UserController - modify");
             } else {
-                Admin u = new Admin(modUserNameTF.getText(), modUserPassTF.getText(),modUserDepCB.getValue());
+                Admin u = new Admin(modUserNameTF.getText(), modUserPassTF.getText(),modUserDepCB.getValue().getId());
                 u.setId(userTable.getSelectionModel().getSelectedItem().getId());
 
                 Admin userMod = adminS.modify(u);
@@ -269,32 +269,11 @@ public class AdminController extends BaseController implements Initializable {
         List<Department> departments = departmentS.findAll();
         addUserDepCB.getItems().setAll(departments);
         addUserDepCB.setValue(addUserDepCB.getItems().get(0));
-
-        // Para mostrar solo el nombre en addUserDepCB
-        addUserDepCB.setConverter(new StringConverter<Department>() {
-            @Override
-            public String toString(Department department) {
-                return department == null ? "" : department.getName();
-            }
-            @Override
-            public Department fromString(String string) {
-                return null;
-            }
-        });
+        ComboBoxUtil.setDepartmentNameConverter(addUserDepCB);
+        
         modUserDepCB.getItems().setAll(departments);
         modUserDepCB.setValue(modUserDepCB.getItems().get(0));
-
-        // Para mostrar solo el nombre en modUserDepCB
-        modUserDepCB.setConverter(new StringConverter<Department>() {
-            @Override
-            public String toString(Department department) {
-                return department == null ? "" : department.getName();
-            }
-            @Override
-            public Department fromString(String string) {
-                return null;
-            }
-        });
+        ComboBoxUtil.setDepartmentNameConverter(modUserDepCB);
     }
 
     /**

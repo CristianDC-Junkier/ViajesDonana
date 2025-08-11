@@ -1,5 +1,6 @@
 package ayuntamiento.viajes.controller;
 
+import ayuntamiento.viajes.common.ComboBoxUtil;
 import ayuntamiento.viajes.common.PropertiesUtil;
 import ayuntamiento.viajes.common.SecurityUtil;
 import ayuntamiento.viajes.model.Department;
@@ -65,7 +66,7 @@ public class ActionTravellerController implements Initializable {
 
     private static final String SHOW_DATE_FORMAT = PropertiesUtil.getProperty("SHOW_DATE_FORMAT");
     private static final DateTimeFormatter formatter_Show_Date = DateTimeFormatter.ofPattern(SHOW_DATE_FORMAT);
-    
+
     static {
         travelS = new TravelService();
         departmentS = new DepartmentService();
@@ -126,41 +127,14 @@ public class ActionTravellerController implements Initializable {
         List<Department> departments = departmentS.findAll();
         departmentCB.getItems().setAll(departments);
         departmentCB.setValue(departmentCB.getItems().get(0));
+        ComboBoxUtil.setDepartmentNameConverter(departmentCB);
 
-        // Para mostrar solo el nombre en departmnetCB
-        departmentCB.setConverter(new StringConverter<Department>() {
-            @Override
-            public String toString(Department department) {
-                return department == null ? "" : department.getName();
-            }
-            @Override
-            public Department fromString(String string) {
-                return null;
-            }
-        });
         // Carga viajes desde TravelService
         List<Travel> travels = travelS.findAll();
         tripCB.getItems().setAll(travels);
         tripCB.setValue(travels.isEmpty() ? null : travels.get(0));
-
-        // Para mostrar solo el descriptor y bus en tripCB
-        tripCB.setConverter(new StringConverter<Travel>() {
-            @Override
-            public String toString(Travel travel) {
-                if (travel == null) {
-                    return "";
-                } else if (travel.getBus() == 0) {
-                    return travel.getDescriptor();
-                } else {
-                    return travel.getDescriptor() + " - Bus " + travel.getBus();
-                }
-            }
-            @Override
-            public Travel fromString(String string) {
-                return null;
-            }
-        });
-
+        ComboBoxUtil.setTravelConverter(tripCB);
+        
         /*Cambiar el titulo y los labels dependiendo del tipo*/
         if (typeAction == 0) {
             actionButton.setText("Añadir");

@@ -70,7 +70,7 @@ public class PdfController extends BaseController implements Initializable {
         
         tripTypeCB.getItems().add(allTravels);
         List<Travel> travels = TravelS.findByDepartment(
-                (int) LoginService.getAdminLog().getDepartment().getId());
+                (int) LoginService.getAdminLog().getDepartment());
         tripTypeCB.getItems().addAll(travels);
         tripTypeCB.getSelectionModel().selectFirst();
         // Para mostrar solo el descriptor y bus en tripCB

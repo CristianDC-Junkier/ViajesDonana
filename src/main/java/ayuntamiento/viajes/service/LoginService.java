@@ -47,7 +47,7 @@ public class LoginService {
      * @return El usuario logeado
      */
     public static long getAdminDepartment() {
-        return adminLog.getDepartment().getId();
+        return adminLog.getDepartment();
     }
 
     public void login(String username, String password) throws LoginException, Exception {
@@ -56,15 +56,7 @@ public class LoginService {
         adminLog.setUsername(username);
         adminLog.setPassword(password);
         adminLog.setId(result.get("id").asLong());
-
-        JsonNode departmentNode = result.get("department");
-        if (departmentNode != null && !departmentNode.isNull()) {
-            Department dept = new Department();
-            dept.setId(departmentNode.get("id").asLong());
-            dept.setName(departmentNode.get("name").asText());
-            adminLog.setDepartment(dept);
-        }
-
+        adminLog.setDepartment(result.get("department").asLong());
         LoginService.secret_Token = result.get("token").asText();
     }
 
