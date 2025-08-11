@@ -93,12 +93,6 @@ public class TravelController extends BaseController implements Initializable {
         tSeatsColumn.setCellValueFactory(new PropertyValueFactory<Travel, Integer>("seats_total"));
 
         travelTable.setPlaceholder(new Label("No existen viajes"));
-        
-        /*departmentCB.getItems().add("Todos");
-        for (Departments type : Departments.values()) {
-            departmentCB.getItems().add(type.toString());
-        }*/
-        departmentCB.getSelectionModel().selectFirst();
 
         // Carga departamentos desde DepartmentService
         List<Department> departments = DepartmentS.findAll();
