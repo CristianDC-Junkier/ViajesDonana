@@ -103,13 +103,13 @@
                         <Insets left="20.0" right="20.0" />
                      </padding>
                      <children>
-                        <Label fx:id="amount" contentDisplay="CENTER" minWidth="-Infinity" prefHeight="20.0" prefWidth="250.0" text="Total de Inscripciones" textFill="WHITE">
+                        <Label fx:id="amount" contentDisplay="CENTER" minWidth="-Infinity" prefHeight="20.0" prefWidth="250.0" text="Total de Viajes" textFill="WHITE">
                            <font>
                               <Font name="Trebuchet MS Bold" size="16.0" />
                            </font>
                         </Label>
                         <Region prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
-                        <TextField fx:id="nameTF" minWidth="-Infinity" onKeyTyped="#applyAllFilters" prefHeight="26.0" prefWidth="150.0" promptText="Nombre" styleClass="field">
+                        <TextField fx:id="descriptorTF" minWidth="-Infinity" onKeyTyped="#applyAllFilters" prefHeight="26.0" prefWidth="150.0" promptText="Viaje" styleClass="field">
                            <font>
                               <Font name="Trebuchet MS Bold" size="14.0" />
                            </font>
@@ -132,7 +132,7 @@
             </VBox>
             <TableView fx:id="travelTable" prefHeight="482.0" prefWidth="960.0" VBox.vgrow="ALWAYS">
                <columns>
-                  <TableColumn fx:id="nameColumn" editable="false" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefWidth="452.0" text="Nombre" />
+                  <TableColumn fx:id="descriptorColumn" editable="false" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefWidth="452.0" text="Viaje" />
                   <TableColumn fx:id="departmentColumn" editable="false" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefWidth="223.0" text="Departamento" />
                   <TableColumn fx:id="oSeatsColumn" editable="false" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefWidth="136.0" text="Asientos Ocupados" />
                   <TableColumn fx:id="tSeatsColumn" editable="false" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefWidth="123.0" text="Asientos Totales" />

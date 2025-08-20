@@ -106,7 +106,7 @@ public class ActionTravelController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        tSeatsTF.setTextFormatter(new TextFormatter<Integer>(new IntegerStringConverter()));
+        tSeatsTF.setTextFormatter(new TextFormatter<>(new IntegerStringConverter()));
         
         List<Department> departments = DepartmentS.findAll();
         departmentCB.getItems().setAll(departments);
@@ -146,7 +146,7 @@ public class ActionTravelController implements Initializable {
      * @return traveller que se añadirá, o que se modificará
      * @throws Exception errores en la carga del dialogo
      */
-    public static Travel showActionTraveller(Stage parent, Travel selected, int type) throws Exception {
+    public static Travel showActionTravel(Stage parent, Travel selected, int type) throws Exception {
         try {
             typeAction = type;
             tResult = null;

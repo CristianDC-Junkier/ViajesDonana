@@ -150,6 +150,74 @@
                         <Cursor fx:constant="HAND" />
                      </cursor>
                         </VBox>
+                  <VBox fx:id="travelVB" alignment="CENTER" layoutX="265.0" layoutY="10.0" onMouseClicked="#travelspanel" onMouseEntered="#travelgif" onMouseExited="#travelpng" spacing="10.0" styleClass="glow" stylesheets="@../styles/global.css">
+                     <children>
+                        <StackPane prefHeight="120.0" prefWidth="100.0" stylesheets="@../styles/home.css">
+                           <children>
+                              <Circle radius="50.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" StackPane.alignment="CENTER">
+                                 <fill>
+                                    <LinearGradient endX="1.0" endY="1.0" startX="1.0" startY="0.1893939393939394">
+                                       <stops>
+                                          <Stop>
+                                             <color>
+                                                <Color red="1.0" green="0.4333333373069763" />
+                                             </color>
+                                          </Stop>
+                                          <Stop offset="0.006729475100942127">
+                                             <color>
+                                                <Color red="1.0" green="0.4333333373069763" />
+                                             </color>
+                                          </Stop>
+                                          <Stop offset="0.33912287036733085">
+                                             <color>
+                                                <Color red="1.0" green="0.4333333373069763" opacity="0.8899999856948853" />
+                                             </color>
+                                          </Stop>
+                                          <Stop offset="0.5097560975609755">
+                                             <color>
+                                                <Color red="0.5" green="0.41999998688697815" blue="0.5" opacity="0.7300000190734863" />
+                                             </color>
+                                          </Stop>
+                                          <Stop offset="0.6850605652759083">
+                                             <color>
+                                                <Color green="0.4833333194255829" blue="1.0" opacity="0.8799999952316284" />
+                                             </color>
+                                          </Stop>
+                                          <Stop offset="1.0">
+                                             <color>
+                                                <Color />
+                                             </color>
+                                          </Stop>
+                                       </stops>
+                                    </LinearGradient>
+                                 </fill>
+                              </Circle>
+                              <ImageView fx:id="planeIV" fitHeight="60.0" fitWidth="70.0" mouseTransparent="true" nodeOrientation="INHERIT" pickOnBounds="true" preserveRatio="true" scaleZ="0.0" translateY="2.0" StackPane.alignment="CENTER">
+                                 <image>
+                                    <Image url="@../icons/home_sun.png" />
+                                 </image>
+                                 <StackPane.margin>
+                                    <Insets />
+                                 </StackPane.margin>
+                                 <rotationAxis>
+                                    <Point3D />
+                                 </rotationAxis>
+                                 <viewport>
+                                    <Rectangle2D />
+                                 </viewport>
+                              </ImageView>
+                           </children>
+                        </StackPane>
+                        <Label alignment="CENTER" prefWidth="200.0" text="Panel de viajes" textAlignment="CENTER" wrapText="true">
+                           <font>
+                              <Font name="Trebuchet MS" size="14.0" />
+                           </font>
+                        </Label>
+                     </children>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                  </VBox>
                         <VBox alignment="CENTER" onMouseClicked="#stadisticspanel" onMouseEntered="#stadisticsgif" onMouseExited="#stadisticspng" spacing="10.0" styleClass="glow" stylesheets="@../styles/global.css">
                             <children>
                         <StackPane prefHeight="120.0" prefWidth="100.0" stylesheets="@../styles/home.css">

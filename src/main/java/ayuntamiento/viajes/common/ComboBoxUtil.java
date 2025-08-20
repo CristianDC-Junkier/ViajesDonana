@@ -1,4 +1,3 @@
-
 package ayuntamiento.viajes.common;
 
 import ayuntamiento.viajes.model.Department;
