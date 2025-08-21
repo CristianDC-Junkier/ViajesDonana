@@ -49,7 +49,7 @@ public class PDFService {
 
     private Map<Department, Integer> departmentTraveller;
     private final static TravellerService travellerS;
-    private final static DepartmentService departmetS;
+    private final static DepartmentService departmentS;
 
     private List<Traveller> travellersList;
     private List<Traveller> firstPageTravellers;
@@ -67,7 +67,7 @@ public class PDFService {
 
     static {
         travellerS = new TravellerService();
-        departmetS = new DepartmentService();
+        departmentS = new DepartmentService();
     }
 
     /**
@@ -94,12 +94,12 @@ public class PDFService {
         total = travellersList.size();
 
         travellersList.forEach(v -> {
-            if (v.getDepartment().getId() == 7) {
+            if (v.getDepartment() == 7) {
                 own++;
             } else {
                 rent++;
             }
-            departmentTraveller.put(v.getDepartment(), departmentTraveller.getOrDefault(v.getTrip(), 0) + 1);
+            departmentTraveller.put(departmentS.findById(v.getDepartment()).get(), departmentTraveller.getOrDefault(v.getTrip(), 0) + 1);
         });
 
         print(name, dir, "Todos");
@@ -128,15 +128,15 @@ public class PDFService {
 
         total = travellersList.size();
 
-        travellersList.forEach(v -> {
+        /*travellersList.forEach(v -> {
             if ("Propiedad".equals(v.getDepartment().toString())) {
                 own++;
             } else {
                 rent++;
             }
-            departmentTraveller.put(v.getDepartment(), departmentTraveller.getOrDefault(v.getTrip(), 0) + 1);
-        });
-        print(name, dir,departmetS.findById(department).get().getName());
+            departmentTraveller.put(departmentS.findById(v.getDepartment()).get(), departmentTraveller.getOrDefault(v.getTrip(), 0) + 1);
+        });*/
+        print(name, dir,departmentS.findById(department).get().getName());
     }
 
     /**
@@ -323,7 +323,7 @@ public class PDFService {
             canvas.showText(v.getTrip().toString());
 
             canvas.moveText(columnX[3] - columnX[2], 0);
-            canvas.showText(v.getDepartment().toString());
+            canvas.showText(Long.toString(v.getDepartment()));
 
             canvas.moveText(columnX[4] - columnX[3], 0);
             canvas.showText(v.getSignup());
@@ -368,7 +368,7 @@ public class PDFService {
             canvas.showText(v.getTrip().toString());
 
             canvas.moveText(columnX[3] - columnX[2], 0);
-            canvas.showText(v.getDepartment().toString());
+            canvas.showText(Long.toString(v.getDepartment()));
 
             canvas.moveText(columnX[3] - columnX[2], 0);
             canvas.showText(v.getSignup());

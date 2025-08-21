@@ -234,7 +234,7 @@ public class TravellerController extends BaseController implements Initializable
                 .filter(t
                         -> (nameText.isEmpty() || (t.getName() != null && t.getName().toLowerCase().contains(nameText)))
                 && (dniText.isEmpty() || (t.getDni() != null && t.getDni().toLowerCase().contains(dniText)))
-                && (selectedDepartment == 0 || (t.getDepartment() != null && t.getDepartment().getId() == selectedDepartment))
+                && (selectedDepartment == 0 || (t.getDepartment() == selectedDepartment))
                 && (selectedTrip == 0 || (t.getTrip() != null && t.getTrip().getId() == selectedTrip))
                 && (selectedInsuranceDate == null || (t.getSignUpDate() != null && t.getSignUpDate().isBefore(selectedInsuranceDate)))
                 )

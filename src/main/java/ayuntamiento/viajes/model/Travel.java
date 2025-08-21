@@ -10,14 +10,14 @@ public class Travel {
     private String descriptor;
     private int seats_occupied;
     private int seats_total;
-    private Department department;
+    private long department;
     private int bus;
 
     public Travel() {
 
     }
 
-    public Travel(String descriptor, int seats_ocupied, int seats_total, Department department, int bus) {
+    public Travel(String descriptor, int seats_ocupied, int seats_total, long department, int bus) {
         this.descriptor = descriptor;
         this.seats_occupied = seats_ocupied;
         this.seats_total = seats_total;
@@ -57,11 +57,11 @@ public class Travel {
         this.seats_total = seats;
     }
 
-    public Department getDepartment() {
+    public long getDepartment() {
         return department;
     }
 
-    public void setDepartment(Department department) {
+    public void setDepartment(long department) {
         this.department = department;
     }
 

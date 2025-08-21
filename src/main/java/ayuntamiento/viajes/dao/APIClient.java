@@ -47,7 +47,7 @@ public abstract class APIClient<T> {
     }
 
     public List<T> findAll() throws APIException, Exception {
-        System.out.println(BASE_URL + "/" + endpoint);
+        //System.out.println(BASE_URL + "/" + endpoint);
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(BASE_URL + "/" + endpoint))
                 .header("Authorization", "Bearer " + LoginService.getSecret_token())
@@ -59,12 +59,12 @@ public abstract class APIClient<T> {
         int statusCode = response.statusCode();
         String responseBody = response.body();
 
-        System.out.println(statusCode);
+        //System.out.println(statusCode);
 
         
         switch (statusCode) {
             case 200 -> {
-                        System.out.println(response.body());
+                        //System.out.println(response.body());
                 return objectMapper.readValue(response.body(), objectMapper.getTypeFactory().constructCollectionType(List.class, typeParameterClass));
             }
             case 204 -> {
@@ -126,7 +126,6 @@ public abstract class APIClient<T> {
 
     public T save(T obj) throws APIException, Exception {
         String json = objectMapper.writeValueAsString(obj);
-
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(BASE_URL + "/" + endpoint))
                 .header("Content-Type", "application/json")
@@ -134,7 +133,6 @@ public abstract class APIClient<T> {
                 .header("Authorization", "Bearer " + LoginService.getSecret_token())
                 .POST(HttpRequest.BodyPublishers.ofString(json))
                 .build();
-
         HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
         int statusCode = response.statusCode();
         String responseBody = response.body();

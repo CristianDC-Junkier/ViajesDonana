@@ -61,6 +61,7 @@ public class TravelService {
         }
         try {
             result = (Travel) travelDAO.save(entity);
+            rechargeList();
             travelList.add(result);
             return result;
         } catch (APIException apiE) {
@@ -92,7 +93,7 @@ public class TravelService {
         }
         try {
             result = (Travel) travelDAO.modify(entity, entity.getId());
-            //rechargeList();
+            rechargeList();
             for (int i = 0; i < travelList.size(); i++) {
                 if (travelList.get(i).getId() == entity.getId()) {
                     travelList.set(i, result);
@@ -135,7 +136,7 @@ public class TravelService {
 
     public List<Travel> findByDepartment(int department) {
         return travelList.stream()
-                .filter(v -> v.getDepartment().getId() == department)
+                .filter(v -> v.getDepartment() == department)
                 .collect(Collectors.toList());
     }
 

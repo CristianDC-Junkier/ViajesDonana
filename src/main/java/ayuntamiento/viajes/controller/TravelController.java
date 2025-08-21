@@ -1,5 +1,6 @@
 package ayuntamiento.viajes.controller;
 
+import ayuntamiento.viajes.common.ComboBoxUtil;
 import static ayuntamiento.viajes.controller.BaseController.refreshTable;
 import ayuntamiento.viajes.exception.ControledException;
 import ayuntamiento.viajes.model.Department;
@@ -19,7 +20,6 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
-import javafx.util.StringConverter;
 
 /**
  * FXML Controller class
@@ -29,7 +29,7 @@ import javafx.util.StringConverter;
 public class TravelController extends BaseController implements Initializable {
 
     private final static TravelService travelS;
-    private final static DepartmentService DepartmentS;
+    private final static DepartmentService departmentS;
 
     @FXML
     private TableView<Travel> travelTable;
@@ -52,17 +52,18 @@ public class TravelController extends BaseController implements Initializable {
 
     static {
         travelS = new TravelService();
-        DepartmentS = new DepartmentService();
+        departmentS = new DepartmentService();
     }
 
+    @FXML
     private void add() {
-        showActionDialog(0);
+        showActionDialogTravel(0);
     }
-
+    @FXML
     private void modify() {
-        showActionDialog(1);
+        showActionDialogTravel(1);
     }
-
+    @FXML
     private void delete() {
         if (travelTable.getSelectionModel().getSelectedItem() == null) {
             error(new ControledException("Debe seleccionar un viaje de la tabla",
@@ -86,45 +87,34 @@ public class TravelController extends BaseController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        showUserOption();
 
-        descriptorColumn.setCellValueFactory(new PropertyValueFactory<Travel, String>("name"));
-        departmentColumn.setCellValueFactory(new PropertyValueFactory<Travel, Department>("department"));
+        descriptorColumn.setCellValueFactory(new PropertyValueFactory<Travel, String>("descriptor"));
+        departmentColumn.setCellValueFactory(new PropertyValueFactory<Travel, String>("department"));
         oSeatsColumn.setCellValueFactory(new PropertyValueFactory<Travel, Integer>("seats_occupied"));
         tSeatsColumn.setCellValueFactory(new PropertyValueFactory<Travel, Integer>("seats_total"));
 
         travelTable.setPlaceholder(new Label("No existen viajes"));
 
+        Department allDepartment = new Department();
+        allDepartment.setId(0);
+        allDepartment.setName("Todos");
+        departmentCB.getItems().add(allDepartment);
+
         // Carga departamentos desde DepartmentService
-        List<Department> departments = DepartmentS.findAll();
-        departmentCB.getItems().setAll(departments);
+        List<Department> departments = departmentS.findAll();
+        departmentCB.getItems().addAll(departments);
         departmentCB.setValue(departmentCB.getItems().get(0));
-
-        // Para mostrar solo el nombre en departmnetCB
-        departmentCB.setConverter(new StringConverter<Department>() {
-            @Override
-            public String toString(Department department) {
-                return department == null ? "" : department.getName();
-            }
-
-            @Override
-            public Department fromString(String string) {
-                return null;
-            }
-        });
-        
-        /*departmentCB.getItems().add("Todos");
-        for (Departments type : Departments.values()) {
-            departmentCB.getItems().add(type.toString());
-        }*/
-        departmentCB.getSelectionModel().selectFirst();
+        ComboBoxUtil.setDepartmentNameConverter(departmentCB);
         departmentCB.valueProperty().addListener((obs, oldType, newType) -> applyAllFilters());
+        
         amount.setText("Viajes en Total: " + travelS.findAll().size());
     }
     
-    public void showActionDialog(int mode) {
+    public void showActionDialogTravel(int mode) {
         if (mode == 1 && travelTable.getSelectionModel().getSelectedItem() == null) {
             error(new ControledException("Debe seleccionar un viaje de la tabla",
-                    "TravelController - showActionDialog"));
+                    "TravelController - showActionDialogTravel"));
         } else {
             try {
                 Travel vResult = ActionTravelController.showActionTravel((Stage) father.getScene().getWindow(),
@@ -149,6 +139,7 @@ public class TravelController extends BaseController implements Initializable {
     }
     
     public void anadir(Travel entity) throws Exception {
+        System.out.println("TravelController anadir " + entity.getDescriptor());
         if (travelS.save(entity) == null) {
             refreshTable(travelTable, travelS.findAll());
             throw new ControledException("La descripción introducida ya existe: " + entity.getDescriptor(),
@@ -171,14 +162,14 @@ public class TravelController extends BaseController implements Initializable {
         String nameText = descriptorTF.getText() != null ? descriptorTF.getText().toLowerCase().trim() : "";
         String selectedDepartment = departmentCB.getValue().toString();
 
-        /*List<Travel> filtered = travelS.findAll().stream()
+        List<Travel> filtered = travelS.findAll().stream()
                 .filter(t
                         -> (nameText.isEmpty() || (t.getDescriptor() != null && t.getDescriptor().toLowerCase().contains(nameText)))
-                && (selectedDepartment.equals("Todos") || (t.getDepartment() != null && t.getDepartment().toString().equalsIgnoreCase(selectedDepartment)))
+                && (selectedDepartment.equals("Todos") || (Long.toString(t.getDepartment()).equalsIgnoreCase(selectedDepartment)))
                 )
                 .collect(Collectors.toList());
 
-        refreshTable(travelTable, filtered);*/
+        refreshTable(travelTable, filtered);
     }
 
     @FXML

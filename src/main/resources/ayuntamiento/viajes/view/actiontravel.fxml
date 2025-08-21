@@ -13,7 +13,7 @@
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
 
-<StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="450.0" prefWidth="672.0" stylesheets="@../styles/actiontraveller.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ayuntamiento.viajes.controller.ActiontravelController">
+<StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="450.0" prefWidth="672.0" stylesheets="@../styles/actiontravel.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ayuntamiento.viajes.controller.ActionTravelController">
    <children>
       <VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="392.0" prefWidth="627.0" styleClass="form-card" stylesheets="@../styles/global.css">
          <children>
@@ -46,7 +46,7 @@
                                           <Insets left="10.0" />
                                        </HBox.margin>
                                     </ImageView>
-                                    <TextField fx:id="descriptorTF" alignment="CENTER" onKeyTyped="#dniChange" prefHeight="26.0" prefWidth="340.0" promptText="Descripción" styleClass="text-field" />
+                                    <TextField fx:id="descriptorTF" alignment="CENTER" onKeyTyped="#descriptorChange" prefHeight="26.0" prefWidth="340.0" promptText="Descripción" styleClass="text-field" />
                                     <Label text="*" textFill="#ff3434">
                                        <font>
                                           <Font name="Trebuchet MS Bold" size="15.0" />
@@ -95,7 +95,7 @@
                                                 <Insets left="10.0" />
                                              </HBox.margin>
                                           </ImageView>
-                                          <TextField fx:id="tSeatsTF" alignment="CENTER" onKeyTyped="#dniChange" prefHeight="26.0" prefWidth="80.0" promptText="Descripción" styleClass="text-field" />
+                                          <TextField fx:id="tSeatsTF" alignment="CENTER" onKeyTyped="#oSeatsChange" prefHeight="26.0" prefWidth="80.0" promptText="Asientos" styleClass="text-field" />
                                           <Label text="*" textFill="#ff3434">
                                              <font>
                                                 <Font name="Trebuchet MS Bold" size="15.0" />

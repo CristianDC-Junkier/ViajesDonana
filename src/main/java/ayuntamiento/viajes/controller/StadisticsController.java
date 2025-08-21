@@ -115,7 +115,7 @@ public class StadisticsController extends BaseController implements Initializabl
                 .orElse(0);
 
         /* Agrupar por departamento y contar viajeros por departamento */
-        Map<Department, Long> officeGroups = list.stream()
+        Map<Long, Long> officeGroups = list.stream()
                 .collect(Collectors.groupingBy(Traveller::getDepartment, Collectors.counting()));
         double avgOfficeCount = officeGroups.values().stream()
                 .mapToLong(Long::longValue)

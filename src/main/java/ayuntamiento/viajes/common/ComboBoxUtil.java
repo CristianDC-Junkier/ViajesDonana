@@ -21,7 +21,7 @@ public class ComboBoxUtil {
                 }
                 String name = department.getName();
                 int underscoreIndex = name.indexOf('_');
-                return underscoreIndex >= 0 ? name.substring(0, underscoreIndex) : name;
+                return underscoreIndex >= 0 ? name.replace('_', ' ') : name;
             }
 
             @Override

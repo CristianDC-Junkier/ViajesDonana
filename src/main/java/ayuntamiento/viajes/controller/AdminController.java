@@ -101,7 +101,7 @@ public class AdminController extends BaseController implements Initializable {
                 throw new ControledException("La contraseña no debe contener más de 16 carácteres",
                         "UserController - add");
             } else {
-                Admin u = new Admin(addUserNameTF.getText(), addUserPassTF.getText(),modUserDepCB.getValue().getId());
+                Admin u = new Admin(addUserNameTF.getText(), addUserPassTF.getText(), addUserDepCB.getValue().getId());
 
                 if (adminS.save(u) == null) {
                     addUserPassTF.setStyle(errorStyle);
@@ -152,7 +152,7 @@ public class AdminController extends BaseController implements Initializable {
                 throw new ControledException("La contraseña no debe contener más de 16 carácteres ",
                         "UserController - modify");
             } else {
-                Admin u = new Admin(modUserNameTF.getText(), modUserPassTF.getText(),modUserDepCB.getValue().getId());
+                Admin u = new Admin(modUserNameTF.getText(), modUserPassTF.getText(), modUserDepCB.getValue().getId());
                 u.setId(userTable.getSelectionModel().getSelectedItem().getId());
 
                 Admin userMod = adminS.modify(u);

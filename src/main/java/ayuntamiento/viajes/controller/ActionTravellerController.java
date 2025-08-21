@@ -27,7 +27,6 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.layout.StackPane;
-import javafx.util.StringConverter;
 
 /**
  * Clase que se encarga de la pestaña de añadir y modificar vehículos, es un
@@ -97,7 +96,7 @@ public class ActionTravellerController implements Initializable {
         tResult = new Traveller();
         tResult.setDni(dniTF.getText());
         tResult.setName(nameTF.getText());
-        tResult.setDepartment(departmentCB.getValue());
+        tResult.setDepartment(departmentCB.getValue().getId());
         tResult.setTrip(tripCB.getValue());
 
         tResult.setSignUpDate(sign_upDP.getValue());
@@ -195,7 +194,7 @@ public class ActionTravellerController implements Initializable {
     private void populateFields() {
         dniTF.setText(tSelected.getDni());
         nameTF.setText(tSelected.getName());
-        departmentCB.setValue(tSelected.getDepartment());
+        departmentCB.setValue(departmentS.findById(tSelected.getDepartment()).get());
         tripCB.setValue(tSelected.getTrip());
         sign_upDP.setValue(tSelected.getSignUpDate());
 

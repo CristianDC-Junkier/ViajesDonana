@@ -16,7 +16,7 @@ public class Traveller {
     private long id;
     private String dni;
     private String name;
-    private Department department;
+    private long department;
     private Travel trip;
     private LocalDate signup;
 
@@ -27,7 +27,7 @@ public class Traveller {
     public Traveller() {
     }
 
-    public Traveller(String dni, String name, Department deparment, Travel trip, String sign_upString) {
+    public Traveller(String dni, String name, long deparment, Travel trip, String sign_upString) {
         this.dni = dni;
         this.name = name;
         this.department = deparment;
@@ -36,10 +36,10 @@ public class Traveller {
 
     }
 
-    public Department getDepartment() {
+    public long getDepartment() {
         return department;
     }
-    public void setDepartment(Department deparment) {
+    public void setDepartment(long deparment) {
         this.department = deparment;
     }
 

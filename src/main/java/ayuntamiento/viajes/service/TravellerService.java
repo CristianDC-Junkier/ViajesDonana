@@ -131,7 +131,7 @@ public class TravellerService {
 
     public List<Traveller> findByDepartment(long department) {
         return travellerList.stream()
-                .filter(v -> v.getDepartment().getId() == department)
+                .filter(v -> v.getDepartment() == department)
                 .collect(Collectors.toList());
     }
 
