@@ -320,7 +320,7 @@ public class PDFService {
             canvas.showText(v.getName());
 
             canvas.moveText(columnX[2] - columnX[1], 0);
-            canvas.showText(v.getTrip().toString());
+            canvas.showText(Long.toString(v.getTrip()));
 
             canvas.moveText(columnX[3] - columnX[2], 0);
             canvas.showText(Long.toString(v.getDepartment()));
@@ -365,7 +365,7 @@ public class PDFService {
             canvas.showText(v.getName());
 
             canvas.moveText(columnX[2] - columnX[1], 0);
-            canvas.showText(v.getTrip().toString());
+            canvas.showText(Long.toString(v.getTrip()));
 
             canvas.moveText(columnX[3] - columnX[2], 0);
             canvas.showText(Long.toString(v.getDepartment()));

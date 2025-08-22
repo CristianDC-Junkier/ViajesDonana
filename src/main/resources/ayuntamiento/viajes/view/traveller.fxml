@@ -164,10 +164,10 @@
             </VBox>
             <TableView fx:id="travellerTable" prefHeight="482.0" prefWidth="960.0" VBox.vgrow="ALWAYS">
                <columns>
-                  <TableColumn fx:id="dniColumn" editable="false" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefWidth="179.0" text="DNI" />
-                  <TableColumn fx:id="nameColumn" editable="false" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefWidth="268.79994201660156" text="Nombre" />
-                  <TableColumn fx:id="departmentColumn" editable="false" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefWidth="145.60000610351562" text="Departamento" />
-                  <TableColumn fx:id="tripColumn" editable="false" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefWidth="212.0" text="Viaje" />
+                  <TableColumn fx:id="dniColumn" editable="false" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefWidth="118.0" text="DNI" />
+                  <TableColumn fx:id="nameColumn" editable="false" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefWidth="237.0" text="Nombre" />
+                  <TableColumn fx:id="departmentColumn" editable="false" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefWidth="143.0" text="Departamento" />
+                  <TableColumn fx:id="tripColumn" editable="false" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefWidth="277.0" text="Viaje" />
                   <TableColumn fx:id="signupColumn" editable="false" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefWidth="163.2000732421875" text="Fecha de Inscripción" />
                </columns>
                <columnResizePolicy>

@@ -25,12 +25,17 @@ import ayuntamiento.viajes.service.TravelService;
 
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Observable;
 import java.util.stream.Collectors;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.value.ObservableValue;
 
 import javafx.collections.FXCollections;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.DatePicker;
+import javafx.scene.control.TableColumn.CellDataFeatures;
 import javafx.scene.control.TextField;
+import javafx.util.Callback;
 import javafx.util.converter.LocalDateStringConverter;
 
 /**
@@ -126,8 +131,17 @@ public class TravellerController extends BaseController implements Initializable
 
         dniColumn.setCellValueFactory(new PropertyValueFactory<Traveller, String>("dni"));
         nameColumn.setCellValueFactory(new PropertyValueFactory<Traveller, String>("name"));
-        departmentColumn.setCellValueFactory(new PropertyValueFactory<Traveller, String>("department"));
-        tripColumn.setCellValueFactory(new PropertyValueFactory<Traveller, String>("trip"));
+        //Callbacks para mostrar los departamentos y viajes por nombre en vez de por el ID
+        departmentColumn.setCellValueFactory(new Callback<CellDataFeatures<Traveller, String>, ObservableValue<String>>() {
+            public ObservableValue<String> call(CellDataFeatures<Traveller, String> p) {
+                return new SimpleStringProperty(departmentS.findById(p.getValue().getDepartment()).get().getName().replace('_', ' '));
+            }
+        });//new PropertyValueFactory<Traveller, Department>("department"));
+        tripColumn.setCellValueFactory(new Callback<CellDataFeatures<Traveller, String>, ObservableValue<String>>() {
+            public ObservableValue<String> call(CellDataFeatures<Traveller, String> p) {
+                return new SimpleStringProperty(travelS.findById(p.getValue().getTrip()).get().getDescriptor());
+            }
+        });//new PropertyValueFactory<Traveller, String>("trip"));
         signupColumn.setCellValueFactory(new PropertyValueFactory<Traveller, LocalDate>("signup"));
 
         Department allDepartment = new Department();
@@ -151,7 +165,7 @@ public class TravellerController extends BaseController implements Initializable
         // Carga viajes desde TravelService
         List<Travel> travels = travelS.findAll();
         tripCB.getItems().addAll(travels);
-        tripCB.setValue(travels.isEmpty() ? null : travels.get(0));
+        tripCB.setValue(travels.isEmpty() ? null : tripCB.getItems().get(0));
         ComboBoxUtil.setTravelConverter(tripCB);
         tripCB.valueProperty().addListener((obs, oldType, newType) -> applyAllFilters());
 
@@ -235,7 +249,7 @@ public class TravellerController extends BaseController implements Initializable
                         -> (nameText.isEmpty() || (t.getName() != null && t.getName().toLowerCase().contains(nameText)))
                 && (dniText.isEmpty() || (t.getDni() != null && t.getDni().toLowerCase().contains(dniText)))
                 && (selectedDepartment == 0 || (t.getDepartment() == selectedDepartment))
-                && (selectedTrip == 0 || (t.getTrip() != null && t.getTrip().getId() == selectedTrip))
+                && (selectedTrip == 0 || (t.getTrip() == selectedTrip))
                 && (selectedInsuranceDate == null || (t.getSignUpDate() != null && t.getSignUpDate().isBefore(selectedInsuranceDate)))
                 )
                 .collect(Collectors.toList());

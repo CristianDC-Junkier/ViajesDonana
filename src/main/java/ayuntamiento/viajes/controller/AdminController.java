@@ -23,7 +23,11 @@ import ayuntamiento.viajes.model.Department;
 import ayuntamiento.viajes.service.DepartmentService;
 import ayuntamiento.viajes.service.LoginService;
 import java.util.List;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.value.ObservableValue;
 import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.TableColumn.CellDataFeatures;
+import javafx.util.Callback;
 
 /**
  * Clase controladora que se encarga del funcionamiento de la pestaña de
@@ -261,7 +265,12 @@ public class AdminController extends BaseController implements Initializable {
 
         idColumn.setCellValueFactory(new PropertyValueFactory<Admin, Long>("id"));
         userColumn.setCellValueFactory(new PropertyValueFactory<Admin, String>("username"));
-        departmentColumn.setCellValueFactory(new PropertyValueFactory<Admin, Department>("department"));
+        //Callbacks para mostrar los departamentos y viajes por nombre en vez de por el ID
+        departmentColumn.setCellValueFactory(new Callback<CellDataFeatures<Admin, String>, ObservableValue<String>>() {
+            public ObservableValue<String> call(CellDataFeatures<Admin, String> p) {
+                return new SimpleStringProperty(departmentS.findById(p.getValue().getDepartment()).get().getName().replace('_', ' '));
+            }
+        });
 
         userTable.setItems(FXCollections.observableList(adminS.findAll()));
         

@@ -125,7 +125,7 @@ public class TravellerService {
 
     public List<Traveller> findByTrip(long trip) {
         return travellerList.stream()
-                .filter(v -> v.getTrip().getId() == trip)
+                .filter(v -> v.getTrip() == trip)
                 .collect(Collectors.toList());
     }
 

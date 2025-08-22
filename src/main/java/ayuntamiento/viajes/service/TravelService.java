@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 /**
@@ -138,6 +139,12 @@ public class TravelService {
         return travelList.stream()
                 .filter(v -> v.getDepartment() == department)
                 .collect(Collectors.toList());
+    }
+    
+    public Optional<Travel> findById(long travelId){
+        return travelList.stream()
+                .filter(v -> v.getId() == travelId)
+                .findFirst();
     }
 
     public static void rechargeList() throws Exception {

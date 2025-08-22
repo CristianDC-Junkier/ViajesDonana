@@ -17,7 +17,7 @@ public class Traveller {
     private String dni;
     private String name;
     private long department;
-    private Travel trip;
+    private long trip;
     private LocalDate signup;
 
     private static final String SHOW_DATE_FORMAT = PropertiesUtil.getProperty("SHOW_DATE_FORMAT");
@@ -27,7 +27,7 @@ public class Traveller {
     public Traveller() {
     }
 
-    public Traveller(String dni, String name, long deparment, Travel trip, String sign_upString) {
+    public Traveller(String dni, String name, long deparment, long trip, String sign_upString) {
         this.dni = dni;
         this.name = name;
         this.department = deparment;
@@ -64,10 +64,10 @@ public class Traveller {
         this.name = name;
     }
 
-    public Travel getTrip() {
+    public long getTrip() {
         return trip;
     }
-    public void setTrip(Travel trip) {
+    public void setTrip(long trip) {
         this.trip = trip;
     }
 

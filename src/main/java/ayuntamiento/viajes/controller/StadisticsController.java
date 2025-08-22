@@ -107,7 +107,7 @@ public class StadisticsController extends BaseController implements Initializabl
         int total = list.size();
 
         /* Agrupar por viaje y contar viajeros por viaje */
-        Map<Travel, Long> tripGroups = list.stream()
+        Map<Long, Long> tripGroups = list.stream()
                 .collect(Collectors.groupingBy(Traveller::getTrip, Collectors.counting()));
         double avgTripCount = tripGroups.values().stream()
                 .mapToLong(Long::longValue)

@@ -11,15 +11,20 @@ import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.value.ObservableValue;
+import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableColumn.CellDataFeatures;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
+import javafx.util.Callback;
 
 /**
  * FXML Controller class
@@ -90,10 +95,16 @@ public class TravelController extends BaseController implements Initializable {
         showUserOption();
 
         descriptorColumn.setCellValueFactory(new PropertyValueFactory<Travel, String>("descriptor"));
-        departmentColumn.setCellValueFactory(new PropertyValueFactory<Travel, String>("department"));
+        //Callbacks para mostrar los departamentos por nombre en vez de por el ID
+        departmentColumn.setCellValueFactory(new Callback<CellDataFeatures<Travel, String>, ObservableValue<String>>() {
+            public ObservableValue<String> call(CellDataFeatures<Travel, String> p) {
+                return new SimpleStringProperty(departmentS.findById(p.getValue().getDepartment()).get().getName().replace('_', ' '));
+            }
+        });
         oSeatsColumn.setCellValueFactory(new PropertyValueFactory<Travel, Integer>("seats_occupied"));
         tSeatsColumn.setCellValueFactory(new PropertyValueFactory<Travel, Integer>("seats_total"));
 
+        travelTable.setItems(FXCollections.observableList(travelS.findAll()));
         travelTable.setPlaceholder(new Label("No existen viajes"));
 
         Department allDepartment = new Department();
@@ -160,12 +171,12 @@ public class TravelController extends BaseController implements Initializable {
     @FXML
     private void applyAllFilters() {
         String nameText = descriptorTF.getText() != null ? descriptorTF.getText().toLowerCase().trim() : "";
-        String selectedDepartment = departmentCB.getValue().toString();
+        long selectedDepartment = departmentCB.getValue().getId();
 
         List<Travel> filtered = travelS.findAll().stream()
                 .filter(t
                         -> (nameText.isEmpty() || (t.getDescriptor() != null && t.getDescriptor().toLowerCase().contains(nameText)))
-                && (selectedDepartment.equals("Todos") || (Long.toString(t.getDepartment()).equalsIgnoreCase(selectedDepartment)))
+                && (selectedDepartment == 0 || (t.getDepartment() == selectedDepartment))
                 )
                 .collect(Collectors.toList());
 

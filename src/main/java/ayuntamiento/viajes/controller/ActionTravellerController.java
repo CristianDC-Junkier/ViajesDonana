@@ -97,7 +97,7 @@ public class ActionTravellerController implements Initializable {
         tResult.setDni(dniTF.getText());
         tResult.setName(nameTF.getText());
         tResult.setDepartment(departmentCB.getValue().getId());
-        tResult.setTrip(tripCB.getValue());
+        tResult.setTrip(tripCB.getValue().getId());
 
         tResult.setSignUpDate(sign_upDP.getValue());
 
@@ -195,7 +195,7 @@ public class ActionTravellerController implements Initializable {
         dniTF.setText(tSelected.getDni());
         nameTF.setText(tSelected.getName());
         departmentCB.setValue(departmentS.findById(tSelected.getDepartment()).get());
-        tripCB.setValue(tSelected.getTrip());
+        tripCB.setValue(travelS.findById(tSelected.getTrip()).get());
         sign_upDP.setValue(tSelected.getSignUpDate());
 
     }
