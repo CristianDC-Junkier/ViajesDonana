@@ -102,7 +102,7 @@ public abstract class BaseController {
 
     @FXML
     private void userspanel() throws IOException {
-        if (LoginService.getAdminDepartment() == 7) {
+        if (LoginService.getAdminDepartment().getName().equalsIgnoreCase("Admin")) {
             try {
                 AdminService.rechargeList();
                 ManagerUtil.moveTo("admin");

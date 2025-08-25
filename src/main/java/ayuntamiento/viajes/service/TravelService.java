@@ -153,11 +153,10 @@ public class TravelService {
 
     public static void rechargeList(boolean allowRetry) throws IOException, InterruptedException, Exception {
         try {
-            long department = LoginService.getAdminDepartment();
-            if (department == 7) {
+            if (LoginService.getAdminDepartment().getName().equalsIgnoreCase("Admin")) {
                 travelList = travelDAO.findAll();
             } else {
-                travelList = travelDAO.findByDepartment(department);
+                travelList = travelDAO.findByDepartment(LoginService.getAdminDepartment().getId());
             }
         } catch (APIException apiE) {
             errorHandler(apiE, allowRetry, "rechargeList");

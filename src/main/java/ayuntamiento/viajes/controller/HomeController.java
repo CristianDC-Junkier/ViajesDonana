@@ -46,19 +46,12 @@ public class HomeController extends BaseController implements Initializable {
     @FXML
     private Label departmentLabel;
 
-    private DepartmentService departmentS;
-    private Department department;
-
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         showUserOption();
 
-        departmentS = new DepartmentService();
-        long departamento = LoginService.getAdminDepartment();
-        department = departmentS.findById(departamento).get();
-
         showTravelButton();
-        departmentLabel.setText(department.getName().replace("_", " "));
+        departmentLabel.setText(LoginService.getAdminDepartment().getName().replace("_", " "));
     }
 
     @FXML
@@ -95,7 +88,7 @@ public class HomeController extends BaseController implements Initializable {
     private void stadisticspanel() throws IOException {
         try {
             TravellerService.rechargeList();
-            if (department.getName().equalsIgnoreCase("Admin")) {
+            if (LoginService.getAdminDepartment().getName().equalsIgnoreCase("Admin")) {
                 ManagerUtil.moveTo("stadistics_admin");
             } else {
                 ManagerUtil.moveTo("stadistics_department");
@@ -188,7 +181,7 @@ public class HomeController extends BaseController implements Initializable {
      * Oculta el boton de acceso al panel de viajes segun el usuario
      */
     private void showTravelButton() {
-        if (department.getName().equalsIgnoreCase("Admin")) {
+        if (LoginService.getAdminDepartment().getName().equalsIgnoreCase("Admin")) {
             travelVB.setVisible(true);
             travelVB.setManaged(true);
         } else {

@@ -141,11 +141,10 @@ public class TravellerService {
 
     public static void rechargeList(boolean allowRetry) throws IOException, InterruptedException, Exception {
         try {
-            long department = LoginService.getAdminDepartment();
-            if (department == 7) {
+            if (LoginService.getAdminDepartment().getName().equalsIgnoreCase("Admin")) {
                 travellerList = travellerDAO.findAll();
             } else {
-                travellerList = travellerDAO.findByDepartment(department);
+                travellerList = travellerDAO.findByDepartment(LoginService.getAdminDepartment().getId());
             }
         } catch (APIException apiE) {
             errorHandler(apiE, allowRetry, "rechargeList");

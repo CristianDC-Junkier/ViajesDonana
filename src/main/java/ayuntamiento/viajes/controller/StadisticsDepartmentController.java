@@ -2,6 +2,7 @@ package ayuntamiento.viajes.controller;
 
 import ayuntamiento.viajes.model.Travel;
 import ayuntamiento.viajes.model.Traveller;
+import ayuntamiento.viajes.service.LoginService;
 import ayuntamiento.viajes.service.TravelService;
 import ayuntamiento.viajes.service.TravellerService;
 
@@ -46,6 +47,8 @@ public class StadisticsDepartmentController extends BaseController implements In
     private Label totalTravellers;
     @FXML
     private Label averageOccupation;
+    @FXML
+    private Label department;
 
     private TravellerService travellerS;
     private TravelService travelS;
@@ -69,6 +72,8 @@ public class StadisticsDepartmentController extends BaseController implements In
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         showUserOption();
+        
+        department.setText(LoginService.getAdminDepartment().getName());
 
         travellerS = new TravellerService();
         travelS = new TravelService();

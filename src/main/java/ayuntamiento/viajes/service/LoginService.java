@@ -3,6 +3,7 @@ package ayuntamiento.viajes.service;
 import ayuntamiento.viajes.dao.LoginDAO;
 import ayuntamiento.viajes.exception.LoginException;
 import ayuntamiento.viajes.model.Admin;
+import ayuntamiento.viajes.model.Department;
 import com.fasterxml.jackson.databind.JsonNode;
 
 /**
@@ -14,6 +15,7 @@ public class LoginService {
     private static final LoginDAO loginDAO;
     private static String secret_Token;
     private static Admin adminLog;
+    private static Department departmentLog;
 
     static {
         loginDAO = new LoginDAO();
@@ -35,7 +37,6 @@ public class LoginService {
     public static Admin getAdminLog() {
         return adminLog;
     }
-
     public static void setAdminLog(Admin adminLog) {
         LoginService.adminLog = adminLog;
     }
@@ -43,10 +44,13 @@ public class LoginService {
     /**
      * Funcion para recoger el departamento del usuario
      *
-     * @return El usuario logeado
+     * @return El departamento del usuario
      */
-    public static long getAdminDepartment() {
-        return adminLog.getDepartment();
+    public static Department getAdminDepartment() {
+        return departmentLog;
+    }
+    public static void setDepartmentLog(Department departmentLog) {
+        LoginService.departmentLog = departmentLog;
     }
 
     public void login(String username, String password) throws LoginException, Exception {
@@ -55,7 +59,13 @@ public class LoginService {
         adminLog.setUsername(username);
         adminLog.setPassword(password);
         adminLog.setId(result.get("id").asLong());
-        adminLog.setDepartment(result.get("department").asLong());
+        adminLog.setDepartment(result.get("departmentId").asLong());
+        
+        departmentLog = new Department();
+        departmentLog.setId(result.get("departmentId").asLong());
+        departmentLog.setName(result.get("departmentName").asText());
+        departmentLog.setAdminId(result.get("id").asLong());
+        
         LoginService.secret_Token = result.get("token").asText();
     }
 
