@@ -89,5 +89,12 @@ public class Travel {
     public int hashCode() {
         return Long.hashCode(id);
     }
+    
+    public void addTraveller(){
+        seats_occupied++;
+    }
+    public void removeTraveller(){
+        seats_occupied--;
+    }
 
 }

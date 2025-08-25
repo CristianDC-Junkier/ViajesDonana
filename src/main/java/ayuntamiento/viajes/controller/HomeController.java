@@ -65,7 +65,7 @@ public class HomeController extends BaseController implements Initializable {
             error(ex);
         }
     }
-    
+
     @FXML
     private void travelspanel() throws IOException {
         try {
@@ -101,7 +101,7 @@ public class HomeController extends BaseController implements Initializable {
         try {
             TravellerService.rechargeList();
             ManagerUtil.moveTo("pdf");
-         } catch (ControledException cE) {
+        } catch (ControledException cE) {
             error(cE);
         } catch (QuietException qE) {
             error(qE);
@@ -131,7 +131,7 @@ public class HomeController extends BaseController implements Initializable {
                         + "Revise la carpeta de instalación", "HomeController - openManual");
             }
 
-         } catch (ControledException cE) {
+        } catch (ControledException cE) {
             error(cE);
         } catch (QuietException qE) {
             error(qE);
@@ -149,15 +149,15 @@ public class HomeController extends BaseController implements Initializable {
     private void travellerpng() {
         sunIV.setImage(new Image(getClass().getResource("/ayuntamiento/viajes/icons/home_sun.png").toExternalForm()));
     }
-    
+
     @FXML
     private void travelgif() {
-        planeIV.setImage(new Image(getClass().getResource("/ayuntamiento/viajes/icons/home_sun.gif").toExternalForm()));
+        planeIV.setImage(new Image(getClass().getResource("/ayuntamiento/viajes/icons/home_plane.gif").toExternalForm()));
     }
 
     @FXML
     private void travelpng() {
-        planeIV.setImage(new Image(getClass().getResource("/ayuntamiento/viajes/icons/home_sun.png").toExternalForm()));
+        planeIV.setImage(new Image(getClass().getResource("/ayuntamiento/viajes/icons/home_plane.png").toExternalForm()));
     }
 
     @FXML
@@ -169,19 +169,18 @@ public class HomeController extends BaseController implements Initializable {
     private void stadisticspng() {
         stadisticsIV.setImage(new Image(getClass().getResource("/ayuntamiento/viajes/icons/home_stadistics.png").toExternalForm()));
     }
-    
+
     /**
      * Oculta el boton de acceso al panel de viajes segun el usuario
      */
-    private void showTravelButton(){
+    private void showTravelButton() {
         if (LoginService.getAdminLog().getId() == 1) {
             travelVB.setVisible(true);
             travelVB.setManaged(true);
-        }
-        else{
+        } else {
             travelVB.setVisible(false);
             travelVB.setManaged(false);
         }
-    } 
+    }
 
 }

@@ -69,9 +69,9 @@ public class ActionTravelController implements Initializable {
     @FXML
     private void extract() {
 
-        /*if (!checkFields()) {
+        if (!checkFields()) {
             return;
-        }*/
+        }
 
         tResult = new Travel();
         tResult.setDescriptor(descriptorTF.getText());

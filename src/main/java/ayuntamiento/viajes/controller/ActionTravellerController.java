@@ -7,6 +7,7 @@ import ayuntamiento.viajes.model.Department;
 import ayuntamiento.viajes.model.Travel;
 import ayuntamiento.viajes.model.Traveller;
 import ayuntamiento.viajes.service.DepartmentService;
+import ayuntamiento.viajes.service.LoginService;
 import ayuntamiento.viajes.service.TravelService;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -123,17 +124,25 @@ public class ActionTravellerController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         // Carga departamentos desde DepartmentService
-        List<Department> departments = departmentS.findAll();
-        departmentCB.getItems().setAll(departments);
-        departmentCB.setValue(departmentCB.getItems().get(0));
+        if (LoginService.getAdminDepartment() == 7) {
+            List<Department> departments = departmentS.findAll();
+            departmentCB.getItems().setAll(departments);
+            departmentCB.setValue(departmentCB.getItems().get(0));
+
+        } else {
+            departmentCB.getItems().add(departmentS.findById(LoginService.getAdminDepartment()).get());
+            departmentCB.setValue(departmentCB.getItems().get(0));
+            departmentCB.setDisable(true);
+        }
         ComboBoxUtil.setDepartmentNameConverter(departmentCB);
 
         // Carga viajes desde TravelService
         List<Travel> travels = travelS.findAll();
         tripCB.getItems().setAll(travels);
         tripCB.setValue(travels.isEmpty() ? null : travels.get(0));
+
         ComboBoxUtil.setTravelConverter(tripCB);
-        
+
         /*Cambiar el titulo y los labels dependiendo del tipo*/
         if (typeAction == 0) {
             actionButton.setText("Añadir");

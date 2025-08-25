@@ -145,6 +145,7 @@ public class TravellerService {
             if (department == 7) {
                 travellerList = travellerDAO.findAll();
             } else {
+                System.out.println("Traveller rechargeList find department");
                 travellerList = travellerDAO.findByDepartment(department);
             }
         } catch (APIException apiE) {
