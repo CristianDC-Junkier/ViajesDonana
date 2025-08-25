@@ -62,7 +62,6 @@ public class TravelService {
         }
         try {
             result = (Travel) travelDAO.save(entity);
-            rechargeList();
             travelList.add(result);
             return result;
         } catch (APIException apiE) {
@@ -140,8 +139,8 @@ public class TravelService {
                 .filter(v -> v.getDepartment() == department)
                 .collect(Collectors.toList());
     }
-    
-    public Optional<Travel> findById(long travelId){
+
+    public Optional<Travel> findById(long travelId) {
         return travelList.stream()
                 .filter(v -> v.getId() == travelId)
                 .findFirst();

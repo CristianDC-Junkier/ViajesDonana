@@ -150,7 +150,6 @@ public class TravelController extends BaseController implements Initializable {
     }
     
     public void anadir(Travel entity) throws Exception {
-        System.out.println("TravelController anadir " + entity.getDescriptor());
         if (travelS.save(entity) == null) {
             refreshTable(travelTable, travelS.findAll());
             throw new ControledException("La descripción introducida ya existe: " + entity.getDescriptor(),

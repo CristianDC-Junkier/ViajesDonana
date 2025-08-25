@@ -96,7 +96,8 @@ public abstract class BaseController {
         if (LoginService.getAdminLog().getId() == 1) {
             users.setText("Administración de Usuarios");
         } else {
-            users.setText("Mi perfil");
+            //users.setText("Mi perfil");
+            users.setDisable(true);
         }
     }
 
@@ -116,7 +117,7 @@ public abstract class BaseController {
             }
 
         } else {
-            ManagerUtil.moveTo("profile");
+            //ManagerUtil.moveTo("profile");
 
         }
     }

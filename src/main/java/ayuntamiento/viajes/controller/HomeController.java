@@ -159,12 +159,12 @@ public class HomeController extends BaseController implements Initializable {
 
     @FXML
     private void travelgif() {
-        planeIV.setImage(new Image(getClass().getResource("/ayuntamiento/viajes/icons/home_sun.gif").toExternalForm()));
+        planeIV.setImage(new Image(getClass().getResource("/ayuntamiento/viajes/icons/home_plane.gif").toExternalForm()));
     }
 
     @FXML
     private void travelpng() {
-        planeIV.setImage(new Image(getClass().getResource("/ayuntamiento/viajes/icons/home_sun.png").toExternalForm()));
+        planeIV.setImage(new Image(getClass().getResource("/ayuntamiento/viajes/icons/home_plane.png").toExternalForm()));
     }
 
     @FXML

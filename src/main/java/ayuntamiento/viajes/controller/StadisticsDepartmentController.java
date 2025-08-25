@@ -26,23 +26,12 @@ import javafx.scene.chart.XYChart;
 import javafx.scene.control.Label;
 import javafx.scene.paint.Color;
 
-/**
- * Vista de estadísticas para usuarios de un departamento (no admin).
- * Muestra la distribución de viajeros por viaje (PieChart)
- * y la ocupación de plazas (StackedBarChart).
- *
- * @author Cristian
- * @since 2025-08-25
- * @version 1.0
- */
 public class StadisticsDepartmentController extends BaseController implements Initializable {
 
     @FXML
     private PieChart travelPC;
-
     @FXML
     private StackedBarChart<String, Number> travelBC;
-
     @FXML
     private Label totalTravellers;
     @FXML
@@ -72,8 +61,8 @@ public class StadisticsDepartmentController extends BaseController implements In
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         showUserOption();
-        
-        department.setText(LoginService.getAdminDepartment().getName());
+
+        department.setText(LoginService.getAdminDepartment().getName().replace("_", " "));
 
         travellerS = new TravellerService();
         travelS = new TravelService();
@@ -81,31 +70,23 @@ public class StadisticsDepartmentController extends BaseController implements In
         long deptId = getLoggedUserDepartment();
         listTraveller = travellerS.findByDepartment(deptId);
         listTravel = travelS.findByDepartment(deptId);
-        
+
         numOfTravels = listTravel.size();
 
-        // Distribución de viajeros por viaje (PieChart)
-        pieChartConf(listTraveller, Traveller::getTrip, travelPC);
-
-        // Ocupación de viajes (StackedBarChart)
+        // Configurar PieChart y StackedBarChart
+        setupPieChart(listTraveller, travelPC);
         setupStackedBarChart(listTravel);
 
-        // Labels superiores
+        // Recargar labels
         rechargeLabels(listTraveller, listTravel);
     }
 
     private long getLoggedUserDepartment() {
-        // Aquí llamas a tu LoginService.getAdminLog() o similar
-        return ayuntamiento.viajes.service.LoginService.getAdminLog().getDepartment();
+        return LoginService.getAdminLog().getDepartment();
     }
 
-    /**
-     * Recargar labels de estadísticas para usuario normal
-     */
     private void rechargeLabels(List<Traveller> travellers, List<Travel> travels) {
         int total = travellers.size();
-
-        // media ocupación en %
         double avgOccupation = travels.stream()
                 .filter(t -> t.getSeats_total() > 0)
                 .mapToDouble(t -> (double) t.getSeats_occupied() / t.getSeats_total())
@@ -116,41 +97,67 @@ public class StadisticsDepartmentController extends BaseController implements In
         averageOccupation.setText(String.format("%.2f %%", avgOccupation));
     }
 
-    /**
-     * Configuración del PieChart de distribución de viajeros por viaje
-     */
-    private <T> void pieChartConf(List<Traveller> list, Function<Traveller, T> classifier, PieChart pieChart) {
+    private void setupPieChart(List<Traveller> list, PieChart pieChart) {
         Map<String, Integer> counts = new HashMap<>();
 
-        Map<T, Integer> rawCounts = countBy(classifier, list);
-        List<Map.Entry<T, Integer>> sorted = rawCounts.entrySet()
-                .stream()
+        for (Traveller t : list) {
+            Travel travel = listTravel.stream()
+                    .filter(tr -> tr.getId() == t.getTrip())
+                    .findFirst().orElse(null);
+            String label = (travel != null) ? travel.getDescriptor().replace("_", " ") : "Sin viaje";
+            counts.put(label, counts.getOrDefault(label, 0) + 1);
+        }
+
+        List<Map.Entry<String, Integer>> sorted = counts.entrySet().stream()
                 .sorted((a, b) -> b.getValue() - a.getValue())
                 .collect(Collectors.toList());
 
+        Map<String, Integer> finalCounts = new HashMap<>();
         int others = 0;
         for (int i = 0; i < sorted.size(); i++) {
             if (i < numOfTravels) {
-                counts.put(sorted.get(i).getKey().toString(), sorted.get(i).getValue());
+                finalCounts.put(sorted.get(i).getKey(), sorted.get(i).getValue());
             } else {
                 others += sorted.get(i).getValue();
             }
         }
         if (others > 0) {
-            counts.put("Otros", others);
+            finalCounts.put("Otros", others);
         }
 
         ObservableList<PieChart.Data> data = FXCollections.observableArrayList();
-        counts.forEach((k, v) -> data.add(new PieChart.Data(k + " (" + v + ")", v)));
-
+        finalCounts.forEach((k, v) -> data.add(new PieChart.Data(k + " (" + v + ")", v)));
         pieChart.setData(data);
         pieChart.setLegendVisible(true);
+
         colorPieChartSlices(COLORS, pieChart);
     }
 
-    /**
-     * Configuración del gráfico de barras apiladas (ocupadas vs libres)
-     */
+    private void colorPieChartSlices(Color[] colors, PieChart pieChart) {
+        Platform.runLater(() -> {
+            int index = 0;
+            for (PieChart.Data data : pieChart.getData()) {
+                String rgb = toRgbString(colors[index % colors.length]);
+                data.getNode().setStyle("-fx-pie-color: " + rgb + ";");
+                colorPieChartLegend(data.getName(), rgb, pieChart);
+                index++;
+            }
+        });
+    }
+
+    private void colorPieChartLegend(String label, String rgb, PieChart pieChart) {
+        for (Node legend : pieChart.lookupAll("Label.chart-legend-item")) {
+            if (legend instanceof Label labelNode) {
+                if (labelNode.getText().equals(label)) {
+                    Node symbol = labelNode.getGraphic();
+                    if (symbol != null) {
+                        symbol.setStyle("-fx-background-color: " + rgb + ";");
+                    }
+                }
+            }
+        }
+    }
+
     private void setupStackedBarChart(List<Travel> travels) {
         travelBC.getData().clear();
 
@@ -165,38 +172,61 @@ public class StadisticsDepartmentController extends BaseController implements In
             int total = t.getSeats_total();
             int free = total - occupied;
 
-            String tripName = t.getDescriptor() != null ? t.getDescriptor() : "Viaje " + t.getId();
+            String tripName = (t.getDescriptor() != null)
+                    ? t.getDescriptor().replace("_", " ")
+                    : "Viaje " + t.getId();
 
             occupiedSeries.getData().add(new XYChart.Data<>(tripName, occupied));
             freeSeries.getData().add(new XYChart.Data<>(tripName, free));
         }
 
         travelBC.getData().addAll(occupiedSeries, freeSeries);
+
+        // Colorear barras y leyenda
+        applyBarColors(occupiedSeries, freeSeries);
     }
 
-    private static <T> Map<T, Integer> countBy(Function<Traveller, T> classifier, List<Traveller> list) {
-        Map<T, Integer> countMap = new HashMap<>();
-        for (Traveller v : list) {
-            T key = classifier.apply(v);
-            countMap.put(key, countMap.getOrDefault(key, 0) + 1);
-        }
-        return countMap;
-    }
-
-    private void colorPieChartSlices(Color[] colors, PieChart pieChart) {
+    /**
+     * Aplica colores a las barras del StackedBarChart
+     */
+    private void applyBarColors(XYChart.Series<String, Number> occupiedSeries, XYChart.Series<String, Number> freeSeries) {
         Platform.runLater(() -> {
-            int index = 0;
-            for (PieChart.Data data : pieChart.getData()) {
-                Node node = data.getNode();
-                if (node != null && index < colors.length) {
-                    String rgb = toRgbString(colors[index]);
+            // Colores de barras
+            setSeriesColor(occupiedSeries, "#0077B6"); // azul oscuro
+            setSeriesColor(freeSeries, "#90E0EF");     // azul claro
 
-                    node.setStyle("-fx-pie-color: " + rgb + ";");
-                    data.getNode().setStyle("-fx-pie-color: " + rgb + ";");
-                    index++;
+            // Colores de leyenda
+            setLegendColor("Ocupadas", "#0077B6");
+            setLegendColor("Libres", "#90E0EF");
+        });
+    }
+
+    /**
+     * Aplica un color a todos los nodos de una serie
+     */
+    private void setSeriesColor(XYChart.Series<String, Number> series, String color) {
+        for (XYChart.Data<String, Number> data : series.getData()) {
+            Node node = data.getNode();
+            if (node != null) {
+                node.setStyle("-fx-bar-fill: " + color + ";");
+            }
+        }
+    }
+
+    /**
+     * Aplica color a la leyenda del gráfico
+     */
+    private void setLegendColor(String seriesName, String color) {
+        for (Node legend : travelBC.lookupAll(".chart-legend-item")) {
+            if (legend instanceof Label labelNode) {
+                if (labelNode.getText().equals(seriesName)) {
+                    Node symbol = labelNode.getGraphic();
+                    if (symbol != null) {
+                        symbol.setStyle("-fx-background-color: " + color + ";");
+                    }
                 }
             }
-        });
+        }
     }
 
     private String toRgbString(Color color) {

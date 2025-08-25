@@ -21,6 +21,7 @@ import javafx.stage.Stage;
 import ayuntamiento.viajes.service.TravellerService;
 import ayuntamiento.viajes.model.Traveller;
 import ayuntamiento.viajes.service.DepartmentService;
+import ayuntamiento.viajes.service.LoginService;
 import ayuntamiento.viajes.service.TravelService;
 
 import java.time.format.DateTimeFormatter;
@@ -112,6 +113,7 @@ public class TravellerController extends BaseController implements Initializable
                 if (info("¿Está seguro de que quiere eliminar este viajero?", true) == InfoController.DialogResult.ACCEPT) {
                     if (travellerS.delete(travellerTable.getSelectionModel().getSelectedItem())) {
                         info("El viajero fue eliminado con éxito", false);
+                        travelS.findById(travellerTable.getSelectionModel().getSelectedItem().getTrip()).get().removeTraveller();
                         refreshTable(travellerTable, travellerS.findAll());
                     } else {
                         throw new Exception("El viajero no pudo ser borrado");
@@ -143,15 +145,21 @@ public class TravellerController extends BaseController implements Initializable
         });
         signupColumn.setCellValueFactory(new PropertyValueFactory<Traveller, LocalDate>("signup"));
 
-        Department allDepartment = new Department();
-        allDepartment.setId(0);
-        allDepartment.setName("Todos");
-        departmentCB.getItems().add(allDepartment);
+        if (LoginService.getAdminDepartment().getName().equalsIgnoreCase("Admin")) {
+            Department allDepartment = new Department();
+            allDepartment.setId(0);
+            allDepartment.setName("Todos");
+            departmentCB.getItems().add(allDepartment);
 
-        // Carga departamentos desde DepartmentService
-        List<Department> departments = departmentS.findAll();
-        departmentCB.getItems().addAll(departments);
-        departmentCB.setValue(departmentCB.getItems().get(0));
+            // Carga departamentos desde DepartmentService
+            List<Department> departments = departmentS.findAll();
+            departmentCB.getItems().addAll(departments);
+            departmentCB.setValue(departmentCB.getItems().get(0));
+        } else {
+            departmentCB.getItems().add(LoginService.getAdminDepartment());
+            departmentCB.setValue(departmentCB.getItems().get(0));
+            departmentCB.setDisable(true);
+        }
         ComboBoxUtil.setDepartmentNameConverter(departmentCB);
         departmentCB.valueProperty().addListener((obs, oldType, newType) -> applyAllFilters());
 
@@ -160,11 +168,11 @@ public class TravellerController extends BaseController implements Initializable
         allTravels.setDescriptor("Todos");
         allTravels.setBus(0);
         tripCB.getItems().add(allTravels);
-
         // Carga viajes desde TravelService
         List<Travel> travels = travelS.findAll();
         tripCB.getItems().addAll(travels);
         tripCB.setValue(travels.isEmpty() ? null : tripCB.getItems().get(0));
+
         ComboBoxUtil.setTravelConverter(tripCB);
         tripCB.valueProperty().addListener((obs, oldType, newType) -> applyAllFilters());
 
@@ -178,7 +186,6 @@ public class TravellerController extends BaseController implements Initializable
             travellerTable.setItems(FXCollections.observableList(travellerS.findAll()));
             amount.setText("Inscripciones en Total: " + travellerS.findAll().size());
         }
-
     }
 
     /**
@@ -221,14 +228,20 @@ public class TravellerController extends BaseController implements Initializable
             throw new ControledException("El DNI introducido ya existe: " + entity.getDni(),
                     "TravellerController - anadir");
         }
+        travelS.findById(entity.getTrip()).get().addTraveller();
         refreshTable(travellerTable, travellerS.findAll());
     }
 
     public void modificar(Traveller entity) throws Exception {
-        if (travellerS.modify(entity) == null) {
+        Traveller result = travellerS.modify(entity);
+        if (result == null) {
             refreshTable(travellerTable, travellerS.findAll());
             throw new ControledException("El DNI introducido ya existe: " + entity.getDni(),
                     "TravellerController - anadir");
+        }
+        if (result.getTrip() != entity.getTrip()) {
+            travelS.findById(entity.getTrip()).get().removeTraveller();
+            travelS.findById(result.getTrip()).get().addTraveller();
         }
         refreshTable(travellerTable, travellerS.findAll());
     }

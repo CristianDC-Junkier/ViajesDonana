@@ -1,6 +1,10 @@
 package ayuntamiento.viajes.controller;
 
+import static ayuntamiento.viajes.controller.TravellerController.travelS;
+import ayuntamiento.viajes.model.Department;
+import ayuntamiento.viajes.model.Travel;
 import ayuntamiento.viajes.model.Traveller;
+import ayuntamiento.viajes.service.DepartmentService;
 import ayuntamiento.viajes.service.TravellerService;
 
 import java.net.URL;
@@ -86,9 +90,9 @@ public class StadisticsAdminController extends BaseController implements Initial
         travellerS = new TravellerService();
         listTraveller = travellerS.findAll();
 
-        pieChartConf(listTraveller, Traveller::getTrip, travelPC, ChartType.TRAVEL);
-        pieChartConf(listTraveller, Traveller::getDepartment, officePC, ChartType.OFFICE);
-        pieChartConf(listTraveller, Traveller::getSignUpDate, dayPC, ChartType.DATE);
+        pieChartConf(listTraveller, travelPC, ChartType.TRAVEL);
+        pieChartConf(listTraveller, officePC, ChartType.OFFICE);
+        pieChartConf(listTraveller, dayPC, ChartType.DATE);
 
         setupPieChartListeners();
 
@@ -97,9 +101,9 @@ public class StadisticsAdminController extends BaseController implements Initial
 
     /**
      * Recargar los valores de los labels segun la lista que se le pasa
-     * 
+     *
      * @param list Lista de travellers
-     * 
+     *
      */
     private void rechargeLabels(List<Traveller> list) {
         int total = list.size();
@@ -143,19 +147,17 @@ public class StadisticsAdminController extends BaseController implements Initial
     /**
      * Controla la configuración del piechart, añadiendo un label por cada tipo
      * y valor de enumerado
-     * 
+     *
      * @param <T> Valor del dato de la función por la cual se va a clasificar
      * @param list lista de travellers
-     * @param classifier función clasificadora
      * @param pieChart Piechart el cual se va a configurar
      * @param chartType Tipo de piechart que se va a configurar
      */
-
-    private <T> void pieChartConf(List<Traveller> list, Function<Traveller, T> classifier, PieChart pieChart, ChartType chartType) {
+    private <T> void pieChartConf(List<Traveller> list, PieChart pieChart, ChartType chartType) {
         Map<String, Integer> counts = new HashMap<>();
 
         switch (chartType) {
-            case DATE:
+            case DATE -> {
                 for (Traveller t : list) {
                     LocalDate date = t.getSignUpDate();
                     if (date != null) {
@@ -163,33 +165,29 @@ public class StadisticsAdminController extends BaseController implements Initial
                         counts.put(label, counts.getOrDefault(label, 0) + 1);
                     }
                 }
-                break;
-            case TRAVEL:
-                Map<T, Integer> rawCounts = countBy(classifier, list);
-                List<Map.Entry<T, Integer>> sorted = rawCounts.entrySet()
-                        .stream()
-                        .sorted((a, b) -> b.getValue() - a.getValue())
-                        .collect(Collectors.toList());
-
-                int others = 0;
-                for (int i = 0; i < sorted.size(); i++) {
-                    if (i < numOfTravels) {
-                        counts.put(sorted.get(i).getKey().toString(), sorted.get(i).getValue());
-                    } else {
-                        others += sorted.get(i).getValue();
-                    }
-                }
-                if (others > 0) {
-                    counts.put("Otros", others);
-                }
-                break;
-
-            case OFFICE:
-            default:
+            }
+            case TRAVEL -> {
                 for (Traveller t : list) {
-                    String label = classifier.apply(t).toString();
+                    Travel travel = travelS.findById(t.getTrip()).get();
+                    String label = (travel != null) ? travel.getDescriptor().replace("_", " ") : "Sin viaje";
                     counts.put(label, counts.getOrDefault(label, 0) + 1);
                 }
+            }
+            case OFFICE -> {
+                DepartmentService departmentS = new DepartmentService();
+                List<Department> departments = departmentS.findAll();
+
+                Map<Long, String> departmentMap = departments.stream()
+                        .collect(Collectors.toMap(
+                                Department::getId,
+                                Department::getName
+                        ));
+
+                for (Traveller t : list) {
+                    String label = departmentMap.getOrDefault(t.getDepartment(), "Desconocido");
+                    counts.put(label, counts.getOrDefault(label, 0) + 1);
+                }
+            }
         }
 
         ObservableList<PieChart.Data> data = FXCollections.observableArrayList();
@@ -216,8 +214,8 @@ public class StadisticsAdminController extends BaseController implements Initial
      * Metodo que llaman los diferentes gráficos cuando se hace click en alguno
      * de sus nodos de datos (el tipo de nodo depende del filtro), para
      * recalibrar los datos por ese valor
-     * 
-      * @param <T> Valor del dato de la función por la cual se va a clasificar
+     *
+     * @param <T> Valor del dato de la función por la cual se va a clasificar
      * @param clickedNameWithValue nodo clickado
      * @param classifier función clasificadora
      * @param chartType Tipo de piechart que se va a configurar
@@ -254,17 +252,18 @@ public class StadisticsAdminController extends BaseController implements Initial
                     return clickedValueStr.equals(value.toString());
                 }).toList();
 
-        pieChartConf(filtered, Traveller::getTrip, travelPC, ChartType.TRAVEL);
-        pieChartConf(filtered, Traveller::getDepartment, officePC, ChartType.OFFICE);
-        pieChartConf(filtered, Traveller::getSignUpDate, dayPC, ChartType.DATE);
+        pieChartConf(filtered, travelPC, ChartType.TRAVEL);
+        pieChartConf(filtered, officePC, ChartType.OFFICE);
+        pieChartConf(filtered, dayPC, ChartType.DATE);
 
         setupPieChartListeners();
         rechargeLabels(filtered);
     }
 
     /**
-     * Metodo que respecto a un función para clasificar y una lista de travellers
-     * devuelve el mapa con el enumerado y el recuento de los valores.
+     * Metodo que respecto a un función para clasificar y una lista de
+     * travellers devuelve el mapa con el enumerado y el recuento de los
+     * valores.
      *
      * @param <T> Valor que puede ser cualquiera de los enumerados
      * @param classifier función que extrae los valores del enumerado
