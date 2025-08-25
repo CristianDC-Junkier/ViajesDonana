@@ -25,7 +25,6 @@ import ayuntamiento.viajes.service.TravelService;
 
 import java.time.format.DateTimeFormatter;
 import java.util.List;
-import java.util.Observable;
 import java.util.stream.Collectors;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ObservableValue;
@@ -136,12 +135,12 @@ public class TravellerController extends BaseController implements Initializable
             public ObservableValue<String> call(CellDataFeatures<Traveller, String> p) {
                 return new SimpleStringProperty(departmentS.findById(p.getValue().getDepartment()).get().getName().replace('_', ' '));
             }
-        });//new PropertyValueFactory<Traveller, Department>("department"));
+        });
         tripColumn.setCellValueFactory(new Callback<CellDataFeatures<Traveller, String>, ObservableValue<String>>() {
             public ObservableValue<String> call(CellDataFeatures<Traveller, String> p) {
                 return new SimpleStringProperty(travelS.findById(p.getValue().getTrip()).get().getDescriptor());
             }
-        });//new PropertyValueFactory<Traveller, String>("trip"));
+        });
         signupColumn.setCellValueFactory(new PropertyValueFactory<Traveller, LocalDate>("signup"));
 
         Department allDepartment = new Department();

@@ -1,7 +1,5 @@
 package ayuntamiento.viajes.controller;
 
-import ayuntamiento.viajes.model.Department;
-import ayuntamiento.viajes.model.Travel;
 import ayuntamiento.viajes.model.Traveller;
 import ayuntamiento.viajes.service.TravellerService;
 
@@ -38,7 +36,7 @@ import javafx.scene.paint.Color;
  * @since 2025-06-03
  * @version 1.0
  */
-public class StadisticsController extends BaseController implements Initializable {
+public class StadisticsAdminController extends BaseController implements Initializable {
 
     @FXML
     private PieChart travelPC;

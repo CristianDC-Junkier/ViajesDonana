@@ -135,7 +135,7 @@ public class TravelService {
         return travelList;
     }
 
-    public List<Travel> findByDepartment(int department) {
+    public List<Travel> findByDepartment(long department) {
         return travelList.stream()
                 .filter(v -> v.getDepartment() == department)
                 .collect(Collectors.toList());
@@ -180,7 +180,7 @@ public class TravelService {
                 if (allowRetry) {
                     rechargeList(false);
                 } else {
-                    throw new ControledException(apiE.getMessage(), "TravellerService - " + method);
+                    throw new ControledException(apiE.getMessage(), "TravelService - " + method);
                 }
             }
             case 401 -> {
@@ -191,7 +191,7 @@ public class TravelService {
                 }
             }
             case 204 -> {
-                throw new QuietException(apiE.getMessage(), "TravellerService - " + method);
+                throw new QuietException(apiE.getMessage(), "TravelService - " + method);
             }
             default ->
                 throw new Exception(apiE.getMessage());

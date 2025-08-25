@@ -3,7 +3,6 @@ package ayuntamiento.viajes.service;
 import ayuntamiento.viajes.dao.LoginDAO;
 import ayuntamiento.viajes.exception.LoginException;
 import ayuntamiento.viajes.model.Admin;
-import ayuntamiento.viajes.model.Department;
 import com.fasterxml.jackson.databind.JsonNode;
 
 /**

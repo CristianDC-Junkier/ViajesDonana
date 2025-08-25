@@ -3,6 +3,8 @@ package ayuntamiento.viajes.controller;
 import ayuntamiento.viajes.common.ManagerUtil;
 import ayuntamiento.viajes.exception.ControledException;
 import ayuntamiento.viajes.exception.QuietException;
+import ayuntamiento.viajes.model.Department;
+import ayuntamiento.viajes.service.DepartmentService;
 import ayuntamiento.viajes.service.LoginService;
 import ayuntamiento.viajes.service.TravelService;
 import ayuntamiento.viajes.service.TravellerService;
@@ -42,13 +44,21 @@ public class HomeController extends BaseController implements Initializable {
     @FXML
     private VBox travelVB;
     @FXML
-    private Label welcomeLabel;
+    private Label departmentLabel;
+
+    private DepartmentService departmentS;
+    private Department department;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        showTravelButton();
         showUserOption();
-        welcomeLabel.setText("¡ Bienvenido a la aplicación, " + LoginService.getAdminLog().getUsername() + " !");
+
+        departmentS = new DepartmentService();
+        long departamento = LoginService.getAdminDepartment();
+        department = departmentS.findById(departamento).get();
+
+        showTravelButton();
+        departmentLabel.setText(department.getName().replace("_", " "));
     }
 
     @FXML
@@ -65,7 +75,7 @@ public class HomeController extends BaseController implements Initializable {
             error(ex);
         }
     }
-    
+
     @FXML
     private void travelspanel() throws IOException {
         try {
@@ -85,7 +95,11 @@ public class HomeController extends BaseController implements Initializable {
     private void stadisticspanel() throws IOException {
         try {
             TravellerService.rechargeList();
-            ManagerUtil.moveTo("stadistics");
+            if (department.getName().equalsIgnoreCase("Admin")) {
+                ManagerUtil.moveTo("stadistics_admin");
+            } else {
+                ManagerUtil.moveTo("stadistics_department");
+            }
         } catch (ControledException cE) {
             error(cE);
         } catch (QuietException qE) {
@@ -101,7 +115,7 @@ public class HomeController extends BaseController implements Initializable {
         try {
             TravellerService.rechargeList();
             ManagerUtil.moveTo("pdf");
-         } catch (ControledException cE) {
+        } catch (ControledException cE) {
             error(cE);
         } catch (QuietException qE) {
             error(qE);
@@ -131,7 +145,7 @@ public class HomeController extends BaseController implements Initializable {
                         + "Revise la carpeta de instalación", "HomeController - openManual");
             }
 
-         } catch (ControledException cE) {
+        } catch (ControledException cE) {
             error(cE);
         } catch (QuietException qE) {
             error(qE);
@@ -149,7 +163,7 @@ public class HomeController extends BaseController implements Initializable {
     private void travellerpng() {
         sunIV.setImage(new Image(getClass().getResource("/ayuntamiento/viajes/icons/home_sun.png").toExternalForm()));
     }
-    
+
     @FXML
     private void travelgif() {
         planeIV.setImage(new Image(getClass().getResource("/ayuntamiento/viajes/icons/home_sun.gif").toExternalForm()));
@@ -169,19 +183,18 @@ public class HomeController extends BaseController implements Initializable {
     private void stadisticspng() {
         stadisticsIV.setImage(new Image(getClass().getResource("/ayuntamiento/viajes/icons/home_stadistics.png").toExternalForm()));
     }
-    
+
     /**
      * Oculta el boton de acceso al panel de viajes segun el usuario
      */
-    private void showTravelButton(){
-        if (LoginService.getAdminLog().getId() == 1) {
+    private void showTravelButton() {
+        if (department.getName().equalsIgnoreCase("Admin")) {
             travelVB.setVisible(true);
             travelVB.setManaged(true);
-        }
-        else{
+        } else {
             travelVB.setVisible(false);
             travelVB.setManaged(false);
         }
-    } 
+    }
 
 }

@@ -144,6 +144,13 @@ public class LoginController extends BaseController implements Initializable {
             rememberCheck.setSelected(true);
             userField.setText(username);
         }
+
+        father.setOnKeyPressed(event -> {
+            switch (event.getCode()) {
+                case ENTER ->
+                    login();
+            }
+        });
     }
 
     private void wrongUser(int error, String msg) {

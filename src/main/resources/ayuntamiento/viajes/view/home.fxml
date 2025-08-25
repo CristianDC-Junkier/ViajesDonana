@@ -20,7 +20,7 @@
 <?import javafx.scene.shape.Circle?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane fx:id="father" prefHeight="800.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ayuntamiento.viajes.controller.HomeController">
+<BorderPane fx:id="father" prefHeight="800.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ayuntamiento.viajes.controller.HomeController">
 
      <!-- Top: Logo -->
     <top>
@@ -48,6 +48,11 @@
     <center>
         <VBox alignment="CENTER" spacing="20.0">
             <children>
+            <Label fx:id="departmentLabel" text="Departamento" wrapText="true">
+               <font>
+                  <Font name="Trebuchet MS Bold Italic" size="20.0" />
+               </font>
+            </Label>
                 <Label fx:id="welcomeLabel" text="¡Bienvenido a la Aplicación! " wrapText="true">
                <VBox.margin>
                   <Insets bottom="10.0" />
