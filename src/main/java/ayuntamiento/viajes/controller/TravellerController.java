@@ -114,7 +114,9 @@ public class TravellerController extends BaseController implements Initializable
                 if (info("¿Está seguro de que quiere eliminar este viajero?", true) == InfoController.DialogResult.ACCEPT) {
                     if (travellerS.delete(travellerTable.getSelectionModel().getSelectedItem())) {
                         info("El viajero fue eliminado con éxito", false);
-                        travelS.findById(travellerTable.getSelectionModel().getSelectedItem().getTrip()).get().removeTraveller();
+                        Travel t = travelS.findById(travellerTable.getSelectionModel().getSelectedItem().getTrip()).get();
+                        t.removeTraveller();
+                        travelS.modify(t);
                         refreshTable(travellerTable, travellerS.findAll());
                     } else {
                         throw new Exception("El viajero no pudo ser borrado");
@@ -224,25 +226,46 @@ public class TravellerController extends BaseController implements Initializable
     }
 
     public void anadir(Traveller entity) throws Exception {
-        if (travellerS.save(entity) == null) {
-            refreshTable(travellerTable, travellerS.findAll());
-            throw new ControledException("El DNI introducido ya existe: " + entity.getDni(),
+        Travel t = travelS.findById(entity.getTrip()).get();
+        if (t.getSeats_occupied() < t.getSeats_total()) {
+            if (travellerS.save(entity) == null) {
+                refreshTable(travellerTable, travellerS.findAll());
+                throw new ControledException("El DNI introducido ya existe: " + entity.getDni(),
+                        "TravellerController - anadir");
+            }
+            t.addTraveller();
+            travelS.modify(t);
+        } else {
+            throw new ControledException("El viaje seleccionado está completo: " + t.getDescriptor(),
                     "TravellerController - anadir");
         }
-        travelS.findById(entity.getTrip()).get().addTraveller();
         refreshTable(travellerTable, travellerS.findAll());
     }
 
     public void modificar(Traveller entity) throws Exception {
-        Traveller result = travellerS.modify(entity);
-        if (result == null) {
-            refreshTable(travellerTable, travellerS.findAll());
-            throw new ControledException("El DNI introducido ya existe: " + entity.getDni(),
-                    "TravellerController - anadir");
-        }
-        if (result.getTrip() != entity.getTrip()) {
-            travelS.findById(entity.getTrip()).get().removeTraveller();
-            travelS.findById(result.getTrip()).get().addTraveller();
+        Travel t = travelS.findById(entity.getTrip()).get();
+        Travel tt = travelS.findById(travellerS.findById(entity.getId()).getTrip()).get();
+        if (t != tt) {
+            if (t.getSeats_occupied() < t.getSeats_total()) {
+                if (travellerS.modify(entity) == null) {
+                    refreshTable(travellerTable, travellerS.findAll());
+                    throw new ControledException("El DNI introducido ya existe: " + entity.getDni(),
+                            "TravellerController - anadir");
+                }
+                t.addTraveller();
+                tt.removeTraveller();
+                travelS.modify(t);
+                travelS.modify(tt);
+            } else {
+                throw new ControledException("El viaje seleccionado está completo: " + t.getDescriptor(),
+                        "TravellerController - anadir");
+            }
+        } else {
+            if (travellerS.modify(entity) == null) {
+                refreshTable(travellerTable, travellerS.findAll());
+                throw new ControledException("El DNI introducido ya existe: " + entity.getDni(),
+                        "TravellerController - anadir");
+            }
         }
         refreshTable(travellerTable, travellerS.findAll());
     }
