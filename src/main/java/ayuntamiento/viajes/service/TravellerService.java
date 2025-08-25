@@ -122,6 +122,13 @@ public class TravellerService {
     public List<Traveller> findAll() {
         return travellerList;
     }
+    
+    public Traveller findById(long id){
+        return travellerList.stream()
+                .filter(v -> v.getId() == id)
+                .findFirst()
+                .get();
+    }
 
     public List<Traveller> findByTrip(long trip) {
         return travellerList.stream()
