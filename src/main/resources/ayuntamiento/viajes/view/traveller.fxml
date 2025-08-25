@@ -19,7 +19,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane fx:id="father" minWidth="-Infinity" prefHeight="800.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ayuntamiento.viajes.controller.TravellerController">
+<BorderPane fx:id="father" minWidth="-Infinity" prefHeight="800.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ayuntamiento.viajes.controller.TravellerController">
    <top>
       <HBox minWidth="-Infinity" prefHeight="110.0" prefWidth="1000.0">
          <children>
@@ -109,38 +109,7 @@
                               <Font name="Trebuchet MS Bold" size="16.0" />
                            </font>
                         </Label>
-                        <Region prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
-                        <TextField fx:id="dniTF" minWidth="-Infinity" onKeyTyped="#applyAllFilters" prefWidth="100.0" promptText="DNI" styleClass="field">
-                           <font>
-                              <Font name="Trebuchet MS Bold" size="14.0" />
-                           </font>
-                        </TextField>
-                        <TextField fx:id="nameTF" minWidth="-Infinity" onKeyTyped="#applyAllFilters" prefHeight="26.0" prefWidth="150.0" promptText="Nombre" styleClass="field">
-                           <font>
-                              <Font name="Trebuchet MS Bold" size="14.0" />
-                           </font>
-                        </TextField>
-                        <ChoiceBox fx:id="departmentCB" minWidth="-Infinity" prefWidth="100.0" />
-                        <ChoiceBox fx:id="tripCB" minWidth="-Infinity" prefHeight="26.0" prefWidth="140.0" />
-                        <ImageView fitHeight="24.0" fitWidth="24.0" nodeOrientation="INHERIT" onMouseClicked="#resetAllFilters" pickOnBounds="true" preserveRatio="true" scaleX="1.5" scaleY="1.5" styleClass="glow">
-                           <image>
-                              <Image url="@../icons/car_clean-filters.png" />
-                           </image>
-                           <HBox.margin>
-                              <Insets />
-                           </HBox.margin>
-                           <cursor>
-                              <Cursor fx:constant="HAND" />
-                           </cursor>
-                        </ImageView>
-                     </children>
-                  </HBox>
-                  <HBox alignment="CENTER_LEFT" minHeight="-Infinity" prefHeight="50.0">
-                     <padding>
-                        <Insets left="20.0" right="20.0" />
-                     </padding>
-                     <children>
-                        <Region prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
+                        <Region maxWidth="1.7976931348623157E308" prefHeight="200.0" prefWidth="1500.0" />
                         <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
                            <children>
                               <Label contentDisplay="CENTER" minWidth="-Infinity" prefHeight="20.0" prefWidth="166.0" text="Fecha anterior a" textFill="WHITE">
@@ -158,6 +127,37 @@
                               </DatePicker>
                            </children>
                         </HBox>
+                        <ImageView fitHeight="24.0" fitWidth="24.0" nodeOrientation="INHERIT" onMouseClicked="#resetAllFilters" pickOnBounds="true" preserveRatio="true" scaleX="1.5" scaleY="1.5" styleClass="glow">
+                           <image>
+                              <Image url="@../icons/car_clean-filters.png" />
+                           </image>
+                           <HBox.margin>
+                              <Insets />
+                           </HBox.margin>
+                           <cursor>
+                              <Cursor fx:constant="HAND" />
+                           </cursor>
+                        </ImageView>
+                     </children>
+                  </HBox>
+                  <HBox alignment="CENTER_LEFT" minHeight="-Infinity" prefHeight="50.0" spacing="20.0">
+                     <padding>
+                        <Insets left="20.0" right="20.0" />
+                     </padding>
+                     <children>
+                        <Region maxWidth="1.7976931348623157E308" prefHeight="50.0" prefWidth="1500.0" />
+                        <TextField fx:id="dniTF" minWidth="-Infinity" onKeyTyped="#applyAllFilters" prefWidth="100.0" promptText="DNI" styleClass="field">
+                           <font>
+                              <Font name="Trebuchet MS Bold" size="14.0" />
+                           </font>
+                        </TextField>
+                        <TextField fx:id="nameTF" minWidth="-Infinity" onKeyTyped="#applyAllFilters" prefHeight="26.0" prefWidth="150.0" promptText="Nombre" styleClass="field">
+                           <font>
+                              <Font name="Trebuchet MS Bold" size="14.0" />
+                           </font>
+                        </TextField>
+                        <ChoiceBox fx:id="tripCB" minWidth="-Infinity" prefHeight="26.0" prefWidth="275.0" />
+                        <ChoiceBox fx:id="departmentCB" minWidth="-Infinity" prefHeight="25.0" prefWidth="150.0" />
                      </children>
                   </HBox>
                </children>

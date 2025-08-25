@@ -180,7 +180,7 @@ public class StadisticsAdminController extends BaseController implements Initial
                 Map<Long, String> departmentMap = departments.stream()
                         .collect(Collectors.toMap(
                                 Department::getId,
-                                Department::getName
+                                d -> d.getName().replace("_", " ")
                         ));
 
                 for (Traveller t : list) {
@@ -240,17 +240,37 @@ public class StadisticsAdminController extends BaseController implements Initial
 
         List<Traveller> filtered = selectedValue == null ? listTraveller : listTraveller.stream()
                 .filter(t -> {
-                    T value = classifier.apply(t);
-                    if (value == null) {
-                        return false;
-                    }
-                    if (chartType == ChartType.DATE && value instanceof LocalDate) {
-                        LocalDate dateValue = (LocalDate) value;
-                        String monthLabel = dateValue.getMonth().getDisplayName(TextStyle.FULL, Locale.getDefault()) + " " + dateValue.getYear();
-                        return clickedValueStr.equals(monthLabel);
-                    }
-                    return clickedValueStr.equals(value.toString());
-                }).toList();
+                    return switch (chartType) {
+                        case DATE -> {
+                            if (t.getSignUpDate() != null) {
+                                String monthLabel = t.getSignUpDate().getMonth()
+                                        .getDisplayName(TextStyle.FULL, Locale.getDefault())
+                                        + " " + t.getSignUpDate().getYear();
+                                yield clickedValueStr.equals(monthLabel);
+                            }
+                            yield false;
+                        }
+                        case TRAVEL -> {
+                            Travel travel = travelS.findById(t.getTrip()).orElse(null);
+                            String travelName = (travel != null)
+                                    ? travel.getDescriptor().replace("_", " ")
+                                    : "Sin viaje";
+                            yield clickedValueStr.equals(travelName);
+                        }
+                        case OFFICE -> {
+                            DepartmentService departmentS = new DepartmentService();
+                            Map<Long, String> departmentMap = departmentS.findAll()
+                                    .stream()
+                                    .collect(Collectors.toMap(
+                                            Department::getId,
+                                            d -> d.getName().replace("_", " ")
+                                    ));
+                            String depName = departmentMap.getOrDefault(t.getDepartment(), "Desconocido");
+                            yield clickedValueStr.equals(depName);
+                        }
+                    };
+                })
+                .toList();
 
         pieChartConf(filtered, travelPC, ChartType.TRAVEL);
         pieChartConf(filtered, officePC, ChartType.OFFICE);

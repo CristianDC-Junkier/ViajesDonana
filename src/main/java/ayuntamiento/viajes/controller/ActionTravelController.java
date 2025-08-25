@@ -1,6 +1,6 @@
 package ayuntamiento.viajes.controller;
 
-import ayuntamiento.viajes.common.ComboBoxUtil;
+import ayuntamiento.viajes.common.ChoiceBoxUtil;
 import ayuntamiento.viajes.common.SecurityUtil;
 import ayuntamiento.viajes.model.Department;
 import ayuntamiento.viajes.model.Travel;
@@ -109,7 +109,7 @@ public class ActionTravelController implements Initializable {
         departmentCB.getItems().setAll(departments);
         departmentCB.setValue(departmentCB.getItems().get(0));
         
-        ComboBoxUtil.setDepartmentNameConverter(departmentCB);
+        ChoiceBoxUtil.setDepartmentNameConverter(departmentCB);
         
         /*Cambiar el titulo y los labels dependiendo del tipo*/
         if (typeAction == 0) {

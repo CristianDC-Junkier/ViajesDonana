@@ -2,6 +2,8 @@ package ayuntamiento.viajes.common;
 
 import ayuntamiento.viajes.model.Department;
 import ayuntamiento.viajes.model.Travel;
+import javafx.application.Platform;
+import javafx.scene.Node;
 import javafx.scene.control.ChoiceBox;
 import javafx.util.StringConverter;
 
@@ -11,8 +13,9 @@ import javafx.util.StringConverter;
  * @since 11/08/2025
  * @author Cristian Delgado Cruz
  */
-public class ComboBoxUtil {
-        public static void setDepartmentNameConverter(ChoiceBox<Department> choiceBox) {
+public class ChoiceBoxUtil {
+
+    public static void setDepartmentNameConverter(ChoiceBox<Department> choiceBox) {
         choiceBox.setConverter(new StringConverter<Department>() {
             @Override
             public String toString(Department department) {
@@ -47,6 +50,16 @@ public class ComboBoxUtil {
             @Override
             public Travel fromString(String string) {
                 return null;
+            }
+        });
+    }
+
+    public static void setDisableArrow(ChoiceBox<Department> choiceBox) {
+        Platform.runLater(() -> {
+            Node arrow = choiceBox.lookup(".arrow");
+            if (arrow != null) {
+                arrow.setVisible(false);
+                arrow.setManaged(false);
             }
         });
     }

@@ -1,6 +1,6 @@
 package ayuntamiento.viajes.controller;
 
-import ayuntamiento.viajes.common.ComboBoxUtil;
+import ayuntamiento.viajes.common.ChoiceBoxUtil;
 import static ayuntamiento.viajes.controller.BaseController.refreshTable;
 import ayuntamiento.viajes.exception.ControledException;
 import ayuntamiento.viajes.model.Department;
@@ -116,7 +116,7 @@ public class TravelController extends BaseController implements Initializable {
         List<Department> departments = departmentS.findAll();
         departmentCB.getItems().addAll(departments);
         departmentCB.setValue(departmentCB.getItems().get(0));
-        ComboBoxUtil.setDepartmentNameConverter(departmentCB);
+        ChoiceBoxUtil.setDepartmentNameConverter(departmentCB);
         departmentCB.valueProperty().addListener((obs, oldType, newType) -> applyAllFilters());
         
         amount.setText("Viajes en Total: " + travelS.findAll().size());

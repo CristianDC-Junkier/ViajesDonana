@@ -1,6 +1,6 @@
 package ayuntamiento.viajes.controller;
 
-import ayuntamiento.viajes.common.ComboBoxUtil;
+import ayuntamiento.viajes.common.ChoiceBoxUtil;
 import ayuntamiento.viajes.common.LoggerUtil;
 import ayuntamiento.viajes.common.ManagerUtil;
 import ayuntamiento.viajes.common.SecurityUtil;
@@ -278,11 +278,11 @@ public class AdminController extends BaseController implements Initializable {
         List<Department> departments = departmentS.findAll();
         addUserDepCB.getItems().setAll(departments);
         addUserDepCB.setValue(addUserDepCB.getItems().get(0));
-        ComboBoxUtil.setDepartmentNameConverter(addUserDepCB);
+        ChoiceBoxUtil.setDepartmentNameConverter(addUserDepCB);
         
         modUserDepCB.getItems().setAll(departments);
         modUserDepCB.setValue(modUserDepCB.getItems().get(0));
-        ComboBoxUtil.setDepartmentNameConverter(modUserDepCB);
+        ChoiceBoxUtil.setDepartmentNameConverter(modUserDepCB);
     }
 
     /**

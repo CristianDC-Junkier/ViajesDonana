@@ -1,6 +1,6 @@
 package ayuntamiento.viajes.controller;
 
-import ayuntamiento.viajes.common.ComboBoxUtil;
+import ayuntamiento.viajes.common.ChoiceBoxUtil;
 import ayuntamiento.viajes.common.PropertiesUtil;
 import static ayuntamiento.viajes.controller.BaseController.refreshTable;
 import ayuntamiento.viajes.exception.ControledException;
@@ -161,8 +161,11 @@ public class TravellerController extends BaseController implements Initializable
             departmentCB.getItems().add(LoginService.getAdminDepartment());
             departmentCB.setValue(departmentCB.getItems().get(0));
             departmentCB.setDisable(true);
+            departmentCB.setMouseTransparent(true);
+            ChoiceBoxUtil.setDisableArrow(departmentCB);
         }
-        ComboBoxUtil.setDepartmentNameConverter(departmentCB);
+
+        ChoiceBoxUtil.setDepartmentNameConverter(departmentCB);
         departmentCB.valueProperty().addListener((obs, oldType, newType) -> applyAllFilters());
 
         Travel allTravels = new Travel();
@@ -170,12 +173,13 @@ public class TravellerController extends BaseController implements Initializable
         allTravels.setDescriptor("Todos");
         allTravels.setBus(0);
         tripCB.getItems().add(allTravels);
+
         // Carga viajes desde TravelService
         List<Travel> travels = travelS.findAll();
         tripCB.getItems().addAll(travels);
         tripCB.setValue(travels.isEmpty() ? null : tripCB.getItems().get(0));
 
-        ComboBoxUtil.setTravelConverter(tripCB);
+        ChoiceBoxUtil.setTravelConverter(tripCB);
         tripCB.valueProperty().addListener((obs, oldType, newType) -> applyAllFilters());
 
         // Filtro de DatePicker
