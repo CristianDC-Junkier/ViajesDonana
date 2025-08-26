@@ -188,7 +188,7 @@ public class PDFService {
 
                 firstPageTravellers = travellersList.stream().limit(numTraInitialPage).toList();
                 remainingTravellers = travellersList.stream().skip(numTraInitialPage).toList();
-                writeLabels(canvas, t.getDescriptor());
+                writeLabels(canvas, t);
                 writeTable(canvas);
                 addPage(pdfDocument, canvas);
 
@@ -201,7 +201,7 @@ public class PDFService {
                 }
             }
         } else {
-            writeLabels(canvas, trips.getFirst().getDescriptor());
+            writeLabels(canvas, trips.getFirst());
             writeTable(canvas);
             addPage(pdfDocument, canvas);
         }
@@ -294,10 +294,10 @@ public class PDFService {
      * Método que escribe la linea inicial de las páginas principales
      *
      * @param canvas Página pdf sobre la que se escribirá
-     * @param type Tipo del viaje
+     * @param travel Tipo del viaje
      * @throws IOException Error de escritura
      */
-    private void writeLabels(PdfCanvas canvas, String type) throws IOException {
+    private void writeLabels(PdfCanvas canvas, Travel travel) throws IOException {
         canvas.beginText();
 
         PdfFont font = PdfFontFactory.createFont(StandardFonts.HELVETICA_BOLD);
@@ -310,18 +310,15 @@ public class PDFService {
             65f, 130f, 200f, 178f, 216f, 259f, 309f, 356f, 412f};
 
         canvas.moveText(columnX[0], y);
-        canvas.showText(String.valueOf(total));
+        canvas.showText(Integer.toString(travel.getSeats_total()));
         canvas.moveText(columnX[1] - columnX[0], 0);
-        canvas.showText(String.valueOf(own));
-        canvas.moveText(columnX[2] - columnX[1], 0);
-        canvas.showText(String.valueOf(rent));
+        canvas.showText(Integer.toString(travel.getSeats_occupied()));
+        /*canvas.moveText(columnX[2] - columnX[1], 0);
+        canvas.showText(String.valueOf(rent));*/
 
-        if (!type.equals("Todos")) {
-            canvas.moveText(columnX[8] - columnX[2], 16f);
-            canvas.setFillColor(COLORS[2]);
-            canvas.showText(String.valueOf("Viaje "
-                    + type.replace('_', ' ')));
-        }
+        canvas.moveText(columnX[7] - columnX[2], 16f);
+        canvas.setFillColor(COLORS[2]);
+        canvas.showText("Viaje " + travel.getDescriptor());
 
         canvas.endText();
     }
@@ -344,7 +341,7 @@ public class PDFService {
 
         /*Posiciones absolutas para cada columna*/
         float[] columnX = new float[]{
-            60f, 150f, 300f, 405f, 490f};
+            50f, 105f, 255f, 410f, 500f};
 
         for (Traveller v : firstPageTravellers) {
             canvas.beginText();
@@ -359,7 +356,7 @@ public class PDFService {
             canvas.showText(travelS.findById(v.getTrip()).get().getDescriptor());
 
             canvas.moveText(columnX[3] - columnX[2], 0);
-            canvas.showText(departmentS.findById(v.getDepartment()).get().getName());
+            canvas.showText(departmentS.findById(v.getDepartment()).get().getName().replace('_', ' '));
 
             canvas.moveText(columnX[4] - columnX[3], 0);
             canvas.showText(v.getSignup());
@@ -389,7 +386,7 @@ public class PDFService {
 
         /*Posiciones absolutas para cada columna*/
         float[] columnX = new float[]{
-            60f, 150f, 300f, 405f, 490f};
+            50f, 105f, 255f, 410f, 500f};
 
         for (Traveller v : pageTravellers) {
             canvas.beginText();
@@ -404,9 +401,9 @@ public class PDFService {
             canvas.showText(travelS.findById(v.getTrip()).get().getDescriptor());
 
             canvas.moveText(columnX[3] - columnX[2], 0);
-            canvas.showText(departmentS.findById(v.getDepartment()).get().getName());
+            canvas.showText(departmentS.findById(v.getDepartment()).get().getName().replace('_', ' '));
 
-            canvas.moveText(columnX[3] - columnX[2], 0);
+            canvas.moveText(columnX[4] - columnX[3], 0);
             canvas.showText(v.getSignup());
 
             canvas.endText();
