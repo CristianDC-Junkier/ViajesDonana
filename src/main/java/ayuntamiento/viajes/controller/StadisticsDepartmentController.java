@@ -25,6 +25,14 @@ import javafx.scene.chart.XYChart;
 import javafx.scene.control.Label;
 import javafx.scene.paint.Color;
 
+/**
+ * Clase controladora que se encarga de la vista de estadísticas, se controla
+ * las labels y los pie charts, de los usuarios
+ *
+ * @author Cristian Delgado Cruz
+ * @since 2025-08-26
+ * @version 1.0
+ */
 public class StadisticsDepartmentController extends BaseController implements Initializable {
 
     @FXML

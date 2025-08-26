@@ -1,7 +1,11 @@
 package ayuntamiento.viajes.exception;
 /**
- *
- * @author USUARIO
+ * Controlador que crea una Excepcion que no sale por pantalla al 
+ * usuario
+ * 
+ * @author Cristian Delgado Cruz
+ * @since 2025-08-11
+ * @version 1.0
  */
 public class QuietException extends Exception{
     

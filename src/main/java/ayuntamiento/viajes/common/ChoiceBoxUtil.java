@@ -8,13 +8,21 @@ import javafx.scene.control.ChoiceBox;
 import javafx.util.StringConverter;
 
 /**
- *
+ * Este clase se encarga de modificar los diferentes ChoiceBox del sistema, 
+ * para evitar codigo duplicado y ilegible en las clases correspondientes
+ * 
  * @version 1.0
  * @since 11/08/2025
  * @author Cristian Delgado Cruz
  */
 public class ChoiceBoxUtil {
 
+    /**
+     * Clase que respecto a un ChoiceBox de departamento, tansforma
+     * su nombre en uno mas leible.
+     * 
+     * @param choiceBox 
+     */
     public static void setDepartmentNameConverter(ChoiceBox<Department> choiceBox) {
         choiceBox.setConverter(new StringConverter<Department>() {
             @Override
@@ -34,6 +42,12 @@ public class ChoiceBoxUtil {
         });
     }
 
+    /**
+     * Clase que respecto a un ChoiceBox de viaje, tansforma
+     * su nombre en uno mas leible.
+     * 
+     * @param choiceBox 
+     */
     public static void setTravelConverter(ChoiceBox<Travel> choiceBox) {
         choiceBox.setConverter(new StringConverter<Travel>() {
             @Override
@@ -54,6 +68,12 @@ public class ChoiceBoxUtil {
         });
     }
 
+    /**
+     * Clase que respecto a un ChoiceBox de departmento, elimina su flecha
+     * de despliegue.
+     * 
+     * @param choiceBox 
+     */
     public static void setDisableArrow(ChoiceBox<Department> choiceBox) {
         Platform.runLater(() -> {
             Node arrow = choiceBox.lookup(".arrow");

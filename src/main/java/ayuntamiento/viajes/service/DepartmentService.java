@@ -11,6 +11,9 @@ import java.util.List;
 import java.util.Optional;
 
 /**
+ * Clase que se encarga de dar a los controladores acceso a los departamentos
+ * siendo el servicio especifico de ello.
+ * 
  * @author Cristian Delgado Cruz
  * @since 2025-08-08
  * @version 1.0

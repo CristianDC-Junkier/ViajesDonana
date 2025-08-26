@@ -1,6 +1,7 @@
 package ayuntamiento.viajes.dao;
 
 import ayuntamiento.viajes.model.Admin;
+
 /**
  * Clase que se encarga de hacer la conexión con la base de datos para el manejo
  * de los datos de los administradores

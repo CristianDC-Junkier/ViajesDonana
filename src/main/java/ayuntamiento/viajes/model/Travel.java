@@ -1,8 +1,11 @@
 package ayuntamiento.viajes.model;
 
 /**
- *
- * @author Ramón Iglesias
+ * Clase entidad que se encarga de los viajeros
+ * 
+ * @author Ramon Iglesias Granados
+ * @since 2025-08-19
+ * @version 1.0
  */
 public class Travel {
 
