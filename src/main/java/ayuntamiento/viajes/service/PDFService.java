@@ -192,8 +192,13 @@ public class PDFService {
                 writeTable(canvas);
                 addPage(pdfDocument, canvas);
 
-                PdfPage newPage = pdfDocument.getPage(pdfDocument.getNumberOfPages());
-                canvas = new PdfCanvas(newPage);
+                if (trips.getLast() != t) {
+                    PdfDocument tempAddDoc = new PdfDocument(new PdfReader(templatePDF));
+                    PdfPage templatePage = tempAddDoc.getPage(1).copyTo(pdfDocument);
+                    pdfDocument.addPage(templatePage);
+                    PdfPage newPage = pdfDocument.getPage(pdfDocument.getNumberOfPages());
+                    canvas = new PdfCanvas(newPage);
+                }
             }
         } else {
             writeLabels(canvas, trips.getFirst().getDescriptor());
