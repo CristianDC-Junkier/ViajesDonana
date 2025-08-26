@@ -7,10 +7,12 @@ import ayuntamiento.viajes.model.Department;
 import ayuntamiento.viajes.model.Travel;
 import ayuntamiento.viajes.service.DepartmentService;
 import ayuntamiento.viajes.service.TravelService;
+
 import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
+
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -27,9 +29,11 @@ import javafx.stage.Stage;
 import javafx.util.Callback;
 
 /**
- * FXML Controller class
+ * Clase Controladora que se encarga de gestionar los viajes existentes
  *
- * @author Ramón Iglesias
+ * @author Ramón Iglesias Granados
+ * @since 2025-08-19
+ * @version 1.1
  */
 public class TravelController extends BaseController implements Initializable {
 
@@ -68,6 +72,7 @@ public class TravelController extends BaseController implements Initializable {
     private void modify() {
         showActionDialogTravel(1);
     }
+    
     @FXML
     private void delete() {
         if (travelTable.getSelectionModel().getSelectedItem() == null) {

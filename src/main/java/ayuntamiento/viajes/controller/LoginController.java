@@ -30,7 +30,7 @@ import javafx.scene.layout.StackPane;
  *
  * @author Cristian Delgado Cruz
  * @since 2025-06-03
- * @version 1.0
+ * @version 1.1
  */
 public class LoginController extends BaseController implements Initializable {
 

@@ -34,11 +34,11 @@ import javafx.scene.paint.Color;
 
 /**
  * Clase controladora que se encarga de la vista de estadísticas, se controla
- * las labels y los pie charts
+ * las labels y los pie charts, del administrador
  *
  * @author Cristian Delgado Cruz
  * @since 2025-06-03
- * @version 1.0
+ * @version 1.3
  */
 public class StadisticsAdminController extends BaseController implements Initializable {
 

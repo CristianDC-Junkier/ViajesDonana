@@ -24,9 +24,12 @@ import javafx.stage.Stage;
 import javafx.util.converter.IntegerStringConverter;
 
 /**
- * FXML Controller class
+ * Clase que se encarga de la pestaña de añadir y modificar viajes, es un
+ * dialog modal, que depende de TravelController
  *
- * @author Ramón Iglesias
+ * @author Ramón Iglesias Granados
+ * @since 2025-08-18
+ * @version 1.1
  */
 public class ActionTravelController implements Initializable {
 
@@ -123,7 +126,7 @@ public class ActionTravelController implements Initializable {
     }
     
     /**
-     * Metodo que llama el controlador de Traveller recoge el traveller
+     * Metodo que llama el controlador de Travel recoge el viaje
      * seleccionado si fuera modificar el tipo que le llega, siendo 0 = añadir y
      * 1 = modificar y el vista/escena que lo llama
      *
@@ -177,10 +180,7 @@ public class ActionTravelController implements Initializable {
         boolean correct = true;
         String errorStyle = "-fx-background-color: linear-gradient(from 0% 0% to 100% 100%, #e52d27, #b31217);";
 
-        /*if (SecurityUtil.checkBadOrEmptyString(descriptorTF.getText())) {
-            descriptorTF.setStyle(errorStyle);
-            correct = false;
-        } else*/ if (SecurityUtil.checkBadOrEmptyString(tSeatsTF.getText())) {
+        if (SecurityUtil.checkBadOrEmptyString(tSeatsTF.getText())) {
             tSeatsTF.setStyle(errorStyle);
             correct = false;
         }

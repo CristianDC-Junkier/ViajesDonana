@@ -30,7 +30,7 @@ import javafx.scene.image.Image;
 import javafx.scene.layout.StackPane;
 
 /**
- * Clase que se encarga de la pestaña de añadir y modificar vehículos, es un
+ * Clase que se encarga de la pestaña de añadir y modificar viajeros, es un
  * dialog modal, que depende de TravellerController
  *
  * @author Ramón Iglesias Granados
@@ -158,7 +158,7 @@ public class ActionTravellerController implements Initializable {
     }
 
     /**
-     * Metodo que llama el controlador de Traveller recoge el traveller
+     * Metodo que llama el controlador de Traveller recoge el viajero
      * seleccionado si fuera modificar el tipo que le llega, siendo 0 = añadir y
      * 1 = modificar y el vista/escena que lo llama
      *

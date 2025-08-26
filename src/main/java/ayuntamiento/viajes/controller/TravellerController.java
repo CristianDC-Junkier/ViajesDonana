@@ -6,10 +6,22 @@ import static ayuntamiento.viajes.controller.BaseController.refreshTable;
 import ayuntamiento.viajes.exception.ControledException;
 import ayuntamiento.viajes.model.Department;
 import ayuntamiento.viajes.model.Travel;
+import ayuntamiento.viajes.service.TravellerService;
+import ayuntamiento.viajes.model.Traveller;
+import ayuntamiento.viajes.service.DepartmentService;
+import ayuntamiento.viajes.service.LoginService;
+import ayuntamiento.viajes.service.TravelService;
+
 import java.net.URL;
 import java.util.ResourceBundle;
 import java.time.LocalDate;
 
+import java.time.format.DateTimeFormatter;
+import java.util.List;
+import java.util.stream.Collectors;
+
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.value.ObservableValue;
 import javafx.fxml.Initializable;
 import javafx.fxml.FXML;
 import javafx.scene.control.TableView;
@@ -17,19 +29,6 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.Label;
 import javafx.stage.Stage;
-
-import ayuntamiento.viajes.service.TravellerService;
-import ayuntamiento.viajes.model.Traveller;
-import ayuntamiento.viajes.service.DepartmentService;
-import ayuntamiento.viajes.service.LoginService;
-import ayuntamiento.viajes.service.TravelService;
-
-import java.time.format.DateTimeFormatter;
-import java.util.List;
-import java.util.stream.Collectors;
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.value.ObservableValue;
-
 import javafx.collections.FXCollections;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.DatePicker;
@@ -39,7 +38,7 @@ import javafx.util.Callback;
 import javafx.util.converter.LocalDateStringConverter;
 
 /**
- * Clase Controladora que se encarga de gestionar los travellers existentes
+ * Clase Controladora que se encarga de gestionar los viajeros existentes
  *
  * @author Ramón Iglesias Granados
  * @since 2025-06-03

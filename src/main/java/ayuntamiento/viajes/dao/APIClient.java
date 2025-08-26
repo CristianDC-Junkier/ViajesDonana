@@ -23,7 +23,7 @@ import java.util.List;
  * @author Cristian Delgado Cruz
  * @param <T> valor de la subclase
  * @since 2025-06-05
- * @version 1.0
+ * @version 1.1
  */
 public abstract class APIClient<T> {
 

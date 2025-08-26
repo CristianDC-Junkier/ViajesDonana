@@ -3,8 +3,11 @@ package ayuntamiento.viajes.model;
 import javafx.collections.ObservableList;
 
 /**
- *
- * @author Ramón Iglesias
+ * Clase entidad que se encarga de los departamentos
+ * 
+ * @author Ramon Iglesias Granados
+ * @since 2025-08-19
+ * @version 1.0
  */
 public class Department {
 

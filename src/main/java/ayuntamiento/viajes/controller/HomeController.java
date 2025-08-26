@@ -3,8 +3,6 @@ package ayuntamiento.viajes.controller;
 import ayuntamiento.viajes.common.ManagerUtil;
 import ayuntamiento.viajes.exception.ControledException;
 import ayuntamiento.viajes.exception.QuietException;
-import ayuntamiento.viajes.model.Department;
-import ayuntamiento.viajes.service.DepartmentService;
 import ayuntamiento.viajes.service.LoginService;
 import ayuntamiento.viajes.service.TravelService;
 import ayuntamiento.viajes.service.TravellerService;
@@ -29,9 +27,9 @@ import javafx.scene.layout.VBox;
  * Controlador de la vista principal, se encarga de hacer el traspaso a las
  * diferentes partes de la app, y actua de página de inicio
  *
- * @author Cristian
+ * @author Cristian Delgado Cruz
  * @since 2025-06-03
- * @version 1.0
+ * @version 1.1
  */
 public class HomeController extends BaseController implements Initializable {
 
