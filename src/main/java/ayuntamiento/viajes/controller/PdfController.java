@@ -1,5 +1,6 @@
 package ayuntamiento.viajes.controller;
 
+import ayuntamiento.viajes.common.ChoiceBoxUtil;
 import ayuntamiento.viajes.common.PropertiesUtil;
 import ayuntamiento.viajes.exception.ControledException;
 import ayuntamiento.viajes.model.Travel;
@@ -38,7 +39,7 @@ public class PdfController extends BaseController implements Initializable {
     @FXML
     private ChoiceBox <String> sortCB;
     @FXML
-    private ChoiceBox<Travel> tripTypeCB;
+    private ChoiceBox<Travel> tripCB;
     @FXML
     private TextField namePDF;
     @FXML
@@ -60,7 +61,7 @@ public class PdfController extends BaseController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         showUserOption();
 
-        sortCB.getItems().addAll("Nombre", "Viaje", "Fecha de Inscripción", "Lugar de Inscripción", "DNI");
+        sortCB.getItems().addAll("Nombre", "Viaje", "Fecha de Inscripción", "Departamento", "DNI");
         sortCB.getSelectionModel().selectFirst();
 
         Travel allTravels = new Travel();
@@ -68,37 +69,21 @@ public class PdfController extends BaseController implements Initializable {
         allTravels.setDescriptor("Todos");
         allTravels.setBus(0);
         
-        tripTypeCB.getItems().add(allTravels);
-        List<Travel> travels = TravelS.findByDepartment(
-                (int) LoginService.getAdminLog().getDepartment());
-        tripTypeCB.getItems().addAll(travels);
-        tripTypeCB.getSelectionModel().selectFirst();
-        // Para mostrar solo el descriptor y bus en tripCB
-        tripTypeCB.setConverter(new StringConverter<Travel>() {
-            @Override
-            public String toString(Travel travel) {
-                if (travel == null) {
-                    return ""; 
-                } else if (travel.getId() == 0 || travel.getBus() == 0) {
-                    return travel.getDescriptor();
-                } else {
-                    return travel.getDescriptor() + " - Bus " + travel.getBus();
-                }
-            }
-            @Override
-            public Travel fromString(String string) {
-                return null;
-            }
-        });
-        tripTypeCB.setOnAction((event) -> {
-            changePDFName(tripTypeCB.getSelectionModel().getSelectedItem().toString());
+        tripCB.getItems().add(allTravels);
+        List<Travel> travels = TravelS.findAll(); //findByDepartment(LoginService.getAdminLog().getDepartment());
+        tripCB.getItems().addAll(travels);
+        tripCB.getSelectionModel().selectFirst();
+        ChoiceBoxUtil.setTravelConverter(tripCB);
+        
+        tripCB.setOnAction((event) -> {
+            changePDFName(tripCB.getSelectionModel().getSelectedItem().getDescriptor());
         });
 
         String userHome = System.getProperty("user.home");
         File defaultDir = new File(userHome, "Downloads");
         dirPDF.setText(defaultDir.getAbsolutePath());
 
-        namePDF.setText("Listado-Viajes-"
+        namePDF.setText("Listado-Viajeros-"
                 + LocalDate.now().format(dateformatter));
     }
 
@@ -145,19 +130,19 @@ public class PdfController extends BaseController implements Initializable {
         } else {
             try {
 
-                if(tripTypeCB.getValue().getId() == 0){
+                if(tripCB.getValue().getId() == 0){
                      if (travellerS.findAll().isEmpty()) {
                             info("No existen viajeros registrados", false);
                         } else {
                             pdf.printAll(namePDF.getText(), dirPDF.getText(), sortCB.getValue());
                         }
                 }else{
-                     if (travellerS.findByTrip(tripTypeCB.getValue().getId()).isEmpty()) {
+                     if (travellerS.findByTrip(tripCB.getValue().getId()).isEmpty()) {
                             info("No existen viajeros registrados para el viaje " + 
-                                    tripTypeCB.getValue().getDescriptor() + " - Bus " + tripTypeCB.getValue().getBus(), false);
+                                    tripCB.getValue().getDescriptor() + " - Bus " + tripCB.getValue().getBus(), false);
                         } else {
                             pdf.printType(namePDF.getText(), dirPDF.getText(), 
-                                    tripTypeCB.getValue().getId(),
+                                    tripCB.getValue().getId(),
                                     sortCB.getValue());
                         }
                 }
@@ -203,7 +188,8 @@ public class PdfController extends BaseController implements Initializable {
     }
 
     private String toEnumCompatible(String s) {
-        return s.replace(' ', '_');
+        String h = s.replace(' ', '_');
+        return h.replace('/', '-');
     }
 
 }

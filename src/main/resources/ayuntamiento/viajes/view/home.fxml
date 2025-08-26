@@ -20,7 +20,7 @@
 <?import javafx.scene.shape.Circle?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane fx:id="father" prefHeight="800.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ayuntamiento.viajes.controller.HomeController">
+<BorderPane fx:id="father" prefHeight="800.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ayuntamiento.viajes.controller.HomeController">
 
      <!-- Top: Logo -->
     <top>
@@ -197,7 +197,7 @@
                                     </LinearGradient>
                                  </fill>
                               </Circle>
-                              <ImageView fx:id="planeIV" fitHeight="60.0" fitWidth="70.0" mouseTransparent="true" nodeOrientation="INHERIT" pickOnBounds="true" preserveRatio="true" scaleX="1.3" scaleY="1.3" scaleZ="0.0" translateX="-1.0" StackPane.alignment="CENTER">
+                              <ImageView fx:id="planeIV" fitHeight="60.0" fitWidth="70.0" mouseTransparent="true" nodeOrientation="INHERIT" pickOnBounds="true" preserveRatio="true" scaleX="1.3" scaleY="1.3" scaleZ="0.0" translateX="1.0" translateY="-3.0" StackPane.alignment="CENTER">
                                  <image>
                                     <Image url="@../icons/home_plane.png" />
                                  </image>

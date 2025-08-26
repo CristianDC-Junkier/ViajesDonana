@@ -2,6 +2,7 @@ package ayuntamiento.viajes.service;
 
 import ayuntamiento.viajes.exception.ControledException;
 import ayuntamiento.viajes.model.Department;
+import ayuntamiento.viajes.model.Travel;
 import ayuntamiento.viajes.model.Traveller;
 
 import com.itextpdf.io.font.constants.StandardFonts;
@@ -50,6 +51,7 @@ public class PDFService {
     private Map<Department, Integer> departmentTraveller;
     private final static TravellerService travellerS;
     private final static DepartmentService departmentS;
+    private final static TravelService travelS;
 
     private List<Traveller> travellersList;
     private List<Traveller> firstPageTravellers;
@@ -68,6 +70,7 @@ public class PDFService {
     static {
         travellerS = new TravellerService();
         departmentS = new DepartmentService();
+        travelS = new TravelService();
     }
 
     /**
@@ -82,7 +85,7 @@ public class PDFService {
      * @throws Exception Excepciones que no mostramos al usuario vienen de print
      */
     public void printAll(String name, String dir, String sort) throws ControledException, Exception {
-        departmentTraveller = new HashMap<>();
+        /* departmentTraveller = new HashMap<>();
         own = 0;
         rent = 0;
 
@@ -93,16 +96,28 @@ public class PDFService {
 
         total = travellersList.size();
 
-        travellersList.forEach(v -> {
+        /*travellersList.forEach(v -> {
             if (v.getDepartment() == 7) {
                 own++;
             } else {
                 rent++;
             }
             departmentTraveller.put(departmentS.findById(v.getDepartment()).get(), departmentTraveller.getOrDefault(v.getTrip(), 0) + 1);
-        });
+        });*/
 
-        print(name, dir, "Todos");
+        long adminDep = LoginService.getAdminDepartment().getId();
+        List<Travel> travelList;
+
+        if (adminDep == 7) {
+            travelList = travelS.findAll();
+        } else {
+            travelList = travelS.findByDepartment(adminDep);
+        }
+
+        /*for(Travel t :travelList){
+           printType(name, dir, t.getId(), sort);
+       }*/
+        print(name, dir, travelList);
     }
 
     /**
@@ -110,18 +125,18 @@ public class PDFService {
      *
      * @param name nombre elegido para el documento
      * @param dir directorio elegido para colocar el documento
-     * @param department viaje por el que se va a filtrar
+     * @param trip viaje por el que se va a filtrar
      * @param sort criterio para ordenar la lista
      * @throws ControledException Excepciones que mostramos al usuario vienen de
      * print
      * @throws Exception Excepciones que no mostramos al usuario vienen de print
      */
-    public void printType(String name, String dir, long department, String sort) throws ControledException, Exception {
+    public void printType(String name, String dir, long trip, String sort) throws ControledException, Exception {
         departmentTraveller = new HashMap<>();
         own = 0;
         rent = 0;
 
-        travellersList = sort(travellerS.findByDepartment(department), sort);
+        travellersList = sort(travellerS.findByTrip(trip), sort);
 
         firstPageTravellers = travellersList.stream().limit(numTraInitialPage).toList();
         remainingTravellers = travellersList.stream().skip(numTraInitialPage).toList();
@@ -136,7 +151,8 @@ public class PDFService {
             }
             departmentTraveller.put(departmentS.findById(v.getDepartment()).get(), departmentTraveller.getOrDefault(v.getTrip(), 0) + 1);
         });*/
-        print(name, dir,departmentS.findById(department).get().getName());
+        List<Travel> t = List.of(travelS.findById(trip).get());
+        print(name, dir, t);
     }
 
     /**
@@ -145,11 +161,11 @@ public class PDFService {
      *
      * @param name Nombre del PDF
      * @param dir Dirección de la carpeta
-     * @param type Tipo de los viajes para el label
+     * @param trips Tipo de los viajes para el label
      * @throws ControledException Error Controlado que pasamos hacia arriba
      * @throws Exception Error No controlado que pasamos hacia arriba
      */
-    private void print(String name, String dir, String type) throws ControledException, Exception {
+    private void print(String name, String dir, List<Travel> trips) throws ControledException, Exception {
 
         File templatePDF;
 
@@ -165,10 +181,25 @@ public class PDFService {
         PdfCanvas canvas = new PdfCanvas(page);
 
         writeDate(canvas);
-        writeLabels(canvas, type);
 
-        writeTable(canvas);
-        addPage(pdfDocument, canvas);
+        if (trips.size() > 1) {
+            for (Travel t : trips) {
+                travellersList = travellerS.findByTrip(t.getId());
+
+                firstPageTravellers = travellersList.stream().limit(numTraInitialPage).toList();
+                remainingTravellers = travellersList.stream().skip(numTraInitialPage).toList();
+                writeLabels(canvas, t.getDescriptor());
+                writeTable(canvas);
+                addPage(pdfDocument, canvas);
+
+                PdfPage newPage = pdfDocument.getPage(pdfDocument.getNumberOfPages());
+                canvas = new PdfCanvas(newPage);
+            }
+        } else {
+            writeLabels(canvas, trips.getFirst().getDescriptor());
+            writeTable(canvas);
+            addPage(pdfDocument, canvas);
+        }
 
         pdfDocument.close();
         templatePDF.deleteOnExit();
@@ -283,7 +314,7 @@ public class PDFService {
         if (!type.equals("Todos")) {
             canvas.moveText(columnX[8] - columnX[2], 16f);
             canvas.setFillColor(COLORS[2]);
-            canvas.showText(String.valueOf("Viajes hacia "
+            canvas.showText(String.valueOf("Viaje "
                     + type.replace('_', ' ')));
         }
 
@@ -320,10 +351,10 @@ public class PDFService {
             canvas.showText(v.getName());
 
             canvas.moveText(columnX[2] - columnX[1], 0);
-            canvas.showText(Long.toString(v.getTrip()));
+            canvas.showText(travelS.findById(v.getTrip()).get().getDescriptor());
 
             canvas.moveText(columnX[3] - columnX[2], 0);
-            canvas.showText(Long.toString(v.getDepartment()));
+            canvas.showText(departmentS.findById(v.getDepartment()).get().getName());
 
             canvas.moveText(columnX[4] - columnX[3], 0);
             canvas.showText(v.getSignup());
@@ -365,10 +396,10 @@ public class PDFService {
             canvas.showText(v.getName());
 
             canvas.moveText(columnX[2] - columnX[1], 0);
-            canvas.showText(Long.toString(v.getTrip()));
+            canvas.showText(travelS.findById(v.getTrip()).get().getDescriptor());
 
             canvas.moveText(columnX[3] - columnX[2], 0);
-            canvas.showText(Long.toString(v.getDepartment()));
+            canvas.showText(departmentS.findById(v.getDepartment()).get().getName());
 
             canvas.moveText(columnX[3] - columnX[2], 0);
             canvas.showText(v.getSignup());
@@ -425,7 +456,7 @@ public class PDFService {
             case "Fecha de Inscripción" -> {
                 sortList = list.stream().sorted(Comparator.comparing(Traveller::getSignUpDate)).collect(Collectors.toList());
             }
-            case "Lugar de Inscripción" -> {
+            case "Departamento" -> {
                 //sortList = list.stream().sorted(Comparator.comparing(Traveller::getDepartment).reversed()).collect(Collectors.toList());
             }
             case "DNI" -> {
