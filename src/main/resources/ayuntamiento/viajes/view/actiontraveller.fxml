@@ -94,11 +94,11 @@
                         </StackPane>
                      </children>
                      <HBox.margin>
-                        <Insets left="30.0" />
+                        <Insets left="10.0" />
                      </HBox.margin>
                   </VBox>
                   <Line endX="-99.41421508789062" endY="173.58578491210938" startX="-100.0" stroke="#f22c2c" strokeWidth="2.0" styleClass="decor-line" />
-                  <VBox alignment="CENTER" prefHeight="174.0" prefWidth="250.0" spacing="5.0">
+                  <VBox alignment="CENTER" prefHeight="173.0" prefWidth="302.0" spacing="5.0">
                      <children>
                         <StackPane prefHeight="50.0">
                            <children>
@@ -110,7 +110,7 @@
                                     <Insets right="10.0" />
                                  </StackPane.margin>
                               </Label>
-                              <HBox alignment="CENTER_LEFT" prefHeight="50.0" spacing="15.0">
+                              <HBox alignment="CENTER_LEFT" prefHeight="50.0" prefWidth="287.0" spacing="15.0">
                                  <children>
                                     <ImageView fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
                                        <image>
@@ -120,7 +120,7 @@
                                           <Insets left="20.0" />
                                        </HBox.margin>
                                     </ImageView>
-                                    <ChoiceBox fx:id="tripCB" prefHeight="25.0" prefWidth="175.0" />
+                                    <ChoiceBox fx:id="tripCB" prefHeight="25.0" prefWidth="275.0" />
                                  </children>
                               </HBox>
                            </children>
@@ -145,14 +145,14 @@
                                           <Insets left="20.0" />
                                        </HBox.margin>
                                     </ImageView>
-                                    <ChoiceBox fx:id="departmentCB" prefHeight="25.0" prefWidth="175.0" />
+                                    <ChoiceBox fx:id="departmentCB" prefHeight="25.0" prefWidth="275.0" />
                                  </children>
                               </HBox>
                            </children>
                         </StackPane>
                      </children>
                      <HBox.margin>
-                        <Insets right="30.0" />
+                        <Insets right="10.0" />
                      </HBox.margin>
                   </VBox>
                </children>
