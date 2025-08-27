@@ -139,9 +139,9 @@ public class ActionTravellerController implements Initializable {
         ChoiceBoxUtil.setDepartmentNameConverter(departmentCB);
 
         // Carga viajes desde TravelService
-        List<Travel> travels = travelS.findAll();
+        List<Travel> travels = travelS.findByDepartment(departmentCB.getSelectionModel().getSelectedItem().getId());
         tripCB.getItems().setAll(travels);
-        tripCB.setValue(travels.isEmpty() ? null : travels.get(0));
+        tripCB.setValue(travels.isEmpty() ? null : tripCB.getItems().getFirst());
 
         ChoiceBoxUtil.setTravelConverter(tripCB);
 
@@ -155,6 +155,12 @@ public class ActionTravellerController implements Initializable {
             titleLabel.setText("Modificar Viajero");
             populateFields();
         }
+
+        departmentCB.setOnAction((event) -> {
+            List<Travel> trips = travelS.findByDepartment(departmentCB.getSelectionModel().getSelectedItem().getId());
+            tripCB.getItems().setAll(trips);
+            tripCB.setValue(trips.isEmpty() ? null : tripCB.getItems().getFirst());
+        });
     }
 
     /**
