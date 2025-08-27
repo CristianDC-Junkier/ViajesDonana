@@ -77,13 +77,12 @@ public class PDFService {
      * @throws Exception Excepciones que no mostramos al usuario vienen de print
      */
     public void printAll(String name, String dir, String sort) throws ControledException, Exception {
-        long adminDep = LoginService.getAdminDepartment().getId();
         List<Travel> travelList;
 
-        if (adminDep == 7) {
+        if (LoginService.getAdminDepartment().getName().equalsIgnoreCase("Admin")) {
             travelList = travelS.findAll();
         } else {
-            travelList = travelS.findByDepartment(adminDep);
+            travelList = travelS.findByDepartment(LoginService.getAdminDepartment().getId());
         }
 
         print(name, dir, travelList);
