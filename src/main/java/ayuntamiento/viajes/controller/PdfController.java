@@ -23,7 +23,6 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TextField;
 import javafx.stage.DirectoryChooser;
-import javafx.util.StringConverter;
 
 /**
  * Clase que se encarga del control de la vista de creación de pdfs así como de
@@ -37,7 +36,7 @@ import javafx.util.StringConverter;
 public class PdfController extends BaseController implements Initializable {
 
     @FXML
-    private ChoiceBox <String> sortCB;
+    private ChoiceBox<String> sortCB;
     @FXML
     private ChoiceBox<Travel> tripCB;
     @FXML
@@ -48,6 +47,7 @@ public class PdfController extends BaseController implements Initializable {
     private final static PDFService pdf;
     private final static TravelService TravelS;
 
+    private static final String DEPARTMENT = LoginService.getAdminDepartment().getId() == 7 ? "" : LoginService.getAdminDepartment().getName() + "-";
     private static final String INVALID_FILENAME_CHARS = "[\\\\/:*?\"<>|]";
     private static final String DATE_FORMAT = PropertiesUtil.getProperty("DATE_FORMAT");
     private static final DateTimeFormatter dateformatter = DateTimeFormatter.ofPattern(DATE_FORMAT);
@@ -68,13 +68,13 @@ public class PdfController extends BaseController implements Initializable {
         allTravels.setId(0);
         allTravels.setDescriptor("Todos");
         allTravels.setBus(0);
-        
+
         tripCB.getItems().add(allTravels);
-        List<Travel> travels = TravelS.findAll(); //findByDepartment(LoginService.getAdminLog().getDepartment());
+        List<Travel> travels = TravelS.findAll();
         tripCB.getItems().addAll(travels);
         tripCB.getSelectionModel().selectFirst();
         ChoiceBoxUtil.setTravelConverter(tripCB);
-        
+
         tripCB.setOnAction((event) -> {
             changePDFName(tripCB.getSelectionModel().getSelectedItem().getDescriptor());
         });
@@ -83,7 +83,7 @@ public class PdfController extends BaseController implements Initializable {
         File defaultDir = new File(userHome, "Downloads");
         dirPDF.setText(defaultDir.getAbsolutePath());
 
-        namePDF.setText("Listado-Viajeros-"
+        namePDF.setText("Listado-Viajeros-" + DEPARTMENT
                 + LocalDate.now().format(dateformatter));
     }
 
@@ -130,21 +130,21 @@ public class PdfController extends BaseController implements Initializable {
         } else {
             try {
 
-                if(tripCB.getValue().getId() == 0){
-                     if (travellerS.findAll().isEmpty()) {
-                            info("No existen viajeros registrados", false);
-                        } else {
-                            pdf.printAll(namePDF.getText(), dirPDF.getText(), sortCB.getValue());
-                        }
-                }else{
-                     if (travellerS.findByTrip(tripCB.getValue().getId()).isEmpty()) {
-                            info("No existen viajeros registrados para el viaje " + 
-                                    tripCB.getValue().getDescriptor() + " - Bus " + tripCB.getValue().getBus(), false);
-                        } else {
-                            pdf.printType(namePDF.getText(), dirPDF.getText(), 
-                                    tripCB.getValue().getId(),
-                                    sortCB.getValue());
-                        }
+                if (tripCB.getValue().getId() == 0) {
+                    if (travellerS.findAll().isEmpty()) {
+                        info("No existen viajeros registrados", false);
+                    } else {
+                        pdf.printAll(namePDF.getText(), dirPDF.getText(), sortCB.getValue());
+                    }
+                } else {
+                    if (travellerS.findByTrip(tripCB.getValue().getId()).isEmpty()) {
+                        info("No existen viajeros registrados para el viaje "
+                                + tripCB.getValue().getDescriptor() + " - Bus " + tripCB.getValue().getBus(), false);
+                    } else {
+                        pdf.printType(namePDF.getText(), dirPDF.getText(),
+                                tripCB.getValue().getId(),
+                                sortCB.getValue());
+                    }
                 }
 
             } catch (Exception ex) {
@@ -169,10 +169,10 @@ public class PdfController extends BaseController implements Initializable {
     @FXML
     private void changePDFName(String extra) {
         if ("Todos".equals(extra)) {
-            namePDF.setText("Listado-Viajes-"
+            namePDF.setText("Listado-Viajes-" + DEPARTMENT
                     + LocalDate.now().format(dateformatter));
         } else {
-            namePDF.setText("Listado-Viajes-" + toEnumCompatible(extra) + "-"
+            namePDF.setText("Listado-Viajes-" + DEPARTMENT + toEnumCompatible(extra) + "-"
                     + LocalDate.now().format(dateformatter));
         }
     }

@@ -1,7 +1,6 @@
 package ayuntamiento.viajes.service;
 
 import ayuntamiento.viajes.exception.ControledException;
-import ayuntamiento.viajes.model.Department;
 import ayuntamiento.viajes.model.Travel;
 import ayuntamiento.viajes.model.Traveller;
 
@@ -30,8 +29,6 @@ import java.io.OutputStream;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Comparator;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
@@ -44,11 +41,6 @@ import java.util.stream.Collectors;
  */
 public class PDFService {
 
-    private int total;
-    private int own;
-    private int rent;
-
-    private Map<Department, Integer> departmentTraveller;
     private final static TravellerService travellerS;
     private final static DepartmentService departmentS;
     private final static TravelService travelS;
@@ -85,26 +77,6 @@ public class PDFService {
      * @throws Exception Excepciones que no mostramos al usuario vienen de print
      */
     public void printAll(String name, String dir, String sort) throws ControledException, Exception {
-        /* departmentTraveller = new HashMap<>();
-        own = 0;
-        rent = 0;
-
-        travellersList = sort(travellerS.findAll(), sort);
-
-        firstPageTravellers = travellersList.stream().limit(numTraInitialPage).toList();
-        remainingTravellers = travellersList.stream().skip(numTraInitialPage).toList();
-
-        total = travellersList.size();
-
-        /*travellersList.forEach(v -> {
-            if (v.getDepartment() == 7) {
-                own++;
-            } else {
-                rent++;
-            }
-            departmentTraveller.put(departmentS.findById(v.getDepartment()).get(), departmentTraveller.getOrDefault(v.getTrip(), 0) + 1);
-        });*/
-
         long adminDep = LoginService.getAdminDepartment().getId();
         List<Travel> travelList;
 
@@ -114,9 +86,6 @@ public class PDFService {
             travelList = travelS.findByDepartment(adminDep);
         }
 
-        /*for(Travel t :travelList){
-           printType(name, dir, t.getId(), sort);
-       }*/
         print(name, dir, travelList);
     }
 
@@ -132,25 +101,11 @@ public class PDFService {
      * @throws Exception Excepciones que no mostramos al usuario vienen de print
      */
     public void printType(String name, String dir, long trip, String sort) throws ControledException, Exception {
-        departmentTraveller = new HashMap<>();
-        own = 0;
-        rent = 0;
-
         travellersList = sort(travellerS.findByTrip(trip), sort);
 
         firstPageTravellers = travellersList.stream().limit(numTraInitialPage).toList();
         remainingTravellers = travellersList.stream().skip(numTraInitialPage).toList();
 
-        total = travellersList.size();
-
-        /*travellersList.forEach(v -> {
-            if ("Propiedad".equals(v.getDepartment().toString())) {
-                own++;
-            } else {
-                rent++;
-            }
-            departmentTraveller.put(departmentS.findById(v.getDepartment()).get(), departmentTraveller.getOrDefault(v.getTrip(), 0) + 1);
-        });*/
         List<Travel> t = List.of(travelS.findById(trip).get());
         print(name, dir, t);
     }
@@ -179,15 +134,14 @@ public class PDFService {
                 new PdfWriter(outFolder));
         PdfPage page = pdfDocument.getPage(1);
         PdfCanvas canvas = new PdfCanvas(page);
-
-        writeDate(canvas);
-
+        
         if (trips.size() > 1) {
             for (Travel t : trips) {
                 travellersList = travellerS.findByTrip(t.getId());
 
                 firstPageTravellers = travellersList.stream().limit(numTraInitialPage).toList();
                 remainingTravellers = travellersList.stream().skip(numTraInitialPage).toList();
+                writeDate(canvas);
                 writeLabels(canvas, t);
                 writeTable(canvas);
                 addPage(pdfDocument, canvas);
@@ -201,6 +155,7 @@ public class PDFService {
                 }
             }
         } else {
+            writeDate(canvas);
             writeLabels(canvas, trips.getFirst());
             writeTable(canvas);
             addPage(pdfDocument, canvas);
@@ -248,7 +203,7 @@ public class PDFService {
         }
 
         for (int i = 0; i < remainingTravellers.size(); i += numTraNextPage) {
-            List<Traveller> pageVehicles = remainingTravellers.subList(
+            List<Traveller> pageTravellers = remainingTravellers.subList(
                     i, Math.min(i + numTraNextPage, remainingTravellers.size())
             );
 
@@ -263,7 +218,7 @@ public class PDFService {
             /*Obtenemos el canvas de la nueva página añadida*/
             PdfPage newPage = pdfDocument.getPage(pdfDocument.getNumberOfPages());
             canvas = new PdfCanvas(newPage);
-            writeAddTable(canvas, pageVehicles);
+            writeAddTable(canvas, pageTravellers);
         }
 
     }
@@ -313,10 +268,10 @@ public class PDFService {
         canvas.showText(Integer.toString(travel.getSeats_total()));
         canvas.moveText(columnX[1] - columnX[0], 0);
         canvas.showText(Integer.toString(travel.getSeats_occupied()));
-        /*canvas.moveText(columnX[2] - columnX[1], 0);
-        canvas.showText(String.valueOf(rent));*/
+        canvas.moveText(columnX[2] - columnX[1], 0);
+        canvas.showText(Integer.toString(travel.getSeats_total() - travel.getSeats_occupied()));
 
-        canvas.moveText(columnX[7] - columnX[2], 16f);
+        canvas.moveText(columnX[6] - columnX[2], 10f);
         canvas.setFillColor(COLORS[2]);
         canvas.showText("Viaje " + travel.getDescriptor());
 
@@ -386,7 +341,7 @@ public class PDFService {
 
         /*Posiciones absolutas para cada columna*/
         float[] columnX = new float[]{
-            50f, 105f, 255f, 410f, 500f};
+            50f, 105f, 260f, 415f, 500f};
 
         for (Traveller v : pageTravellers) {
             canvas.beginText();
