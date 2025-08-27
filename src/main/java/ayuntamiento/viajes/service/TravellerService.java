@@ -47,7 +47,7 @@ public class TravellerService {
         boolean travellerExists = travellerList.stream()
                 .anyMatch(traveller -> traveller.getDni().equalsIgnoreCase(entity.getDni()));
         if (travellerExists) {
-            result = null;
+            return null;
         }
         try {
             result = (Traveller) travellerDAO.save(entity);
@@ -170,7 +170,11 @@ public class TravellerService {
      */
     private static void errorHandler(APIException apiE, boolean allowRetry, String method) throws ControledException, QuietException, Exception {
         switch (apiE.getStatusCode()) {
-            case 400, 404 -> {
+            case 400,409 -> {
+                rechargeList(false);
+                throw new ControledException(apiE.getMessage(), "TravellerService - " + method);
+            }
+            case 404 -> {
                 rechargeList(false);
                 throw new ControledException(apiE.getMessage(), "TravellerService - " + method);
             }

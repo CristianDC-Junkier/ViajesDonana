@@ -1,6 +1,5 @@
 @echo off
 setlocal
-chcp 65001
 
 :: Configurar variables
 set APP_NAME=Viajes Doñana - Almonte

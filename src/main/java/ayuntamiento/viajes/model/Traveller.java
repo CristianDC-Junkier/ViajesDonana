@@ -19,6 +19,7 @@ public class Traveller {
     private long department;
     private long trip;
     private LocalDate signup;
+    private int version;
 
     private static final String SHOW_DATE_FORMAT = PropertiesUtil.getProperty("SHOW_DATE_FORMAT");
     private static final DateTimeFormatter formatter_Show_Date = DateTimeFormatter.ofPattern(SHOW_DATE_FORMAT);
@@ -27,13 +28,13 @@ public class Traveller {
     public Traveller() {
     }
 
-    public Traveller(String dni, String name, long deparment, long trip, String sign_upString) {
+    public Traveller(String dni, String name, long deparment, long trip, String sign_upString, int version) {
         this.dni = dni;
         this.name = name;
         this.department = deparment;
         this.trip = trip;
         this.signup = (sign_upString != null && !sign_upString.isBlank()) ? parseSignUp(sign_upString) : null;
-
+        this.version = version;
     }
 
     public long getDepartment() {
@@ -89,6 +90,13 @@ public class Traveller {
             return null;
         }
         return LocalDate.parse(dateString, formatter_Show_Date);
+    }
+    
+    public int getVersion() {
+        return version;
+    }
+    public void setVersion(int version) {
+        this.version = version;
     }
 
 }
