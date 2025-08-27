@@ -31,7 +31,7 @@ import javafx.stage.DirectoryChooser;
  *
  * @author Cristian Delgado Cruz
  * @since 2025-06-04
- * @version 1.1
+ * @version 1.2
  */
 public class PdfController extends BaseController implements Initializable {
 

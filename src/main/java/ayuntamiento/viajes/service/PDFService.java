@@ -37,7 +37,7 @@ import java.util.stream.Collectors;
  *
  * @author Cristian Delgado Cruz
  * @since 2025-06-03
- * @version 1.2
+ * @version 1.3
  */
 public class PDFService {
 
