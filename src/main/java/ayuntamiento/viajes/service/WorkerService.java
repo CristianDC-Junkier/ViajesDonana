@@ -1,10 +1,10 @@
 package ayuntamiento.viajes.service;
 
-import ayuntamiento.viajes.dao.AdminDAO;
+import ayuntamiento.viajes.dao.WorkerDAO;
 import ayuntamiento.viajes.exception.APIException;
 import ayuntamiento.viajes.exception.ControledException;
 import ayuntamiento.viajes.exception.QuietException;
-import ayuntamiento.viajes.model.Admin;
+import ayuntamiento.viajes.model.Worker;
 import java.util.ArrayList;
 
 import java.util.List;
@@ -17,13 +17,13 @@ import java.util.List;
  * @since 2025-06-02
  * @version 1.0
  */
-public class AdminService {
+public class WorkerService {
 
-    private static final AdminDAO adminDAO;
-    private static List<Admin> adminList;
+    private static final WorkerDAO adminDAO;
+    private static List<Worker> adminList;
 
     static {
-        adminDAO = new AdminDAO();
+        adminDAO = new WorkerDAO();
         adminList = new ArrayList<>();
     }
 
@@ -36,12 +36,12 @@ public class AdminService {
      * @throws ControledException una excepción controlada
      * @throws Exception una excepción no controlada
      */
-    public Admin save(Admin entity) throws ControledException, Exception {
+    public Worker save(Worker entity) throws ControledException, Exception {
         return save(entity, true);
     }
 
-    private Admin save(Admin entity, boolean allowRetry) throws ControledException, Exception {
-        Admin result;
+    private Worker save(Worker entity, boolean allowRetry) throws ControledException, Exception {
+        Worker result;
         boolean userExists = adminList.stream()
                 .anyMatch(user -> user.getUsername().equals(entity.getUsername()));
         if (userExists) {
@@ -49,7 +49,7 @@ public class AdminService {
         }
         entity.setPassword(entity.getPassword());
         try {
-            result = (Admin) adminDAO.save(entity);
+            result = (Worker) adminDAO.save(entity);
             adminList.add(result);
             return result;
         } catch (APIException apiE) {
@@ -67,12 +67,12 @@ public class AdminService {
      * @throws ControledException una excepción controlada
      * @throws Exception una excepción no controlada
      */
-    public Admin modify(Admin entity) throws ControledException, Exception {
+    public Worker modify(Worker entity) throws ControledException, Exception {
         return modify(entity, true);
     }
 
-    private Admin modify(Admin entity, boolean allowRetry) throws ControledException, Exception {
-        Admin result;
+    private Worker modify(Worker entity, boolean allowRetry) throws ControledException, Exception {
+        Worker result;
 
         boolean userExists = adminList.stream()
                 .anyMatch(user -> user.getUsername().equals(entity.getUsername())
@@ -83,7 +83,7 @@ public class AdminService {
 
         entity.setPassword(entity.getPassword());
         try {
-            result = (Admin) adminDAO.modify(entity, entity.getId());
+            result = (Worker) adminDAO.modify(entity, entity.getId());
 
             for (int i = 0; i < adminList.size(); i++) {
                 if (adminList.get(i).getId() == entity.getId()) {
@@ -112,12 +112,12 @@ public class AdminService {
      * @throws ControledException una excepción controlada
      * @throws Exception una excepción no controlada
      */
-    public Admin modifyProfile(Admin entity) throws ControledException, Exception {
+    public Worker modifyProfile(Worker entity) throws ControledException, Exception {
         return modifyProfile(entity, true);
     }
 
-    private Admin modifyProfile(Admin entity, boolean allowRetry) throws ControledException, Exception {
-        Admin result;
+    private Worker modifyProfile(Worker entity, boolean allowRetry) throws ControledException, Exception {
+        Worker result;
         boolean userExists = adminList.stream()
                 .anyMatch(user -> user.getUsername().equals(entity.getUsername())
                 && user.getId() != entity.getId());
@@ -129,7 +129,7 @@ public class AdminService {
         entity.setPassword(entity.getPassword());
 
         try {
-            result = (Admin) adminDAO.modify(entity, entity.getId());
+            result = (Worker) adminDAO.modify(entity, entity.getId());
             LoginService.setAdminLog(result);
             adminList = null;
             return result;
@@ -148,11 +148,11 @@ public class AdminService {
      * @throws ControledException una excepción controlada
      * @throws Exception una excepción no controlada
      */
-    public boolean delete(Admin entity) throws ControledException, Exception {
+    public boolean delete(Worker entity) throws ControledException, Exception {
         return delete(entity, true);
     }
 
-    private boolean delete(Admin entity, boolean allowRetry) throws ControledException, Exception {
+    private boolean delete(Worker entity, boolean allowRetry) throws ControledException, Exception {
         boolean deleted;
 
         try {
@@ -173,7 +173,7 @@ public class AdminService {
         }
     }
 
-    public List<Admin> findAll() {
+    public List<Worker> findAll() {
         return adminList;
     }
 

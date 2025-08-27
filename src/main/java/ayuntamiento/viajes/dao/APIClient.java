@@ -96,8 +96,8 @@ public abstract class APIClient<T> {
     }
 
     public List<T> findByDepartment(long department) throws APIException, Exception {
-        String uriStr = BASE_URL + "/" + endpoint + "/department/" + department;
-        System.out.println("Enviando request a: " + uriStr);
+        //String uriStr = BASE_URL + "/" + endpoint + "/department/" + department;
+        //System.out.println("Enviando request a: " + uriStr);
 
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(BASE_URL + "/" + endpoint + "/department/" + department))

@@ -32,8 +32,7 @@ public class ManagerUtil {
             put("traveller", Map.of("title", "Gestión de Inscripciones", "width", 1000, "height", 800));
             put("travel", Map.of("title", "Gestión de Viajes", "width", 1000, "height", 800));
             put("pdf", Map.of("title", "Generador de PDFs", "width", 1000, "height", 800));
-            put("admin", Map.of("title", "Gestión de Usuarios", "width", 1000, "height", 800));
-            put("profile", Map.of("title", "Mi Perfil", "width", 1000, "height", 800));
+            put("worker", Map.of("title", "Gestión de Usuarios", "width", 1000, "height", 800));
             put("service_terms", Map.of("title", "Terminos de Servicio", "width", 1000, "height", 800));
         }
     };
@@ -41,7 +40,7 @@ public class ManagerUtil {
     /*Lista de las páginas que siempre llevan al home, aunque sean invocadas
     desde otra parte*/
     private static final Set<String> RESET_TO_HOME
-            = Set.of("admin", "profile", "service_terms");
+            = Set.of("worker", "service_terms");
 
     /*Valor inicial de las páginas actual y previa*/
     static {
@@ -60,13 +59,13 @@ public class ManagerUtil {
      */
     public static void moveTo(String fxml) {
         try {
+            PREVIOUS = CURRENT;
+            CURRENT = fxml;
 
             Map<String, Object> page = PAGE_INFO.get(fxml);
             App.setRoot(fxml, (String) page.get("title"));
             App.setDim((int) page.get("width"), (int) page.get("height"));
 
-            PREVIOUS = CURRENT;
-            CURRENT = fxml;
         } catch (IOException ioE) {
             log("Error al moverse entre páginas - Desde " + PREVIOUS + " a "
                     + CURRENT
@@ -81,12 +80,12 @@ public class ManagerUtil {
     public static void goBack() {
         try {
 
+            String temp = CURRENT;
+            CURRENT = PREVIOUS;
+
             Map<String, Object> page = PAGE_INFO.get(PREVIOUS);
             App.setRoot(PREVIOUS, (String) page.get("title"));
             App.setDim((int) page.get("width"), (int) page.get("height"));
-
-            String temp = CURRENT;
-            CURRENT = PREVIOUS;
 
             if (RESET_TO_HOME.contains(temp)) {
                 PREVIOUS = "home";
@@ -115,7 +114,7 @@ public class ManagerUtil {
             App.setDim((int) page.get("width"), (int) page.get("height"));
 
         } catch (IOException ioE) {
-            log("Error al resetear: \n" 
+            log("Error al resetear: \n"
                     + ioE.getMessage() + "\n"
                     + ioE.getCause());
         }

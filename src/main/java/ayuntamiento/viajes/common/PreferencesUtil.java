@@ -68,7 +68,8 @@ public class PreferencesUtil {
             preferences = mapper.readValue(file, Preferences.class);
         } else {
             preferences = new Preferences();
-            savePreferences();
+            preferences.setRemember(null);
+            //savePreferences();
         }
     }
 

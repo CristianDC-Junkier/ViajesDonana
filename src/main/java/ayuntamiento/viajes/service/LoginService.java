@@ -2,7 +2,7 @@ package ayuntamiento.viajes.service;
 
 import ayuntamiento.viajes.dao.LoginDAO;
 import ayuntamiento.viajes.exception.LoginException;
-import ayuntamiento.viajes.model.Admin;
+import ayuntamiento.viajes.model.Worker;
 import ayuntamiento.viajes.model.Department;
 import com.fasterxml.jackson.databind.JsonNode;
 
@@ -18,7 +18,7 @@ public class LoginService {
 
     private static final LoginDAO loginDAO;
     private static String secret_Token;
-    private static Admin adminLog;
+    private static Worker adminLog;
     private static Department departmentLog;
 
     static {
@@ -38,10 +38,10 @@ public class LoginService {
      *
      * @return El usuario logeado
      */
-    public static Admin getAdminLog() {
+    public static Worker getAdminLog() {
         return adminLog;
     }
-    public static void setAdminLog(Admin adminLog) {
+    public static void setAdminLog(Worker adminLog) {
         LoginService.adminLog = adminLog;
     }
 
@@ -59,7 +59,7 @@ public class LoginService {
 
     public void login(String username, String password) throws LoginException, Exception {
         JsonNode result = loginDAO.login(username, password);
-        adminLog = new Admin();
+        adminLog = new Worker();
         adminLog.setUsername(username);
         adminLog.setPassword(password);
         adminLog.setId(result.get("id").asLong());

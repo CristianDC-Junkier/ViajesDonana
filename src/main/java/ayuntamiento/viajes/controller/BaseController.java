@@ -7,7 +7,7 @@ import ayuntamiento.viajes.controller.InfoController.DialogResult;
 import ayuntamiento.viajes.exception.ControledException;
 import ayuntamiento.viajes.exception.QuietException;
 
-import ayuntamiento.viajes.service.AdminService;
+import ayuntamiento.viajes.service.WorkerService;
 import ayuntamiento.viajes.service.LoginService;
 
 import java.io.IOException;
@@ -93,10 +93,9 @@ public abstract class BaseController {
      * Cambiar el texto del menú de usuarios/perfil segun el usuario
      */
     public void showUserOption() {
-        if (LoginService.getAdminLog().getId() == 1) {
+        if (LoginService.getAdminDepartment().getName().equals("Admin")) {
             users.setText("Administración de Usuarios");
         } else {
-            //users.setText("Mi perfil");
             users.setDisable(true);
         }
     }
@@ -105,20 +104,16 @@ public abstract class BaseController {
     private void userspanel() throws IOException {
         if (LoginService.getAdminDepartment().getName().equalsIgnoreCase("Admin")) {
             try {
-                AdminService.rechargeList();
-                ManagerUtil.moveTo("admin");
+                WorkerService.rechargeList();
+                ManagerUtil.moveTo("worker");
             } catch (ControledException cE) {
                 error(cE);
             } catch (QuietException qE) {
                 error(qE);
-                ManagerUtil.moveTo("admin");
+                ManagerUtil.moveTo("worker");
             } catch (Exception ex) {
                 error(ex);
             }
-
-        } else {
-            //ManagerUtil.moveTo("profile");
-
         }
     }
 

@@ -2,7 +2,7 @@ package ayuntamiento.viajes.dao;
 
 import ayuntamiento.viajes.common.PropertiesUtil;
 import ayuntamiento.viajes.exception.LoginException;
-import ayuntamiento.viajes.model.Admin;
+import ayuntamiento.viajes.model.Worker;
 import com.fasterxml.jackson.databind.JsonNode;
 import java.io.IOException;
 import java.net.ConnectException;
@@ -19,10 +19,10 @@ import java.net.http.HttpResponse;
  * @since 2025-06-02
  * @version 1.0
  */
-public class LoginDAO extends APIClient<Admin> {
+public class LoginDAO extends APIClient<Worker> {
 
     public LoginDAO() {
-        super(Admin.class,"status");
+        super(Worker.class,"status");
     }
 
     /**

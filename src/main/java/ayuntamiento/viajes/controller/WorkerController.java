@@ -17,8 +17,8 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.Button;
 import javafx.collections.FXCollections;
 
-import ayuntamiento.viajes.service.AdminService;
-import ayuntamiento.viajes.model.Admin;
+import ayuntamiento.viajes.service.WorkerService;
+import ayuntamiento.viajes.model.Worker;
 import ayuntamiento.viajes.model.Department;
 import ayuntamiento.viajes.service.DepartmentService;
 import ayuntamiento.viajes.service.LoginService;
@@ -27,23 +27,24 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ObservableValue;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TableColumn.CellDataFeatures;
+import javafx.scene.layout.VBox;
 import javafx.util.Callback;
 
 /**
  * Clase controladora que se encarga del funcionamiento de la pestaña de
- * administración de administradores(usuarios).
+ * administración de trabajadores.
  *
  * @author Ramón Iglesias Granados
  * @since 2025-06-03
- * @version 1.6
+ * @version 1.7
  */
-public class AdminController extends BaseController implements Initializable {
+public class WorkerController extends BaseController implements Initializable {
 
-    private final static AdminService adminS;
+    private final static WorkerService workerS;
     private final static DepartmentService departmentS;
 
     @FXML
-    private TableView<Admin> userTable;
+    private TableView<Worker> userTable;
     @FXML
     private TableColumn idColumn;
     @FXML
@@ -51,6 +52,8 @@ public class AdminController extends BaseController implements Initializable {
     @FXML
     private TableColumn departmentColumn;
 
+    @FXML
+    private VBox addVBox;
     @FXML
     private TextField addUserNameTF;
     @FXML
@@ -75,14 +78,14 @@ public class AdminController extends BaseController implements Initializable {
     private final int numMaxChars = 16;
 
     static {
-        adminS = new AdminService();
+        workerS = new WorkerService();
         departmentS = new DepartmentService();
     }
 
     /**
-     * Metodo que añade un administrador Controla que no se envie un nombre o clave de
-     * un tamaño superior a 16 carácteres, ni tampoco vacio, colocando el field
-     * en rojo si algo falla
+     * Metodo que añade un trabajador, controla que no se envie un nombre o
+     * clave de un tamaño superior a 16 carácteres, ni tampoco vacio, colocando
+     * el field en rojo si algo falla
      */
     @FXML
     private void add() {
@@ -90,36 +93,36 @@ public class AdminController extends BaseController implements Initializable {
             if (SecurityUtil.checkBadOrEmptyString(addUserNameTF.getText())) {
                 addUserNameTF.setStyle(errorStyle);
                 throw new ControledException("El nombre no debe estar vacía ni contener los siguientes carácteres: <--> , <;>, <'>, <\">, </*>, <*/>",
-                        "UserController - add");
+                        "WorkerController - add");
 
             } else if (SecurityUtil.checkBadOrEmptyString(addUserPassTF.getText())) {
                 addUserPassTF.setStyle(errorStyle);
                 throw new ControledException("La contaseña no debe estar vacía ni contener los siguientes carácteres: <--> , <;>, <'>, <\">, </*>, <*/>",
-                        "UserController - add");
+                        "WorkerController - add");
             } else if (addUserNameTF.getText().length() > numMaxChars) {
                 addUserPassTF.setStyle(errorStyle);
                 throw new ControledException("El nombre no debe contener más de 16 carácteres",
-                        "UserController - add");
+                        "WorkerController - add");
             } else if (addUserPassTF.getText().length() > numMaxChars) {
                 addUserPassTF.setStyle(errorStyle);
                 throw new ControledException("La contraseña no debe contener más de 16 carácteres",
-                        "UserController - add");
+                        "WorkerController - add");
             } else {
-                Admin u = new Admin(addUserNameTF.getText(), addUserPassTF.getText(), addUserDepCB.getValue().getId());
+                Worker u = new Worker(addUserNameTF.getText(), addUserPassTF.getText(), addUserDepCB.getValue().getId());
 
-                if (adminS.save(u) == null) {
+                if (workerS.save(u) == null) {
                     addUserPassTF.setStyle(errorStyle);
                     throw new ControledException("El nombre de usuario ya existe: " + u.getUsername(),
-                            "UserController - add");
+                            "WorkerController - add");
                 } else {
                     LoggerUtil.log("Usuario: " + u.getUsername() + " añadido correctamente");
-                    refreshTable(userTable, adminS.findAll());
+                    refreshTable(userTable, workerS.findAll());
                     reset();
                 }
             }
         } catch (ControledException cE) {
             error(cE);
-            refreshTable(userTable, adminS.findAll());
+            refreshTable(userTable, workerS.findAll());
         } catch (Exception ex) {
             error(ex);
             reset();
@@ -127,39 +130,39 @@ public class AdminController extends BaseController implements Initializable {
     }
 
     /**
-     * Metodo que modifica un administrador Controla que no se envie un nombre o clave
-     * de un tamaño superior a 16 carácteres, ni tampoco vacio, colocando el
-     * field en rojo si algo falla
+     * Metodo que modifica un trabajador, controla que no se envie un nombre o
+     * clave de un tamaño superior a 16 carácteres, ni tampoco vacio, colocando
+     * el field en rojo si algo falla
      */
     @FXML
     private void modify() {
         try {
             if (userTable.getSelectionModel().getSelectedItem() == null) {
                 throw new ControledException("Debe seleccionar un usuario de la tabla",
-                        "UserController - modify");
+                        "WorkerController - modify");
             } else if (SecurityUtil.checkBadOrEmptyString(modUserNameTF.getText())) {
                 modUserNameTF.setStyle(errorStyle);
                 throw new ControledException("El nombre no debe estar vacía ni contener los siguientes carácteres: <--> , <;>, <'>, <\">, </*>, <*/>",
-                        "UserController - modify");
+                        "WorkerController - modify");
             } else if (SecurityUtil.checkBadOrEmptyString(modUserPassTF.getText())) {
                 modUserPassTF.setStyle(errorStyle);
                 throw new ControledException("La contraseña no debe estar vacía ni contener los siguientes carácteres: <--> , <;>, <'>, <\">, </*>, <*/>",
-                        "UserController - modify");
+                        "WorkerController - modify");
 
             } else if (modUserNameTF.getText().length() > numMaxChars) {
                 modUserNameTF.setStyle(errorStyle);
                 throw new ControledException("El nombre no debe contener más de 16 carácteres ",
-                        "UserController - modify");
+                        "WorkerController - modify");
 
             } else if (modUserPassTF.getText().length() > numMaxChars) {
                 modUserPassTF.setStyle(errorStyle);
                 throw new ControledException("La contraseña no debe contener más de 16 carácteres ",
-                        "UserController - modify");
+                        "WorkerController - modify");
             } else {
-                Admin u = new Admin(modUserNameTF.getText(), modUserPassTF.getText(), modUserDepCB.getValue().getId());
+                Worker u = new Worker(modUserNameTF.getText(), modUserPassTF.getText(), modUserDepCB.getValue().getId());
                 u.setId(userTable.getSelectionModel().getSelectedItem().getId());
 
-                Admin userMod = adminS.modify(u);
+                Worker userMod = workerS.modify(u);
                 if (userMod == null) {
                     modUserNameTF.setStyle(errorStyle);
                     throw new ControledException("El nombre de usuario ya existe: " + u.getUsername(), "UserController - modify");
@@ -168,14 +171,14 @@ public class AdminController extends BaseController implements Initializable {
                         ManagerUtil.reload();
                     } else {
                         info("Usuario, " + userMod.getUsername() + ", modificado con éxito", false);
-                        refreshTable(userTable, adminS.findAll());
+                        refreshTable(userTable, workerS.findAll());
                         reset();
                     }
                 }
             }
         } catch (ControledException cE) {
             error(cE);
-            refreshTable(userTable, adminS.findAll());
+            refreshTable(userTable, workerS.findAll());
         } catch (Exception ex) {
             error(ex);
             reset();
@@ -183,8 +186,9 @@ public class AdminController extends BaseController implements Initializable {
     }
 
     /**
-     * Metodo que elimina un administrador, controla que el usuario administrador, preguntando
-     * si de verdad quieres hacerlo, colocando el field en rojo si algo falla
+     * Metodo que elimina un trabajador, controla que el usuario administrador,
+     * preguntando si de verdad quieres hacerlo, colocando el field en rojo si
+     * algo falla
      */
     @FXML
     private void delete() {
@@ -192,11 +196,11 @@ public class AdminController extends BaseController implements Initializable {
             if (userTable.getSelectionModel().getSelectedItem() == null) {
                 delUserNameTF.setStyle(errorStyle);
                 throw new ControledException("Debe seleccionar un usuario de la tabla",
-                        "UserController - delete");
+                        "WorkerController - delete");
             } else if (info("¿Está seguro de que quiere eliminar este usuario?", true) == InfoController.DialogResult.ACCEPT) {
-                if (adminS.delete(userTable.getSelectionModel().getSelectedItem())) {
+                if (workerS.delete(userTable.getSelectionModel().getSelectedItem())) {
                     info("El Usuario fue eliminado con éxito", false);
-                    refreshTable(userTable, adminS.findAll());
+                    refreshTable(userTable, workerS.findAll());
                     if (LoginService.getAdminLog() == null) {
                         ManagerUtil.reload();
                     }
@@ -206,7 +210,7 @@ public class AdminController extends BaseController implements Initializable {
             }
         } catch (ControledException cE) {
             error(cE);
-            refreshTable(userTable, adminS.findAll());
+            refreshTable(userTable, workerS.findAll());
         } catch (Exception ex) {
             error(ex);
         }
@@ -220,20 +224,33 @@ public class AdminController extends BaseController implements Initializable {
     @FXML
     private void selected() {
         if (userTable.getSelectionModel().getSelectedItem() != null) {
-            if (userTable.getSelectionModel().getSelectedItem().getId() == 1) {
+            if (userTable.getSelectionModel().getSelectedItem().getId() == LoginService.getAdminLog().getId()) {
                 modUserNameTF.setDisable(true);
                 modUserPassTF.setDisable(true);
                 modButton.setDisable(true);
                 delButton.setDisable(true);
+                modUserDepCB.setDisable(true);
             } else {
                 modUserNameTF.setDisable(false);
                 modUserPassTF.setDisable(false);
                 modButton.setDisable(false);
                 delButton.setDisable(false);
+                modUserDepCB.setDisable(false);
             }
 
             modUserNameTF.setText(userTable.getSelectionModel().getSelectedItem().getUsername());
             delUserNameTF.setText(userTable.getSelectionModel().getSelectedItem().getUsername());
+
+            resetStyle();
+        } else {
+            modUserNameTF.setDisable(false);
+            modUserPassTF.setDisable(false);
+            modButton.setDisable(false);
+            delButton.setDisable(false);
+            modUserDepCB.setDisable(false);
+            
+            modUserNameTF.setText("");
+            delUserNameTF.setText("");
 
             resetStyle();
         }
@@ -263,23 +280,29 @@ public class AdminController extends BaseController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         showUserOption();
 
-        idColumn.setCellValueFactory(new PropertyValueFactory<Admin, Long>("id"));
-        userColumn.setCellValueFactory(new PropertyValueFactory<Admin, String>("username"));
+        // Limpia la selección al pulsar en algun sitio del crear
+        addVBox.setOnMouseClicked(event -> {
+            userTable.getSelectionModel().clearSelection();
+            selected();
+        });
+
+        idColumn.setCellValueFactory(new PropertyValueFactory<Worker, Long>("id"));
+        userColumn.setCellValueFactory(new PropertyValueFactory<Worker, String>("username"));
         //Callbacks para mostrar los departamentos y viajes por nombre en vez de por el ID
-        departmentColumn.setCellValueFactory(new Callback<CellDataFeatures<Admin, String>, ObservableValue<String>>() {
-            public ObservableValue<String> call(CellDataFeatures<Admin, String> p) {
+        departmentColumn.setCellValueFactory(new Callback<CellDataFeatures<Worker, String>, ObservableValue<String>>() {
+            public ObservableValue<String> call(CellDataFeatures<Worker, String> p) {
                 return new SimpleStringProperty(departmentS.findById(p.getValue().getDepartment()).get().getName().replace('_', ' '));
             }
         });
 
-        userTable.setItems(FXCollections.observableList(adminS.findAll()));
-        
+        userTable.setItems(FXCollections.observableList(workerS.findAll()));
+
         // Carga departamentos desde DepartmentService
         List<Department> departments = departmentS.findAll();
         addUserDepCB.getItems().setAll(departments);
         addUserDepCB.setValue(addUserDepCB.getItems().get(0));
         ChoiceBoxUtil.setDepartmentNameConverter(addUserDepCB);
-        
+
         modUserDepCB.getItems().setAll(departments);
         modUserDepCB.setValue(modUserDepCB.getItems().get(0));
         ChoiceBoxUtil.setDepartmentNameConverter(modUserDepCB);

@@ -95,7 +95,11 @@ public class HomeController extends BaseController implements Initializable {
             error(cE);
         } catch (QuietException qE) {
             error(qE);
-            ManagerUtil.moveTo("stadistics");
+            if (LoginService.getAdminDepartment().getName().equalsIgnoreCase("Admin")) {
+                ManagerUtil.moveTo("stadistics_admin");
+            } else {
+                ManagerUtil.moveTo("stadistics_department");
+            }
         } catch (Exception ex) {
             error(ex);
         }

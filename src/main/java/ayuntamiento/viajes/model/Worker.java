@@ -1,23 +1,23 @@
 package ayuntamiento.viajes.model;
 
 /**
- * Clase entidad que se encarga de los administradores (usuarios)
+ * Clase entidad que se encarga de los trabajadores (usuarios)
  * 
  * @author Cristian Delgado Cruz
  * @since 2025-06-02
  * @version 1.0
  */
-public class Admin {
+public class Worker {
 
     private long id;
     private String username;
     private String password;
     private long department;
 
-    public Admin() {
+    public Worker() {
     }
 
-    public Admin(String username, String password, long department) {
+    public Worker(String username, String password, long department) {
         this.username = username;
         this.password = password;
         this.department = department;

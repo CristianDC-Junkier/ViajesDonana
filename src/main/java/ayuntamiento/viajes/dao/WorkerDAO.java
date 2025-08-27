@@ -1,6 +1,6 @@
 package ayuntamiento.viajes.dao;
 
-import ayuntamiento.viajes.model.Admin;
+import ayuntamiento.viajes.model.Worker;
 
 /**
  * Clase que se encarga de hacer la conexión con la base de datos para el manejo
@@ -10,10 +10,10 @@ import ayuntamiento.viajes.model.Admin;
  * @since 2025-06-02
  * @version 1.0
  */
-public class AdminDAO extends APIClient {
+public class WorkerDAO extends APIClient {
 
-    public AdminDAO() {
-        super(Admin.class, "admins");
+    public WorkerDAO() {
+        super(Worker.class, "workers");
     }
 
 }

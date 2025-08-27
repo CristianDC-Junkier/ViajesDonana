@@ -8,10 +8,10 @@ import ayuntamiento.viajes.common.TaskExecutorUtil;
 import ayuntamiento.viajes.exception.ControledException;
 import ayuntamiento.viajes.exception.LoginException;
 import ayuntamiento.viajes.exception.QuietException;
+import ayuntamiento.viajes.model.Preferences;
 import ayuntamiento.viajes.service.DepartmentService;
 import ayuntamiento.viajes.service.LoginService;
 import ayuntamiento.viajes.service.TravelService;
-import ayuntamiento.viajes.service.TravellerService;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.fxml.FXML;
@@ -98,10 +98,8 @@ public class LoginController extends BaseController implements Initializable {
                         } catch (QuietException qE) {
                             error(qE);
                         }
-                        try {
-                            TravellerService.rechargeList();
-                        } catch (QuietException qE) {
-                            error(qE);
+                        if(rememberCheck.isSelected()){
+                            PreferencesUtil.setPreferences(new Preferences(username));
                         }
                         ManagerUtil.moveTo("home");
                     } catch (ControledException cE) {
