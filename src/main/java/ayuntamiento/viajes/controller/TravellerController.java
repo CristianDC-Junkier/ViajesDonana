@@ -112,9 +112,9 @@ public class TravellerController extends BaseController implements Initializable
                 if (info("¿Está seguro de que quiere eliminar este viajero?", true) == InfoController.DialogResult.ACCEPT) {
                     if (travellerS.delete(travellerTable.getSelectionModel().getSelectedItem())) {
                         info("El viajero fue eliminado con éxito", false);
-                        Travel t = travelS.findById(travellerTable.getSelectionModel().getSelectedItem().getTrip()).get();
-                        t.removeTraveller();
-                        travelS.modify(t);
+                        //Travel t = travelS.findById(travellerTable.getSelectionModel().getSelectedItem().getTrip()).get();
+                        //t.removeTraveller();
+                        //travelS.modify(t);
                         refreshTable(travellerTable, travellerS.findAll());
                     } else {
                         throw new Exception("El viajero no pudo ser borrado");
@@ -236,8 +236,8 @@ public class TravellerController extends BaseController implements Initializable
                 throw new ControledException("El DNI introducido ya existe: " + entity.getDni(),
                         "TravellerController - anadir");
             }
-            t.addTraveller();
-            travelS.modify(t);
+            //t.addTraveller();
+            //travelS.modify(t);
         } else {
             throw new ControledException("El viaje seleccionado está completo: " + t.getDescriptor(),
                     "TravellerController - anadir");
