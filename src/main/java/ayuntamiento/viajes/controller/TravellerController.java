@@ -196,10 +196,10 @@ public class TravellerController extends BaseController implements Initializable
 
     /**
      * Este metodo sirve para llamar a ActionTravellerController, donde mode es
-     * si se pulso el botón de añadir(0) o modificar(1), en caso de que fuera
-     * modificar se debe haber seleccionado un vehiculo
+ si se pulso el botón de añadir(0) o modifyAction(1), en caso de que fuera
+ modifyAction se debe haber seleccionado un vehiculo
      *
-     * @param mode comprueba si fue llamado desde añadir(0) o modificar(1)
+     * @param mode comprueba si fue llamado desde añadir(0) o modifyAction(1)
      */
     public void showActionDialog(int mode) {
         if (mode == 1 && travellerTable.getSelectionModel().getSelectedItem() == null) {
@@ -211,10 +211,10 @@ public class TravellerController extends BaseController implements Initializable
                         travellerTable.getSelectionModel().getSelectedItem(), mode);
                 if (vResult != null) {
                     if (mode == 0) {
-                        anadir(vResult);
+                        addAction(vResult);
                         info("El Viajero fue añadido correctamente", false);
                     } else {
-                        modificar(vResult);
+                        modifyAction(vResult);
                         info("El Viajero fue modificado correctamente", false);
                     }
                     refreshTable(travellerTable, travellerS.findAll(), amount);
@@ -228,18 +228,13 @@ public class TravellerController extends BaseController implements Initializable
         }
     }
 
-    public void anadir(Traveller entity) throws Exception {
+    public void addAction(Traveller entity) throws Exception {
         Travel t = travelS.findById(entity.getTrip()).get();
         if (t.getSeats_occupied() < t.getSeats_total()) {
             if (travellerS.save(entity) == null) {
                 refreshTable(travellerTable, travellerS.findAll(), amount);
-                if (travellerS.findById(entity.getId()) != null) {
-                    throw new ControledException("El DNI introducido ya existe: " + entity.getDni(),
-                            "TravellerController - anadir");
-                } else {
-                    throw new ControledException("El usuario ya está registrado en otro viaje: " + entity.getDni(),
-                            "TravellerController - anadir");
-                }
+                throw new ControledException("El viajero con DNI/NIE: " + entity.getDni() + ", ya existe" ,
+                        "TravellerController - anadir");
             }
         } else {
             throw new ControledException("El viaje seleccionado está completo: " + t.getDescriptor(),
@@ -247,13 +242,13 @@ public class TravellerController extends BaseController implements Initializable
         }
     }
 
-    public void modificar(Traveller entity) throws Exception {
+    public void modifyAction(Traveller entity) throws Exception {
 
         System.out.println("Entro en else");
         if (travellerS.modify(entity) == null) {
             refreshTable(travellerTable, travellerS.findAll(), amount);
-            throw new ControledException("El DNI introducido ya existe: " + entity.getDni(),
-                    "TravellerController - anadir");
+            throw new ControledException("El DNI/NIE: " + entity.getDni() + ", ya está registrado" ,
+                        "TravellerController - anadir");
         }
     }
 

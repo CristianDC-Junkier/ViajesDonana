@@ -2,6 +2,7 @@ package ayuntamiento.viajes.dao;
 
 import ayuntamiento.viajes.common.PropertiesUtil;
 import ayuntamiento.viajes.exception.APIException;
+import ayuntamiento.viajes.model.Traveller;
 import ayuntamiento.viajes.service.LoginService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -141,13 +142,23 @@ public abstract class APIClient<T> {
 
         if (statusCode == 200) {
             return objectMapper.readValue(response.body(), typeParameterClass);
-        }else {
+        } else {
             String errorMessage;
             try {
                 JsonNode node = objectMapper.readTree(responseBody);
                 errorMessage = node.has("error") ? node.get("error").asText() : responseBody;
+                if (obj instanceof Traveller && node.has("trip")) {
+                    String existingTrip = node.get("trip").isNull() ? null : node.get("trip").asText();
+                    if (existingTrip != null) {
+                        errorMessage = "El DNI/NIE: " + ((Traveller) obj).getDni()
+                                + ", ya está registrado en " + existingTrip;
+                    } else {
+                        errorMessage = "El DNI/NIE: " + ((Traveller) obj).getDni()
+                                + ", ya está registrado";
+                    }
+                }
             } catch (JsonProcessingException eJ) {
-                errorMessage = responseBody; 
+                errorMessage = responseBody;
             }
             throw new APIException(statusCode, errorMessage);
         }
@@ -180,7 +191,7 @@ public abstract class APIClient<T> {
                 JsonNode node = objectMapper.readTree(responseBody);
                 errorMessage = node.has("error") ? node.get("error").asText() : responseBody;
             } catch (JsonProcessingException eJ) {
-                errorMessage = responseBody; 
+                errorMessage = responseBody;
             }
             throw new APIException(statusCode, errorMessage);
         }
@@ -206,7 +217,7 @@ public abstract class APIClient<T> {
                 JsonNode node = objectMapper.readTree(responseBody);
                 errorMessage = node.has("error") ? node.get("error").asText() : responseBody;
             } catch (JsonProcessingException eJ) {
-                errorMessage = responseBody; 
+                errorMessage = responseBody;
             }
             throw new APIException(statusCode, errorMessage);
         }
