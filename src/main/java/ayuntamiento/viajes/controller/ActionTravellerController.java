@@ -212,6 +212,8 @@ public class ActionTravellerController implements Initializable {
         dniTF.setText(tSelected.getDni());
         nameTF.setText(tSelected.getName());
         departmentCB.setValue(departmentS.findById(tSelected.getDepartment()).get());
+        List<Travel> trips = travelS.findByDepartment(departmentCB.getSelectionModel().getSelectedItem().getId());
+        tripCB.getItems().setAll(trips);
         tripCB.setValue(travelS.findById(tSelected.getTrip()).get());
         sign_upDP.setValue(tSelected.getSignUpDate());
 
