@@ -99,12 +99,12 @@ public class ActionTravellerController implements Initializable {
         tResult.setName(nameTF.getText());
         tResult.setDepartment(departmentCB.getValue().getId());
         tResult.setTrip(tripCB.getValue().getId());
-        tResult.setVersion(tSelected.getVersion());
 
         tResult.setSignUpDate(sign_upDP.getValue());
 
         if (typeAction == 1) {
             tResult.setId(tSelected.getId());
+            tResult.setVersion(tSelected.getVersion());
         }
 
         dialogStage.close();
