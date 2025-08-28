@@ -83,13 +83,13 @@ public class TravelController extends BaseController implements Initializable {
                 if (info("¿Está seguro de que quiere eliminar este viaje?", true) == InfoController.DialogResult.ACCEPT) {
                     if (travelS.delete(travelTable.getSelectionModel().getSelectedItem())) {
                         info("El viaje fue eliminado con éxito", false);
-                        refreshTable(travelTable, travelS.findAll());
+                        refreshTable(travelTable, travelS.findAll(), amount);
                     } else {
                         throw new Exception("El viaje no pudo ser borrado");
                     }
                 }
             } catch (Exception ex) {
-                refreshTable(travelTable, travelS.findAll());
+                refreshTable(travelTable, travelS.findAll(), amount);
                 error(ex);
             }
         }
@@ -143,10 +143,10 @@ public class TravelController extends BaseController implements Initializable {
                         modificar(vResult);
                         info("El Viaje fue modificado correctamente", false);
                     }
-                    refreshTable(travelTable, travelS.findAll());
+                    refreshTable(travelTable, travelS.findAll(), amount);
                 }
             } catch (ControledException cE) {
-                refreshTable(travelTable, travelS.findAll());
+                refreshTable(travelTable, travelS.findAll(), amount);
                 error(cE);
             } catch (Exception ex) {
                 error(ex);
@@ -156,20 +156,20 @@ public class TravelController extends BaseController implements Initializable {
     
     public void anadir(Travel entity) throws Exception {
         if (travelS.save(entity) == null) {
-            refreshTable(travelTable, travelS.findAll());
+            refreshTable(travelTable, travelS.findAll(), amount);
             throw new ControledException("La descripción introducida ya existe: " + entity.getDescriptor(),
                     "TravellController - anadir");
         }
-        refreshTable(travelTable, travelS.findAll());
+        refreshTable(travelTable, travelS.findAll(), amount);
     }
 
     public void modificar(Travel entity) throws Exception {
         if (travelS.modify(entity) == null) {
-            refreshTable(travelTable, travelS.findAll());
+            refreshTable(travelTable, travelS.findAll(), amount);
             throw new ControledException("La descripción introducida ya existe: " + entity.getDescriptor(),
                     "TravelController - modficar");
         }
-        refreshTable(travelTable, travelS.findAll());
+        refreshTable(travelTable, travelS.findAll(), amount);
     }
 
     @FXML
@@ -184,7 +184,7 @@ public class TravelController extends BaseController implements Initializable {
                 )
                 .collect(Collectors.toList());
 
-        refreshTable(travelTable, filtered);
+        refreshTable(travelTable, filtered, amount);
     }
 
     @FXML

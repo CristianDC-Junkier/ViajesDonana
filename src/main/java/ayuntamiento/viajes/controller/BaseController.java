@@ -6,6 +6,9 @@ import static ayuntamiento.viajes.common.ManagerUtil.getPage;
 import ayuntamiento.viajes.controller.InfoController.DialogResult;
 import ayuntamiento.viajes.exception.ControledException;
 import ayuntamiento.viajes.exception.QuietException;
+import ayuntamiento.viajes.model.Travel;
+import ayuntamiento.viajes.model.Traveller;
+import ayuntamiento.viajes.model.Worker;
 
 import ayuntamiento.viajes.service.WorkerService;
 import ayuntamiento.viajes.service.LoginService;
@@ -136,10 +139,17 @@ public abstract class BaseController {
     }
 
     @FXML
-    public static <T> void refreshTable(final TableView<T> table, final List<T> tableList) {
+    public static <T> void refreshTable(final TableView<T> table, final List<T> tableList, Label amount) {
         table.setItems(null);
         table.layout();
         table.setItems(FXCollections.observableList(tableList));
+        if (amount != null) {
+            if (tableList.getFirst() instanceof Traveller) {
+                amount.setText("Inscripciones en Total: " + tableList.size());
+            } else if (tableList.getFirst() instanceof Travel) {
+                amount.setText("Viajes en Total: " + tableList.size());
+            }
+        }
     }
 
 }

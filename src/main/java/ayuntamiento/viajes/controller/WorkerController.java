@@ -116,13 +116,13 @@ public class WorkerController extends BaseController implements Initializable {
                             "WorkerController - add");
                 } else {
                     LoggerUtil.log("Usuario: " + u.getUsername() + " añadido correctamente");
-                    refreshTable(userTable, workerS.findAll());
+                    refreshTable(userTable, workerS.findAll(),null);
                     reset();
                 }
             }
         } catch (ControledException cE) {
             error(cE);
-            refreshTable(userTable, workerS.findAll());
+            refreshTable(userTable, workerS.findAll(),null);
         } catch (Exception ex) {
             error(ex);
             reset();
@@ -171,14 +171,14 @@ public class WorkerController extends BaseController implements Initializable {
                         ManagerUtil.reload();
                     } else {
                         info("Usuario, " + userMod.getUsername() + ", modificado con éxito", false);
-                        refreshTable(userTable, workerS.findAll());
+                        refreshTable(userTable, workerS.findAll(),null);
                         reset();
                     }
                 }
             }
         } catch (ControledException cE) {
             error(cE);
-            refreshTable(userTable, workerS.findAll());
+            refreshTable(userTable, workerS.findAll(),null);
         } catch (Exception ex) {
             error(ex);
             reset();
@@ -200,7 +200,7 @@ public class WorkerController extends BaseController implements Initializable {
             } else if (info("¿Está seguro de que quiere eliminar este usuario?", true) == InfoController.DialogResult.ACCEPT) {
                 if (workerS.delete(userTable.getSelectionModel().getSelectedItem())) {
                     info("El Usuario fue eliminado con éxito", false);
-                    refreshTable(userTable, workerS.findAll());
+                    refreshTable(userTable, workerS.findAll(),null);
                     if (LoginService.getAdminLog() == null) {
                         ManagerUtil.reload();
                     }
@@ -210,7 +210,7 @@ public class WorkerController extends BaseController implements Initializable {
             }
         } catch (ControledException cE) {
             error(cE);
-            refreshTable(userTable, workerS.findAll());
+            refreshTable(userTable, workerS.findAll(),null);
         } catch (Exception ex) {
             error(ex);
         }

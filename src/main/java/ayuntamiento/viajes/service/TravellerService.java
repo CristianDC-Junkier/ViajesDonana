@@ -124,7 +124,7 @@ public class TravellerService {
         return travellerList.stream()
                 .filter(v -> v.getId() == id)
                 .findFirst()
-                .get();
+                .orElse(null);
     }
 
     public List<Traveller> findByTrip(long trip) {
@@ -151,7 +151,11 @@ public class TravellerService {
                 travellerList = travellerDAO.findByDepartment(LoginService.getAdminDepartment().getId());
             }
         } catch (APIException apiE) {
-            errorHandler(apiE, allowRetry, "rechargeList");
+            if (apiE.getStatusCode() == 204) {
+                travellerList = new ArrayList();
+            } else {
+                errorHandler(apiE, allowRetry, "rechargeList");
+            }
         }
     }
 

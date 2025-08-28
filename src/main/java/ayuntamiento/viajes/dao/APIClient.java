@@ -3,6 +3,7 @@ package ayuntamiento.viajes.dao;
 import ayuntamiento.viajes.common.PropertiesUtil;
 import ayuntamiento.viajes.exception.APIException;
 import ayuntamiento.viajes.service.LoginService;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
@@ -140,16 +141,23 @@ public abstract class APIClient<T> {
 
         if (statusCode == 200) {
             return objectMapper.readValue(response.body(), typeParameterClass);
-        } else {
-            throw new APIException(statusCode, responseBody);
+        }else {
+            String errorMessage;
+            try {
+                JsonNode node = objectMapper.readTree(responseBody);
+                errorMessage = node.has("error") ? node.get("error").asText() : responseBody;
+            } catch (JsonProcessingException eJ) {
+                errorMessage = responseBody; 
+            }
+            throw new APIException(statusCode, errorMessage);
         }
     }
 
     public T modify(T obj, long id) throws APIException, Exception {
         String json = objectMapper.writeValueAsString(obj);
-        
+
         System.out.println(json);
-        
+
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(BASE_URL + "/" + endpoint + "/" + id))
                 .header("Content-Type", "application/json")
@@ -161,13 +169,20 @@ public abstract class APIClient<T> {
         HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
         int statusCode = response.statusCode();
         String responseBody = response.body();
-        
+
         System.out.println("API" + statusCode);
-        
+
         if (statusCode == 200) {
             return objectMapper.readValue(response.body(), typeParameterClass);
         } else {
-            throw new APIException(statusCode, responseBody);
+            String errorMessage;
+            try {
+                JsonNode node = objectMapper.readTree(responseBody);
+                errorMessage = node.has("error") ? node.get("error").asText() : responseBody;
+            } catch (JsonProcessingException eJ) {
+                errorMessage = responseBody; 
+            }
+            throw new APIException(statusCode, errorMessage);
         }
     }
 
@@ -186,7 +201,14 @@ public abstract class APIClient<T> {
         if (statusCode == 200 || response.statusCode() == 204) {
             return true;
         } else {
-            throw new APIException(statusCode, responseBody);
+            String errorMessage;
+            try {
+                JsonNode node = objectMapper.readTree(responseBody);
+                errorMessage = node.has("error") ? node.get("error").asText() : responseBody;
+            } catch (JsonProcessingException eJ) {
+                errorMessage = responseBody; 
+            }
+            throw new APIException(statusCode, errorMessage);
         }
     }
 
