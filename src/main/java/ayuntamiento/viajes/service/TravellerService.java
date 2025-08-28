@@ -73,23 +73,20 @@ public class TravellerService {
     }
 
     public Traveller modify(Traveller entity, boolean allowRetry) throws Exception {
-        Traveller result;
-        boolean travellerExists = travellerList.stream()
-                .anyMatch(traveller -> traveller.getDni().equalsIgnoreCase(entity.getDni())
-                && traveller.getId() != entity.getId());
-        if (travellerExists) {
+        // Evitar duplicados por DNI en otro viajero
+        boolean exists = travellerList.stream()
+                .anyMatch(t -> t.getDni().equalsIgnoreCase(entity.getDni())
+                && t.getId() != entity.getId());
+        if (exists) {
             return null;
         }
         try {
-            result = (Traveller) travellerDAO.modify(entity, entity.getId());
-            //rechargeList();
-            for (int i = 0; i < travellerList.size(); i++) {
-                if (travellerList.get(i).getId() == entity.getId()) {
-                    travellerList.set(i, result);
-                }
-            }
-            return result;
+            Traveller updated = (Traveller) travellerDAO.modify(entity, entity.getId());
+            System.out.println("\n" + updated.getVersion() + "\n");
+            travellerList.replaceAll(t -> t.getId() == entity.getId() ? updated : t);
+            return updated;
         } catch (APIException apiE) {
+            System.out.println("Service" + apiE.getStatusCode());
             errorHandler(apiE, allowRetry, "modify");
             return null;
         }
@@ -122,8 +119,8 @@ public class TravellerService {
     public List<Traveller> findAll() {
         return travellerList;
     }
-    
-    public Traveller findById(long id){
+
+    public Traveller findById(long id) {
         return travellerList.stream()
                 .filter(v -> v.getId() == id)
                 .findFirst()
@@ -169,12 +166,14 @@ public class TravellerService {
      * @throws Exception una excepción no controlada
      */
     private static void errorHandler(APIException apiE, boolean allowRetry, String method) throws ControledException, QuietException, Exception {
+        System.out.println("eH" + apiE.getStatusCode());
         switch (apiE.getStatusCode()) {
-            case 400,409 -> {
+            case 400, 409 -> {
                 rechargeList(false);
                 throw new ControledException(apiE.getMessage(), "TravellerService - " + method);
             }
             case 404 -> {
+                System.out.println("Entro en 404");
                 rechargeList(false);
                 throw new ControledException(apiE.getMessage(), "TravellerService - " + method);
             }

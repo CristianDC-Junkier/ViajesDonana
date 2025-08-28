@@ -219,6 +219,7 @@ public class TravellerController extends BaseController implements Initializable
                     refreshTable(travellerTable, travellerS.findAll());
                 }
             } catch (ControledException cE) {
+                System.out.println("Entro");
                 refreshTable(travellerTable, travellerS.findAll());
                 error(cE);
             } catch (Exception ex) {
@@ -249,11 +250,20 @@ public class TravellerController extends BaseController implements Initializable
         Travel tt = travelS.findById(travellerS.findById(entity.getId()).getTrip()).get();
         if (t != tt) {
             if (t.getSeats_occupied() < t.getSeats_total()) {
-                if (travellerS.modify(entity) == null) {
-                    refreshTable(travellerTable, travellerS.findAll());
-                    throw new ControledException("El DNI introducido ya existe: " + entity.getDni(),
-                            "TravellerController - anadir");
+                try {
+                    if (travellerS.modify(entity) == null) {
+                        refreshTable(travellerTable, travellerS.findAll());
+                        throw new ControledException("El DNI introducido ya existe: " + entity.getDni(),
+                                "TravellerController - anadir");
+                    }
+                } catch (ControledException cE) {
+                    error(cE);
+                    System.out.print(cE.getMessage());
+                } catch (Exception ex) {
+                    error(ex);
+                    System.out.print(ex.getMessage());
                 }
+
                 t.addTraveller();
                 tt.removeTraveller();
                 travelS.modify(t);
@@ -263,10 +273,19 @@ public class TravellerController extends BaseController implements Initializable
                         "TravellerController - anadir");
             }
         } else {
-            if (travellerS.modify(entity) == null) {
-                refreshTable(travellerTable, travellerS.findAll());
-                throw new ControledException("El DNI introducido ya existe: " + entity.getDni(),
-                        "TravellerController - anadir");
+            try {
+                System.out.println("Entro en else");
+                if (travellerS.modify(entity) == null) {
+                    refreshTable(travellerTable, travellerS.findAll());
+                    throw new ControledException("El DNI introducido ya existe: " + entity.getDni(),
+                            "TravellerController - anadir");
+                }
+            } catch (ControledException cE) {
+                System.out.print("Entro en cE" + cE.getMessage());
+                error(cE);
+            } catch (Exception ex) {
+                System.out.print("Entro en exception" + ex.getMessage());
+                error(ex);
             }
         }
         refreshTable(travellerTable, travellerS.findAll());

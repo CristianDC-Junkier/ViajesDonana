@@ -147,7 +147,9 @@ public abstract class APIClient<T> {
 
     public T modify(T obj, long id) throws APIException, Exception {
         String json = objectMapper.writeValueAsString(obj);
-
+        
+        System.out.println(json);
+        
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(BASE_URL + "/" + endpoint + "/" + id))
                 .header("Content-Type", "application/json")
@@ -159,7 +161,9 @@ public abstract class APIClient<T> {
         HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
         int statusCode = response.statusCode();
         String responseBody = response.body();
-
+        
+        System.out.println("API" + statusCode);
+        
         if (statusCode == 200) {
             return objectMapper.readValue(response.body(), typeParameterClass);
         } else {
