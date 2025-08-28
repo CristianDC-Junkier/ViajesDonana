@@ -246,7 +246,7 @@ public class TravellerController extends BaseController implements Initializable
     }
 
     public void modificar(Traveller entity) throws Exception {
-        Travel t = travelS.findById(entity.getTrip()).get();
+        /*Travel t = travelS.findById(entity.getTrip()).get();
         Travel tt = travelS.findById(travellerS.findById(entity.getId()).getTrip()).get();
         if (t != tt) {
             if (t.getSeats_occupied() < t.getSeats_total()) {
@@ -263,14 +263,14 @@ public class TravellerController extends BaseController implements Initializable
                 throw new ControledException("El viaje seleccionado está completo: " + t.getDescriptor(),
                         "TravellerController - anadir");
             }
-        } else {
-                System.out.println("Entro en else");
-                if (travellerS.modify(entity) == null) {
-                    refreshTable(travellerTable, travellerS.findAll());
-                    throw new ControledException("El DNI introducido ya existe: " + entity.getDni(),
-                            "TravellerController - anadir");
-                }
+        } else {*/
+        System.out.println("Entro en else");
+        if (travellerS.modify(entity) == null) {
+            refreshTable(travellerTable, travellerS.findAll());
+            throw new ControledException("El DNI introducido ya existe: " + entity.getDni(),
+                    "TravellerController - anadir");
         }
+        //}
         refreshTable(travellerTable, travellerS.findAll());
     }
 
