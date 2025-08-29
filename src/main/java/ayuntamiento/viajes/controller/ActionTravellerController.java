@@ -21,8 +21,6 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.ResourceBundle;
-import java.util.function.UnaryOperator;
-import java.util.regex.Pattern;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.DatePicker;
@@ -31,7 +29,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.TextFormatter;
 import javafx.scene.image.Image;
 import javafx.scene.layout.StackPane;
-import javafx.util.converter.IntegerStringConverter;
+import javafx.util.StringConverter;
 
 /**
  * Clase que se encarga de la pestaña de añadir y modificar viajeros, es un
@@ -136,18 +134,32 @@ public class ActionTravellerController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        Pattern phonePattern = Pattern.compile("\\+?[0-9\\s\\-()]{0,20}");
 
-        // Filtro para el TextFormatter
-        UnaryOperator<TextFormatter.Change> filter = change -> {
-            String newText = change.getControlNewText();
-            if (phonePattern.matcher(newText).matches()) {
-                return change; // válido
-            } else {
-                return null; // rechaza el cambio
+        TextFormatter<String> formatter = new TextFormatter<>(new StringConverter<>() {
+            @Override
+            public String toString(String object) {
+                return object == null ? "" : object;
             }
-        };
-        TextFormatter<String> formatter = new TextFormatter<>(filter);
+
+            @Override
+            public String fromString(String string) {
+                if (string == null || string.isBlank()) {
+                    return "";
+                }
+                String cleaned = string.trim().replaceAll("\\s+", "");
+                if (cleaned.matches("\\d{9}")) {
+                    return "+34 " + cleaned;
+                }
+                if (cleaned.matches("\\+\\d{1,3}\\d{9}")) {
+                    return cleaned.replaceFirst("(\\+\\d{1,3})(\\d{9})", "$1 $2");
+                }
+                if (cleaned.matches("\\+\\d{1,3}\\s\\d{9}")) {
+                    return cleaned;
+                }
+                return cleaned;
+            }
+        });
+
         phoneTF.setTextFormatter(formatter);
 
         // Carga departamentos desde DepartmentService

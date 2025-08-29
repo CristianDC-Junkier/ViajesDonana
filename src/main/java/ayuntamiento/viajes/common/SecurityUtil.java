@@ -78,7 +78,7 @@ public class SecurityUtil {
                     value;
             };
             return checkLetter(number, value.charAt(8));
-        } // DNI formato clásico: 8 números + letra
+        } 
         else if (value.matches("\\d{8}[A-Z]")) {
             return checkLetter(value.substring(0, 8), value.charAt(8));
         }

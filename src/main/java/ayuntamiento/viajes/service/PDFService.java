@@ -418,9 +418,6 @@ public class PDFService {
             case "Fecha de Inscripción" -> {
                 sortList = list.stream().sorted(Comparator.comparing(Traveller::getSignUpDate)).collect(Collectors.toList());
             }
-            /*case "Departamento" -> {
-                sortList = list.stream().sorted(Comparator.comparing(Traveller::getDepartment).reversed()).collect(Collectors.toList());
-            }*/
             case "DNI" -> {
                 sortList = list.stream().sorted(Comparator.comparing(Traveller::getDni)).collect(Collectors.toList());
             }

@@ -100,7 +100,7 @@ public class TravelController extends BaseController implements Initializable {
         showUserOption();
 
         descriptorColumn.setCellValueFactory(new PropertyValueFactory<Travel, String>("descriptor"));
-        //Callbacks para mostrar los departamentos por nombre en vez de por el ID
+        // Callbacks para mostrar los departamentos por nombre en vez de por el ID
         departmentColumn.setCellValueFactory(new Callback<CellDataFeatures<Travel, String>, ObservableValue<String>>() {
             public ObservableValue<String> call(CellDataFeatures<Travel, String> p) {
                 return new SimpleStringProperty(departmentS.findById(p.getValue().getDepartment()).get().getName().replace('_', ' '));
@@ -164,7 +164,6 @@ public class TravelController extends BaseController implements Initializable {
 
     public void modifyAction(Travel entity) throws Exception {
         if (travelS.modify(entity) == null) {
-            System.out.println("No deberia entrar jamas aqui");
             refreshTable(travelTable, travelS.findAll(), amount);
             throw new ControledException("La descripción introducida ya existe: " + entity.getDescriptor(),
                     "TravelController - modficar");

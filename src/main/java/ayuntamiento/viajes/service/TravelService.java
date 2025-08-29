@@ -100,8 +100,6 @@ public class TravelService {
             travelList.replaceAll(t -> t.getId() == entity.getId() ? updated : t);
             return updated;
         } catch (APIException apiE) {
-            System.out.println(apiE.getMessage());
-            System.out.println(apiE.getStatusCode());
             errorHandler(apiE, allowRetry, "modify");
             return null;
         }
@@ -178,7 +176,6 @@ public class TravelService {
      * @throws Exception una excepción no controlada
      */
     private static void errorHandler(APIException apiE, boolean allowRetry, String method) throws ControledException, QuietException, Exception {
-        System.out.println("eh TravelS =" + apiE.getMessage());
         switch (apiE.getStatusCode()) {
             case 400, 404, 409 -> {
                 if (allowRetry) {

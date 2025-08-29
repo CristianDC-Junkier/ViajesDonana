@@ -8,7 +8,6 @@ import ayuntamiento.viajes.exception.ControledException;
 import ayuntamiento.viajes.exception.QuietException;
 import ayuntamiento.viajes.model.Travel;
 import ayuntamiento.viajes.model.Traveller;
-import ayuntamiento.viajes.model.Worker;
 
 import ayuntamiento.viajes.service.WorkerService;
 import ayuntamiento.viajes.service.LoginService;

@@ -149,7 +149,6 @@ public class TravellerService {
                 travellerList = travellerDAO.findByDepartment(LoginService.getAdminDepartment().getId());
             }
         } catch (APIException apiE) {
-            System.out.println(apiE.getStatusCode());
             if (apiE.getStatusCode() == 204) {
                 travellerList = new ArrayList();
             } else {
@@ -169,7 +168,6 @@ public class TravellerService {
      * @throws Exception una excepción no controlada
      */
     private static void errorHandler(APIException apiE, boolean allowRetry, String method) throws ControledException, QuietException, Exception {
-        System.out.println("eH" + apiE.getStatusCode());
         switch (apiE.getStatusCode()) {
             case 400, 409 -> {
                 if (allowRetry) {

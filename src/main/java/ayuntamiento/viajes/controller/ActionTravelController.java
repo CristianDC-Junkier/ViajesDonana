@@ -110,12 +110,9 @@ public class ActionTravelController implements Initializable {
 
         int minSeats = (tSelected != null) ? Math.max(tSelected.getSeats_occupied(),30) : 30;
 
-// TextFormatter solo para controlar el formato numérico
         tSeatsTF.setTextFormatter(new TextFormatter<>(new IntegerStringConverter(), minSeats));
-
-// Listener que aplica el mínimo cuando el usuario “sale” del TextField
         tSeatsTF.focusedProperty().addListener((obs, wasFocused, isNowFocused) -> {
-            if (wasFocused && !isNowFocused) { // perdió foco
+            if (wasFocused && !isNowFocused) { 
                 try {
                     int value = Integer.parseInt(tSeatsTF.getText().trim());
                     if (value < minSeats) {
