@@ -295,7 +295,7 @@ public class PDFService {
 
         /*Posiciones absolutas para cada columna*/
         float[] columnX = new float[]{
-            50f, 105f, 255f, 410f, 500f};
+            50f, 105f, 220f, 265f, 420f, 500f};
 
         for (Traveller v : firstPageTravellers) {
             canvas.beginText();
@@ -305,14 +305,17 @@ public class PDFService {
 
             canvas.moveText(columnX[1] - columnX[0], 0);
             canvas.showText(v.getName());
-
+            
             canvas.moveText(columnX[2] - columnX[1], 0);
-            canvas.showText(travelS.findById(v.getTrip()).get().getDescriptor());
+            canvas.showText(String.valueOf(v.getPhone()));
 
             canvas.moveText(columnX[3] - columnX[2], 0);
-            canvas.showText(departmentS.findById(v.getDepartment()).get().getName().replace('_', ' '));
+            canvas.showText(travelS.findById(v.getTrip()).get().getDescriptor());
 
             canvas.moveText(columnX[4] - columnX[3], 0);
+            canvas.showText(departmentS.findById(v.getDepartment()).get().getName().replace('_', ' '));
+
+            canvas.moveText(columnX[5] - columnX[4], 0);
             canvas.showText(v.getSignup());
 
             canvas.endText();

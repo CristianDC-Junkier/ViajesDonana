@@ -26,8 +26,10 @@ import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.control.TextFormatter;
 import javafx.scene.image.Image;
 import javafx.scene.layout.StackPane;
+import javafx.util.converter.IntegerStringConverter;
 
 /**
  * Clase que se encarga de la pestaña de añadir y modificar viajeros, es un
@@ -53,6 +55,8 @@ public class ActionTravellerController implements Initializable {
     private TextField dniTF;
     @FXML
     private TextField nameTF;
+    @FXML
+    private TextField phoneTF;
     @FXML
     private ChoiceBox<Department> departmentCB;
     @FXML
@@ -81,6 +85,11 @@ public class ActionTravellerController implements Initializable {
     private void nameChange() {
         nameTF.setStyle("");
     }
+    
+    @FXML
+    private void phoneChange() {
+        nameTF.setStyle("");
+    }
 
     @FXML
     private void signupChange() {
@@ -97,6 +106,7 @@ public class ActionTravellerController implements Initializable {
         tResult = new Traveller();
         tResult.setDni(dniTF.getText());
         tResult.setName(nameTF.getText());
+        tResult.setPhone(Integer.parseInt(phoneTF.getText()));
         tResult.setDepartment(departmentCB.getValue().getId());
         tResult.setTrip(tripCB.getValue().getId());
         
@@ -125,6 +135,8 @@ public class ActionTravellerController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        phoneTF.setTextFormatter(new TextFormatter<>(new IntegerStringConverter()));
+        
         // Carga departamentos desde DepartmentService
         if (LoginService.getAdminDepartment().getName().equalsIgnoreCase("Admin")) {
             List<Department> departments = departmentS.findAll();
@@ -213,6 +225,7 @@ public class ActionTravellerController implements Initializable {
     private void populateFields() {
         dniTF.setText(tSelected.getDni());
         nameTF.setText(tSelected.getName());
+        phoneTF.setText(tSelected.getDni());
         departmentCB.setValue(departmentS.findById(tSelected.getDepartment()).get());
         List<Travel> trips = travelS.findByDepartment(departmentCB.getSelectionModel().getSelectedItem().getId());
         tripCB.getItems().setAll(trips);

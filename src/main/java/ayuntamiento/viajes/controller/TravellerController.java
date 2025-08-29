@@ -4,7 +4,6 @@ import ayuntamiento.viajes.common.ChoiceBoxUtil;
 import ayuntamiento.viajes.common.PropertiesUtil;
 import static ayuntamiento.viajes.controller.BaseController.refreshTable;
 import ayuntamiento.viajes.exception.ControledException;
-import ayuntamiento.viajes.exception.QuietException;
 import ayuntamiento.viajes.model.Department;
 import ayuntamiento.viajes.model.Travel;
 import ayuntamiento.viajes.service.TravellerService;
@@ -65,6 +64,8 @@ public class TravellerController extends BaseController implements Initializable
     @FXML
     private TableColumn tripColumn;
     @FXML
+    private TableColumn phoneColumn;
+    @FXML
     private TableColumn signupColumn;
 
     @FXML
@@ -74,6 +75,8 @@ public class TravellerController extends BaseController implements Initializable
     private TextField dniTF;
     @FXML
     private TextField nameTF;
+    @FXML
+    private TextField phoneTF;
 
     @FXML
     private ChoiceBox<Travel> tripCB;
@@ -145,6 +148,7 @@ public class TravellerController extends BaseController implements Initializable
                 return new SimpleStringProperty(travelS.findById(p.getValue().getTrip()).get().getDescriptor());
             }
         });
+        phoneColumn.setCellValueFactory(new PropertyValueFactory<Traveller, Integer>("phone"));
         signupColumn.setCellValueFactory(new PropertyValueFactory<Traveller, LocalDate>("signup"));
 
         if (LoginService.getAdminDepartment().getName().equalsIgnoreCase("Admin")) {
@@ -196,8 +200,8 @@ public class TravellerController extends BaseController implements Initializable
 
     /**
      * Este metodo sirve para llamar a ActionTravellerController, donde mode es
-     * si se pulso el botón de añadir(0) o modifyAction(1), en caso de que fuera
-     * modifyAction se debe haber seleccionado un vehiculo
+     * si se pulso el botón de addAction(0) o modifyAction(1), en caso de que
+     * fuera modifyAction se debe haber seleccionado un vehiculo
      *
      * @param mode comprueba si fue llamado desde añadir(0) o modifyAction(1)
      */
@@ -260,6 +264,7 @@ public class TravellerController extends BaseController implements Initializable
     private void applyAllFilters() {
         String nameText = nameTF.getText() != null ? nameTF.getText().toLowerCase().trim() : "";
         String dniText = dniTF.getText() != null ? dniTF.getText().toLowerCase().trim() : "";
+        String phoneText = phoneTF.getText() != null ? phoneTF.getText().toLowerCase().trim() : "";
 
         long selectedDepartment = departmentCB.getValue().getId();
         long selectedTrip = tripCB.getValue().getId();
@@ -272,6 +277,7 @@ public class TravellerController extends BaseController implements Initializable
                 && (dniText.isEmpty() || (t.getDni() != null && t.getDni().toLowerCase().contains(dniText)))
                 && (selectedDepartment == 0 || (t.getDepartment() == selectedDepartment))
                 && (selectedTrip == 0 || (t.getTrip() == selectedTrip))
+                && (phoneText.isEmpty() || (Integer.toString(t.getPhone()).contains(phoneText)))
                 && (selectedInsuranceDate == null || (t.getSignUpDate() != null && t.getSignUpDate().isBefore(selectedInsuranceDate)))
                 )
                 .collect(Collectors.toList());

@@ -92,13 +92,42 @@
                               </HBox>
                            </children>
                         </StackPane>
+                        <StackPane layoutX="10.0" layoutY="99.0" prefHeight="50.0">
+                           <children>
+                              <Label text="*" textFill="#ff3434" StackPane.alignment="TOP_RIGHT">
+                                 <font>
+                                    <Font name="Trebuchet MS Bold" size="15.0" />
+                                 </font>
+                                 <StackPane.margin>
+                                    <Insets />
+                                 </StackPane.margin>
+                              </Label>
+                              <HBox alignment="CENTER_LEFT" prefHeight="50.0" spacing="15.0">
+                                 <children>
+                                    <ImageView fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../icons/action_phone.png" />
+                                       </image>
+                                       <HBox.margin>
+                                          <Insets left="10.0" />
+                                       </HBox.margin>
+                                    </ImageView>
+                                    <TextField fx:id="phoneTF" alignment="CENTER" onKeyTyped="#phoneChange" prefHeight="26.0" prefWidth="175.0" promptText="Teléfono" styleClass="text-field">
+                                       <HBox.margin>
+                                          <Insets />
+                                       </HBox.margin>
+                                    </TextField>
+                                 </children>
+                              </HBox>
+                           </children>
+                        </StackPane>
                      </children>
                      <HBox.margin>
                         <Insets left="10.0" />
                      </HBox.margin>
                   </VBox>
                   <Line endX="-99.41421508789062" endY="173.58578491210938" startX="-100.0" stroke="#f22c2c" strokeWidth="2.0" styleClass="decor-line" />
-                  <VBox alignment="CENTER" prefHeight="173.0" prefWidth="302.0" spacing="5.0">
+                  <VBox alignment="CENTER" prefHeight="173.0" prefWidth="302.0" spacing="20.0">
                      <children>
                         <StackPane prefHeight="50.0">
                            <children>
@@ -167,7 +196,7 @@
                      <children>
                         <ImageView fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
                            <image>
-                              <Image url="@../icons/car-mechanic.png" />
+                              <Image url="@../icons/action_date.png" />
                            </image>
                            <HBox.margin>
                               <Insets left="10.0" />
