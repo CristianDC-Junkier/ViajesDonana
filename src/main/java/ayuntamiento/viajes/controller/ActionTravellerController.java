@@ -21,6 +21,8 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.function.UnaryOperator;
+import java.util.regex.Pattern;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.DatePicker;
@@ -85,7 +87,7 @@ public class ActionTravellerController implements Initializable {
     private void nameChange() {
         nameTF.setStyle("");
     }
-    
+
     @FXML
     private void phoneChange() {
         nameTF.setStyle("");
@@ -109,7 +111,6 @@ public class ActionTravellerController implements Initializable {
         tResult.setPhone(Integer.parseInt(phoneTF.getText()));
         tResult.setDepartment(departmentCB.getValue().getId());
         tResult.setTrip(tripCB.getValue().getId());
-        
 
         tResult.setSignUpDate(sign_upDP.getValue());
 
@@ -135,8 +136,20 @@ public class ActionTravellerController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        phoneTF.setTextFormatter(new TextFormatter<>(new IntegerStringConverter()));
-        
+        Pattern phonePattern = Pattern.compile("\\+?[0-9\\s\\-()]{0,20}");
+
+        // Filtro para el TextFormatter
+        UnaryOperator<TextFormatter.Change> filter = change -> {
+            String newText = change.getControlNewText();
+            if (phonePattern.matcher(newText).matches()) {
+                return change; // válido
+            } else {
+                return null; // rechaza el cambio
+            }
+        };
+        TextFormatter<String> formatter = new TextFormatter<>(filter);
+        phoneTF.setTextFormatter(formatter);
+
         // Carga departamentos desde DepartmentService
         if (LoginService.getAdminDepartment().getName().equalsIgnoreCase("Admin")) {
             List<Department> departments = departmentS.findAll();

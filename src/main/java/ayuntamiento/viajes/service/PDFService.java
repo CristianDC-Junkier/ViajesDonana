@@ -261,7 +261,7 @@ public class PDFService {
         float y = 612f;
 
         float[] columnX = new float[]{
-            65f, 130f, 200f, 178f, 216f, 259f, 309f, 356f, 412f};
+            55f, 130f, 200f, 178f, 216f, 259f, 309f, 356f, 412f};
 
         canvas.moveText(columnX[0], y);
         canvas.showText(Integer.toString(travel.getSeats_total()));
@@ -295,7 +295,7 @@ public class PDFService {
 
         /*Posiciones absolutas para cada columna*/
         float[] columnX = new float[]{
-            50f, 105f, 220f, 265f, 420f, 500f};
+            30f, 82f, 225f, 280f, 435f, 522f};
 
         for (Traveller v : firstPageTravellers) {
             canvas.beginText();
@@ -343,7 +343,7 @@ public class PDFService {
 
         /*Posiciones absolutas para cada columna*/
         float[] columnX = new float[]{
-            50f, 105f, 260f, 415f, 500f};
+            30f, 82f, 217f, 275f, 435f, 522f};
 
         for (Traveller v : pageTravellers) {
             canvas.beginText();
@@ -353,14 +353,17 @@ public class PDFService {
 
             canvas.moveText(columnX[1] - columnX[0], 0);
             canvas.showText(v.getName());
-
+            
             canvas.moveText(columnX[2] - columnX[1], 0);
-            canvas.showText(travelS.findById(v.getTrip()).get().getDescriptor());
+            canvas.showText(String.valueOf(v.getPhone()));
 
             canvas.moveText(columnX[3] - columnX[2], 0);
-            canvas.showText(departmentS.findById(v.getDepartment()).get().getName().replace('_', ' '));
+            canvas.showText(travelS.findById(v.getTrip()).get().getDescriptor());
 
             canvas.moveText(columnX[4] - columnX[3], 0);
+            canvas.showText(departmentS.findById(v.getDepartment()).get().getName().replace('_', ' '));
+
+            canvas.moveText(columnX[5] - columnX[4], 0);
             canvas.showText(v.getSignup());
 
             canvas.endText();
@@ -410,14 +413,14 @@ public class PDFService {
                 sortList = list.stream().sorted(Comparator.comparing(Traveller::getName)).collect(Collectors.toList());
             }
             case "Viaje" -> {
-                //sortList = list.stream().sorted(Comparator.comparing(Traveller::getTrip).reversed()).collect(Collectors.toList());
+                sortList = list.stream().sorted(Comparator.comparing(Traveller::getTrip).reversed()).collect(Collectors.toList());
             }
             case "Fecha de Inscripción" -> {
                 sortList = list.stream().sorted(Comparator.comparing(Traveller::getSignUpDate)).collect(Collectors.toList());
             }
-            case "Departamento" -> {
-                //sortList = list.stream().sorted(Comparator.comparing(Traveller::getDepartment).reversed()).collect(Collectors.toList());
-            }
+            /*case "Departamento" -> {
+                sortList = list.stream().sorted(Comparator.comparing(Traveller::getDepartment).reversed()).collect(Collectors.toList());
+            }*/
             case "DNI" -> {
                 sortList = list.stream().sorted(Comparator.comparing(Traveller::getDni)).collect(Collectors.toList());
             }

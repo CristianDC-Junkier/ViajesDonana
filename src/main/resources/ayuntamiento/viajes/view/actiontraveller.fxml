@@ -192,7 +192,7 @@
             <Line endX="549.9784545898438" endY="-0.4160062074661255" fill="#fa0000" startX="-57.607303619384766" startY="-0.41539785265922546" stroke="#f22c2c" strokeWidth="2.0" styleClass="decor-line" />
             <VBox alignment="CENTER" prefHeight="67.0" prefWidth="600.0" spacing="10.0">
                <children>
-                  <HBox alignment="TOP_CENTER" prefHeight="32.0" prefWidth="275.0" spacing="10.0">
+                  <HBox alignment="CENTER" prefHeight="32.0" prefWidth="275.0" spacing="10.0">
                      <children>
                         <ImageView fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
                            <image>

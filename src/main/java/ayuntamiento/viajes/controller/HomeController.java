@@ -109,6 +109,7 @@ public class HomeController extends BaseController implements Initializable {
     private void pdfspanel() throws IOException {
         try {
             TravellerService.rechargeList();
+            TravelService.rechargeList();
             ManagerUtil.moveTo("pdf");
         } catch (ControledException cE) {
             error(cE);
