@@ -4,7 +4,7 @@ setlocal
 :: Configurar variables
 set APP_NAME=Viajes Doñana - Almonte
 set INPUT_DIR=launcher
-set MAIN_JAR=ViajesDonana-1.0.jar
+set MAIN_JAR=ViajesDonana-1.1.jar
 set MAIN_CLASS=ayuntamiento.viajes.app.App
 set MODULE_PATH=launcher/javafx
 set MODULES=javafx.controls,javafx.fxml,javafx.web
@@ -22,7 +22,7 @@ jpackage ^
     --module-path "%MODULE_PATH%" ^
     --add-modules "%MODULES%" ^
     --dest "%OUTPUT_DIR%" ^
-    --app-version "1.0" ^
+    --app-version "1.1" ^
     --vendor "Ayuntamiento de Almonte" ^
     --icon "%ICON_WIN%" ^
     --copyright "© 2025 Ayuntamiento de Almonte - Informatica Alcaldia. Todos los derechos reservados." ^

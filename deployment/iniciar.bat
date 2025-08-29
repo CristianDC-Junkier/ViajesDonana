@@ -2,7 +2,7 @@
 setlocal EnableDelayedExpansion
 
 :: Configurar variables
-set JAR_NAME=launcher/ViajesDonana-1.0.jar
+set JAR_NAME=launcher/ViajesDonana-1.1.jar
 set MAIN_CLASS=ayuntamiento.viajes.app.App
 set LIB_DIR=libs
 set JAVAFX_DIR=launcher/javafx
