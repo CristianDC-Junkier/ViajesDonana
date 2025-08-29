@@ -169,13 +169,7 @@ public class TravellerService {
      */
     private static void errorHandler(APIException apiE, boolean allowRetry, String method) throws ControledException, QuietException, Exception {
         switch (apiE.getStatusCode()) {
-            case 400, 409 -> {
-                if (allowRetry) {
-                    rechargeList(false);
-                }
-                throw new ControledException(apiE.getMessage(), "TravellerService - " + method);
-            }
-            case 404 -> {
+            case 400, 404, 409 -> {
                 if (allowRetry) {
                     rechargeList(false);
                 }
