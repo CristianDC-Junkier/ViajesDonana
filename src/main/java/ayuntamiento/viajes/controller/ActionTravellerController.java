@@ -238,7 +238,7 @@ public class ActionTravellerController implements Initializable {
     private void populateFields() {
         dniTF.setText(tSelected.getDni());
         nameTF.setText(tSelected.getName());
-        phoneTF.setText(tSelected.getDni());
+        phoneTF.setText(Integer.toString(tSelected.getPhone()));
         departmentCB.setValue(departmentS.findById(tSelected.getDepartment()).get());
         List<Travel> trips = travelS.findByDepartment(departmentCB.getSelectionModel().getSelectedItem().getId());
         tripCB.getItems().setAll(trips);
