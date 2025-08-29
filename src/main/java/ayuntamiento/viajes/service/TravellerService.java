@@ -174,16 +174,14 @@ public class TravellerService {
             case 400, 409 -> {
                 if (allowRetry) {
                     rechargeList(false);
-                } else {
-                    throw new ControledException(apiE.getMessage(), "TravellerService - " + method);
                 }
+                throw new ControledException(apiE.getMessage(), "TravellerService - " + method);
             }
             case 404 -> {
                 if (allowRetry) {
                     rechargeList(false);
-                } else {
-                    throw new ControledException(apiE.getMessage(), "TravellerService - " + method);
                 }
+                throw new ControledException(apiE.getMessage(), "TravellerService - " + method);
             }
             case 401 -> {
                 if (allowRetry) {

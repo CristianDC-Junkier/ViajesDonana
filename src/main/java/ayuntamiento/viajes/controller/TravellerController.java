@@ -4,7 +4,6 @@ import ayuntamiento.viajes.common.ChoiceBoxUtil;
 import ayuntamiento.viajes.common.PropertiesUtil;
 import static ayuntamiento.viajes.controller.BaseController.refreshTable;
 import ayuntamiento.viajes.exception.ControledException;
-import ayuntamiento.viajes.exception.QuietException;
 import ayuntamiento.viajes.model.Department;
 import ayuntamiento.viajes.model.Travel;
 import ayuntamiento.viajes.service.TravellerService;

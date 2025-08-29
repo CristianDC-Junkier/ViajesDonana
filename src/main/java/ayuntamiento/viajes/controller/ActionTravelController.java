@@ -5,7 +5,6 @@ import ayuntamiento.viajes.common.SecurityUtil;
 import ayuntamiento.viajes.model.Department;
 import ayuntamiento.viajes.model.Travel;
 import ayuntamiento.viajes.service.DepartmentService;
-import ayuntamiento.viajes.service.TravelService;
 import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -21,7 +20,6 @@ import javafx.scene.control.TextFormatter;
 import javafx.scene.image.Image;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
-import javafx.util.StringConverter;
 import javafx.util.converter.IntegerStringConverter;
 
 /**
@@ -110,28 +108,25 @@ public class ActionTravelController implements Initializable {
 
         ChoiceBoxUtil.setDepartmentNameConverter(departmentCB);
 
-        int minSeats = (tSelected != null) ? tSelected.getSeats_occupied() : 30;
-        
-        TextFormatter<Integer> formatter = new TextFormatter<>(
-                new StringConverter<Integer>() {
-            @Override
-            public String toString(Integer object) {
-                return object == null ? "" : object.toString();
-            }
-            @Override
-            public Integer fromString(String string) {
+        int minSeats = (tSelected != null) ? Math.max(tSelected.getSeats_occupied(),30) : 30;
+
+// TextFormatter solo para controlar el formato numérico
+        tSeatsTF.setTextFormatter(new TextFormatter<>(new IntegerStringConverter(), minSeats));
+
+// Listener que aplica el mínimo cuando el usuario “sale” del TextField
+        tSeatsTF.focusedProperty().addListener((obs, wasFocused, isNowFocused) -> {
+            if (wasFocused && !isNowFocused) { // perdió foco
                 try {
-                    int value = Integer.parseInt(string.trim());
-                    return Math.max(value, minSeats);
+                    int value = Integer.parseInt(tSeatsTF.getText().trim());
+                    if (value < minSeats) {
+                        tSeatsTF.setText(String.valueOf(minSeats));
+                    }
                 } catch (NumberFormatException e) {
-                    return minSeats;
+                    tSeatsTF.setText(String.valueOf(minSeats));
                 }
             }
-        },
-                minSeats 
-        );
+        });
 
-        tSeatsTF.setTextFormatter(formatter);
 
         /*Cambiar el titulo y los labels dependiendo del tipo*/
         if (typeAction == 0) {

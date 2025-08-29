@@ -96,15 +96,12 @@ public class TravelService {
             return null;
         }
         try {
-            result = (Travel) travelDAO.modify(entity, entity.getId());
-            rechargeList();
-            for (int i = 0; i < travelList.size(); i++) {
-                if (travelList.get(i).getId() == entity.getId()) {
-                    travelList.set(i, result);
-                }
-            }
-            return result;
+            Travel updated = (Travel) travelDAO.modify(entity, entity.getId());
+            travelList.replaceAll(t -> t.getId() == entity.getId() ? updated : t);
+            return updated;
         } catch (APIException apiE) {
+            System.out.println(apiE.getMessage());
+            System.out.println(apiE.getStatusCode());
             errorHandler(apiE, allowRetry, "modify");
             return null;
         }
@@ -181,20 +178,19 @@ public class TravelService {
      * @throws Exception una excepción no controlada
      */
     private static void errorHandler(APIException apiE, boolean allowRetry, String method) throws ControledException, QuietException, Exception {
+        System.out.println("eh TravelS =" + apiE.getMessage());
         switch (apiE.getStatusCode()) {
-            case 400, 404 -> {
+            case 400, 404, 409 -> {
                 if (allowRetry) {
                     rechargeList(false);
-                } else {
-                    throw new ControledException(apiE.getMessage(), "TravelService - " + method);
                 }
+                throw new ControledException(apiE.getMessage(), "TravelService - " + method);
             }
             case 401 -> {
                 if (allowRetry) {
                     LoginService.relog();
-                } else {
-                    throw new Exception(apiE.getMessage());
                 }
+                throw new Exception(apiE.getMessage());
             }
             case 204 -> {
                 throw new QuietException(apiE.getMessage(), "TravelService - " + method);

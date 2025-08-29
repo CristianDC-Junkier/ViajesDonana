@@ -61,10 +61,8 @@ public abstract class APIClient<T> {
         int statusCode = response.statusCode();
         String responseBody = response.body();
 
-        //System.out.println(statusCode);
         switch (statusCode) {
             case 200 -> {
-                //System.out.println(response.body());
                 return objectMapper.readValue(response.body(), objectMapper.getTypeFactory().constructCollectionType(List.class, typeParameterClass));
             }
             case 204 -> {
@@ -109,7 +107,6 @@ public abstract class APIClient<T> {
         HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
         int statusCode = response.statusCode();
         String responseBody = response.body();
-
         switch (statusCode) {
             case 200 -> {
                 return objectMapper.readValue(response.body(), objectMapper.getTypeFactory().constructCollectionType(List.class, typeParameterClass));
@@ -147,7 +144,7 @@ public abstract class APIClient<T> {
                 errorMessage = node.has("error") ? node.get("error").asText() : responseBody;
                 if (obj instanceof Traveller && node.has("trip")) {
                     String existingTrip = node.get("trip").isNull() ? null : node.get("trip").asText();
-                    if (existingTrip != null 
+                    if (existingTrip != null
                             && !existingTrip.equals(LoginService.getAdminDepartment().getName())) {
                         errorMessage = "El DNI/NIE: " + ((Traveller) obj).getDni()
                                 + ", ya está registrado en " + existingTrip;
@@ -179,6 +176,7 @@ public abstract class APIClient<T> {
         HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
         int statusCode = response.statusCode();
         String responseBody = response.body();
+        System.out.println(statusCode);
 
         if (statusCode == 200) {
             return objectMapper.readValue(response.body(), typeParameterClass);
@@ -190,6 +188,8 @@ public abstract class APIClient<T> {
             } catch (JsonProcessingException eJ) {
                 errorMessage = responseBody;
             }
+            System.out.println(errorMessage);
+
             throw new APIException(statusCode, errorMessage);
         }
     }

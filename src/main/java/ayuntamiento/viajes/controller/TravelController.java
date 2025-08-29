@@ -137,10 +137,10 @@ public class TravelController extends BaseController implements Initializable {
                         travelTable.getSelectionModel().getSelectedItem(), mode);
                 if (vResult != null) {
                     if (mode == 0) {
-                        anadir(vResult);
+                        addAction(vResult);
                         info("El Viaje fue añadido correctamente", false);
                     } else {
-                        modificar(vResult);
+                        modifyAction(vResult);
                         info("El Viaje fue modificado correctamente", false);
                     }
                     refreshTable(travelTable, travelS.findAll(), amount);
@@ -154,22 +154,21 @@ public class TravelController extends BaseController implements Initializable {
         }
     }
     
-    public void anadir(Travel entity) throws Exception {
+    public void addAction(Travel entity) throws Exception {
         if (travelS.save(entity) == null) {
             refreshTable(travelTable, travelS.findAll(), amount);
             throw new ControledException("La descripción introducida ya existe: " + entity.getDescriptor(),
                     "TravellController - anadir");
         }
-        refreshTable(travelTable, travelS.findAll(), amount);
     }
 
-    public void modificar(Travel entity) throws Exception {
+    public void modifyAction(Travel entity) throws Exception {
         if (travelS.modify(entity) == null) {
+            System.out.println("No deberia entrar jamas aqui");
             refreshTable(travelTable, travelS.findAll(), amount);
             throw new ControledException("La descripción introducida ya existe: " + entity.getDescriptor(),
                     "TravelController - modficar");
         }
-        refreshTable(travelTable, travelS.findAll(), amount);
     }
 
     @FXML
