@@ -21,6 +21,8 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.function.UnaryOperator;
+import java.util.regex.Pattern;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.DatePicker;
@@ -29,7 +31,6 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.TextFormatter;
 import javafx.scene.image.Image;
 import javafx.scene.layout.StackPane;
-import javafx.util.StringConverter;
 
 /**
  * Clase que se encarga de la pestaña de añadir y modificar viajeros, es un
@@ -106,7 +107,7 @@ public class ActionTravellerController implements Initializable {
         tResult = new Traveller();
         tResult.setDni(dniTF.getText());
         tResult.setName(nameTF.getText());
-        tResult.setPhone(Integer.parseInt(phoneTF.getText()));
+        tResult.setPhone(phoneTF.getText());
         tResult.setDepartment(departmentCB.getValue().getId());
         tResult.setTrip(tripCB.getValue().getId());
 
@@ -135,31 +136,12 @@ public class ActionTravellerController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
-        TextFormatter<String> formatter = new TextFormatter<>(new StringConverter<>() {
-            @Override
-            public String toString(String object) {
-                return object == null ? "" : object;
-            }
-
-            @Override
-            public String fromString(String string) {
-                if (string == null || string.isBlank()) {
-                    return "";
-                }
-                String cleaned = string.trim().replaceAll("\\s+", "");
-                if (cleaned.matches("\\d{9}")) {
-                    return "+34 " + cleaned;
-                }
-                if (cleaned.matches("\\+\\d{1,3}\\d{9}")) {
-                    return cleaned.replaceFirst("(\\+\\d{1,3})(\\d{9})", "$1 $2");
-                }
-                if (cleaned.matches("\\+\\d{1,3}\\s\\d{9}")) {
-                    return cleaned;
-                }
-                return cleaned;
-            }
-        });
-
+        Pattern allowed = Pattern.compile("[0-9+ ]*");
+        UnaryOperator<TextFormatter.Change> filter = change -> {
+            String newText = change.getControlNewText();
+            return allowed.matcher(newText).matches() ? change : null;
+        };
+        TextFormatter<String> formatter = new TextFormatter<>(filter);
         phoneTF.setTextFormatter(formatter);
 
         // Carga departamentos desde DepartmentService
@@ -250,7 +232,7 @@ public class ActionTravellerController implements Initializable {
     private void populateFields() {
         dniTF.setText(tSelected.getDni());
         nameTF.setText(tSelected.getName());
-        phoneTF.setText(Integer.toString(tSelected.getPhone()));
+        phoneTF.setText(tSelected.getPhone());
         departmentCB.setValue(departmentS.findById(tSelected.getDepartment()).get());
         List<Travel> trips = travelS.findByDepartment(departmentCB.getSelectionModel().getSelectedItem().getId());
         tripCB.getItems().setAll(trips);
@@ -262,14 +244,38 @@ public class ActionTravellerController implements Initializable {
     private boolean checkFields() {
         boolean correct = true;
         String errorStyle = "-fx-background-color: linear-gradient(from 0% 0% to 100% 100%, #e52d27, #b31217);";
+        String okStyle = ""; // o el estilo por defecto
 
+        // Validar DNI
         if (SecurityUtil.checkBadOrEmptyString(dniTF.getText())
                 || !SecurityUtil.checkDNI_NIE(dniTF.getText())) {
             dniTF.setStyle(errorStyle);
             correct = false;
-        } else if (SecurityUtil.checkBadOrEmptyString(nameTF.getText())) {
+        } else {
+            dniTF.setStyle(okStyle);
+        }
+
+        // Validar nombre
+        if (SecurityUtil.checkBadOrEmptyString(nameTF.getText())) {
             nameTF.setStyle(errorStyle);
             correct = false;
+        } else {
+            nameTF.setStyle(okStyle);
+        }
+
+        // Validar teléfono: mínimo 9 cifras y formato internacional opcional
+        String phone = phoneTF.getText().replaceAll("\\s+", "");
+        if (!phone.matches("(\\+\\d{1,3})?\\d{9}")) {
+            phoneTF.setStyle(errorStyle);
+            correct = false;
+        } else {
+            if (!phone.startsWith("+")) {
+                phone = "+34" + phone;
+            }
+            phone = phone.replaceFirst("(\\+\\d{1,3})(\\d{9})", "$1 $2");
+            phoneTF.setText(phone);
+
+            phoneTF.setStyle(okStyle);
         }
 
         return correct;

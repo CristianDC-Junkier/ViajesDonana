@@ -16,7 +16,7 @@ public class Traveller {
     private long id;
     private String dni;
     private String name;
-    private int phone;
+    private String phone;
     private long department;
     private long trip;
     private LocalDate signup;
@@ -29,7 +29,7 @@ public class Traveller {
     public Traveller() {
     }
 
-    public Traveller(String dni, String name, int phone, long deparment, long trip, String sign_upString, int version) {
+    public Traveller(String dni, String name, String phone, long deparment, long trip, String sign_upString, int version) {
         this.dni = dni;
         this.name = name;
         this.phone = phone;
@@ -67,10 +67,10 @@ public class Traveller {
         this.name = name;
     }
     
-    public int getPhone(){
+    public String getPhone(){
         return phone;
     }
-    public void setPhone(int phone){
+    public void setPhone(String phone){
         this.phone = phone;
     }
 

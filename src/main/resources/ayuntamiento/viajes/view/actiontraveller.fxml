@@ -14,7 +14,7 @@
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
 
-<StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="672.0" stylesheets="@../styles/actiontraveller.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ayuntamiento.viajes.controller.ActionTravellerController">
+<StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="672.0" stylesheets="@../styles/actiontraveller.css" xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ayuntamiento.viajes.controller.ActionTravellerController">
    <children>
       <VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="458.0" prefWidth="627.0" styleClass="form-card" stylesheets="@../styles/global.css">
          <children>
@@ -26,16 +26,16 @@
                   <Insets top="20.0" />
                </VBox.margin>
             </Label>
-            <Line endX="549.9784545898438" endY="-0.4160062074661255" fill="#007bff" startX="-57.607303619384766" startY="-0.41539785265922546" stroke="#007bff" strokeWidth="2.0" styleClass="decor-line">
+            <Line endX="568.9784545898438" endY="-0.4147859811782837" fill="#007bff" startX="-57.607303619384766" startY="-0.41539785265922546" stroke="#007bff" strokeWidth="2.0" styleClass="decor-line">
                <VBox.margin>
                   <Insets />
                </VBox.margin>
             </Line>
             <HBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="173.0" prefWidth="600.0" spacing="20.0">
                <children>
-                  <VBox alignment="CENTER" prefHeight="174.0" prefWidth="250.0" spacing="5.0">
+                  <VBox alignment="CENTER" prefHeight="174.0" prefWidth="302.0" spacing="5.0">
                      <children>
-                        <StackPane prefHeight="50.0">
+                        <StackPane maxWidth="-Infinity" prefHeight="50.0" prefWidth="245.0">
                            <children>
                               <Label text="*" textFill="#ff3434" StackPane.alignment="TOP_RIGHT">
                                  <font>
@@ -63,7 +63,7 @@
                               <Insets />
                            </VBox.margin>
                         </StackPane>
-                        <StackPane prefHeight="50.0">
+                        <StackPane maxWidth="-Infinity" prefHeight="50.0" prefWidth="245.0">
                            <children>
                               <Label text="*" textFill="#ff3434" StackPane.alignment="TOP_RIGHT">
                                  <font>
@@ -73,7 +73,7 @@
                                     <Insets />
                                  </StackPane.margin>
                               </Label>
-                              <HBox alignment="CENTER_LEFT" prefHeight="50.0" spacing="15.0">
+                              <HBox alignment="CENTER_LEFT" prefHeight="50.0" prefWidth="245.0" spacing="15.0">
                                  <children>
                                     <ImageView fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
                                        <image>
@@ -92,7 +92,7 @@
                               </HBox>
                            </children>
                         </StackPane>
-                        <StackPane layoutX="10.0" layoutY="99.0" prefHeight="50.0">
+                        <StackPane layoutX="10.0" layoutY="99.0" maxWidth="-Infinity" prefHeight="50.0" prefWidth="245.0">
                            <children>
                               <Label text="*" textFill="#ff3434" StackPane.alignment="TOP_RIGHT">
                                  <font>
@@ -126,7 +126,7 @@
                         <Insets left="10.0" />
                      </HBox.margin>
                   </VBox>
-                  <Line endX="-99.41421508789062" endY="173.58578491210938" startX="-100.0" stroke="#f22c2c" strokeWidth="2.0" styleClass="decor-line" />
+                  <Line endX="-99.41421508789062" endY="173.58578491210938" startX="-99.41421508789062" startY="-29.781890869140625" stroke="#f22c2c" strokeWidth="2.0" styleClass="decor-line" />
                   <VBox alignment="CENTER" prefHeight="173.0" prefWidth="302.0" spacing="20.0">
                      <children>
                         <StackPane prefHeight="50.0">
@@ -189,33 +189,41 @@
                   <Insets />
                </VBox.margin>
             </HBox>
-            <Line endX="549.9784545898438" endY="-0.4160062074661255" fill="#fa0000" startX="-57.607303619384766" startY="-0.41539785265922546" stroke="#f22c2c" strokeWidth="2.0" styleClass="decor-line" />
+            <Line endX="549.9784545898438" endY="-0.4160062074661255" fill="#fa0000" startX="-77.09259033203125" startY="-0.4161800146102905" stroke="#f22c2c" strokeWidth="2.0" styleClass="decor-line" />
             <VBox alignment="CENTER" prefHeight="67.0" prefWidth="600.0" spacing="10.0">
                <children>
-                  <HBox alignment="CENTER" prefHeight="32.0" prefWidth="275.0" spacing="10.0">
+                  <StackPane maxWidth="-Infinity" prefHeight="50.0" prefWidth="250.0">
                      <children>
-                        <ImageView fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@../icons/action_date.png" />
-                           </image>
-                           <HBox.margin>
-                              <Insets left="10.0" />
-                           </HBox.margin>
-                        </ImageView>
-                        <DatePicker fx:id="sign_upDP" onAction="#signupChange" prefHeight="26.0" prefWidth="174.0" promptText="Fecha inscripción" showWeekNumbers="true" />
-                        <Label alignment="TOP_LEFT" text="*" textFill="#ff3434">
+                        <Label alignment="TOP_LEFT" text="*" textFill="#ff3434" StackPane.alignment="TOP_RIGHT">
                            <font>
                               <Font name="Trebuchet MS Bold" size="15.0" />
                            </font>
                         </Label>
+                        <HBox alignment="CENTER" prefHeight="32.0" prefWidth="275.0" spacing="10.0">
+                           <children>
+                              <ImageView fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../icons/action_date.png" />
+                                 </image>
+                                 <HBox.margin>
+                                    <Insets left="10.0" />
+                                 </HBox.margin>
+                              </ImageView>
+                              <DatePicker fx:id="sign_upDP" onAction="#signupChange" prefHeight="26.0" prefWidth="174.0" promptText="Fecha inscripción" showWeekNumbers="true">
+                                 <HBox.margin>
+                                    <Insets top="2.0" />
+                                 </HBox.margin>
+                              </DatePicker>
+                           </children>
+                        </HBox>
                      </children>
-                  </HBox>
+                  </StackPane>
                </children>
                <VBox.margin>
                   <Insets bottom="10.0" top="10.0" />
                </VBox.margin>
             </VBox>
-            <Line endX="549.9784545898438" endY="-0.4160062074661255" fill="#007bff" startX="-57.607303619384766" startY="-0.41539785265922546" stroke="#007bff" strokeWidth="2.0" styleClass="decor-line">
+            <Line endX="568.9784545898438" endY="-0.4148164987564087" fill="#007bff" startX="-57.607303619384766" startY="-0.41539785265922546" stroke="#007bff" strokeWidth="2.0" styleClass="decor-line">
                <VBox.margin>
                   <Insets />
                </VBox.margin>

@@ -277,7 +277,7 @@ public class TravellerController extends BaseController implements Initializable
                 && (dniText.isEmpty() || (t.getDni() != null && t.getDni().toLowerCase().contains(dniText)))
                 && (selectedDepartment == 0 || (t.getDepartment() == selectedDepartment))
                 && (selectedTrip == 0 || (t.getTrip() == selectedTrip))
-                && (phoneText.isEmpty() || (Integer.toString(t.getPhone()).contains(phoneText)))
+                && (phoneText.isEmpty() || (t.getPhone().contains(phoneText)))
                 && (selectedInsuranceDate == null || (t.getSignUpDate() != null && t.getSignUpDate().isBefore(selectedInsuranceDate)))
                 )
                 .collect(Collectors.toList());
@@ -289,6 +289,7 @@ public class TravellerController extends BaseController implements Initializable
     private void resetAllFilters() {
         nameTF.setText("");
         dniTF.setText("");
+        phoneTF.setText("");
 
         departmentCB.setValue(departmentCB.getItems().get(0));
         tripCB.setValue(tripCB.getItems().get(0));

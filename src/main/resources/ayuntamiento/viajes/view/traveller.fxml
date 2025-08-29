@@ -19,7 +19,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane fx:id="father" minWidth="-Infinity" prefHeight="800.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ayuntamiento.viajes.controller.TravellerController">
+<BorderPane fx:id="father" minWidth="-Infinity" prefHeight="800.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ayuntamiento.viajes.controller.TravellerController">
    <top>
       <HBox minWidth="-Infinity" prefHeight="110.0" prefWidth="1000.0">
          <children>
@@ -110,33 +110,9 @@
                            </font>
                         </Label>
                         <Region maxWidth="1.7976931348623157E308" prefHeight="200.0" prefWidth="1500.0" />
-                        <TextField fx:id="dniTF" minWidth="-Infinity" onKeyTyped="#applyAllFilters" prefWidth="100.0" promptText="DNI" styleClass="field">
-                           <font>
-                              <Font name="Trebuchet MS Bold" size="14.0" />
-                           </font>
-                        </TextField>
-                        <TextField fx:id="nameTF" minWidth="-Infinity" onKeyTyped="#applyAllFilters" prefHeight="26.0" prefWidth="150.0" promptText="Nombre" styleClass="field">
-                           <font>
-                              <Font name="Trebuchet MS Bold" size="14.0" />
-                           </font>
-                        </TextField>
-                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
-                           <children>
-                              <Label contentDisplay="CENTER" minWidth="-Infinity" prefHeight="20.0" prefWidth="150.0" text="Fecha anterior a" textFill="WHITE">
-                                 <font>
-                                    <Font name="Trebuchet MS Bold" size="16.0" />
-                                 </font>
-                                 <HBox.margin>
-                                    <Insets left="10.0" />
-                                 </HBox.margin>
-                              </Label>
-                              <DatePicker fx:id="sign_upDP" minWidth="-Infinity" onAction="#applyAllFilters" prefHeight="26.0" prefWidth="140.0" promptText="Inscripción">
-                                 <HBox.margin>
-                                    <Insets right="10.0" />
-                                 </HBox.margin>
-                              </DatePicker>
-                           </children>
-                        </HBox>
+                        <ChoiceBox fx:id="departmentCB" minWidth="-Infinity" prefHeight="25.0" prefWidth="150.0" />
+                        <ChoiceBox fx:id="tripCB" minWidth="-Infinity" prefHeight="26.0" prefWidth="275.0" />
+                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" />
                         <ImageView fitHeight="24.0" fitWidth="24.0" nodeOrientation="INHERIT" onMouseClicked="#resetAllFilters" pickOnBounds="true" preserveRatio="true" scaleX="1.5" scaleY="1.5" styleClass="glow">
                            <image>
                               <Image url="@../icons/car_clean-filters.png" />
@@ -156,25 +132,46 @@
                      </padding>
                      <children>
                         <Region maxWidth="1.7976931348623157E308" prefHeight="50.0" prefWidth="1500.0" />
+                        <Label contentDisplay="CENTER" minWidth="-Infinity" prefHeight="20.0" prefWidth="130.0" text="Fecha anterior a" textFill="WHITE">
+                           <font>
+                              <Font name="Trebuchet MS Bold" size="16.0" />
+                           </font>
+                           <HBox.margin>
+                              <Insets />
+                           </HBox.margin>
+                        </Label>
+                        <DatePicker fx:id="sign_upDP" minWidth="-Infinity" onAction="#applyAllFilters" prefHeight="26.0" prefWidth="140.0" promptText="Inscripción">
+                           <HBox.margin>
+                              <Insets right="10.0" />
+                           </HBox.margin>
+                        </DatePicker>
+                        <TextField fx:id="dniTF" minWidth="-Infinity" onKeyTyped="#applyAllFilters" prefWidth="100.0" promptText="DNI" styleClass="field">
+                           <font>
+                              <Font name="Trebuchet MS Bold" size="14.0" />
+                           </font>
+                        </TextField>
                         <TextField fx:id="phoneTF" minWidth="-Infinity" onKeyTyped="#applyAllFilters" prefWidth="100.0" promptText="Teléfono" styleClass="field">
                            <font>
                               <Font name="Trebuchet MS Bold" size="14.0" />
                            </font>
                         </TextField>
-                        <ChoiceBox fx:id="tripCB" minWidth="-Infinity" prefHeight="26.0" prefWidth="275.0" />
-                        <ChoiceBox fx:id="departmentCB" minWidth="-Infinity" prefHeight="25.0" prefWidth="150.0" />
+                        <TextField fx:id="nameTF" minWidth="-Infinity" onKeyTyped="#applyAllFilters" prefHeight="26.0" prefWidth="150.0" promptText="Nombre" styleClass="field">
+                           <font>
+                              <Font name="Trebuchet MS Bold" size="14.0" />
+                           </font>
+                        </TextField>
                      </children>
                   </HBox>
                </children>
             </VBox>
             <TableView fx:id="travellerTable" prefHeight="482.0" prefWidth="960.0" VBox.vgrow="ALWAYS">
                <columns>
-                  <TableColumn fx:id="dniColumn" editable="false" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefWidth="95.0" text="DNI" />
-                  <TableColumn fx:id="nameColumn" editable="false" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefWidth="230.0" text="Nombre" />
-                  <TableColumn fx:id="departmentColumn" editable="false" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefWidth="120.0" text="Departamento" />
-                  <TableColumn fx:id="tripColumn" editable="false" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefWidth="225.0" text="Viaje" />
-                  <TableColumn fx:id="phoneColumn" editable="false" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefWidth="105.0" text="Teléfono" />
-                  <TableColumn fx:id="signupColumn" editable="false" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefWidth="137.0" text="Fecha de Inscripción" />
+                  <TableColumn fx:id="dniColumn" editable="false" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefWidth="91.0" text="DNI" />
+                  <TableColumn fx:id="nameColumn" editable="false" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefWidth="222.0" text="Nombre" />
+                  <TableColumn fx:id="departmentColumn" editable="false" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefWidth="138.0" text="Departamento" />
+                  <TableColumn fx:id="tripColumn" editable="false" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefWidth="214.0" text="Viaje" />
+                  <TableColumn fx:id="phoneColumn" editable="false" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefWidth="123.0" text="Teléfono" />
+                  <TableColumn fx:id="signupColumn" editable="false" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefWidth="150.0" text="Fecha de Inscripción" />
                </columns>
                <columnResizePolicy>
                   <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
