@@ -19,7 +19,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane fx:id="father" minWidth="-Infinity" prefHeight="800.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ayuntamiento.viajes.controller.TravellerController">
+<BorderPane fx:id="father" minWidth="-Infinity" prefHeight="800.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ayuntamiento.viajes.controller.TravellerController">
    <top>
       <HBox minWidth="-Infinity" prefHeight="110.0" prefWidth="1000.0">
          <children>
@@ -96,7 +96,7 @@
          <children>
             <VBox fx:id="searcher" minHeight="-Infinity" minWidth="-Infinity" prefHeight="100.0" prefWidth="950.0" styleClass="searcher">
                <children>
-                  <HBox alignment="CENTER" minHeight="-Infinity" minWidth="-Infinity" prefHeight="50.0" prefWidth="950.0" spacing="20.0">
+                  <HBox alignment="CENTER" minHeight="-Infinity" minWidth="-Infinity" prefHeight="50.0" prefWidth="950.0" spacing="15.0">
                      <VBox.margin>
                         <Insets />
                      </VBox.margin>
@@ -110,9 +110,19 @@
                            </font>
                         </Label>
                         <Region maxWidth="1.7976931348623157E308" prefHeight="200.0" prefWidth="1500.0" />
+                        <TextField fx:id="dniTF" minWidth="-Infinity" onKeyTyped="#applyAllFilters" prefWidth="100.0" promptText="DNI" styleClass="field">
+                           <font>
+                              <Font name="Trebuchet MS Bold" size="14.0" />
+                           </font>
+                        </TextField>
+                        <TextField fx:id="nameTF" minWidth="-Infinity" onKeyTyped="#applyAllFilters" prefHeight="26.0" prefWidth="150.0" promptText="Nombre" styleClass="field">
+                           <font>
+                              <Font name="Trebuchet MS Bold" size="14.0" />
+                           </font>
+                        </TextField>
                         <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
                            <children>
-                              <Label contentDisplay="CENTER" minWidth="-Infinity" prefHeight="20.0" prefWidth="166.0" text="Fecha anterior a" textFill="WHITE">
+                              <Label contentDisplay="CENTER" minWidth="-Infinity" prefHeight="20.0" prefWidth="150.0" text="Fecha anterior a" textFill="WHITE">
                                  <font>
                                     <Font name="Trebuchet MS Bold" size="16.0" />
                                  </font>
@@ -146,12 +156,7 @@
                      </padding>
                      <children>
                         <Region maxWidth="1.7976931348623157E308" prefHeight="50.0" prefWidth="1500.0" />
-                        <TextField fx:id="dniTF" minWidth="-Infinity" onKeyTyped="#applyAllFilters" prefWidth="100.0" promptText="DNI" styleClass="field">
-                           <font>
-                              <Font name="Trebuchet MS Bold" size="14.0" />
-                           </font>
-                        </TextField>
-                        <TextField fx:id="nameTF" minWidth="-Infinity" onKeyTyped="#applyAllFilters" prefHeight="26.0" prefWidth="150.0" promptText="Nombre" styleClass="field">
+                        <TextField fx:id="phoneTF" minWidth="-Infinity" onKeyTyped="#applyAllFilters" prefWidth="100.0" promptText="Teléfono" styleClass="field">
                            <font>
                               <Font name="Trebuchet MS Bold" size="14.0" />
                            </font>
@@ -164,11 +169,12 @@
             </VBox>
             <TableView fx:id="travellerTable" prefHeight="482.0" prefWidth="960.0" VBox.vgrow="ALWAYS">
                <columns>
-                  <TableColumn fx:id="dniColumn" editable="false" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefWidth="118.0" text="DNI" />
-                  <TableColumn fx:id="nameColumn" editable="false" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefWidth="237.0" text="Nombre" />
-                  <TableColumn fx:id="departmentColumn" editable="false" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefWidth="143.0" text="Departamento" />
-                  <TableColumn fx:id="tripColumn" editable="false" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefWidth="277.0" text="Viaje" />
-                  <TableColumn fx:id="signupColumn" editable="false" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefWidth="163.2000732421875" text="Fecha de Inscripción" />
+                  <TableColumn fx:id="dniColumn" editable="false" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefWidth="95.0" text="DNI" />
+                  <TableColumn fx:id="nameColumn" editable="false" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefWidth="230.0" text="Nombre" />
+                  <TableColumn fx:id="departmentColumn" editable="false" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefWidth="120.0" text="Departamento" />
+                  <TableColumn fx:id="tripColumn" editable="false" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefWidth="225.0" text="Viaje" />
+                  <TableColumn fx:id="phoneColumn" editable="false" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefWidth="105.0" text="Teléfono" />
+                  <TableColumn fx:id="signupColumn" editable="false" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefWidth="137.0" text="Fecha de Inscripción" />
                </columns>
                <columnResizePolicy>
                   <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
