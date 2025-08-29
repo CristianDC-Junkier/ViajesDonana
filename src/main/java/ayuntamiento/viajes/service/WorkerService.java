@@ -185,7 +185,11 @@ public class WorkerService {
         try {
             adminList = adminDAO.findAll();
         } catch (APIException apiE) {
-            errorHandler(apiE, allowRetry, "rechargeList");
+            if (apiE.getStatusCode() == 204) {
+                adminList = new ArrayList();
+            } else {
+                errorHandler(apiE, allowRetry, "rechargeList");
+            }
         }
     }
 

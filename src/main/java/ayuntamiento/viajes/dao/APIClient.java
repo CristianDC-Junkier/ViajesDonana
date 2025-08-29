@@ -98,8 +98,6 @@ public abstract class APIClient<T> {
     }
 
     public List<T> findByDepartment(long department) throws APIException, Exception {
-        //String uriStr = BASE_URL + "/" + endpoint + "/department/" + department;
-        //System.out.println("Enviando request a: " + uriStr);
 
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(BASE_URL + "/" + endpoint + "/department/" + department))
@@ -149,7 +147,8 @@ public abstract class APIClient<T> {
                 errorMessage = node.has("error") ? node.get("error").asText() : responseBody;
                 if (obj instanceof Traveller && node.has("trip")) {
                     String existingTrip = node.get("trip").isNull() ? null : node.get("trip").asText();
-                    if (existingTrip != null) {
+                    if (existingTrip != null 
+                            && !existingTrip.equals(LoginService.getAdminDepartment().getName())) {
                         errorMessage = "El DNI/NIE: " + ((Traveller) obj).getDni()
                                 + ", ya está registrado en " + existingTrip;
                     } else {
@@ -180,8 +179,6 @@ public abstract class APIClient<T> {
         HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
         int statusCode = response.statusCode();
         String responseBody = response.body();
-
-        System.out.println("API" + statusCode);
 
         if (statusCode == 200) {
             return objectMapper.readValue(response.body(), typeParameterClass);

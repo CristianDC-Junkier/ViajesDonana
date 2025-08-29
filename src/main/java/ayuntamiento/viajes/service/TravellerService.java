@@ -82,11 +82,9 @@ public class TravellerService {
         }
         try {
             Traveller updated = (Traveller) travellerDAO.modify(entity, entity.getId());
-            System.out.println("\n" + updated.getVersion() + "\n");
             travellerList.replaceAll(t -> t.getId() == entity.getId() ? updated : t);
             return updated;
         } catch (APIException apiE) {
-            System.out.println("Service" + apiE.getStatusCode());
             errorHandler(apiE, allowRetry, "modify");
             return null;
         }
@@ -151,6 +149,7 @@ public class TravellerService {
                 travellerList = travellerDAO.findByDepartment(LoginService.getAdminDepartment().getId());
             }
         } catch (APIException apiE) {
+            System.out.println(apiE.getStatusCode());
             if (apiE.getStatusCode() == 204) {
                 travellerList = new ArrayList();
             } else {
@@ -173,13 +172,18 @@ public class TravellerService {
         System.out.println("eH" + apiE.getStatusCode());
         switch (apiE.getStatusCode()) {
             case 400, 409 -> {
-                rechargeList(false);
-                throw new ControledException(apiE.getMessage(), "TravellerService - " + method);
+                if (allowRetry) {
+                    rechargeList(false);
+                } else {
+                    throw new ControledException(apiE.getMessage(), "TravellerService - " + method);
+                }
             }
             case 404 -> {
-                System.out.println("Entro en 404");
-                rechargeList(false);
-                throw new ControledException(apiE.getMessage(), "TravellerService - " + method);
+                if (allowRetry) {
+                    rechargeList(false);
+                } else {
+                    throw new ControledException(apiE.getMessage(), "TravellerService - " + method);
+                }
             }
             case 401 -> {
                 if (allowRetry) {

@@ -140,16 +140,25 @@ public abstract class BaseController {
 
     @FXML
     public static <T> void refreshTable(final TableView<T> table, final List<T> tableList, Label amount) {
-        table.setItems(null);
-        table.layout();
-        table.setItems(FXCollections.observableList(tableList));
-        if (amount != null) {
-            if (tableList.getFirst() instanceof Traveller) {
-                amount.setText("Inscripciones en Total: " + tableList.size());
-            } else if (tableList.getFirst() instanceof Travel) {
-                amount.setText("Viajes en Total: " + tableList.size());
-            }
+    table.setItems(null);
+    table.layout();
+    table.setItems(FXCollections.observableList(tableList));
+
+    if (amount != null) {
+        if (tableList == null || tableList.isEmpty()) {
+            amount.setText("Sin elementos"); 
+            return;
+        }
+
+        T first = tableList.get(0); 
+        if (first instanceof Traveller) {
+            amount.setText("Inscripciones en Total: " + tableList.size());
+        } else if (first instanceof Travel) {
+            amount.setText("Viajes en Total: " + tableList.size());
+        } else {
+            amount.setText("Total: " + tableList.size());
         }
     }
+}
 
 }

@@ -13,9 +13,9 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 /**
- * Clase que se encarga de dar a los controladores acceso a los viajes
- * siendo el servicio especifico de ello.
- * 
+ * Clase que se encarga de dar a los controladores acceso a los viajes siendo el
+ * servicio especifico de ello.
+ *
  * @author Ramon Iglesias Granados
  * @since 2025-08-08
  * @version 1.0
@@ -162,7 +162,11 @@ public class TravelService {
                 travelList = travelDAO.findByDepartment(LoginService.getAdminDepartment().getId());
             }
         } catch (APIException apiE) {
-            errorHandler(apiE, allowRetry, "rechargeList");
+            if (apiE.getStatusCode() == 204) {
+                travelList = new ArrayList();
+            } else {
+                errorHandler(apiE, allowRetry, "rechargeList");
+            }
         }
     }
 

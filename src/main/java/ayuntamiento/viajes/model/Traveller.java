@@ -16,6 +16,7 @@ public class Traveller {
     private long id;
     private String dni;
     private String name;
+    private int phone;
     private long department;
     private long trip;
     private LocalDate signup;
@@ -28,9 +29,10 @@ public class Traveller {
     public Traveller() {
     }
 
-    public Traveller(String dni, String name, long deparment, long trip, String sign_upString, int version) {
+    public Traveller(String dni, String name, int phone, long deparment, long trip, String sign_upString, int version) {
         this.dni = dni;
         this.name = name;
+        this.phone = phone;
         this.department = deparment;
         this.trip = trip;
         this.signup = (sign_upString != null && !sign_upString.isBlank()) ? parseSignUp(sign_upString) : null;
@@ -63,6 +65,13 @@ public class Traveller {
     }
     public void setName(String name) {
         this.name = name;
+    }
+    
+    public int getPhone(){
+        return phone;
+    }
+    public void setPhone(int phone){
+        this.phone = phone;
     }
 
     public long getTrip() {

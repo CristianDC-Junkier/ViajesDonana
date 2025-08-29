@@ -196,8 +196,8 @@ public class TravellerController extends BaseController implements Initializable
 
     /**
      * Este metodo sirve para llamar a ActionTravellerController, donde mode es
- si se pulso el botón de añadir(0) o modifyAction(1), en caso de que fuera
- modifyAction se debe haber seleccionado un vehiculo
+     * si se pulso el botón de añadir(0) o modifyAction(1), en caso de que fuera
+     * modifyAction se debe haber seleccionado un vehiculo
      *
      * @param mode comprueba si fue llamado desde añadir(0) o modifyAction(1)
      */
@@ -233,7 +233,7 @@ public class TravellerController extends BaseController implements Initializable
         if (t.getSeats_occupied() < t.getSeats_total()) {
             if (travellerS.save(entity) == null) {
                 refreshTable(travellerTable, travellerS.findAll(), amount);
-                throw new ControledException("El viajero con DNI/NIE: " + entity.getDni() + ", ya existe" ,
+                throw new ControledException("El viajero con DNI/NIE: " + entity.getDni() + ", ya existe",
                         "TravellerController - anadir");
             }
         } else {
@@ -243,12 +243,16 @@ public class TravellerController extends BaseController implements Initializable
     }
 
     public void modifyAction(Traveller entity) throws Exception {
-
-        System.out.println("Entro en else");
-        if (travellerS.modify(entity) == null) {
-            refreshTable(travellerTable, travellerS.findAll(), amount);
-            throw new ControledException("El DNI/NIE: " + entity.getDni() + ", ya está registrado" ,
+        Travel t = travelS.findById(entity.getTrip()).get();
+        if (t.getSeats_occupied() < t.getSeats_total()) {
+            if (travellerS.modify(entity) == null) {
+                refreshTable(travellerTable, travellerS.findAll(), amount);
+                throw new ControledException("El DNI/NIE: " + entity.getDni() + ", ya está registrado",
                         "TravellerController - anadir");
+            }
+        } else {
+            throw new ControledException("El viaje seleccionado está completo: " + t.getDescriptor(),
+                    "TravellerController - anadir");
         }
     }
 
