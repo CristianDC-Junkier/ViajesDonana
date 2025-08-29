@@ -15,7 +15,7 @@
 
 <StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="450.0" prefWidth="672.0" stylesheets="@../styles/actiontravel.css" xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ayuntamiento.viajes.controller.ActionTravelController">
    <children>
-      <VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="392.0" prefWidth="627.0" styleClass="form-card" stylesheets="@../styles/global.css">
+      <VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="392.0" prefWidth="580.0" styleClass="form-card" stylesheets="@../styles/global.css">
          <children>
             <Label fx:id="titleLabel" styleClass="title-label" text="Viaje" textAlignment="CENTER">
                <font>
@@ -25,7 +25,7 @@
                   <Insets top="20.0" />
                </VBox.margin>
             </Label>
-            <Line endX="568.9784545898438" endY="-0.4147859811782837" fill="#007bff" startX="-57.607303619384766" startY="-0.41539785265922546" stroke="#007bff" strokeWidth="2.0" styleClass="decor-line">
+            <Line endX="521.9784545898438" endY="-0.4153963327407837" fill="#007bff" startX="-57.607303619384766" startY="-0.41539785265922546" stroke="#007bff" strokeWidth="2.0" styleClass="decor-line">
                <VBox.margin>
                   <Insets />
                </VBox.margin>
@@ -34,14 +34,14 @@
                <children>
                   <VBox alignment="CENTER" prefHeight="110.0" prefWidth="500.0" spacing="5.0">
                      <children>
-                        <StackPane maxWidth="-Infinity" prefHeight="50.0" prefWidth="430.0">
+                        <StackPane maxWidth="-Infinity" prefHeight="50.0" prefWidth="425.0">
                            <children>
                               <Label text="*" textFill="#ff3434" StackPane.alignment="TOP_RIGHT">
                                  <font>
                                     <Font name="Trebuchet MS Bold" size="15.0" />
                                  </font>
                               </Label>
-                              <HBox alignment="CENTER" prefHeight="50.0" prefWidth="250.0" spacing="15.0">
+                              <HBox alignment="CENTER" prefHeight="50.0" spacing="15.0">
                                  <children>
                                     <ImageView fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
                                        <image>
@@ -68,7 +68,7 @@
                                           <Font name="Trebuchet MS Bold" size="15.0" />
                                        </font>
                                     </Label>
-                                    <HBox alignment="CENTER_LEFT" maxWidth="-Infinity" prefHeight="50.0" prefWidth="250.0" spacing="16.0">
+                                    <HBox alignment="CENTER_LEFT" maxWidth="-Infinity" prefHeight="50.0" prefWidth="260.0" spacing="16.0">
                                        <children>
                                           <ImageView fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
                                              <image>
@@ -78,12 +78,15 @@
                                                 <Insets left="20.0" />
                                              </HBox.margin>
                                           </ImageView>
-                                          <ChoiceBox fx:id="departmentCB" prefHeight="25.0" prefWidth="175.0" />
+                                          <ChoiceBox fx:id="departmentCB" prefHeight="25.0" prefWidth="200.0" />
                                        </children>
+                                       <StackPane.margin>
+                                          <Insets right="8.0" />
+                                       </StackPane.margin>
                                     </HBox>
                                  </children>
                               </StackPane>
-                              <StackPane maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="50.0" prefWidth="155.0">
+                              <StackPane maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="50.0" prefWidth="150.0">
                                  <children>
                                     <Label text="*" textFill="#ff3434" StackPane.alignment="TOP_RIGHT">
                                        <font>
@@ -117,7 +120,7 @@
                   <Insets />
                </VBox.margin>
             </HBox>
-            <Line endX="568.9784545898438" endY="-0.41545581817626953" fill="#fa0000" startX="-57.607303619384766" startY="-0.41539785265922546" stroke="#f22c2c" strokeWidth="2.0" styleClass="decor-line" />
+            <Line endX="522.9784545898438" endY="-0.4153658151626587" fill="#fa0000" startX="-57.607303619384766" startY="-0.41539785265922546" stroke="#f22c2c" strokeWidth="2.0" styleClass="decor-line" />
             <HBox alignment="CENTER">
                <children>
                   <Button fx:id="actionButton" cache="true" mnemonicParsing="false" onAction="#extract" prefHeight="30.0" prefWidth="100.0" text="Añadir" textAlignment="CENTER" textFill="WHITE" translateX="60.0">
