@@ -89,7 +89,7 @@ public class ActionTravellerController implements Initializable {
 
     @FXML
     private void phoneChange() {
-        nameTF.setStyle("");
+        phoneTF.setStyle("");
     }
 
     @FXML
