@@ -106,7 +106,6 @@ public class InfoController {
      */
     public static DialogResult showInfoDialog(Stage parentStage, String infoMessage, boolean needConfirmation){
         try {
-            // Cargar el FXML del cuadro de diálogo de error
             FXMLLoader loader = new FXMLLoader(InfoController.class.getResource("/ayuntamiento/viajes/view/info.fxml"));
             AnchorPane page = loader.load();
 
