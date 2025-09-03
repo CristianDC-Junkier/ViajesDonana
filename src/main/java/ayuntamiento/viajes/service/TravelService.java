@@ -151,7 +151,8 @@ public class TravelService {
 
     public static void rechargeList(boolean allowRetry) throws IOException, InterruptedException, Exception {
         try {
-            if (LoginService.getAdminDepartment().getName().equalsIgnoreCase("Admin")) {
+            String role = LoginService.getAdminDepartment().getName();
+            if (role != null && (role.equalsIgnoreCase("Admin") || role.equalsIgnoreCase("Superadmin")))  {
                 travelList = travelDAO.findAll();
             } else {
                 travelList = travelDAO.findByDepartment(LoginService.getAdminDepartment().getId());

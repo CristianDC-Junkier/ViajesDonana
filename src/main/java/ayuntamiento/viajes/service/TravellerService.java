@@ -143,7 +143,8 @@ public class TravellerService {
 
     public static void rechargeList(boolean allowRetry) throws IOException, InterruptedException, Exception {
         try {
-            if (LoginService.getAdminDepartment().getName().equalsIgnoreCase("Admin")) {
+            String role = LoginService.getAdminDepartment().getName();
+            if (role != null && (role.equalsIgnoreCase("Admin") || role.equalsIgnoreCase("Superadmin"))) {
                 travellerList = travellerDAO.findAll();
             } else {
                 travellerList = travellerDAO.findByDepartment(LoginService.getAdminDepartment().getId());

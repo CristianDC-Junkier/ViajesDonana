@@ -139,11 +139,16 @@ public class TravellerController extends BaseController implements Initializable
         nameColumn.setCellValueFactory(new PropertyValueFactory<Traveller, String>("name"));
         //Callbacks para mostrar los departamentos y viajes por nombre en vez de por el ID
         departmentColumn.setCellValueFactory(new Callback<CellDataFeatures<Traveller, String>, ObservableValue<String>>() {
+            @Override
             public ObservableValue<String> call(CellDataFeatures<Traveller, String> p) {
-                return new SimpleStringProperty(departmentS.findById(p.getValue().getDepartment()).get().getName().replace('_', ' '));
+                String deptName = departmentS.findById(p.getValue().getDepartment())
+                        .map(d -> d.getName().replace('_', ' '))
+                        .orElse("");
+                return new SimpleStringProperty(deptName);
             }
         });
         tripColumn.setCellValueFactory(new Callback<CellDataFeatures<Traveller, String>, ObservableValue<String>>() {
+            @Override
             public ObservableValue<String> call(CellDataFeatures<Traveller, String> p) {
                 return new SimpleStringProperty(travelS.findById(p.getValue().getTrip()).get().getDescriptor());
             }
@@ -151,16 +156,20 @@ public class TravellerController extends BaseController implements Initializable
         phoneColumn.setCellValueFactory(new PropertyValueFactory<Traveller, Integer>("phone"));
         signupColumn.setCellValueFactory(new PropertyValueFactory<Traveller, LocalDate>("signup"));
 
-        if (LoginService.getAdminDepartment().getName().equalsIgnoreCase("Admin")) {
+        String role = LoginService.getAdminDepartment().getName();
+        if (role != null && (role.equalsIgnoreCase("Admin") || role.equalsIgnoreCase("Superadmin"))) {
             Department allDepartment = new Department();
             allDepartment.setId(0);
             allDepartment.setName("Todos");
             departmentCB.getItems().add(allDepartment);
 
             // Carga departamentos desde DepartmentService
-            List<Department> departments = departmentS.findAll();
+            List<Department> departments = departmentS.findAll().stream()
+                    .filter(d -> !d.getName().equalsIgnoreCase("Admin") && !d.getName().equalsIgnoreCase("Superadmin"))
+                    .toList();
+
             departmentCB.getItems().addAll(departments);
-            departmentCB.setValue(departmentCB.getItems().get(0));
+            departmentCB.setValue(departments.get(0));
         } else {
             departmentCB.getItems().add(LoginService.getAdminDepartment());
             departmentCB.setValue(departmentCB.getItems().get(0));
