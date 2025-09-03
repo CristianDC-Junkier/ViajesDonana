@@ -84,9 +84,10 @@ public class HomeController extends BaseController implements Initializable {
 
     @FXML
     private void stadisticspanel() throws IOException {
+        String role = LoginService.getAdminDepartment().getName();
         try {
             TravellerService.rechargeList();
-            if (LoginService.getAdminDepartment().getName().equalsIgnoreCase("Admin")) {
+            if (role != null && (role.equalsIgnoreCase("Admin") || role.equalsIgnoreCase("Superadmin"))) {
                 ManagerUtil.moveTo("stadistics_admin");
             } else {
                 ManagerUtil.moveTo("stadistics_department");
@@ -95,7 +96,7 @@ public class HomeController extends BaseController implements Initializable {
             error(cE);
         } catch (QuietException qE) {
             error(qE);
-            if (LoginService.getAdminDepartment().getName().equalsIgnoreCase("Admin")) {
+            if (role != null && (role.equalsIgnoreCase("Admin") || role.equalsIgnoreCase("Superadmin"))) {
                 ManagerUtil.moveTo("stadistics_admin");
             } else {
                 ManagerUtil.moveTo("stadistics_department");
@@ -184,7 +185,8 @@ public class HomeController extends BaseController implements Initializable {
      * Oculta el boton de acceso al panel de viajes segun el usuario
      */
     private void showTravelButton() {
-        if (LoginService.getAdminDepartment().getName().equalsIgnoreCase("Admin")) {
+        String role = LoginService.getAdminDepartment().getName();
+        if (role != null && (role.equalsIgnoreCase("Admin") || role.equalsIgnoreCase("Superadmin"))) {
             travelVB.setVisible(true);
             travelVB.setManaged(true);
         } else {

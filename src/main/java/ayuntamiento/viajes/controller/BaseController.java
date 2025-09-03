@@ -92,10 +92,10 @@ public abstract class BaseController {
     }
 
     /**
-     * Cambiar el texto del menú de usuarios/perfil segun el usuario
+     * Mostrar el texto del menú de usuarios/perfil segun el usuario
      */
     public void showUserOption() {
-        if (LoginService.getAdminDepartment().getName().equals("Admin")) {
+        if (LoginService.getAdminDepartment().getName().equals("Superadmin")) {
             users.setText("Administración de Usuarios");
         } else {
             users.setDisable(true);
@@ -104,7 +104,7 @@ public abstract class BaseController {
 
     @FXML
     private void userspanel() throws IOException {
-        if (LoginService.getAdminDepartment().getName().equalsIgnoreCase("Admin")) {
+        if (LoginService.getAdminDepartment().getName().equalsIgnoreCase("Superadmin")) {
             try {
                 WorkerService.rechargeList();
                 ManagerUtil.moveTo("worker");
