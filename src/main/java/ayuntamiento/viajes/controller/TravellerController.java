@@ -169,7 +169,7 @@ public class TravellerController extends BaseController implements Initializable
                     .toList();
 
             departmentCB.getItems().addAll(departments);
-            departmentCB.setValue(departments.get(0));
+            departmentCB.setValue(departmentCB.getItems().get(0));
         } else {
             departmentCB.getItems().add(LoginService.getAccountDepartmentLog());
             departmentCB.setValue(departmentCB.getItems().get(0));

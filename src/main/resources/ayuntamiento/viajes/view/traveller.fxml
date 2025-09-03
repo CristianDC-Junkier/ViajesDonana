@@ -19,7 +19,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane fx:id="father" minWidth="-Infinity" prefHeight="800.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ayuntamiento.viajes.controller.TravellerController">
+<BorderPane fx:id="father" minWidth="-Infinity" prefHeight="800.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ayuntamiento.viajes.controller.TravellerController">
    <top>
       <HBox minWidth="-Infinity" prefHeight="110.0" prefWidth="1000.0">
          <children>
@@ -168,9 +168,9 @@
                <columns>
                   <TableColumn fx:id="dniColumn" editable="false" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefWidth="91.0" text="DNI" />
                   <TableColumn fx:id="nameColumn" editable="false" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefWidth="222.0" text="Nombre" />
-                  <TableColumn fx:id="departmentColumn" editable="false" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefWidth="138.0" text="Departamento" />
-                  <TableColumn fx:id="tripColumn" editable="false" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefWidth="214.0" text="Viaje" />
-                  <TableColumn fx:id="phoneColumn" editable="false" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefWidth="123.0" text="Teléfono" />
+                  <TableColumn fx:id="departmentColumn" editable="false" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefWidth="125.0" text="Departamento" />
+                  <TableColumn fx:id="tripColumn" editable="false" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefWidth="230.0" text="Viaje" />
+                  <TableColumn fx:id="phoneColumn" editable="false" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefWidth="120.0" text="Teléfono" />
                   <TableColumn fx:id="signupColumn" editable="false" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefWidth="150.0" text="Fecha de Inscripción" />
                </columns>
                <columnResizePolicy>
