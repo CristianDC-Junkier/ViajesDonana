@@ -145,7 +145,9 @@ public class ActionTravellerController implements Initializable {
         phoneTF.setTextFormatter(formatter);
 
         // Carga departamentos desde DepartmentService
-        if (LoginService.getAdminDepartment().getName().equalsIgnoreCase("Admin")) {
+        String role = LoginService.getAdminDepartment().getName();
+        System.out.println(role);
+        if (role != null && (role.equalsIgnoreCase("Admin") || role.equalsIgnoreCase("Superadmin"))){
             List<Department> departments = departmentS.findAll();
             departmentCB.getItems().setAll(departments);
             departmentCB.setValue(departmentCB.getItems().get(0));
@@ -161,10 +163,12 @@ public class ActionTravellerController implements Initializable {
 
         // Carga viajes desde TravelService
         List<Travel> travels = travelS.findByDepartment(departmentCB.getSelectionModel().getSelectedItem().getId());
+        System.out.println(travels);
+        System.out.println(departmentCB.getSelectionModel().getSelectedItem().getId());
         tripCB.getItems().setAll(travels);
         tripCB.setValue(travels.isEmpty() ? null : tripCB.getItems().getFirst());
 
-        ChoiceBoxUtil.setTravelConverter(tripCB);
+        //ChoiceBoxUtil.setTravelConverter(tripCB);
 
         /*Cambiar el titulo y los labels dependiendo del tipo*/
         if (typeAction == 0) {
