@@ -2,6 +2,7 @@ package ayuntamiento.viajes.controller;
 
 import ayuntamiento.viajes.common.ChoiceBoxUtil;
 import static ayuntamiento.viajes.controller.BaseController.refreshTable;
+import static ayuntamiento.viajes.controller.TravellerController.departmentS;
 import ayuntamiento.viajes.exception.ControledException;
 import ayuntamiento.viajes.model.Department;
 import ayuntamiento.viajes.model.Travel;
@@ -68,11 +69,12 @@ public class TravelController extends BaseController implements Initializable {
     private void add() {
         showActionDialogTravel(0);
     }
+
     @FXML
     private void modify() {
         showActionDialogTravel(1);
     }
-    
+
     @FXML
     private void delete() {
         if (travelTable.getSelectionModel().getSelectedItem() == null) {
@@ -118,15 +120,18 @@ public class TravelController extends BaseController implements Initializable {
         departmentCB.getItems().add(allDepartment);
 
         // Carga departamentos desde DepartmentService
-        List<Department> departments = departmentS.findAll();
+        List<Department> departments = departmentS.findAll().stream()
+                .filter(d -> !d.getName().equalsIgnoreCase("Admin") && !d.getName().equalsIgnoreCase("Superadmin"))
+                .toList();
+
         departmentCB.getItems().addAll(departments);
         departmentCB.setValue(departmentCB.getItems().get(0));
         ChoiceBoxUtil.setDepartmentNameConverter(departmentCB);
         departmentCB.valueProperty().addListener((obs, oldType, newType) -> applyAllFilters());
-        
+
         amount.setText("Viajes en Total: " + travelS.findAll().size());
     }
-    
+
     public void showActionDialogTravel(int mode) {
         if (mode == 1 && travelTable.getSelectionModel().getSelectedItem() == null) {
             error(new ControledException("Debe seleccionar un viaje de la tabla",
@@ -153,7 +158,7 @@ public class TravelController extends BaseController implements Initializable {
             }
         }
     }
-    
+
     public void addAction(Travel entity) throws Exception {
         if (travelS.save(entity) == null) {
             refreshTable(travelTable, travelS.findAll(), amount);

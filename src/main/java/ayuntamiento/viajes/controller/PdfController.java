@@ -62,7 +62,7 @@ public class PdfController extends BaseController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         showUserOption();
 
-        sortCB.getItems().addAll("Nombre", "Viaje", "Fecha de Inscripción", "DNI"); //, "Departamento"
+        sortCB.getItems().addAll("Nombre", "Viaje", "Fecha de Inscripción", "DNI"); 
         sortCB.getSelectionModel().selectFirst();
 
         Travel allTravels = new Travel();

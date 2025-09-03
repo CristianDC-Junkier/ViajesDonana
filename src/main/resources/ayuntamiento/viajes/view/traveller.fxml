@@ -110,7 +110,7 @@
                            </font>
                         </Label>
                         <Region maxWidth="1.7976931348623157E308" prefHeight="200.0" prefWidth="1500.0" />
-                        <ChoiceBox fx:id="departmentCB" minWidth="-Infinity" prefHeight="25.0" prefWidth="150.0" />
+                        <ChoiceBox fx:id="departmentCB" minWidth="-Infinity" prefHeight="25.0" prefWidth="185.0" />
                         <ChoiceBox fx:id="tripCB" minWidth="-Infinity" prefHeight="26.0" prefWidth="275.0" />
                         <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" />
                         <ImageView fitHeight="24.0" fitWidth="24.0" nodeOrientation="INHERIT" onMouseClicked="#resetAllFilters" pickOnBounds="true" preserveRatio="true" scaleX="1.5" scaleY="1.5" styleClass="glow">

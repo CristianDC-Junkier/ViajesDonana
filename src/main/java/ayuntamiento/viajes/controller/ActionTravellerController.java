@@ -3,6 +3,7 @@ package ayuntamiento.viajes.controller;
 import ayuntamiento.viajes.common.ChoiceBoxUtil;
 import ayuntamiento.viajes.common.PropertiesUtil;
 import ayuntamiento.viajes.common.SecurityUtil;
+import static ayuntamiento.viajes.controller.TravellerController.departmentS;
 import ayuntamiento.viajes.model.Department;
 import ayuntamiento.viajes.model.Travel;
 import ayuntamiento.viajes.model.Traveller;
@@ -146,8 +147,11 @@ public class ActionTravellerController implements Initializable {
 
         // Carga departamentos desde DepartmentService
         String role = LoginService.getAccountDepartmentLog().getName();
-        if (role != null && (role.equalsIgnoreCase("Admin") || role.equalsIgnoreCase("Superadmin"))){
-            List<Department> departments = departmentS.findAll();
+        if (role != null && (role.equalsIgnoreCase("Admin") || role.equalsIgnoreCase("Superadmin"))) {
+            // Carga departamentos desde DepartmentService
+            List<Department> departments = departmentS.findAll().stream()
+                    .filter(d -> !d.getName().equalsIgnoreCase("Admin") && !d.getName().equalsIgnoreCase("Superadmin"))
+                    .toList();
             departmentCB.getItems().setAll(departments);
             departmentCB.setValue(departmentCB.getItems().get(0));
 

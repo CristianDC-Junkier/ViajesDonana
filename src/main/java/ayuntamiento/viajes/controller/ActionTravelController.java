@@ -2,6 +2,7 @@ package ayuntamiento.viajes.controller;
 
 import ayuntamiento.viajes.common.ChoiceBoxUtil;
 import ayuntamiento.viajes.common.SecurityUtil;
+import static ayuntamiento.viajes.controller.TravellerController.departmentS;
 import ayuntamiento.viajes.model.Department;
 import ayuntamiento.viajes.model.Travel;
 import ayuntamiento.viajes.service.DepartmentService;
@@ -102,17 +103,20 @@ public class ActionTravelController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         tSeatsTF.setTextFormatter(new TextFormatter<>(new IntegerStringConverter()));
 
-        List<Department> departments = departmentS.findAll();
+        // Carga departamentos desde DepartmentService
+        List<Department> departments = departmentS.findAll().stream()
+                .filter(d -> !d.getName().equalsIgnoreCase("Admin") && !d.getName().equalsIgnoreCase("Superadmin"))
+                .toList();
         departmentCB.getItems().setAll(departments);
         departmentCB.setValue(departmentCB.getItems().get(0));
 
         ChoiceBoxUtil.setDepartmentNameConverter(departmentCB);
 
-        int minSeats = (tSelected != null) ? Math.max(tSelected.getSeats_occupied(),30) : 30;
+        int minSeats = (tSelected != null) ? Math.max(tSelected.getSeats_occupied(), 30) : 30;
 
         tSeatsTF.setTextFormatter(new TextFormatter<>(new IntegerStringConverter(), minSeats));
         tSeatsTF.focusedProperty().addListener((obs, wasFocused, isNowFocused) -> {
-            if (wasFocused && !isNowFocused) { 
+            if (wasFocused && !isNowFocused) {
                 try {
                     int value = Integer.parseInt(tSeatsTF.getText().trim());
                     if (value < minSeats) {
