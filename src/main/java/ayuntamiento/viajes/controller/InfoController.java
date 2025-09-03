@@ -95,7 +95,7 @@ public class InfoController {
     }
 
     /**
-     * Muestra el cuadro de diálogo de error de forma modal.
+     * Muestra el cuadro de diálogo de informacion de forma modal.
      *
      * @param parentStage El escenario principal (o la ventana que invoca este
      * diálogo)
