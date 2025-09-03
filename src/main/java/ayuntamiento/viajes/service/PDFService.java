@@ -295,7 +295,7 @@ public class PDFService {
 
         /*Posiciones absolutas para cada columna*/
         float[] columnX = new float[]{
-            30f, 82f, 225f, 280f, 435f, 522f};
+            30f, 83f, 213f, 282f, 435f, 522f};
 
         for (Traveller v : firstPageTravellers) {
             canvas.beginText();
