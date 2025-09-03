@@ -143,11 +143,11 @@ public class TravellerService {
 
     public static void rechargeList(boolean allowRetry) throws IOException, InterruptedException, Exception {
         try {
-            String role = LoginService.getAdminDepartment().getName();
+            String role = LoginService.getAccountDepartmentLog().getName();
             if (role != null && (role.equalsIgnoreCase("Admin") || role.equalsIgnoreCase("Superadmin"))) {
                 travellerList = travellerDAO.findAll();
             } else {
-                travellerList = travellerDAO.findByDepartment(LoginService.getAdminDepartment().getId());
+                travellerList = travellerDAO.findByDepartment(LoginService.getAccountDepartmentLog().getId());
             }
         } catch (APIException apiE) {
             if (apiE.getStatusCode() == 204) {

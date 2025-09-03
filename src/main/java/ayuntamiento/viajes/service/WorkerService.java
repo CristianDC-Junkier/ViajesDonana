@@ -91,8 +91,8 @@ public class WorkerService {
                 }
             }
 
-            if (result.getId() == LoginService.getAdminLog().getId()) {
-                LoginService.setAdminLog(result);
+            if (result.getId() == LoginService.getAccountLog().getId()) {
+                LoginService.setAccountLog(result);
             }
 
             return result;
@@ -130,7 +130,7 @@ public class WorkerService {
 
         try {
             result = (Worker) adminDAO.modify(entity, entity.getId());
-            LoginService.setAdminLog(result);
+            LoginService.setAccountLog(result);
             adminList = null;
             return result;
 
@@ -159,8 +159,8 @@ public class WorkerService {
             deleted = adminDAO.delete(entity.getId());
 
             if (deleted) {
-                if (LoginService.getAdminLog().getId() == entity.getId()) {
-                    LoginService.setAdminLog(null);
+                if (LoginService.getAccountLog().getId() == entity.getId()) {
+                    LoginService.setAccountLog(null);
                 }
                 adminList.remove(entity);
             }

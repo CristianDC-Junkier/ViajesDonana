@@ -38,10 +38,10 @@ public class LoginService {
      *
      * @return El usuario logeado
      */
-    public static Worker getAdminLog() {
+    public static Worker getAccountLog() {
         return adminLog;
     }
-    public static void setAdminLog(Worker adminLog) {
+    public static void setAccountLog(Worker adminLog) {
         LoginService.adminLog = adminLog;
     }
 
@@ -50,10 +50,10 @@ public class LoginService {
      *
      * @return El departamento del usuario
      */
-    public static Department getAdminDepartment() {
+    public static Department getAccountDepartmentLog() {
         return departmentLog;
     }
-    public static void setDepartmentLog(Department departmentLog) {
+    public static void setAccountDepartmentLog(Department departmentLog) {
         LoginService.departmentLog = departmentLog;
     }
 

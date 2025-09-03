@@ -145,7 +145,7 @@ public class ActionTravellerController implements Initializable {
         phoneTF.setTextFormatter(formatter);
 
         // Carga departamentos desde DepartmentService
-        String role = LoginService.getAdminDepartment().getName();
+        String role = LoginService.getAccountDepartmentLog().getName();
         System.out.println(role);
         if (role != null && (role.equalsIgnoreCase("Admin") || role.equalsIgnoreCase("Superadmin"))){
             List<Department> departments = departmentS.findAll();
@@ -153,7 +153,7 @@ public class ActionTravellerController implements Initializable {
             departmentCB.setValue(departmentCB.getItems().get(0));
 
         } else {
-            departmentCB.getItems().add(LoginService.getAdminDepartment());
+            departmentCB.getItems().add(LoginService.getAccountDepartmentLog());
             departmentCB.setValue(departmentCB.getItems().get(0));
             departmentCB.setDisable(true);
             departmentCB.setMouseTransparent(true);

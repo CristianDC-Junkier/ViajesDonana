@@ -49,7 +49,7 @@ public class HomeController extends BaseController implements Initializable {
         showUserOption();
 
         showTravelButton();
-        departmentLabel.setText(LoginService.getAdminDepartment().getName().replace("_", " "));
+        departmentLabel.setText(LoginService.getAccountDepartmentLog().getName().replace("_", " "));
     }
 
     @FXML
@@ -84,7 +84,7 @@ public class HomeController extends BaseController implements Initializable {
 
     @FXML
     private void stadisticspanel() throws IOException {
-        String role = LoginService.getAdminDepartment().getName();
+        String role = LoginService.getAccountDepartmentLog().getName();
         try {
             TravellerService.rechargeList();
             if (role != null && (role.equalsIgnoreCase("Admin") || role.equalsIgnoreCase("Superadmin"))) {
@@ -185,7 +185,7 @@ public class HomeController extends BaseController implements Initializable {
      * Oculta el boton de acceso al panel de viajes segun el usuario
      */
     private void showTravelButton() {
-        String role = LoginService.getAdminDepartment().getName();
+        String role = LoginService.getAccountDepartmentLog().getName();
         if (role != null && (role.equalsIgnoreCase("Admin") || role.equalsIgnoreCase("Superadmin"))) {
             travelVB.setVisible(true);
             travelVB.setManaged(true);

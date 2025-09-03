@@ -118,8 +118,8 @@ public class LoggerUtil {
      */
     public static void log(String mensaje) {
         /*Comprobar si el usuario ya inició sesión*/
-        Worker user = LoginService.getAdminLog();
-        if (LoginService.getAdminLog() == null) {
+        Worker user = LoginService.getAccountLog();
+        if (LoginService.getAccountLog() == null) {
             try (BufferedWriter writer = new BufferedWriter(new FileWriter(FULLPATH, true))) {
                 String timestamp = new SimpleDateFormat(TIME_FORMAT).format(new Date());
                 writer.write("Not Login - " + timestamp + " - " + mensaje + "\n");

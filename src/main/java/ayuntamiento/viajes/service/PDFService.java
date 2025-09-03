@@ -79,10 +79,10 @@ public class PDFService {
     public void printAll(String name, String dir, String sort) throws ControledException, Exception {
         List<Travel> travelList;
 
-        if (LoginService.getAdminDepartment().getName().equalsIgnoreCase("Admin")) {
+        if (LoginService.getAccountDepartmentLog().getName().equalsIgnoreCase("Admin")) {
             travelList = travelS.findAll();
         } else {
-            travelList = travelS.findByDepartment(LoginService.getAdminDepartment().getId());
+            travelList = travelS.findByDepartment(LoginService.getAccountDepartmentLog().getId());
         }
 
         print(name, dir, travelList);

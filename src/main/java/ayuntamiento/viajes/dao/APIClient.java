@@ -144,7 +144,7 @@ public abstract class APIClient<T> {
                 if (obj instanceof Traveller && node.has("trip")) {
                     String existingTrip = node.get("trip").isNull() ? null : node.get("trip").asText();
                     if (existingTrip != null
-                            && !existingTrip.equals(LoginService.getAdminDepartment().getName())) {
+                            && !existingTrip.equals(LoginService.getAccountDepartmentLog().getName())) {
                         errorMessage = "El DNI/NIE: " + ((Traveller) obj).getDni()
                                 + ", ya está registrado en " + existingTrip;
                     } else {

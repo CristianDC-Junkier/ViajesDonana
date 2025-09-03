@@ -151,11 +151,11 @@ public class TravelService {
 
     public static void rechargeList(boolean allowRetry) throws IOException, InterruptedException, Exception {
         try {
-            String role = LoginService.getAdminDepartment().getName();
+            String role = LoginService.getAccountDepartmentLog().getName();
             if (role != null && (role.equalsIgnoreCase("Admin") || role.equalsIgnoreCase("Superadmin")))  {
                 travelList = travelDAO.findAll();
             } else {
-                travelList = travelDAO.findByDepartment(LoginService.getAdminDepartment().getId());
+                travelList = travelDAO.findByDepartment(LoginService.getAccountDepartmentLog().getId());
             }
         } catch (APIException apiE) {
             if (apiE.getStatusCode() == 204) {

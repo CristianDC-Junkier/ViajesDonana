@@ -69,7 +69,7 @@ public class StadisticsDepartmentController extends BaseController implements In
     public void initialize(URL url, ResourceBundle rb) {
         showUserOption();
 
-        department.setText(LoginService.getAdminDepartment().getName().replace("_", " "));
+        department.setText(LoginService.getAccountDepartmentLog().getName().replace("_", " "));
 
         travellerS = new TravellerService();
         travelS = new TravelService();
@@ -89,7 +89,7 @@ public class StadisticsDepartmentController extends BaseController implements In
     }
 
     private long getLoggedUserDepartment() {
-        return LoginService.getAdminLog().getDepartment();
+        return LoginService.getAccountLog().getDepartment();
     }
 
     private void rechargeLabels(List<Traveller> travellers, List<Travel> travels) {

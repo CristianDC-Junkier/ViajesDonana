@@ -167,7 +167,7 @@ public class WorkerController extends BaseController implements Initializable {
                     modUserNameTF.setStyle(errorStyle);
                     throw new ControledException("El nombre de usuario ya existe: " + u.getUsername(), "UserController - modify");
                 } else {
-                    if (LoginService.getAdminLog().getId() == userMod.getId()) {
+                    if (LoginService.getAccountLog().getId() == userMod.getId()) {
                         ManagerUtil.reload();
                     } else {
                         info("Usuario, " + userMod.getUsername() + ", modificado con éxito", false);
@@ -201,7 +201,7 @@ public class WorkerController extends BaseController implements Initializable {
                 if (workerS.delete(userTable.getSelectionModel().getSelectedItem())) {
                     info("El Usuario fue eliminado con éxito", false);
                     refreshTable(userTable, workerS.findAll(),null);
-                    if (LoginService.getAdminLog() == null) {
+                    if (LoginService.getAccountLog() == null) {
                         ManagerUtil.reload();
                     }
                 } else {
@@ -224,7 +224,7 @@ public class WorkerController extends BaseController implements Initializable {
     @FXML
     private void selected() {
         if (userTable.getSelectionModel().getSelectedItem() != null) {
-            if (userTable.getSelectionModel().getSelectedItem().getId() == LoginService.getAdminLog().getId()) {
+            if (userTable.getSelectionModel().getSelectedItem().getId() == LoginService.getAccountLog().getId()) {
                 modUserNameTF.setDisable(true);
                 modUserPassTF.setDisable(true);
                 modButton.setDisable(true);

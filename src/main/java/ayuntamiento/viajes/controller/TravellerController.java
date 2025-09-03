@@ -156,7 +156,7 @@ public class TravellerController extends BaseController implements Initializable
         phoneColumn.setCellValueFactory(new PropertyValueFactory<Traveller, Integer>("phone"));
         signupColumn.setCellValueFactory(new PropertyValueFactory<Traveller, LocalDate>("signup"));
 
-        String role = LoginService.getAdminDepartment().getName();
+        String role = LoginService.getAccountDepartmentLog().getName();
         if (role != null && (role.equalsIgnoreCase("Admin") || role.equalsIgnoreCase("Superadmin"))) {
             Department allDepartment = new Department();
             allDepartment.setId(0);
@@ -171,7 +171,7 @@ public class TravellerController extends BaseController implements Initializable
             departmentCB.getItems().addAll(departments);
             departmentCB.setValue(departments.get(0));
         } else {
-            departmentCB.getItems().add(LoginService.getAdminDepartment());
+            departmentCB.getItems().add(LoginService.getAccountDepartmentLog());
             departmentCB.setValue(departmentCB.getItems().get(0));
             departmentCB.setDisable(true);
             departmentCB.setMouseTransparent(true);
