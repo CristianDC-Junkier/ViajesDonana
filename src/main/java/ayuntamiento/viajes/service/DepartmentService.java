@@ -3,7 +3,9 @@ package ayuntamiento.viajes.service;
 import ayuntamiento.viajes.dao.DepartmentDAO;
 import ayuntamiento.viajes.exception.APIException;
 import ayuntamiento.viajes.exception.ControledException;
+import ayuntamiento.viajes.exception.LoginException;
 import ayuntamiento.viajes.exception.QuietException;
+import ayuntamiento.viajes.exception.ReloadException;
 import ayuntamiento.viajes.model.Department;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -73,9 +75,14 @@ public class DepartmentService {
             }
             case 401 -> {
                 if (allowRetry) {
-                    LoginService.relog();
+                    try {
+                        LoginService.relog();
+                    } catch (Exception e) {
+                        throw new ReloadException("Por seguridad, su sesión ha expirado. Inicie sesión de nuevo para continuar.", false);
+                    }
+                    throw new ReloadException("La sesión había expirado, pero ya está activa nuevamente.\n Por favor, realice otra vez la operación anterior.", true);
                 } else {
-                    throw new Exception(apiE.getMessage());
+                    throw new ReloadException("Por seguridad, su sesión ha expirado. Inicie sesión de nuevo para continuar.", false);
                 }
             }
             case 204 -> {

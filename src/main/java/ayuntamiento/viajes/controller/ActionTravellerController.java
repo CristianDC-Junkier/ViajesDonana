@@ -3,7 +3,6 @@ package ayuntamiento.viajes.controller;
 import ayuntamiento.viajes.common.ChoiceBoxUtil;
 import ayuntamiento.viajes.common.PropertiesUtil;
 import ayuntamiento.viajes.common.SecurityUtil;
-import static ayuntamiento.viajes.controller.TravellerController.departmentS;
 import ayuntamiento.viajes.model.Department;
 import ayuntamiento.viajes.model.Travel;
 import ayuntamiento.viajes.model.Traveller;

@@ -9,7 +9,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 /**
  * Clase que se encarga de dar a los controladores acceso a los departamentos
  * siendo el servicio especifico de ello.
- * 
+ *
  * @author Cristian Delgado Cruz
  * @since 2025-06-12
  * @version 1.0
@@ -41,6 +41,7 @@ public class LoginService {
     public static Worker getAccountLog() {
         return adminLog;
     }
+
     public static void setAccountLog(Worker adminLog) {
         LoginService.adminLog = adminLog;
     }
@@ -53,6 +54,7 @@ public class LoginService {
     public static Department getAccountDepartmentLog() {
         return departmentLog;
     }
+
     public static void setAccountDepartmentLog(Department departmentLog) {
         LoginService.departmentLog = departmentLog;
     }
@@ -64,20 +66,19 @@ public class LoginService {
         adminLog.setPassword(password);
         adminLog.setId(result.get("id").asLong());
         adminLog.setDepartment(result.get("departmentId").asLong());
-        
+
         departmentLog = new Department();
         departmentLog.setId(result.get("departmentId").asLong());
         departmentLog.setName(result.get("departmentName").asText());
         departmentLog.setAdminId(result.get("id").asLong());
-        
+
         LoginService.secret_Token = result.get("token").asText();
     }
 
-    public static boolean relog() throws LoginException, Exception {
-        boolean logueado = false;
+    public static void relog() throws LoginException, Exception {
         LoginService.secret_Token
                 = loginDAO.login(adminLog.getUsername(), adminLog.getPassword()).get("token").asText();
-        return logueado;
+        System.out.println(LoginService.secret_Token);
     }
 
 }

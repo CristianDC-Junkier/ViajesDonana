@@ -2,7 +2,9 @@ package ayuntamiento.viajes.controller;
 
 import ayuntamiento.viajes.common.ManagerUtil;
 import ayuntamiento.viajes.exception.ControledException;
+import ayuntamiento.viajes.exception.LoginException;
 import ayuntamiento.viajes.exception.QuietException;
+import ayuntamiento.viajes.exception.ReloadException;
 import ayuntamiento.viajes.service.LoginService;
 import ayuntamiento.viajes.service.TravelService;
 import ayuntamiento.viajes.service.TravellerService;
@@ -59,6 +61,8 @@ public class HomeController extends BaseController implements Initializable {
             ManagerUtil.moveTo("traveller");
         } catch (ControledException cE) {
             error(cE);
+        } catch (ReloadException rE) {
+            error(rE);
         } catch (QuietException qE) {
             error(qE);
             ManagerUtil.moveTo("traveller");
@@ -74,6 +78,8 @@ public class HomeController extends BaseController implements Initializable {
             ManagerUtil.moveTo("travel");
         } catch (ControledException cE) {
             error(cE);
+        } catch (ReloadException rE) {
+            error(rE);
         } catch (QuietException qE) {
             error(qE);
             ManagerUtil.moveTo("travel");
@@ -94,6 +100,8 @@ public class HomeController extends BaseController implements Initializable {
             }
         } catch (ControledException cE) {
             error(cE);
+        } catch (ReloadException rE) {
+            error(rE);
         } catch (QuietException qE) {
             error(qE);
             if (role != null && (role.equalsIgnoreCase("Admin") || role.equalsIgnoreCase("Superadmin"))) {
@@ -114,6 +122,8 @@ public class HomeController extends BaseController implements Initializable {
             ManagerUtil.moveTo("pdf");
         } catch (ControledException cE) {
             error(cE);
+        } catch (ReloadException rE) {
+            error(rE);
         } catch (QuietException qE) {
             error(qE);
             ManagerUtil.moveTo("pdf");

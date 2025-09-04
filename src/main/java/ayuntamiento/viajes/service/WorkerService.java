@@ -3,7 +3,9 @@ package ayuntamiento.viajes.service;
 import ayuntamiento.viajes.dao.WorkerDAO;
 import ayuntamiento.viajes.exception.APIException;
 import ayuntamiento.viajes.exception.ControledException;
+import ayuntamiento.viajes.exception.LoginException;
 import ayuntamiento.viajes.exception.QuietException;
+import ayuntamiento.viajes.exception.ReloadException;
 import ayuntamiento.viajes.model.Worker;
 import java.util.ArrayList;
 
@@ -203,7 +205,7 @@ public class WorkerService {
      * @throws ControledException una excepción controlada
      * @throws Exception una excepción no controlada
      */
-    private static void errorHandler(APIException apiE, boolean allowRetry, String method) throws ControledException, QuietException, Exception {
+    private static void errorHandler(APIException apiE, boolean allowRetry, String method) throws ControledException, ReloadException, QuietException, Exception {
         switch (apiE.getStatusCode()) {
             case 400, 404 -> {
                 rechargeList(false);
@@ -211,9 +213,14 @@ public class WorkerService {
             }
             case 401 -> {
                 if (allowRetry) {
-                    LoginService.relog();
+                    try {
+                        LoginService.relog();
+                    } catch (Exception e) {
+                        throw new ReloadException("Por seguridad, su sesión ha expirado. Inicie sesión de nuevo para continuar.", false);
+                    }
+                    throw new ReloadException("La sesión había expirado, pero ya está activa nuevamente.\n Por favor, realice otra vez la operación anterior.", true);
                 } else {
-                    throw new Exception(apiE.getMessage());
+                    throw new ReloadException("Por seguridad, su sesión ha expirado. Inicie sesión de nuevo para continuar.", false);
                 }
             }
             case 204 -> {
