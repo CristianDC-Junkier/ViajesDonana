@@ -78,8 +78,8 @@ public class PDFService {
      */
     public void printAll(String name, String dir, String sort) throws ControledException, Exception {
         List<Travel> travelList;
-
-        if (LoginService.getAccountDepartmentLog().getName().equalsIgnoreCase("Admin")) {
+        String role = LoginService.getAccountDepartmentLog().getName();
+        if (role != null && (role.equalsIgnoreCase("Admin") || role.equalsIgnoreCase("Superadmin"))) {
             travelList = travelS.findAll();
         } else {
             travelList = travelS.findByDepartment(LoginService.getAccountDepartmentLog().getId());
@@ -133,7 +133,7 @@ public class PDFService {
                 new PdfWriter(outFolder));
         PdfPage page = pdfDocument.getPage(1);
         PdfCanvas canvas = new PdfCanvas(page);
-        
+
         if (trips.size() > 1) {
             for (Travel t : trips) {
                 travellersList = travellerS.findByTrip(t.getId());
@@ -305,7 +305,7 @@ public class PDFService {
 
             canvas.moveText(columnX[1] - columnX[0], 0);
             canvas.showText(v.getName());
-            
+
             canvas.moveText(columnX[2] - columnX[1], 0);
             canvas.showText(String.valueOf(v.getPhone()));
 
@@ -353,7 +353,7 @@ public class PDFService {
 
             canvas.moveText(columnX[1] - columnX[0], 0);
             canvas.showText(v.getName());
-            
+
             canvas.moveText(columnX[2] - columnX[1], 0);
             canvas.showText(String.valueOf(v.getPhone()));
 
