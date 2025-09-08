@@ -261,7 +261,7 @@ public class PDFService {
         float y = 612f;
 
         float[] columnX = new float[]{
-            55f, 130f, 200f, 178f, 216f, 259f, 309f, 356f, 412f};
+            50f, 130f, 200f, 178f, 216f, 259f, 309f, 356f, 412f};
 
         canvas.moveText(columnX[0], y);
         canvas.showText(Integer.toString(travel.getSeats_total()));
@@ -295,7 +295,7 @@ public class PDFService {
 
         /*Posiciones absolutas para cada columna*/
         float[] columnX = new float[]{
-            30f, 83f, 213f, 282f, 435f, 522f};
+            25f, 78f, 217f, 287f, 440f, 525f};
 
         for (Traveller v : firstPageTravellers) {
             canvas.beginText();
@@ -343,7 +343,7 @@ public class PDFService {
 
         /*Posiciones absolutas para cada columna*/
         float[] columnX = new float[]{
-            30f, 82f, 217f, 275f, 435f, 522f};
+            25f, 78f, 217f, 287f, 440f, 525f};
 
         for (Traveller v : pageTravellers) {
             canvas.beginText();

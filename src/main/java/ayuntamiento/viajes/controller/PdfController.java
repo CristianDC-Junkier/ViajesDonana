@@ -47,7 +47,8 @@ public class PdfController extends BaseController implements Initializable {
     private final static PDFService pdf;
     private final static TravelService TravelS;
 
-    private static final String DEPARTMENT = LoginService.getAccountDepartmentLog().getName().equalsIgnoreCase("Admin") ?
+    private static final String DEPARTMENT = (LoginService.getAccountDepartmentLog().getName().equalsIgnoreCase("Admin") || 
+            LoginService.getAccountDepartmentLog().getName().equalsIgnoreCase("Superadmin")) ?
             "" : LoginService.getAccountDepartmentLog().getName() + "-";
     private static final String INVALID_FILENAME_CHARS = "[\\\\/:*?\"<>|]";
     private static final String DATE_FORMAT = PropertiesUtil.getProperty("DATE_FORMAT");
