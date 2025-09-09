@@ -85,7 +85,7 @@ public class PDFService {
             travelList = travelS.findByDepartment(LoginService.getAccountDepartmentLog().getId());
         }
 
-        print(name, dir, travelList);
+        print(name, dir, travelList, sort);
     }
 
     /**
@@ -106,7 +106,7 @@ public class PDFService {
         remainingTravellers = travellersList.stream().skip(numTraInitialPage).toList();
 
         List<Travel> t = List.of(travelS.findById(trip).get());
-        print(name, dir, t);
+        print(name, dir, t, sort);
     }
 
     /**
@@ -119,7 +119,7 @@ public class PDFService {
      * @throws ControledException Error Controlado que pasamos hacia arriba
      * @throws Exception Error No controlado que pasamos hacia arriba
      */
-    private void print(String name, String dir, List<Travel> trips) throws ControledException, Exception {
+    private void print(String name, String dir, List<Travel> trips, String sort) throws ControledException, Exception {
 
         File templatePDF;
 
@@ -136,7 +136,7 @@ public class PDFService {
 
         if (trips.size() > 1) {
             for (Travel t : trips) {
-                travellersList = travellerS.findByTrip(t.getId());
+                travellersList = sort(travellerS.findByTrip(t.getId()), sort);
 
                 firstPageTravellers = travellersList.stream().limit(numTraInitialPage).toList();
                 remainingTravellers = travellersList.stream().skip(numTraInitialPage).toList();
@@ -411,9 +411,6 @@ public class PDFService {
         switch (sort) {
             case "Nombre" -> {
                 sortList = list.stream().sorted(Comparator.comparing(Traveller::getName)).collect(Collectors.toList());
-            }
-            case "Viaje" -> {
-                sortList = list.stream().sorted(Comparator.comparing(Traveller::getTrip).reversed()).collect(Collectors.toList());
             }
             case "Fecha de Inscripción" -> {
                 sortList = list.stream().sorted(Comparator.comparing(Traveller::getSignUpDate)).collect(Collectors.toList());

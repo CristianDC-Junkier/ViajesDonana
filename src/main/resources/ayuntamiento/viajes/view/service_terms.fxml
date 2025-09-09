@@ -111,7 +111,7 @@
                         <Insets bottom="10.0" />
                      </VBox.margin>
                   </Label>
-                  <Label text="Esta aplicación no recoge información de sus usuarios, solo genera un registro de entrada indicando el día, la hora, el nombre del usuario que ha realizado la entrada y el tipo de usuario (administrador o trabajador). Dicho registro solo tiene la función de indicar quien y cuando hace uso de la aplicación y la creación de usuarios y vehiculos por parte del usuario que este registrado en ese momento, además de los errores que puedan ocurrir durante el uso de la aplicación. Esta información se almacena de forma local en el dispositivo que tenga instalado este programa y solo se mantienen los registros de los últimos diez días. Para la creación de usuarios solo se pide un nombre de usuario y una contraseña, no se requiere ningún tipo de información personal. Dichos nombre de usuario y contraseña son almacenados en la base de datos interna del programa. La creación, modificación y eliminado de usuarios solo podrá llevarse acabo por un usuario de tipo administrador." wrapText="true">
+                  <Label text="Esta aplicación no recoge información de sus usuarios, solo genera un registro de entrada y de acción indicando el día, la hora y el nombre del usuario que ha realizado la entrada o acción. Dicho registro solo tiene la función de indicar quien y cuando hace uso de la aplicación, además de los errores que puedan ocurrir durante el uso de la misma. Esta información se almacena de forma local en el dispositivo que tenga instalado este programa y solo se mantienen los registros de los últimos diez días. Para la creación de usuarios solo se pide un nombre de usuario, una contraseña y el departamento que tendrá asignado dicho usuario, no se requiere ningún tipo de información personal. Dichos nombre de usuario y contraseña son almacenados en la base de datos hubicada en un servidor. La creación, modificación y eliminado de usuarios solo podrá llevarse acabo por un usuario de tipo administrador." wrapText="true">
                      <font>
                         <Font name="Trebuchet MS" size="14.0" />
                      </font>
@@ -127,7 +127,7 @@
                         <Insets bottom="10.0" />
                      </VBox.margin>
                   </Label>
-                  <Label text="Esta aplicación ha sido diseñada para uso exclusivo del Ayuntamiento de Almonte, con la intención de mantener un registro de la flota de vehiculos del mismo. Cualquier uso fuera de este contexto está prohibido. La instalación de la aplicación no está permitida en dispositivos ajenos al Ayuntamiento de Almonte." wrapText="true">
+                  <Label text="Esta aplicación ha sido diseñada para uso exclusivo del Ayuntamiento de Almonte, con la intención de mantener un registro de los participantes de los viajes a Doñana organizados por el Ayuntamiento. Cualquier uso fuera de este contexto está prohibido. La instalación de la aplicación no está permitida en dispositivos ajenos al Ayuntamiento de Almonte." wrapText="true">
                      <font>
                         <Font name="Trebuchet MS" size="14.0" />
                      </font>

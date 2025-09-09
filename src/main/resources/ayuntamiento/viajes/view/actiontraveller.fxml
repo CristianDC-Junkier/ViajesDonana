@@ -14,7 +14,7 @@
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
 
-<StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="672.0" stylesheets="@../styles/actiontraveller.css" xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ayuntamiento.viajes.controller.ActionTravellerController">
+<StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="672.0" stylesheets="@../styles/actiontraveller.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ayuntamiento.viajes.controller.ActionTravellerController">
    <children>
       <VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="458.0" prefWidth="627.0" styleClass="form-card" stylesheets="@../styles/global.css">
          <children>
@@ -139,17 +139,17 @@
                                     <Insets right="10.0" />
                                  </StackPane.margin>
                               </Label>
-                              <HBox alignment="CENTER_LEFT" prefHeight="50.0" prefWidth="287.0" spacing="15.0">
+                              <HBox alignment="CENTER_LEFT" prefHeight="50.0" spacing="15.0">
                                  <children>
                                     <ImageView fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
                                        <image>
-                                          <Image url="@../icons/action_travel.png" />
+                                          <Image url="@../icons/action_office.png" />
                                        </image>
                                        <HBox.margin>
                                           <Insets left="20.0" />
                                        </HBox.margin>
                                     </ImageView>
-                                    <ChoiceBox fx:id="tripCB" prefHeight="25.0" prefWidth="275.0" />
+                                    <ChoiceBox fx:id="departmentCB" prefHeight="25.0" prefWidth="275.0" />
                                  </children>
                               </HBox>
                            </children>
@@ -164,17 +164,17 @@
                                     <Insets right="10.0" />
                                  </StackPane.margin>
                               </Label>
-                              <HBox alignment="CENTER_LEFT" prefHeight="50.0" spacing="15.0">
+                              <HBox alignment="CENTER_LEFT" prefHeight="50.0" prefWidth="287.0" spacing="15.0">
                                  <children>
                                     <ImageView fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
                                        <image>
-                                          <Image url="@../icons/action_office.png" />
+                                          <Image url="@../icons/action_travel.png" />
                                        </image>
                                        <HBox.margin>
                                           <Insets left="20.0" />
                                        </HBox.margin>
                                     </ImageView>
-                                    <ChoiceBox fx:id="departmentCB" prefHeight="25.0" prefWidth="275.0" />
+                                    <ChoiceBox fx:id="tripCB" prefHeight="25.0" prefWidth="275.0" />
                                  </children>
                               </HBox>
                            </children>
