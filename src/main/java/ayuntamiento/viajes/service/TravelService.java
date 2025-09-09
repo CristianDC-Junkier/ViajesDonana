@@ -3,7 +3,9 @@ package ayuntamiento.viajes.service;
 import ayuntamiento.viajes.dao.TravelDAO;
 import ayuntamiento.viajes.exception.APIException;
 import ayuntamiento.viajes.exception.ControledException;
+import ayuntamiento.viajes.exception.LoginException;
 import ayuntamiento.viajes.exception.QuietException;
+import ayuntamiento.viajes.exception.ReloadException;
 import ayuntamiento.viajes.model.Travel;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -88,7 +90,6 @@ public class TravelService {
     }
 
     public Travel modify(Travel entity, boolean allowRetry) throws Exception {
-        Travel result;
         boolean travellerExists = travelList.stream()
                 .anyMatch(travel -> travel.getDescriptor().equalsIgnoreCase(entity.getDescriptor())
                 && travel.getId() != entity.getId());
@@ -152,7 +153,7 @@ public class TravelService {
     public static void rechargeList(boolean allowRetry) throws IOException, InterruptedException, Exception {
         try {
             String role = LoginService.getAccountDepartmentLog().getName();
-            if (role != null && (role.equalsIgnoreCase("Admin") || role.equalsIgnoreCase("Superadmin")))  {
+            if (role != null && (role.equalsIgnoreCase("Admin") || role.equalsIgnoreCase("Superadmin"))) {
                 travelList = travelDAO.findAll();
             } else {
                 travelList = travelDAO.findByDepartment(LoginService.getAccountDepartmentLog().getId());
@@ -176,7 +177,7 @@ public class TravelService {
      * @throws ControledException una excepción controlada
      * @throws Exception una excepción no controlada
      */
-    private static void errorHandler(APIException apiE, boolean allowRetry, String method) throws ControledException, QuietException, Exception {
+    private static void errorHandler(APIException apiE, boolean allowRetry, String method) throws ControledException, QuietException, ReloadException, Exception {
         switch (apiE.getStatusCode()) {
             case 400, 404, 409 -> {
                 if (allowRetry) {
@@ -186,9 +187,15 @@ public class TravelService {
             }
             case 401 -> {
                 if (allowRetry) {
-                    LoginService.relog();
+                    try {
+                        LoginService.relog();
+                    } catch (Exception e) {
+                        throw new ReloadException("Por seguridad, su sesión ha expirado. Inicie sesión de nuevo para continuar.", false);
+                    }
+                    throw new ReloadException("La sesión había expirado, pero ya está activa nuevamente.\n Por favor, realice otra vez la operación anterior.", true);
+                } else {
+                    throw new ReloadException("Por seguridad, su sesión ha expirado. Inicie sesión de nuevo para continuar.", false);
                 }
-                throw new Exception(apiE.getMessage());
             }
             case 204 -> {
                 throw new QuietException(apiE.getMessage(), "TravelService - " + method);

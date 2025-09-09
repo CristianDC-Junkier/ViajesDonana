@@ -4,6 +4,7 @@ import ayuntamiento.viajes.common.ChoiceBoxUtil;
 import ayuntamiento.viajes.common.PropertiesUtil;
 import static ayuntamiento.viajes.controller.BaseController.refreshTable;
 import ayuntamiento.viajes.exception.ControledException;
+import ayuntamiento.viajes.exception.ReloadException;
 import ayuntamiento.viajes.model.Department;
 import ayuntamiento.viajes.model.Travel;
 import ayuntamiento.viajes.service.TravellerService;
@@ -124,6 +125,11 @@ public class TravellerController extends BaseController implements Initializable
             } catch (ControledException cE) {
                 refreshTable(travellerTable, travellerS.findAll(), amount);
                 error(cE);
+            } catch (ReloadException rE) {
+                if (rE.wasRecovered()) {
+                    refreshTable(travellerTable, travellerS.findAll(), amount);
+                }
+                error(rE);
             } catch (Exception ex) {
                 refreshTable(travellerTable, travellerS.findAll(), amount);
                 error(ex);
@@ -235,6 +241,11 @@ public class TravellerController extends BaseController implements Initializable
             } catch (ControledException cE) {
                 refreshTable(travellerTable, travellerS.findAll(), amount);
                 error(cE);
+            } catch (ReloadException rE) {
+                if (rE.wasRecovered()) {
+                    refreshTable(travellerTable, travellerS.findAll(), amount);
+                }
+                error(rE);
             } catch (Exception ex) {
                 error(ex);
             }

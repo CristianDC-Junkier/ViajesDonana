@@ -80,8 +80,6 @@ public class StadisticsAdminController extends BaseController implements Initial
         TRAVEL, OFFICE, DATE
     }
 
-    private final int numOfTravels = 6;
-
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         showUserOption();

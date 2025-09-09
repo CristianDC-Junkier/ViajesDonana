@@ -5,7 +5,9 @@ import ayuntamiento.viajes.common.ManagerUtil;
 import static ayuntamiento.viajes.common.ManagerUtil.getPage;
 import ayuntamiento.viajes.controller.InfoController.DialogResult;
 import ayuntamiento.viajes.exception.ControledException;
+import ayuntamiento.viajes.exception.LoginException;
 import ayuntamiento.viajes.exception.QuietException;
+import ayuntamiento.viajes.exception.ReloadException;
 import ayuntamiento.viajes.model.Travel;
 import ayuntamiento.viajes.model.Traveller;
 
@@ -27,7 +29,7 @@ import javafx.stage.Stage;
  *
  * @author Cristian Delgado Cruz
  * @since 2025-06-03
- * @version 1.3
+ * @version 1.4
  */
 public abstract class BaseController {
 
@@ -52,6 +54,26 @@ public abstract class BaseController {
     }
 
     /**
+     * Muestra el error ocurrido para el usuario y para el log al hacer reload,
+     * moviendo al usuario en caso de que falle
+     *
+     * @param rE La excepción que ocurrió
+     */
+    public void error(ReloadException rE) {
+        if (rE.wasRecovered()) {
+            info(rE.getMessage(), false);
+            log("Warning - Se recuperó con exito la sesión");
+
+        } else {
+            Stage parentStage = (Stage) father.getScene().getWindow();
+            ErrorController.showErrorDialog(parentStage, rE.getMessage());
+            log("Error - " + rE.getMessage());
+            LoginService.setAccountLog(null);
+            ManagerUtil.reload();
+        }
+    }
+
+    /**
      * Muestra un dialogo de error de una excepcion warning que solo va al log
      *
      * @param qE La excepción que ocurrió
@@ -59,6 +81,7 @@ public abstract class BaseController {
     public void error(QuietException qE) {
         log("Warning - " + qE.getWhere() + ": \n" + qE.getMessage());
     }
+
 
     /**
      * Muestra un dialogo de error de una excepcion no controlada para el
@@ -110,6 +133,8 @@ public abstract class BaseController {
                 ManagerUtil.moveTo("worker");
             } catch (ControledException cE) {
                 error(cE);
+            } catch (LoginException lE) {
+                error(lE);
             } catch (QuietException qE) {
                 error(qE);
                 ManagerUtil.moveTo("worker");
@@ -139,25 +164,25 @@ public abstract class BaseController {
 
     @FXML
     public static <T> void refreshTable(final TableView<T> table, final List<T> tableList, Label amount) {
-    table.setItems(null);
-    table.layout();
-    table.setItems(FXCollections.observableList(tableList));
+        table.setItems(null);
+        table.layout();
+        table.setItems(FXCollections.observableList(tableList));
 
-    if (amount != null) {
-        if (tableList == null || tableList.isEmpty()) {
-            amount.setText("Sin elementos"); 
-            return;
-        }
+        if (amount != null) {
+            if (tableList == null || tableList.isEmpty()) {
+                amount.setText("Sin elementos");
+                return;
+            }
 
-        T first = tableList.get(0); 
-        if (first instanceof Traveller) {
-            amount.setText("Inscripciones en Total: " + tableList.size());
-        } else if (first instanceof Travel) {
-            amount.setText("Viajes en Total: " + tableList.size());
-        } else {
-            amount.setText("Total: " + tableList.size());
+            T first = tableList.get(0);
+            if (first instanceof Traveller) {
+                amount.setText("Inscripciones en Total: " + tableList.size());
+            } else if (first instanceof Travel) {
+                amount.setText("Viajes en Total: " + tableList.size());
+            } else {
+                amount.setText("Total: " + tableList.size());
+            }
         }
     }
-}
 
 }

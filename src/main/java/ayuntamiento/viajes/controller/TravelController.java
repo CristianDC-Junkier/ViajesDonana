@@ -2,8 +2,8 @@ package ayuntamiento.viajes.controller;
 
 import ayuntamiento.viajes.common.ChoiceBoxUtil;
 import static ayuntamiento.viajes.controller.BaseController.refreshTable;
-import static ayuntamiento.viajes.controller.TravellerController.departmentS;
 import ayuntamiento.viajes.exception.ControledException;
+import ayuntamiento.viajes.exception.ReloadException;
 import ayuntamiento.viajes.model.Department;
 import ayuntamiento.viajes.model.Travel;
 import ayuntamiento.viajes.service.DepartmentService;
@@ -90,6 +90,14 @@ public class TravelController extends BaseController implements Initializable {
                         throw new Exception("El viaje no pudo ser borrado");
                     }
                 }
+            } catch (ControledException cE) {
+                refreshTable(travelTable, travelS.findAll(), amount);
+                error(cE);
+            } catch (ReloadException rE) {
+                if (rE.wasRecovered()) {
+                    refreshTable(travelTable, travelS.findAll(), amount);
+                }
+                error(rE);
             } catch (Exception ex) {
                 refreshTable(travelTable, travelS.findAll(), amount);
                 error(ex);
@@ -153,6 +161,11 @@ public class TravelController extends BaseController implements Initializable {
             } catch (ControledException cE) {
                 refreshTable(travelTable, travelS.findAll(), amount);
                 error(cE);
+            } catch (ReloadException rE) {
+                if (rE.wasRecovered()) {
+                    refreshTable(travelTable, travelS.findAll(), amount);
+                }
+                error(rE);
             } catch (Exception ex) {
                 error(ex);
             }

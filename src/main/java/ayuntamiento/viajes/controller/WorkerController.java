@@ -5,6 +5,7 @@ import ayuntamiento.viajes.common.LoggerUtil;
 import ayuntamiento.viajes.common.ManagerUtil;
 import ayuntamiento.viajes.common.SecurityUtil;
 import ayuntamiento.viajes.exception.ControledException;
+import ayuntamiento.viajes.exception.ReloadException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -116,13 +117,18 @@ public class WorkerController extends BaseController implements Initializable {
                             "WorkerController - add");
                 } else {
                     LoggerUtil.log("Usuario: " + u.getUsername() + " añadido correctamente");
-                    refreshTable(userTable, workerS.findAll(),null);
+                    refreshTable(userTable, workerS.findAll(), null);
                     reset();
                 }
             }
+        } catch (ReloadException rE) {
+            if (rE.wasRecovered()) {
+                refreshTable(userTable, workerS.findAll(), null);
+            }
+            error(rE);
         } catch (ControledException cE) {
+            refreshTable(userTable, workerS.findAll(), null);
             error(cE);
-            refreshTable(userTable, workerS.findAll(),null);
         } catch (Exception ex) {
             error(ex);
             reset();
@@ -171,14 +177,19 @@ public class WorkerController extends BaseController implements Initializable {
                         ManagerUtil.reload();
                     } else {
                         info("Usuario, " + userMod.getUsername() + ", modificado con éxito", false);
-                        refreshTable(userTable, workerS.findAll(),null);
+                        refreshTable(userTable, workerS.findAll(), null);
                         reset();
                     }
                 }
             }
+        } catch (ReloadException rE) {
+            if (rE.wasRecovered()) {
+                refreshTable(userTable, workerS.findAll(), null);
+            }
+            error(rE);
         } catch (ControledException cE) {
+            refreshTable(userTable, workerS.findAll(), null);
             error(cE);
-            refreshTable(userTable, workerS.findAll(),null);
         } catch (Exception ex) {
             error(ex);
             reset();
@@ -200,7 +211,7 @@ public class WorkerController extends BaseController implements Initializable {
             } else if (info("¿Está seguro de que quiere eliminar este usuario?", true) == InfoController.DialogResult.ACCEPT) {
                 if (workerS.delete(userTable.getSelectionModel().getSelectedItem())) {
                     info("El Usuario fue eliminado con éxito", false);
-                    refreshTable(userTable, workerS.findAll(),null);
+                    refreshTable(userTable, workerS.findAll(), null);
                     if (LoginService.getAccountLog() == null) {
                         ManagerUtil.reload();
                     }
@@ -208,9 +219,14 @@ public class WorkerController extends BaseController implements Initializable {
                     throw new Exception("El usuario no pudo ser borrado");
                 }
             }
+        } catch (ReloadException rE) {
+            if (rE.wasRecovered()) {
+                refreshTable(userTable, workerS.findAll(), null);
+            }
+            error(rE);
         } catch (ControledException cE) {
             error(cE);
-            refreshTable(userTable, workerS.findAll(),null);
+            refreshTable(userTable, workerS.findAll(), null);
         } catch (Exception ex) {
             error(ex);
         }
@@ -248,7 +264,7 @@ public class WorkerController extends BaseController implements Initializable {
             modButton.setDisable(false);
             delButton.setDisable(false);
             modUserDepCB.setDisable(false);
-            
+
             modUserNameTF.setText("");
             delUserNameTF.setText("");
 
