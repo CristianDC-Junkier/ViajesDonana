@@ -2,7 +2,6 @@ package ayuntamiento.viajes.controller;
 
 import ayuntamiento.viajes.common.ManagerUtil;
 import ayuntamiento.viajes.exception.ControledException;
-import ayuntamiento.viajes.exception.LoginException;
 import ayuntamiento.viajes.exception.QuietException;
 import ayuntamiento.viajes.exception.ReloadException;
 import ayuntamiento.viajes.service.LoginService;
@@ -119,14 +118,14 @@ public class HomeController extends BaseController implements Initializable {
         try {
             TravellerService.rechargeList();
             TravelService.rechargeList();
-            ManagerUtil.moveTo("pdf");
+            ManagerUtil.moveTo("pdf_txt");
         } catch (ControledException cE) {
             error(cE);
         } catch (ReloadException rE) {
             error(rE);
         } catch (QuietException qE) {
             error(qE);
-            ManagerUtil.moveTo("pdf");
+            ManagerUtil.moveTo("pdf_txt");
         } catch (Exception ex) {
             error(ex);
         }

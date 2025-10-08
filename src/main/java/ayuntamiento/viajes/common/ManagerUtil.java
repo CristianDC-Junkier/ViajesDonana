@@ -31,7 +31,7 @@ public class ManagerUtil {
             put("stadistics_department", Map.of("title", "Estadísticas", "width", 1000, "height", 800));
             put("traveller", Map.of("title", "Gestión de Inscripciones", "width", 1000, "height", 800));
             put("travel", Map.of("title", "Gestión de Viajes", "width", 1000, "height", 800));
-            put("pdf", Map.of("title", "Generador de PDFs", "width", 1000, "height", 800));
+            put("pdf_txt", Map.of("title", "Generador de PDFs", "width", 1000, "height", 800));
             put("worker", Map.of("title", "Gestión de Usuarios", "width", 1000, "height", 800));
             put("service_terms", Map.of("title", "Terminos de Servicio", "width", 1000, "height", 800));
         }

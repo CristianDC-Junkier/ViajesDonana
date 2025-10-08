@@ -69,8 +69,7 @@ public class PDFService {
     }
 
     /**
-     * Metodo que recoge todos los travellers y cuenta los que son propiedad del
-     * ayuntamiento, y los que no lo son, mandando a generar el pdf
+     * Metodo que recoge todos los viajeros, mandando a generar el pdf
      *
      * @param name nombre elegido para el documento
      * @param dir directorio elegido para colocar el documento
@@ -92,7 +91,7 @@ public class PDFService {
     }
 
     /**
-     * Metodo que recoge los viajes por departamento y manda a generar el pdf.
+     * Metodo que recoge los viajeros por departamento y manda a generar el pdf.
      *
      * @param name nombre elegido para el documento
      * @param dir directorio elegido para colocar el documento

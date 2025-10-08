@@ -16,7 +16,7 @@
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane fx:id="father" prefHeight="800.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ayuntamiento.viajes.controller.PdfController">
+<BorderPane fx:id="father" prefHeight="800.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ayuntamiento.viajes.controller.PDFTXTController">
 
     <!-- Top: Logo -->
     <top>
@@ -232,22 +232,49 @@
                                   <Insets bottom="15.0" top="10.0" />
                               </VBox.margin>
                           </Line>
-                          <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#printPDF" prefHeight="30.0" prefWidth="160.0" textAlignment="CENTER">
-                              <graphic>
-                                  <Label>
-                                      <graphic>
+                  <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0">
+                     <children>
+                                <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#printPDF" prefHeight="30.0" prefWidth="160.0" textAlignment="CENTER">
+                                    <graphic>
+                                        <Label>
+                                            <graphic>
+                                                <ImageView fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
+                                                    <image>
+                                                        <Image url="@../icons/pdf_download.png" />
+                                                    </image>
+                                                </ImageView>
+                                            </graphic>
+                                        </Label>
+                                    </graphic>
+                                    <padding>
+                                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                    </padding>
+                                </Button>
+                        <HBox alignment="CENTER_RIGHT" prefHeight="42.0" prefWidth="117.0">
+                           <children>
+                              <Button fx:id="printPhoneButton" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#printPhone" prefHeight="42.0" prefWidth="40.0" textAlignment="CENTER">
+                                 <graphic>
+                                    <Label contentDisplay="CENTER">
+                                       <graphic>
                                           <ImageView fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
-                                              <image>
-                                                  <Image url="@../icons/pdf_download.png" />
-                                              </image>
+                                             <image>
+                                                <Image url="@../icons/pdf-donwload-phone.png" />
+                                             </image>
                                           </ImageView>
-                                      </graphic>
-                                  </Label>
-                              </graphic>
-                              <padding>
-                                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                              </padding>
-                          </Button>
+                                       </graphic>
+                                    </Label>
+                                 </graphic>
+                                 <padding>
+                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                 </padding>
+                                 <HBox.margin>
+                                    <Insets />
+                                 </HBox.margin>
+                              </Button>
+                           </children>
+                        </HBox>
+                     </children>
+                  </HBox>
                     </children>
                     <padding>
                         <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
