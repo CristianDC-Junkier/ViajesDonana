@@ -20,9 +20,11 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.stream.Collectors;
+import javafx.beans.property.SimpleObjectProperty;
 
 import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.value.ObservableValue;
+
+import javafx.scene.control.TableCell;
 import javafx.fxml.Initializable;
 import javafx.fxml.FXML;
 import javafx.scene.control.TableView;
@@ -33,9 +35,7 @@ import javafx.stage.Stage;
 import javafx.collections.FXCollections;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.DatePicker;
-import javafx.scene.control.TableColumn.CellDataFeatures;
 import javafx.scene.control.TextField;
-import javafx.util.Callback;
 import javafx.util.converter.LocalDateStringConverter;
 
 /**
@@ -57,17 +57,17 @@ public class TravellerController extends BaseController implements Initializable
     @FXML
     private TableView<Traveller> travellerTable;
     @FXML
-    private TableColumn dniColumn;
+    private TableColumn<Traveller, String> dniColumn;
     @FXML
-    private TableColumn nameColumn;
+    private TableColumn<Traveller, String> nameColumn;
     @FXML
-    private TableColumn departmentColumn;
+    private TableColumn<Traveller, String> departmentColumn;
     @FXML
-    private TableColumn tripColumn;
+    private TableColumn<Traveller, String> tripColumn;
     @FXML
-    private TableColumn phoneColumn;
+    private TableColumn<Traveller, String> phoneColumn;
     @FXML
-    private TableColumn signupColumn;
+    private TableColumn<Traveller, LocalDate> signupColumn;
 
     @FXML
     private Label amount;
@@ -141,28 +141,100 @@ public class TravellerController extends BaseController implements Initializable
     public void initialize(URL url, ResourceBundle rb) {
         showUserOption();
 
-        dniColumn.setCellValueFactory(new PropertyValueFactory<Traveller, String>("dni"));
-        nameColumn.setCellValueFactory(new PropertyValueFactory<Traveller, String>("name"));
-        //Callbacks para mostrar los departamentos y viajes por nombre en vez de por el ID
-        departmentColumn.setCellValueFactory(new Callback<CellDataFeatures<Traveller, String>, ObservableValue<String>>() {
-            @Override
-            public ObservableValue<String> call(CellDataFeatures<Traveller, String> p) {
-                String deptName = departmentS.findById(p.getValue().getDepartment())
-                        .map(d -> d.getName().replace('_', ' '))
-                        .orElse("");
-                return new SimpleStringProperty(deptName);
-            }
-        });
-        tripColumn.setCellValueFactory(new Callback<CellDataFeatures<Traveller, String>, ObservableValue<String>>() {
-            @Override
-            public ObservableValue<String> call(CellDataFeatures<Traveller, String> p) {
-                return new SimpleStringProperty(travelS.findById(p.getValue().getTrip()).get().getDescriptor());
-            }
-        });
-        phoneColumn.setCellValueFactory(new PropertyValueFactory<Traveller, Integer>("phone"));
-        signupColumn.setCellValueFactory(new PropertyValueFactory<Traveller, LocalDate>("signup"));
+        // --- Configuración de columnas ---
+        // DNI 
+        dniColumn.setCellValueFactory(cellData -> {
+            String dni = cellData.getValue().getDni();
+            String displayValue;
 
+            if (dni == null || dni.isBlank()) {
+                displayValue = "Menor sin DNI";
+            } else if (dni.contains("-")) {
+                // Si tiene un guion, es del Equipo de Gobierno
+                displayValue = dni.substring(0, dni.indexOf("-"));
+            } else {
+                // Si no tiene guion, es un Menor sin DNI
+                String cleanDni = dni.trim();
+                boolean esDniNieValido = cleanDni.matches("^[0-9]{8}[A-Za-z]$") // DNI
+                        || cleanDni.matches("^[XYZxyz][0-9]{7}[A-Za-z]$"); // NIE
+
+                displayValue = esDniNieValido ? cleanDni : "Menor sin DNI";
+            }
+
+            return new SimpleStringProperty(displayValue);
+        });
+
+        // Nombre
+        nameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
+
+        // Departamento (mostrar nombre en lugar del ID)
+        departmentColumn.setCellValueFactory(p -> {
+            String deptName = departmentS.findById(p.getValue().getDepartment())
+                    .map(d -> d.getName().replace('_', ' '))
+                    .orElse("");
+            return new SimpleStringProperty(deptName);
+        });
+
+        // Viaje (mostrar descripción del viaje)
+        tripColumn.setCellValueFactory(p -> {
+            String tripDesc = travelS.findById(p.getValue().getTrip())
+                    .map(Travel::getDescriptor)
+                    .orElse("");
+            return new SimpleStringProperty(tripDesc);
+        });
+
+        // Comparator para ordenar por fecha
+        tripColumn.setComparator((s1, s2) -> {
+            LocalDate d1 = null, d2 = null;
+
+            try {
+                if (s1 != null && !s1.isEmpty()) {
+                    d1 = LocalDate.parse(s1.split("-")[0], formatter_Show_Date);
+                }
+                if (s2 != null && !s2.isEmpty()) {
+                    d2 = LocalDate.parse(s2.split("-")[0], formatter_Show_Date);
+                }
+            } catch (Exception e) {
+                // Si hay error de parsing, los consideramos iguales
+                return 0;
+            }
+
+            if (d1 == null && d2 == null) {
+                return 0;
+            }
+            if (d1 == null) {
+                return -1;
+            }
+            if (d2 == null) {
+                return 1;
+            }
+            return d1.compareTo(d2);
+        });
+
+        // Teléfono
+        phoneColumn.setCellValueFactory(new PropertyValueFactory<>("phone"));
+
+        // Fecha de inscripción
+        signupColumn.setCellValueFactory(cellData -> {
+            String str = cellData.getValue().getSignup(); // llega como "dd/MM/yyyy"
+            LocalDate date = null;
+            if (str != null && !str.isEmpty()) {
+                date = LocalDate.parse(str, formatter_Show_Date);
+            }
+            return new SimpleObjectProperty<>(date);
+        });
+
+        signupColumn.setCellFactory(column -> new TableCell<Traveller, LocalDate>() {
+            @Override
+            protected void updateItem(LocalDate item, boolean empty) {
+                super.updateItem(item, empty);
+                setText(empty || item == null ? null : item.format(formatter_Show_Date));
+            }
+        });
+
+        // --- Configuración de filtros y choiceboxes ---
         String role = LoginService.getAccountDepartmentLog().getName();
+
         if (role != null && (role.equalsIgnoreCase("Admin") || role.equalsIgnoreCase("Superadmin"))) {
             Department allDepartment = new Department();
             allDepartment.setId(0);
@@ -187,29 +259,58 @@ public class TravellerController extends BaseController implements Initializable
         ChoiceBoxUtil.setDepartmentNameConverter(departmentCB);
         departmentCB.valueProperty().addListener((obs, oldType, newType) -> applyAllFilters());
 
+        // --- Configuración de viajes ---
         Travel allTravels = new Travel();
         allTravels.setId(0);
         allTravels.setDescriptor("Todos");
         allTravels.setBus(0);
         tripCB.getItems().add(allTravels);
 
-        // Carga viajes desde TravelService
         List<Travel> travels = travelS.findAll();
+        
+        // Ordenar por fecha
+        travels.sort((t1, t2) -> {
+            LocalDate d1 = null, d2 = null;
+            try {
+                if (t1.getDescriptor() != null && !t1.getDescriptor().isEmpty()) {
+                    d1 = LocalDate.parse(t1.getDescriptor().split("-")[0], formatter_Show_Date);
+                }
+                if (t2.getDescriptor() != null && !t2.getDescriptor().isEmpty()) {
+                    d2 = LocalDate.parse(t2.getDescriptor().split("-")[0], formatter_Show_Date);
+                }
+            } catch (Exception e) {
+                return 0;
+            }
+
+            if (d1 == null && d2 == null) {
+                return 0;
+            }
+            if (d1 == null) {
+                return -1;
+            }
+            if (d2 == null) {
+                return 1;
+            }
+            return d1.compareTo(d2);
+        });
+
         tripCB.getItems().addAll(travels);
-        tripCB.setValue(travels.isEmpty() ? null : tripCB.getItems().get(0));
+        tripCB.setValue(tripCB.getItems().isEmpty() ? null : tripCB.getItems().get(0));
 
         ChoiceBoxUtil.setTravelConverter(tripCB);
         tripCB.valueProperty().addListener((obs, oldType, newType) -> applyAllFilters());
 
-        // Filtro de DatePicker
+        // --- Filtro de fecha ---
         sign_upDP.setShowWeekNumbers(false);
         sign_upDP.setConverter(new LocalDateStringConverter(formatter_Show_Date, null));
 
+        // --- Tabla de viajeros ---
         travellerTable.setPlaceholder(new Label("No existen inscripciones"));
 
-        if (travellerS.findAll() != null) {
-            travellerTable.setItems(FXCollections.observableList(travellerS.findAll()));
-            amount.setText("Inscripciones en Total: " + travellerS.findAll().size());
+        List<Traveller> travellers = travellerS.findAll();
+        if (travellers != null) {
+            travellerTable.setItems(FXCollections.observableList(travellers));
+            amount.setText("Inscripciones en Total: " + travellers.size());
         }
     }
 
