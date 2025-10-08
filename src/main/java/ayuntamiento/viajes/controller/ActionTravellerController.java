@@ -16,7 +16,6 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 import java.net.URL;
-import java.time.DateTimeException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -312,31 +311,33 @@ public class ActionTravellerController implements Initializable {
     private boolean checkDates() {
         boolean correct = true;
         String errorStyle = "-fx-background-color: linear-gradient(from 0% 0% to 110% 110%, #e52d27, #b31217);";
-                String okStyle = ""; // o el estilo por defecto
+        String okStyle = ""; // o el estilo por defecto
 
         if (!isValidDateFormat(sign_upDP, formatter_Show_Date)) {
             correct = false;
             sign_upDP.setStyle(errorStyle);
+        } else {
+            sign_upDP.setStyle(okStyle);
         }
-        else sign_upDP.setStyle(okStyle);
-        
+
         if (minorChB.selectedProperty().getValue()) {
             if (!isValidDateFormat(birthdayDP, formatter_Show_Date)) {
                 correct = false;
                 birthdayDP.setStyle(errorStyle);
+            } else {
+                birthdayDP.setStyle(okStyle);
             }
-            else birthdayDP.setStyle(okStyle);
         }
 
         return correct;
     }
 
     private boolean isValidDateFormat(DatePicker datePicker, DateTimeFormatter formatter) {
-            if (datePicker.getValue() != null) {
-                formatter.format(datePicker.getValue());
-                return true;
-            }
-            return false;
+        if (datePicker.getValue() != null) {
+            formatter.format(datePicker.getValue());
+            return true;
+        }
+        return false;
     }
 
     @FXML
@@ -344,8 +345,10 @@ public class ActionTravellerController implements Initializable {
         if (minorChB.selectedProperty().getValue()) {
             birthdaySP.setVisible(true);
             birthdaySP.setManaged(true);
+            dniTF.setDisable(true);
             govChB.selectedProperty().set(false);
         } else {
+            dniTF.setDisable(false);
             birthdaySP.setVisible(false);
             birthdaySP.setManaged(false);
         }
