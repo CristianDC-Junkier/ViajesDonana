@@ -24,6 +24,7 @@ import java.util.ResourceBundle;
 import java.util.function.UnaryOperator;
 import java.util.regex.Pattern;
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
@@ -64,6 +65,16 @@ public class ActionTravellerController implements Initializable {
     private ChoiceBox<Travel> tripCB;
     @FXML
     private DatePicker sign_upDP;
+
+    @FXML
+    private StackPane birthdaySP;
+    @FXML
+    private DatePicker birthdayDP;
+    @FXML
+    private CheckBox minorChB;
+    @FXML
+    private CheckBox govChB;
+
     @FXML
     private Button actionButton;
 
@@ -100,12 +111,20 @@ public class ActionTravellerController implements Initializable {
     @FXML
     private void extract() {
 
-        if (!checkFields() || !checkDates()) {
+        if (!checkFields(minorChB.selectedProperty().getValue()) || !checkDates()) {
             return;
         }
-
         tResult = new Traveller();
-        tResult.setDni(dniTF.getText());
+
+        if (govChB.selectedProperty().getValue()) {
+            String dateTravel = tripCB.getValue().getDescriptor().substring(0, tripCB.getValue().getDescriptor().indexOf("-"));
+            String dni = dniTF.getText() + "-" + dateTravel;
+            tResult.setDni(dni);
+        } else if (minorChB.selectedProperty().getValue()) {
+            tResult.setDni(nameTF.getText() + "-" + birthdayDP.getValue());
+        } else {
+            tResult.setDni(dniTF.getText());
+        }
         tResult.setName(nameTF.getText());
         tResult.setPhone(phoneTF.getText());
         tResult.setDepartment(departmentCB.getValue().getId());
@@ -135,6 +154,8 @@ public class ActionTravellerController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        birthdaySP.setVisible(false);
+        birthdaySP.setManaged(false);
 
         Pattern allowed = Pattern.compile("[0-9+ ]*");
         UnaryOperator<TextFormatter.Change> filter = change -> {
@@ -246,18 +267,20 @@ public class ActionTravellerController implements Initializable {
 
     }
 
-    private boolean checkFields() {
+    private boolean checkFields(boolean minor) {
         boolean correct = true;
         String errorStyle = "-fx-background-color: linear-gradient(from 0% 0% to 100% 100%, #e52d27, #b31217);";
         String okStyle = ""; // o el estilo por defecto
 
         // Validar DNI
-        if (SecurityUtil.checkBadOrEmptyString(dniTF.getText())
-                || !SecurityUtil.checkDNI_NIE(dniTF.getText())) {
-            dniTF.setStyle(errorStyle);
-            correct = false;
-        } else {
-            dniTF.setStyle(okStyle);
+        if (!minor) {
+            if (SecurityUtil.checkBadOrEmptyString(dniTF.getText())
+                    || !SecurityUtil.checkDNI_NIE(dniTF.getText())) {
+                dniTF.setStyle(errorStyle);
+                correct = false;
+            } else {
+                dniTF.setStyle(okStyle);
+            }
         }
 
         // Validar nombre
@@ -288,24 +311,55 @@ public class ActionTravellerController implements Initializable {
 
     private boolean checkDates() {
         boolean correct = true;
-        String errorStyle = "-fx-background-color: linear-gradient(from 0% 0% to 100% 100%, #e52d27, #b31217);";
+        String errorStyle = "-fx-background-color: linear-gradient(from 0% 0% to 110% 110%, #e52d27, #b31217);";
+                String okStyle = ""; // o el estilo por defecto
 
-        if (!isValidDateFormat(sign_upDP, formatter_Show_Date, errorStyle)) {
+        if (!isValidDateFormat(sign_upDP, formatter_Show_Date)) {
             correct = false;
+            sign_upDP.setStyle(errorStyle);
+        }
+        else sign_upDP.setStyle(okStyle);
+        
+        if (minorChB.selectedProperty().getValue()) {
+            if (!isValidDateFormat(birthdayDP, formatter_Show_Date)) {
+                correct = false;
+                birthdayDP.setStyle(errorStyle);
+            }
+            else birthdayDP.setStyle(okStyle);
         }
 
         return correct;
     }
 
-    private boolean isValidDateFormat(DatePicker datePicker, DateTimeFormatter formatter, String errorStyle) {
-        try {
+    private boolean isValidDateFormat(DatePicker datePicker, DateTimeFormatter formatter) {
             if (datePicker.getValue() != null) {
                 formatter.format(datePicker.getValue());
+                return true;
             }
-            return true;
-        } catch (DateTimeException e) {
-            datePicker.setStyle(errorStyle);
             return false;
+    }
+
+    @FXML
+    private void minorCheck() {
+        if (minorChB.selectedProperty().getValue()) {
+            birthdaySP.setVisible(true);
+            birthdaySP.setManaged(true);
+            govChB.selectedProperty().set(false);
+        } else {
+            birthdaySP.setVisible(false);
+            birthdaySP.setManaged(false);
+        }
+    }
+
+    @FXML
+    private void govCheck() {
+        if (govChB.selectedProperty().getValue()) {
+            birthdaySP.setVisible(false);
+            birthdaySP.setManaged(false);
+            minorChB.selectedProperty().set(false);
+        } else {
+            birthdaySP.setVisible(true);
+            birthdaySP.setManaged(true);
         }
     }
 

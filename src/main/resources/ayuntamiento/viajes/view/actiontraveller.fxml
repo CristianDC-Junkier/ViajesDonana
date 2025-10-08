@@ -2,6 +2,7 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.ChoiceBox?>
 <?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
@@ -9,6 +10,7 @@
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.shape.Line?>
@@ -190,34 +192,79 @@
                </VBox.margin>
             </HBox>
             <Line endX="549.9784545898438" endY="-0.4160062074661255" fill="#fa0000" startX="-77.09259033203125" startY="-0.4161800146102905" stroke="#f22c2c" strokeWidth="2.0" styleClass="decor-line" />
-            <VBox alignment="CENTER" prefHeight="67.0" prefWidth="600.0" spacing="10.0">
+            <VBox alignment="CENTER" prefHeight="67.0" prefWidth="600.0" spacing="15.0">
                <children>
-                  <StackPane maxWidth="-Infinity" prefHeight="50.0" prefWidth="250.0">
+                  <HBox alignment="CENTER" spacing="70.0" VBox.vgrow="ALWAYS">
                      <children>
-                        <Label alignment="TOP_LEFT" text="*" textFill="#ff3434" StackPane.alignment="TOP_RIGHT">
-                           <font>
-                              <Font name="Trebuchet MS Bold" size="15.0" />
-                           </font>
-                        </Label>
-                        <HBox alignment="CENTER" prefHeight="32.0" prefWidth="275.0" spacing="10.0">
+                        <StackPane fx:id="birthdaySP" maxWidth="-Infinity" prefHeight="50.0" prefWidth="250.0">
                            <children>
-                              <ImageView fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@../icons/action_date.png" />
-                                 </image>
-                                 <HBox.margin>
-                                    <Insets left="10.0" />
-                                 </HBox.margin>
-                              </ImageView>
-                              <DatePicker fx:id="sign_upDP" onAction="#signupChange" prefHeight="26.0" prefWidth="174.0" promptText="Fecha inscripción" showWeekNumbers="true">
-                                 <HBox.margin>
-                                    <Insets top="2.0" />
-                                 </HBox.margin>
-                              </DatePicker>
+                              <Label alignment="TOP_LEFT" text="*" textFill="#ff3434" StackPane.alignment="TOP_RIGHT">
+                                 <font>
+                                    <Font name="Trebuchet MS Bold" size="15.0" />
+                                 </font>
+                              </Label>
+                              <HBox alignment="CENTER" prefHeight="32.0" prefWidth="275.0" spacing="10.0">
+                                 <children>
+                                    <ImageView fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../icons/action_birthday.png" />
+                                       </image>
+                                       <HBox.margin>
+                                          <Insets left="10.0" />
+                                       </HBox.margin>
+                                    </ImageView>
+                                    <DatePicker fx:id="birthdayDP" prefHeight="26.0" prefWidth="174.0" promptText="Fecha Nacimiento" showWeekNumbers="true">
+                                       <HBox.margin>
+                                          <Insets top="2.0" />
+                                       </HBox.margin>
+                                    </DatePicker>
+                                 </children>
+                              </HBox>
                            </children>
-                        </HBox>
+                        </StackPane>
+                        <StackPane maxWidth="-Infinity" prefHeight="50.0" prefWidth="250.0">
+                           <children>
+                              <Label alignment="TOP_LEFT" text="*" textFill="#ff3434" StackPane.alignment="TOP_RIGHT">
+                                 <font>
+                                    <Font name="Trebuchet MS Bold" size="15.0" />
+                                 </font>
+                              </Label>
+                              <HBox alignment="CENTER" prefHeight="32.0" prefWidth="275.0" spacing="10.0">
+                                 <children>
+                                    <ImageView fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../icons/action_date.png" />
+                                       </image>
+                                       <HBox.margin>
+                                          <Insets left="10.0" />
+                                       </HBox.margin>
+                                    </ImageView>
+                                    <DatePicker fx:id="sign_upDP" onAction="#signupChange" prefHeight="26.0" prefWidth="174.0" promptText="Fecha inscripción" showWeekNumbers="true">
+                                       <HBox.margin>
+                                          <Insets top="2.0" />
+                                       </HBox.margin>
+                                    </DatePicker>
+                                 </children>
+                              </HBox>
+                           </children>
+                        </StackPane>
                      </children>
-                  </StackPane>
+                  </HBox>
+                  <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+                     <children>
+                        <CheckBox fx:id="minorChB" mnemonicParsing="false" onAction="#minorCheck" text="Menor sin DNI">
+                           <padding>
+                              <Insets left="90.0" />
+                           </padding>
+                        </CheckBox>
+                        <Pane HBox.hgrow="ALWAYS" />
+                        <CheckBox fx:id="govChB" mnemonicParsing="false" onAction="#govCheck" text="Equipo de Gobierno">
+                           <padding>
+                              <Insets right="60.0" />
+                           </padding>
+                        </CheckBox>
+                     </children>
+                  </HBox>
                </children>
                <VBox.margin>
                   <Insets bottom="10.0" top="10.0" />

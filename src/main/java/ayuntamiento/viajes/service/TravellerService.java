@@ -3,7 +3,6 @@ package ayuntamiento.viajes.service;
 import ayuntamiento.viajes.dao.TravellerDAO;
 import ayuntamiento.viajes.exception.APIException;
 import ayuntamiento.viajes.exception.ControledException;
-import ayuntamiento.viajes.exception.LoginException;
 import ayuntamiento.viajes.exception.QuietException;
 import ayuntamiento.viajes.exception.ReloadException;
 import ayuntamiento.viajes.model.Traveller;
