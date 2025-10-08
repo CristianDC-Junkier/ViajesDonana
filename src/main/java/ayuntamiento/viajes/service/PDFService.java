@@ -56,6 +56,9 @@ public class PDFService {
         new DeviceRgb(0, 150, 80)
     };
 
+    private static final int CH_LIMIT = 30;
+    private static final String REGEX = "[\\s]";
+    
     private final int numTraInitialPage = 22;
     private final int numTraNextPage = 27;
 
@@ -104,7 +107,7 @@ public class PDFService {
 
         firstPageTravellers = travellersList.stream().limit(numTraInitialPage).toList();
         remainingTravellers = travellersList.stream().skip(numTraInitialPage).toList();
-
+        
         List<Travel> t = List.of(travelS.findById(trip).get());
         print(name, dir, t, sort);
     }
@@ -295,7 +298,7 @@ public class PDFService {
 
         /*Posiciones absolutas para cada columna*/
         float[] columnX = new float[]{
-            25f, 78f, 217f, 287f, 440f, 525f};
+            25f, 78f, 230f, 310f, 455f, 525f};
 
         for (Traveller v : firstPageTravellers) {
             canvas.beginText();
@@ -304,7 +307,7 @@ public class PDFService {
             canvas.showText(v.getDni());
 
             canvas.moveText(columnX[1] - columnX[0], 0);
-            canvas.showText(v.getName());
+            canvas.showText(chLimit(v.getName(), 0));
 
             canvas.moveText(columnX[2] - columnX[1], 0);
             canvas.showText(String.valueOf(v.getPhone()));
@@ -313,7 +316,8 @@ public class PDFService {
             canvas.showText(travelS.findById(v.getTrip()).get().getDescriptor());
 
             canvas.moveText(columnX[4] - columnX[3], 0);
-            canvas.showText(departmentS.findById(v.getDepartment()).get().getName().replace('_', ' '));
+            String d = departmentS.findById(v.getDepartment()).get().getName().replace('_', ' ');
+            canvas.showText("Asuntos Sociales".equals(d) ? "A. Sociales" : d);
 
             canvas.moveText(columnX[5] - columnX[4], 0);
             canvas.showText(v.getSignup());
@@ -343,7 +347,7 @@ public class PDFService {
 
         /*Posiciones absolutas para cada columna*/
         float[] columnX = new float[]{
-            25f, 78f, 217f, 287f, 440f, 525f};
+            25f, 78f, 230f, 310f, 455f, 525f};
 
         for (Traveller v : pageTravellers) {
             canvas.beginText();
@@ -352,7 +356,7 @@ public class PDFService {
             canvas.showText(v.getDni());
 
             canvas.moveText(columnX[1] - columnX[0], 0);
-            canvas.showText(v.getName());
+            canvas.showText(chLimit(v.getName(), 0));
 
             canvas.moveText(columnX[2] - columnX[1], 0);
             canvas.showText(String.valueOf(v.getPhone()));
@@ -361,7 +365,8 @@ public class PDFService {
             canvas.showText(travelS.findById(v.getTrip()).get().getDescriptor());
 
             canvas.moveText(columnX[4] - columnX[3], 0);
-            canvas.showText(departmentS.findById(v.getDepartment()).get().getName().replace('_', ' '));
+            String d = departmentS.findById(v.getDepartment()).get().getName().replace('_', ' ');
+            canvas.showText("Asuntos Sociales".equals(d) ? "A. Sociales" : d);
 
             canvas.moveText(columnX[5] - columnX[4], 0);
             canvas.showText(v.getSignup());
@@ -420,5 +425,19 @@ public class PDFService {
             }
         }
         return sortList;
+    }
+    
+    private String chLimit(String name, int index){
+        if (name.length() <= CH_LIMIT){
+            return name;
+        }
+        else {
+            String[] str = name.split(REGEX);
+            if ( str[index].length() > 3){
+                str[index] = String.valueOf(str[index].charAt(0)) + ".";
+            }
+            String fname = String.join(" ", str);
+            return chLimit(fname, index+1);
+        }
     }
 }
