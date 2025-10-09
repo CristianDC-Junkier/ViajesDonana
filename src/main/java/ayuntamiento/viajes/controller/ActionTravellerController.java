@@ -360,9 +360,6 @@ public class ActionTravellerController implements Initializable {
             birthdaySP.setVisible(false);
             birthdaySP.setManaged(false);
             minorChB.selectedProperty().set(false);
-        } else {
-            birthdaySP.setVisible(true);
-            birthdaySP.setManaged(true);
         }
     }
 
