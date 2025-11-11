@@ -144,28 +144,28 @@ public class TravellerController extends BaseController implements Initializable
         // --- Configuración de columnas ---
         // DNI 
         dniColumn.setCellValueFactory(cellData -> {
-            String dni = cellData.getValue().getDni();
+            String dni = cellData.getValue().getDni().toUpperCase();
             String displayValue;
 
-            if (dni == null || dni.isBlank()) {
-                displayValue = "Menor sin DNI";
-            } else if (dni.contains("-")) {
-                // Si tiene un guion, es del Equipo de Gobierno
-                displayValue = dni.substring(0, dni.indexOf("-"));
+            if (dni != null && dni.contains("-")) {
+                displayValue = dni.substring(0, dni.indexOf("-")).trim().toUpperCase();
+                boolean esDniNieValido = displayValue.matches("^[0-9]{8}[A-Za-z]$") // DNI
+                        || displayValue.matches("^[XYZxyz][0-9]{7}[A-Za-z]$");       // NIE
+                if (!esDniNieValido) {
+                    displayValue = "Menor sin DNI";
+                }
             } else {
-                // Si no tiene guion, es un Menor sin DNI
-                String cleanDni = dni.trim();
-                boolean esDniNieValido = cleanDni.matches("^[0-9]{8}[A-Za-z]$") // DNI
-                        || cleanDni.matches("^[XYZxyz][0-9]{7}[A-Za-z]$"); // NIE
-
-                displayValue = esDniNieValido ? cleanDni : "Menor sin DNI";
+                displayValue = dni;
             }
 
             return new SimpleStringProperty(displayValue);
         });
 
         // Nombre
-        nameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
+        nameColumn.setCellValueFactory(cellData -> {
+            String name = cellData.getValue().getName().toUpperCase();
+            return new SimpleStringProperty(name);
+        });
 
         // Departamento (mostrar nombre en lugar del ID)
         departmentColumn.setCellValueFactory(p -> {
@@ -180,6 +180,10 @@ public class TravellerController extends BaseController implements Initializable
             String tripDesc = travelS.findById(p.getValue().getTrip())
                     .map(Travel::getDescriptor)
                     .orElse("");
+
+            if (tripDesc != null && tripDesc.contains(" - ")) {
+                tripDesc = tripDesc.substring(0, tripDesc.indexOf(" - "));
+            }
             return new SimpleStringProperty(tripDesc);
         });
 
@@ -267,7 +271,7 @@ public class TravellerController extends BaseController implements Initializable
         tripCB.getItems().add(allTravels);
 
         List<Travel> travels = travelS.findAll();
-        
+
         // Ordenar por fecha
         travels.sort((t1, t2) -> {
             LocalDate d1 = null, d2 = null;
@@ -338,6 +342,7 @@ public class TravellerController extends BaseController implements Initializable
                         info("El Viajero fue modificado correctamente", false);
                     }
                     refreshTable(travellerTable, travellerS.findAll(), amount);
+                    applyAllFilters();
                 }
             } catch (ControledException cE) {
                 refreshTable(travellerTable, travellerS.findAll(), amount);
@@ -360,7 +365,7 @@ public class TravellerController extends BaseController implements Initializable
                 refreshTable(travellerTable, travellerS.findAll(), amount);
                 throw new ControledException("El viajero con DNI/NIE: " + entity.getDni() + ", ya existe",
                         "TravellerController - anadir");
-            }
+            }                
         } else {
             throw new ControledException("El viaje seleccionado está completo: " + t.getDescriptor(),
                     "TravellerController - anadir");
@@ -372,6 +377,7 @@ public class TravellerController extends BaseController implements Initializable
         if (t.getSeats_occupied() < t.getSeats_total()) {
             if (travellerS.modify(entity) == null) {
                 refreshTable(travellerTable, travellerS.findAll(), amount);
+                applyAllFilters();
                 throw new ControledException("El DNI/NIE: " + entity.getDni() + ", ya está registrado",
                         "TravellerController - anadir");
             }

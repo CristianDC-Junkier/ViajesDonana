@@ -117,15 +117,15 @@ public class ActionTravellerController implements Initializable {
 
         if (govChB.selectedProperty().getValue()) {
             String dateTravel = tripCB.getValue().getDescriptor().substring(0, tripCB.getValue().getDescriptor().indexOf("-"));
-            String dni = dniTF.getText() + "-" + dateTravel;
-            tResult.setDni(dni);
+            String dni = dniTF.getText().toUpperCase() + "-" + dateTravel;
+            tResult.setDni(dni.trim());
         } else if (minorChB.selectedProperty().getValue()) {
-            tResult.setDni(nameTF.getText() + "-" + birthdayDP.getValue());
+            tResult.setDni(nameTF.getText().toUpperCase().trim() + "-" + birthdayDP.getValue());
         } else {
-            tResult.setDni(dniTF.getText());
+            tResult.setDni(dniTF.getText().toUpperCase().trim());
         }
-        tResult.setName(nameTF.getText());
-        tResult.setPhone(phoneTF.getText());
+        tResult.setName(nameTF.getText().toUpperCase().trim());
+        tResult.setPhone(phoneTF.getText().trim());
         tResult.setDepartment(departmentCB.getValue().getId());
         tResult.setTrip(tripCB.getValue().getId());
 
@@ -139,7 +139,7 @@ public class ActionTravellerController implements Initializable {
         dialogStage.close();
     }
 
-    private Traveller gettResult() {
+    private Traveller getResult() {
         return tResult;
     }
 
@@ -186,6 +186,33 @@ public class ActionTravellerController implements Initializable {
         // Carga viajes desde TravelService
         List<Travel> travels = travelS.findByDepartment(departmentCB.getSelectionModel().getSelectedItem().getId());
 
+        
+        // Ordenar por fecha
+        travels.sort((t1, t2) -> {
+            LocalDate d1 = null, d2 = null;
+            try {
+                if (t1.getDescriptor() != null && !t1.getDescriptor().isEmpty()) {
+                    d1 = LocalDate.parse(t1.getDescriptor().split("-")[0], formatter_Show_Date);
+                }
+                if (t2.getDescriptor() != null && !t2.getDescriptor().isEmpty()) {
+                    d2 = LocalDate.parse(t2.getDescriptor().split("-")[0], formatter_Show_Date);
+                }
+            } catch (Exception e) {
+                return 0;
+            }
+
+            if (d1 == null && d2 == null) {
+                return 0;
+            }
+            if (d1 == null) {
+                return -1;
+            }
+            if (d2 == null) {
+                return 1;
+            }
+            return d1.compareTo(d2);
+        });
+        
         tripCB.getItems().setAll(travels);
         tripCB.setValue(travels.isEmpty() ? null : tripCB.getItems().getFirst());
 
@@ -247,7 +274,7 @@ public class ActionTravellerController implements Initializable {
             actionController.getDialogStage().setScene(scene);
             actionController.getDialogStage().showAndWait();
 
-            return actionController.gettResult();
+            return actionController.getResult();
 
         } catch (Exception e) {
             throw new Exception("Error al cargar el diálogo para añadir o modificar viajantes");
@@ -255,7 +282,22 @@ public class ActionTravellerController implements Initializable {
     }
 
     private void populateFields() {
-        dniTF.setText(tSelected.getDni());
+
+        String dni = tSelected.getDni().toUpperCase().trim();
+        String displayValue;
+        if (dni != null && dni.contains("-")) {
+            displayValue = dni.substring(0, dni.indexOf("-")).trim().toUpperCase();
+            boolean esDniNieValido = displayValue.matches("^[0-9]{8}[A-Za-z]$") // DNI
+                    || displayValue.matches("^[XYZxyz][0-9]{7}[A-Za-z]$");       // NIE
+            if (!esDniNieValido) {
+                minorCheck();
+            }else{
+                govCheck();
+            }
+        } else {
+            displayValue = dni;
+        }
+        dniTF.setText(displayValue);
         nameTF.setText(tSelected.getName());
         phoneTF.setText(tSelected.getPhone());
         departmentCB.setValue(departmentS.findById(tSelected.getDepartment()).get());

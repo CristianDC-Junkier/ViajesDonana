@@ -77,7 +77,7 @@ public class StadisticsAdminController extends BaseController implements Initial
     };
 
     private enum ChartType {
-        TRAVEL, OFFICE, DATE
+        TRAVEL, DEPARTMENT, DATE
     }
 
     @Override
@@ -89,7 +89,7 @@ public class StadisticsAdminController extends BaseController implements Initial
         listTraveller = travellerS.findAll();
 
         pieChartConf(listTraveller, travelPC, ChartType.TRAVEL);
-        pieChartConf(listTraveller, officePC, ChartType.OFFICE);
+        pieChartConf(listTraveller, officePC, ChartType.DEPARTMENT);
         pieChartConf(listTraveller, dayPC, ChartType.DATE);
 
         setupPieChartListeners();
@@ -171,7 +171,7 @@ public class StadisticsAdminController extends BaseController implements Initial
                     counts.put(label, counts.getOrDefault(label, 0) + 1);
                 }
             }
-            case OFFICE -> {
+            case DEPARTMENT -> {
                 DepartmentService departmentS = new DepartmentService();
                 List<Department> departments = departmentS.findAll();
 
@@ -201,7 +201,7 @@ public class StadisticsAdminController extends BaseController implements Initial
             data.getNode().setOnMouseClicked(e -> handlePieChartClick(data.getName(), Traveller::getTrip, ChartType.TRAVEL));
         });
         officePC.getData().forEach(data -> {
-            data.getNode().setOnMouseClicked(e -> handlePieChartClick(data.getName(), Traveller::getDepartment, ChartType.OFFICE));
+            data.getNode().setOnMouseClicked(e -> handlePieChartClick(data.getName(), Traveller::getDepartment, ChartType.DEPARTMENT));
         });
         dayPC.getData().forEach(data -> {
             data.getNode().setOnMouseClicked(e -> handlePieChartClick(data.getName(), Traveller::getSignUpDate, ChartType.DATE));
@@ -231,7 +231,7 @@ public class StadisticsAdminController extends BaseController implements Initial
                     chooseTravel.setText("Viajeros desde " + selectedValue);
                 case TRAVEL ->
                     chooseTravel.setText("Viajes de " + selectedValue);
-                case OFFICE ->
+                case DEPARTMENT ->
                     chooseTravel.setText("Viajeros desde " + selectedValue);
             }
         }
@@ -255,7 +255,7 @@ public class StadisticsAdminController extends BaseController implements Initial
                                     : "Sin viaje";
                             yield clickedValueStr.equals(travelName);
                         }
-                        case OFFICE -> {
+                        case DEPARTMENT -> {
                             DepartmentService departmentS = new DepartmentService();
                             Map<Long, String> departmentMap = departmentS.findAll()
                                     .stream()
@@ -271,7 +271,7 @@ public class StadisticsAdminController extends BaseController implements Initial
                 .toList();
 
         pieChartConf(filtered, travelPC, ChartType.TRAVEL);
-        pieChartConf(filtered, officePC, ChartType.OFFICE);
+        pieChartConf(filtered, officePC, ChartType.DEPARTMENT);
         pieChartConf(filtered, dayPC, ChartType.DATE);
 
         setupPieChartListeners();

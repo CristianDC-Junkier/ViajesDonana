@@ -74,19 +74,20 @@ public class ActionTravelController implements Initializable {
         }
 
         tResult = new Travel();
-        tResult.setDescriptor(descriptorTF.getText());
+        tResult.setDescriptor(descriptorTF.getText() + " - " + departmentCB.getValue().getName().substring(0, 2));
         tResult.setSeats_total(Integer.parseInt(tSeatsTF.getText()));
         tResult.setDepartment(departmentCB.getValue().getId());
         tResult.setSeats_ocuppied(0);
 
         if (typeAction == 1) {
             tResult.setId(tSelected.getId());
+            tResult.setSeats_ocuppied(tSelected.getSeats_occupied());
         }
 
         dialogStage.close();
     }
 
-    private Travel gettResult() {
+    private Travel getResult() {
         return tResult;
     }
 
@@ -177,7 +178,7 @@ public class ActionTravelController implements Initializable {
             actionController.getDialogStage().setScene(scene);
             actionController.getDialogStage().showAndWait();
 
-            return actionController.gettResult();
+            return actionController.getResult();
 
         } catch (Exception e) {
             throw new Exception("Error al cargar el diálogo para añadir o modificar viajes");
@@ -185,7 +186,13 @@ public class ActionTravelController implements Initializable {
     }
 
     private void populateFields() {
-        descriptorTF.setText(tSelected.getDescriptor());
+        String descriptor = tSelected.getDescriptor();
+        int dashIndex = descriptor.indexOf(" - ");
+        if (dashIndex != -1) {
+            descriptorTF.setText(descriptor.substring(0, dashIndex));
+        } else {
+            descriptorTF.setText(descriptor);
+        }
         tSeatsTF.setText(String.valueOf(tSelected.getSeats_total()));
         departmentCB.setValue(departmentS.findById(tSelected.getDepartment()).get());
     }

@@ -1,6 +1,7 @@
 package ayuntamiento.viajes.controller;
 
 import ayuntamiento.viajes.common.ChoiceBoxUtil;
+import ayuntamiento.viajes.common.PropertiesUtil;
 import static ayuntamiento.viajes.controller.BaseController.refreshTable;
 import ayuntamiento.viajes.exception.ControledException;
 import ayuntamiento.viajes.exception.ReloadException;
@@ -10,6 +11,8 @@ import ayuntamiento.viajes.service.DepartmentService;
 import ayuntamiento.viajes.service.TravelService;
 
 import java.net.URL;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
@@ -44,13 +47,13 @@ public class TravelController extends BaseController implements Initializable {
     @FXML
     private TableView<Travel> travelTable;
     @FXML
-    private TableColumn descriptorColumn;
+    private TableColumn<Travel, String> descriptorColumn;
     @FXML
-    private TableColumn departmentColumn;
+    private TableColumn<Travel, String> departmentColumn;
     @FXML
-    private TableColumn oSeatsColumn;
+    private TableColumn<Travel, Integer> oSeatsColumn;
     @FXML
-    private TableColumn tSeatsColumn;
+    private TableColumn<Travel, Integer> tSeatsColumn;
 
     @FXML
     private Label amount;
@@ -60,6 +63,10 @@ public class TravelController extends BaseController implements Initializable {
     @FXML
     private ChoiceBox<Department> departmentCB;
 
+
+    private static final String SHOW_DATE_FORMAT = PropertiesUtil.getProperty("SHOW_DATE_FORMAT");
+    private static final DateTimeFormatter formatter_Show_Date = DateTimeFormatter.ofPattern(SHOW_DATE_FORMAT);
+    
     static {
         travelS = new TravelService();
         departmentS = new DepartmentService();
@@ -109,17 +116,52 @@ public class TravelController extends BaseController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         showUserOption();
 
-        descriptorColumn.setCellValueFactory(new PropertyValueFactory<Travel, String>("descriptor"));
+        descriptorColumn.setCellValueFactory(cellData -> {
+            String descriptor = cellData.getValue().getDescriptor();
+            
+             if (descriptor != null && descriptor.contains(" - ")) {
+                descriptor = descriptor.substring(0, descriptor.indexOf(" - "));
+            }
+            return new SimpleStringProperty(descriptor);
+        });
         // Callbacks para mostrar los departamentos por nombre en vez de por el ID
         departmentColumn.setCellValueFactory(new Callback<CellDataFeatures<Travel, String>, ObservableValue<String>>() {
             public ObservableValue<String> call(CellDataFeatures<Travel, String> p) {
                 return new SimpleStringProperty(departmentS.findById(p.getValue().getDepartment()).get().getName().replace('_', ' '));
             }
         });
-        oSeatsColumn.setCellValueFactory(new PropertyValueFactory<Travel, Integer>("seats_occupied"));
-        tSeatsColumn.setCellValueFactory(new PropertyValueFactory<Travel, Integer>("seats_total"));
+        oSeatsColumn.setCellValueFactory(new PropertyValueFactory<>("seats_occupied"));
+        tSeatsColumn.setCellValueFactory(new PropertyValueFactory<>("seats_total"));
 
-        travelTable.setItems(FXCollections.observableList(travelS.findAll()));
+        List<Travel> travels  = travelS.findAll();
+        
+        // Ordenar por fecha
+        travels.sort((t1, t2) -> {
+            LocalDate d1 = null, d2 = null;
+            try {
+                if (t1.getDescriptor() != null && !t1.getDescriptor().isEmpty()) {
+                    d1 = LocalDate.parse(t1.getDescriptor().split("-")[0], formatter_Show_Date);
+                }
+                if (t2.getDescriptor() != null && !t2.getDescriptor().isEmpty()) {
+                    d2 = LocalDate.parse(t2.getDescriptor().split("-")[0], formatter_Show_Date);
+                }
+            } catch (Exception e) {
+                return 0;
+            }
+
+            if (d1 == null && d2 == null) {
+                return 0;
+            }
+            if (d1 == null) {
+                return -1;
+            }
+            if (d2 == null) {
+                return 1;
+            }
+            return d1.compareTo(d2);
+        });
+        
+        travelTable.setItems(FXCollections.observableList(travels));
         travelTable.setPlaceholder(new Label("No existen viajes"));
 
         Department allDepartment = new Department();
@@ -157,6 +199,7 @@ public class TravelController extends BaseController implements Initializable {
                         info("El Viaje fue modificado correctamente", false);
                     }
                     refreshTable(travelTable, travelS.findAll(), amount);
+                    applyAllFilters();
                 }
             } catch (ControledException cE) {
                 refreshTable(travelTable, travelS.findAll(), amount);

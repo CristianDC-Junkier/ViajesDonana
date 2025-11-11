@@ -58,7 +58,7 @@ public class PDFService {
 
     private static final int CH_LIMIT = 30;
     private static final String REGEX = "[\\s]";
-    
+
     private final int numTraInitialPage = 22;
     private final int numTraNextPage = 27;
 
@@ -106,7 +106,7 @@ public class PDFService {
 
         firstPageTravellers = travellersList.stream().limit(numTraInitialPage).toList();
         remainingTravellers = travellersList.stream().skip(numTraInitialPage).toList();
-        
+
         List<Travel> t = List.of(travelS.findById(trip).get());
         print(name, dir, t, sort);
     }
@@ -303,10 +303,25 @@ public class PDFService {
             canvas.beginText();
 
             canvas.moveText(columnX[0], y);
-            canvas.showText(v.getDni());
+
+            // Para colocar bien el DNI
+            String dni = v.getDni().toUpperCase().trim();
+            String displayValue;
+            if (dni != null && dni.contains("-")) {
+                displayValue = dni.substring(0, dni.indexOf("-")).trim().toUpperCase();
+                boolean esDniNieValido = displayValue.matches("^[0-9]{8}[A-Za-z]$") // DNI
+                        || displayValue.matches("^[XYZxyz][0-9]{7}[A-Za-z]$");       // NIE
+                if (!esDniNieValido) {
+                    displayValue = "M. Sin DNI";
+                }
+            } else {
+                displayValue = dni;
+            }
+
+            canvas.showText(displayValue);
 
             canvas.moveText(columnX[1] - columnX[0], 0);
-            canvas.showText(chLimit(v.getName(), 0));
+            canvas.showText(chLimit(v.getName().toUpperCase(), 0));
 
             canvas.moveText(columnX[2] - columnX[1], 0);
             canvas.showText(String.valueOf(v.getPhone()));
@@ -352,10 +367,25 @@ public class PDFService {
             canvas.beginText();
 
             canvas.moveText(columnX[0], y);
-            canvas.showText(v.getDni());
+
+            // Para colocar bien el DNI
+            String dni = v.getDni().toUpperCase().trim();
+            String displayValue;
+            if (dni != null && dni.contains("-")) {
+                displayValue = dni.substring(0, dni.indexOf("-")).trim().toUpperCase();
+                boolean esDniNieValido = displayValue.matches("^[0-9]{8}[A-Za-z]$") // DNI
+                        || displayValue.matches("^[XYZxyz][0-9]{7}[A-Za-z]$");       // NIE
+                if (!esDniNieValido) {
+                    displayValue = "M. Sin DNI";
+                }
+            } else {
+                displayValue = dni;
+            }
+
+            canvas.showText(displayValue);
 
             canvas.moveText(columnX[1] - columnX[0], 0);
-            canvas.showText(chLimit(v.getName(), 0));
+            canvas.showText(chLimit(v.getName().toUpperCase(), 0));
 
             canvas.moveText(columnX[2] - columnX[1], 0);
             canvas.showText(String.valueOf(v.getPhone()));
@@ -425,18 +455,17 @@ public class PDFService {
         }
         return sortList;
     }
-    
-    private String chLimit(String name, int index){
-        if (name.length() <= CH_LIMIT){
+
+    private String chLimit(String name, int index) {
+        if (name.length() <= CH_LIMIT) {
             return name;
-        }
-        else {
+        } else {
             String[] str = name.split(REGEX);
-            if ( str[index].length() > 3){
+            if (str[index].length() > 3) {
                 str[index] = String.valueOf(str[index].charAt(0)) + ".";
             }
             String fname = String.join(" ", str);
-            return chLimit(fname, index+1);
+            return chLimit(fname, index + 1);
         }
     }
 }
