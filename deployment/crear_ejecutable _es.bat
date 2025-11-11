@@ -22,16 +22,19 @@ jpackage ^
     --module-path "%MODULE_PATH%" ^
     --add-modules "%MODULES%" ^
     --dest "%OUTPUT_DIR%" ^
-    --app-version "1.4" ^
+    --app-version "1.3" ^
     --vendor "Ayuntamiento de Almonte" ^
     --icon "%ICON_WIN%" ^
     --copyright "© 2025 Ayuntamiento de Almonte - Informatica Alcaldia. Todos los derechos reservados." ^
-    --win-console ^
     --description "Viajes Doñana"  
 
 echo.
 echo Paquetes creados en %OUTPUT_DIR%
+	makensis /INPUTCHARSET UTF8 crear_instalador_es.nsi
+echo Instalador creados en %OUTPUT_DIR%
 pause
 endlocal
+
+
 
 
