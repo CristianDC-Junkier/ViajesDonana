@@ -284,7 +284,7 @@ public class ActionTravellerController implements Initializable {
 
         String dni = tSelected.getDni() != null ? tSelected.getDni().toUpperCase().trim() : "";
         String displayValue = dni;
-        
+
         // Resetear checkboxes
         minorChB.setSelected(false);
         govChB.setSelected(false);
@@ -301,12 +301,12 @@ public class ActionTravellerController implements Initializable {
                 minorChB.setSelected(true);
                 minorCheck(); // Ajusta birthdaySP y dniTF
                 // Extra: poner la fecha de cumpleaños si está en el DNI
-                String[] parts = dni.split("-");
-                if (parts.length > 1) {
-                    try {
-                        birthdayDP.setValue(LocalDate.parse(parts[1])); // Ajustar formato si necesario
-                    } catch (Exception ignored) {
-                    }
+                try {
+                    int idx = dni.indexOf("-") + 1;
+                    String date = dni.substring(idx);
+                    System.out.println(date);
+                    birthdayDP.setValue(LocalDate.parse(date)); // Ajustar formato si necesario
+                } catch (Exception ignored) {
                 }
             } else {
                 // Es gov
@@ -314,7 +314,7 @@ public class ActionTravellerController implements Initializable {
                 govCheck(); // Ajusta birthdaySP y dniTF
             }
         }
-       dniTF.setText(displayValue);
+        dniTF.setText(displayValue);
         nameTF.setText(tSelected.getName());
         phoneTF.setText(tSelected.getPhone());
         departmentCB.setValue(departmentS.findById(tSelected.getDepartment()).get());

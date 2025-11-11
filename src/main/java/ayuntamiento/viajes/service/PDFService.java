@@ -327,11 +327,15 @@ public class PDFService {
             canvas.showText(String.valueOf(v.getPhone()));
 
             canvas.moveText(columnX[3] - columnX[2], 0);
-            canvas.showText(travelS.findById(v.getTrip()).get().getDescriptor());
+            int idx = travelS.findById(v.getTrip()).get().getDescriptor().lastIndexOf(" -");
+            String name = travelS.findById(v.getTrip()).get().getDescriptor().substring(0, idx);
+            canvas.showText(name);
 
             canvas.moveText(columnX[4] - columnX[3], 0);
             String d = departmentS.findById(v.getDepartment()).get().getName().replace('_', ' ');
-            canvas.showText("Asuntos Sociales".equals(d) ? "A. Sociales" : d);
+            canvas.showText("Asuntos Sociales".equals(d) ? "A. Sociales" : 
+                    "Prensa Comunicaciones".equals(d) ? "Prensa" : 
+                    "Participación Ciudadana".equals(d) ? "P. Ciudadana" : d);
 
             canvas.moveText(columnX[5] - columnX[4], 0);
             canvas.showText(v.getSignup());
