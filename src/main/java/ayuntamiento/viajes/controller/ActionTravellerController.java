@@ -186,7 +186,6 @@ public class ActionTravellerController implements Initializable {
         // Carga viajes desde TravelService
         List<Travel> travels = travelS.findByDepartment(departmentCB.getSelectionModel().getSelectedItem().getId());
 
-        
         // Ordenar por fecha
         travels.sort((t1, t2) -> {
             LocalDate d1 = null, d2 = null;
@@ -212,7 +211,7 @@ public class ActionTravellerController implements Initializable {
             }
             return d1.compareTo(d2);
         });
-        
+
         tripCB.getItems().setAll(travels);
         tripCB.setValue(travels.isEmpty() ? null : tripCB.getItems().getFirst());
 
@@ -283,21 +282,39 @@ public class ActionTravellerController implements Initializable {
 
     private void populateFields() {
 
-        String dni = tSelected.getDni().toUpperCase().trim();
-        String displayValue;
-        if (dni != null && dni.contains("-")) {
+        String dni = tSelected.getDni() != null ? tSelected.getDni().toUpperCase().trim() : "";
+        String displayValue = dni;
+        
+        // Resetear checkboxes
+        minorChB.setSelected(false);
+        govChB.setSelected(false);
+
+        if (!dni.isEmpty() && dni.contains("-")) {
             displayValue = dni.substring(0, dni.indexOf("-")).trim().toUpperCase();
+
+            // Validar si es un DNI/NIE válido
             boolean esDniNieValido = displayValue.matches("^[0-9]{8}[A-Za-z]$") // DNI
                     || displayValue.matches("^[XYZxyz][0-9]{7}[A-Za-z]$");       // NIE
+
             if (!esDniNieValido) {
-                minorCheck();
-            }else{
-                govCheck();
+                // Es menor
+                minorChB.setSelected(true);
+                minorCheck(); // Ajusta birthdaySP y dniTF
+                // Extra: poner la fecha de cumpleaños si está en el DNI
+                String[] parts = dni.split("-");
+                if (parts.length > 1) {
+                    try {
+                        birthdayDP.setValue(LocalDate.parse(parts[1])); // Ajustar formato si necesario
+                    } catch (Exception ignored) {
+                    }
+                }
+            } else {
+                // Es gov
+                govChB.setSelected(true);
+                govCheck(); // Ajusta birthdaySP y dniTF
             }
-        } else {
-            displayValue = dni;
         }
-        dniTF.setText(displayValue);
+       dniTF.setText(displayValue);
         nameTF.setText(tSelected.getName());
         phoneTF.setText(tSelected.getPhone());
         departmentCB.setValue(departmentS.findById(tSelected.getDepartment()).get());
