@@ -22,7 +22,7 @@ jpackage ^
     --module-path "%MODULE_PATH%" ^
     --add-modules "%MODULES%" ^
     --dest "%OUTPUT_DIR%" ^
-    --app-version "1.3" ^
+    --app-version "1.4" ^
     --vendor "Ayuntamiento de Almonte" ^
     --icon "%ICON_WIN%" ^
     --copyright "© 2025 Ayuntamiento de Almonte - Informatica Alcaldia. Todos los derechos reservados." ^

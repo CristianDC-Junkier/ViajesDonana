@@ -1,2 +1,4 @@
-/target/
+﻿/target/
 /deployment/dist
+src/main/resources/ayuntamiento/viajes/config/app.properties
+.vs
