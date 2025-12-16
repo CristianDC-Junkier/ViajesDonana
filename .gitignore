@@ -1,4 +1,5 @@
 ﻿/target/
 /deployment/dist
+/deployment/launcher
 src/main/resources/ayuntamiento/viajes/config/app.properties
-.vs
+
