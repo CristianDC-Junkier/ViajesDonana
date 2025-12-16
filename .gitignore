@@ -1,5 +1,5 @@
 ﻿/target/
 /deployment/dist
-/deployment/launcher
+/deployment/launcher/*.jar
 src/main/resources/ayuntamiento/viajes/config/app.properties
 
